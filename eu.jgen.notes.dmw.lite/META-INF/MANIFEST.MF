@@ -1,0 +1,33 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: eu.jgen.notes.dmw.lite
+Bundle-Vendor: My Company
+Bundle-Version: 0.3.0.qualifier
+Bundle-SymbolicName: eu.jgen.notes.dmw.lite; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib,
+ org.antlr.runtime,
+ org.eclipse.xtext.util,
+ org.eclipse.xtend.lib,
+ org.eclipse.emf.common
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: eu.jgen.notes.dmw.lite,
+ eu.jgen.notes.dmw.lite.generator,
+ eu.jgen.notes.dmw.lite.lang,
+ eu.jgen.notes.dmw.lite.lang.impl,
+ eu.jgen.notes.dmw.lite.lang.util,
+ eu.jgen.notes.dmw.lite.parser.antlr,
+ eu.jgen.notes.dmw.lite.parser.antlr.internal,
+ eu.jgen.notes.dmw.lite.runtimes,
+ eu.jgen.notes.dmw.lite.scoping,
+ eu.jgen.notes.dmw.lite.serializer,
+ eu.jgen.notes.dmw.lite.services,
+ eu.jgen.notes.dmw.lite.typing,
+ eu.jgen.notes.dmw.lite.utility,
+ eu.jgen.notes.dmw.lite.validation,
+ eu.jgen.notes.dmw.lite.formatting2
+Import-Package: org.apache.log4j

@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: eu.jgen.notes.dmw.lite.ui
+Bundle-Vendor: My Company
+Bundle-Version: 0.3.0.qualifier
+Bundle-SymbolicName: eu.jgen.notes.dmw.lite.ui; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: eu.jgen.notes.dmw.lite,
+ eu.jgen.notes.dmw.lite.ide,
+ org.eclipse.xtext.ui,
+ org.eclipse.xtext.ui.shared,
+ org.eclipse.xtext.ui.codetemplates.ui,
+ org.eclipse.ui.editors;bundle-version="3.5.0",
+ org.eclipse.ui.ide;bundle-version="3.5.0",
+ org.eclipse.ui,
+ org.eclipse.compare,
+ org.eclipse.xtext.builder,
+ org.eclipse.xtend.lib;resolution:=optional,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.jdt.debug.ui,
+ org.eclipse.core.runtime,
+ org.eclipse.core.resources
+Import-Package: org.apache.log4j,
+ org.eclipse.jdt.core,
+ org.eclipse.jdt.internal.ui.wizards.dialogfields,
+ org.eclipse.jdt.ui.wizards
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Export-Package: eu.jgen.notes.dmw.lite.ui,
+ eu.jgen.notes.dmw.lite.ui.contentassist,
+ eu.jgen.notes.dmw.lite.ui.internal,
+ eu.jgen.notes.dmw.lite.ui.labeling,
+ eu.jgen.notes.dmw.lite.ui.outline,
+ eu.jgen.notes.dmw.lite.ui.quickfix,
+ eu.jgen.notes.dmw.lite.ui.wizard
+Bundle-Activator: eu.jgen.notes.dmw.lite.ui.internal.LiteActivator

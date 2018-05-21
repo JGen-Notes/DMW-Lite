@@ -1,0 +1,370 @@
+/**
+ * [The "BSD license"]
+ * Copyright (c) 2016, JGen Notes
+ * All rights reserved.
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * 1. Redistributions of source code must retain the above copyright notice, this list of conditions 
+ *    and the following disclaimer.
+ * 
+ * 2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions 
+ *    and the following disclaimer in the documentation and/or other materials provided with the distribution.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS 
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ */
+grammar eu.jgen.notes.dmw.lite.Lang with org.eclipse.xtext.common.Terminals
+
+generate lang "http://www.jgen.eu/notes/dmw/lite/Lang"
+
+YWidget:
+	('package' name=QualifiedName ';')?
+	imports+=YImport*
+	annotations+=YAnnotTop*
+	classes+=YClass*;
+
+YImport:
+	'import' importedNamespace=QualifiedNameWithWildcard ';';
+
+QualifiedName:
+  ValidID (=>'.' ValidID)*;
+
+QualifiedNameWithWildcard:
+	QualifiedName '.*'?;
+
+ValidID:
+	ID;
+	
+YParameter:
+	YTypedDeclaration;
+	
+enum YAccessLevel:
+	PRIVATE='private' | PROTECTED='protected' | PUBLIC='public';
+
+YArgument:
+	name=ValidID ':' value=YArgumentValue
+;
+
+YArgumentValue:
+	INT | STRING
+;
+
+YClass:
+	 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
+	'{'
+ 	inners+=YClass*
+	members+=YMember*
+	'}';
+	
+
+YMember:
+	YProperty | YFunction;
+		
+fragment YTypedDeclaration *:
+	name=ValidID ':' type=[YClass|QualifiedName] ;
+
+YProperty:
+	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? (optional?='?')? ('->' attr=[YAnnotAttr|QualifiedName])? prop+=YAnnot*';';
+	
+YTuples:
+	{YTuples}'<' (includes+=[YProperty] (',' includes+=[YProperty])*)? '>'
+;
+
+YFunction:
+	 access=YAccessLevel? 'func' name=ValidID
+	'(' (params+=YParameter (',' params+=YParameter)*)? ')' (returnvalue?='->')? type=[YClass|QualifiedName]? 
+	body=YBlock;
+
+YBlock:
+	{YBlock} '{' statements+=YStatement* '}';
+
+YStatement:
+	YVariableDeclaration |
+	YReturn |
+	YReadStatement |
+	YCreateStatement |
+	YUpdateStatement |
+	YAssociateStatement |
+	YDeleteStatement |
+	YReadEachStatement |
+	YWhileStatement |
+	YRepeatWhileStatement |
+	YForInStatement |
+	YExpression ';' |
+	YIfStatement |
+	YSwitchStatement;
+
+YVariableDeclaration:
+	YTypedDeclaration '=' expression=YOrExpression ';';
+
+YReturn:
+	{YReturn} 'return' expression=YOrExpression? ';';
+
+YIfStatement:
+	'if' '(' expression=YOrExpression ')' thenBlock=YIfBlock
+	(=> 'else' elseBlock=YIfBlock)?;
+
+YIfBlock returns YBlock:
+	statements+=YStatement
+	| YBlock;
+	
+YSwitchStatement:
+	{YSwitchStatement}
+	'switch' switch=YExpression '{'
+	(cases+=YSwitchCase)*
+	('default' ':' default=YBlock )?
+	'}';
+
+YSwitchCase:
+	{YSwitchCase}
+	('case' case=YExpression)? 
+		':' then=YBlock ;
+
+YSymbol:
+	YVariableDeclaration | YParameter  ;
+
+YNamedElement:
+	YClass | YMember | YSymbol;
+
+YExpression:
+	YAssignment  ;
+
+YAssignment returns YExpression:
+	YSelectionExpression
+	({YAssignment.left=current} '=' right=YOrExpression)?;
+
+YSelectionExpression returns YExpression:
+	YTerminalExpression 
+	(
+		{YMemberSelection.receiver=current} '.' 
+		member=[YMember] 
+		(functioninvocation?='('
+	       (args+=YExpression (',' args+=YExpression)*)? ')'
+	       )?)*;
+
+OpSingleAssign:
+	'=';
+
+YOrExpression returns YExpression:
+	YAndExpression ({YOrExpression.left=current} OpOr right=YAndExpression)*;
+
+OpOr:
+	'||';
+
+YAndExpression returns YExpression:
+	YEqualityExpression ({YAndExpression.left=current} OpAnd right=YEqualityExpression)*;
+
+OpAnd:
+	'&&';
+
+YEqualityExpression returns YExpression:
+	YComparisonExpression ({YEqualityExpression.left=current} op=("==" | "!=") right=YComparisonExpression)*;
+
+YComparisonExpression returns YExpression:
+	YAdditiveExpression ({YComparisonExpression.left=current} op=OpCompare right=YAdditiveExpression)*;
+
+OpCompare:
+	'>=' | '<' '=' | '>' | '<';
+
+YAdditiveExpression returns YExpression:
+	YMultiplicativeExpression (({YPlus.left=current} '+' | {YMinus.left=current} '-') right=YMultiplicativeExpression)*;
+
+OpAdd:
+	'+' | '-';
+
+YMultiplicativeExpression returns YExpression:
+	YSelectionExpression ({YMulOrDiv.left=current} op=('*' | '/') right=YSelectionExpression)*;
+
+YTerminalExpression returns YExpression:
+	{YStringConstant} value=STRING |
+	{YIntConstant} value=INT |
+	{YBoolConstant} value=('true' | 'false') |
+	{YSelf} 'self' |
+	{YSuper} 'super' |  
+	{YNull} 'null' |
+	{YSymbolRef} symbol=[YSymbol] |
+ 	{YNew} 'new' type=[YClass|QualifiedName] '(' 
+		(
+		arguments+=YExpression (',' arguments+=YExpression)*)?')' |
+	 '(' YExpression ')';
+
+YReadStatement:
+	'read' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere? 
+	'success' success=YBlock
+	'not' 'found' notfound=YBlock;
+
+YReadEachStatement:
+	'read' 'each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere? 
+	'target' target=[YProperty] 
+	'success' success=YBlock;
+		
+YCreateStatement:
+	'create' struct=YStructRefPair
+	setBlock=YBlock
+	'success' success=YBlock
+	'already' 'exist' alreadyExist=YBlock;
+	
+YUpdateStatement:
+	'update' struct=YStructRefPair
+	setBlock=YBlock
+	'success' success=YBlock;
+	
+YDeleteStatement:
+	'delete' struct=YStructRefPair ';';
+	
+YAssociateStatement:
+	'associate' joinref=YJoinDef ';';
+
+YStructRefPair:
+	structproperty=[YProperty] '->' structclass=[YAnnotEntity] ;
+
+YJoin:
+	{YJoin} 'join' joindef+=YJoinDef ("," joindef+=YJoinDef)*;
+
+YJoinDef:
+	fromView=[YProperty] '->' relRef+=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
+
+YWhere:
+	{YWhere} 'where' expression=YOrExpression;
+	
+YWhileStatement:
+	'while'  expression=YOrExpression 
+		body=YBlock
+;
+	
+YRepeatWhileStatement:
+	'repeat' 
+	   body=YBlock
+	'while' '(' expression=YOrExpression ')'
+;
+
+YForInStatement:
+	'for' item=[YProperty] 'in' collection=[YProperty]
+	   body=YBlock
+;
+
+/*
+ * Predefined annotations
+ */
+
+YAnnot:
+	 YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType
+;
+
+YAnnotTop: 
+	type=(YAnnotEntity | YAnnotTechnicalDesign | YAnnotSwift | YAnnotJava | YAnnotDatabase)
+;
+
+YAnnotLength returns YAnnot:
+	{YAnnotLength} '@length' '(' length=INT')'
+;
+
+YAnnotDecimal returns YAnnot:
+	{YAnnotDecimal} '@decimal' '(' length=INT ',' decimal=INT')'
+;
+
+YAnnotAction  returns YAnnot:
+	{YAnnotAction} '@action' '(' action=ValidID')'
+; 
+
+YAnnotMessage  returns YAnnot:
+	{YAnnotMessage} '@message' '('msg=STRING')'
+; 
+
+YAnnotMsgType  returns YAnnot:
+	'@msgtype' '('msgtype=ValidID')'
+; 
+
+YAnnotEntityInner:
+	YAnnotAttr | YAnnotRel | YAnnotId
+;
+
+YAnnotEntity:
+	'@entity' name=ValidID (':' superannot=[YAnnotEntity|QualifiedName])? '{'
+		annots+=YAnnotEntityInner*
+		'}'
+;
+
+YAnnotAttr:
+	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] (optional='?')? annots+=(YAnnotLength | YAnnotDecimal)* ';'
+;
+
+YAnnotRel:
+	{YAnnotRel} '@rel'  name=ValidID (optional?='?')? '->' target=[YAnnotEntity|QualifiedName] (many?='*')? ('<-' inverse=[YAnnotRel|QualifiedName])? ';'
+	;
+	
+YAnnotIdInner:  
+	 YAnnotAttr | YAnnotRel
+;
+
+YAnnotId:
+	{YAnnotId} '@id' name=ValidID '('annots+=[YAnnotEntityInner](',' annots+=[YAnnotEntityInner] )* ')' ';'
+;
+
+	/*
+ * Start Technical design
+ */
+YAnnotTechnicalDesign:
+	{YAnnotTechnicalDesign} '@td' 'database' database=[YAnnotDatabase] '{'
+	features+=YAnnotTable*
+	'}';
+
+YAnnotTable:
+	{YAnnotTable} '@table' name=ValidID '->' entityref=[YAnnotEntity|QualifiedName] '{'
+	columns+=YAnnotAbstractColumn*
+	primarykey=YAnnotPrimaryKey?
+	foreignkeys+=YAnnotForeignKey*
+	'}';
+
+YAnnotColumn:
+	{YAnnotColumn} '->' attrref=[YAnnotAttr|QualifiedName]
+	'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP')
+	(optional='?')? annots+=(YAnnotLength | YAnnotDecimal)* ';';
+
+YAnnotColumnLike:
+	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName];
+
+YAnnotAbstractColumn:
+	{YAnnotAbstractColumn} '@column' name=ValidID type=(YAnnotColumn | YAnnotColumnLike);
+
+YAnnotPrimaryKey:
+	{YAnnotPrimaryKey} '@primary'  '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';';
+
+YAnnotForeignKey:
+	{YAnnotForeignKey} '@foreign'  relationship=[YAnnotRel|QualifiedName] '{'
+	columns+=YAnnotAbstractColumn*
+	'}';
+	
+/*
+ * Swift Generation Annotations
+ */
+ YAnnotJava:
+ 	{YAnnotJava}'@java' database+=[YAnnotDatabase]?
+ ;
+ 	
+/*
+ * Swift Generation Annotations
+ */
+ YAnnotSwift:
+ 	{YAnnotSwift}'@swift' name=ValidID ('uses' database+=[YAnnotDatabase])?
+ ;
+ 
+ /*
+ * Database Generation Annotations
+ */
+ 
+  YAnnotDatabase:
+ 	{YAnnotDatabase}'@database' name="MySQL"
+ ;
+ 
+
+
+	

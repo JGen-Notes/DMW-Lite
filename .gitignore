@@ -1,0 +1,7 @@
+/.m2/
+/build/
+bin/
+target/
+*._trace
+*.xtendbin
+.DS_Store
