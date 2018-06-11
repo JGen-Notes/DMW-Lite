@@ -45,6 +45,7 @@ import org.eclipse.xtext.testing.validation.ValidationTestHelper
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
+/* hello */
 class LiteLangTypeComputerTest {
 	@Inject extension ParseHelper<YWidget>
 	@Inject extension LangTypeComputer
