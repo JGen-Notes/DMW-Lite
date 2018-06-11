@@ -729,7 +729,8 @@ public class LangValidator extends AbstractLangValidator {
     }
     if ((count > 1)) {
       this.error("Table column name is not unique.", column.eContainer(), 
-        LangPackage.Literals.YANNOT_ABSTRACT_COLUMN__NAME, LangValidator.COLUMN_NAME_NOT_UNIQUE);
+        LangPackage.Literals.YANNOT_ABSTRACT_COLUMN__NAME, 
+        LangValidator.COLUMN_NAME_NOT_UNIQUE);
       return;
     }
   }
@@ -768,11 +769,12 @@ public class LangValidator extends AbstractLangValidator {
     }
   }
   
+  @Check
   public void checkIdentifierHasTechDesign(final YAnnotId identifier) {
-    EObject _eContainer = identifier.eContainer().eContainer();
+    EObject _eContainer = identifier.eContainer();
     boolean _isTechnicalDesign = this._langUtil.isTechnicalDesign(((YAnnotEntity) _eContainer));
     if (_isTechnicalDesign) {
-      EObject _eContainer_1 = identifier.eContainer().eContainer();
+      EObject _eContainer_1 = identifier.eContainer();
       final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer_1));
       YAnnotPrimaryKey _primarykey = table.getPrimarykey();
       boolean _tripleEquals = (_primarykey == null);
@@ -783,8 +785,9 @@ public class LangValidator extends AbstractLangValidator {
     }
   }
   
+  @Check
   public void checkRelationshipHasTechDesign(final YAnnotRel relationship) {
-    EObject _eContainer = relationship.eContainer().eContainer();
+    EObject _eContainer = relationship.eContainer();
     boolean _isTechnicalDesign = this._langUtil.isTechnicalDesign(((YAnnotEntity) _eContainer));
     if (_isTechnicalDesign) {
       boolean _isMany = relationship.isMany();
@@ -793,7 +796,7 @@ public class LangValidator extends AbstractLangValidator {
       }
       boolean _isMany_1 = relationship.getInverse().isMany();
       if (_isMany_1) {
-        EObject _eContainer_1 = relationship.eContainer().eContainer();
+        EObject _eContainer_1 = relationship.eContainer();
         final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer_1));
         if ((table != null)) {
           EList<YAnnotForeignKey> _foreignkeys = table.getForeignkeys();

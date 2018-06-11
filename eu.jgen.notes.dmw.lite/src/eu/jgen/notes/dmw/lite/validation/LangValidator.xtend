@@ -474,60 +474,64 @@ class LangValidator extends AbstractLangValidator {
 		}
 		if (count > 1) {
 			error("Table column name is not unique.", column.eContainer,
-				LangPackage.Literals.YANNOT_ABSTRACT_COLUMN__NAME, eu.jgen.notes.dmw.lite.validation.LangValidator.COLUMN_NAME_NOT_UNIQUE);
-			return
-		}
-	}
-
-	def void checkDuplicateFKColumnName(YAnnotColumnLike column) {
-		var count = 0
-		val table = column.eContainer.eContainer.eContainer as YAnnotTable
-		for (abstractColumn : table.columns) {
-			if (abstractColumn.name == (column.eContainer as YAnnotAbstractColumn).name) {
-				count++
+				LangPackage.Literals.YANNOT_ABSTRACT_COLUMN__NAME,
+				eu.jgen.notes.dmw.lite.validation.LangValidator.COLUMN_NAME_NOT_UNIQUE);
+				return
 			}
 		}
-		for (foreignKey : table.foreignkeys) {
-			for (abstractColumn : foreignKey.columns) {
+
+		def void checkDuplicateFKColumnName(YAnnotColumnLike column) {
+			var count = 0
+			val table = column.eContainer.eContainer.eContainer as YAnnotTable
+			for (abstractColumn : table.columns) {
 				if (abstractColumn.name == (column.eContainer as YAnnotAbstractColumn).name) {
 					count++
 				}
 			}
-		}
-		if (count > 1) {
-			error("Table foreign key column name is not unique.", column.eContainer,
-				LangPackage.Literals.YANNOT_ABSTRACT_COLUMN__NAME, COLUMN_NAME_NOT_UNIQUE);
-			return
-		}
-	}
-
-	def void checkIdentifierHasTechDesign(YAnnotId identifier) {
-		if (isTechnicalDesign(identifier.eContainer.eContainer as YAnnotEntity)) {
-			val table = getImplementingTable(identifier.eContainer.eContainer as YAnnotEntity)
-			if (table.primarykey === null) {
-				warning("The declared identifier is not yet implemented as primary key", identifier,
-					LangPackage.Literals.YANNOT_ID__NAME, IDENTIFIER_NO_TECH_DESIGN)
+			for (foreignKey : table.foreignkeys) {
+				for (abstractColumn : foreignKey.columns) {
+					if (abstractColumn.name == (column.eContainer as YAnnotAbstractColumn).name) {
+						count++
+					}
+				}
 			}
-		}
-	}
-
-	def void checkRelationshipHasTechDesign(YAnnotRel relationship) {
-		if (isTechnicalDesign(relationship.eContainer.eContainer as YAnnotEntity)) {
-			if (relationship.isMany) {
+			if (count > 1) {
+				error("Table foreign key column name is not unique.", column.eContainer,
+					LangPackage.Literals.YANNOT_ABSTRACT_COLUMN__NAME, COLUMN_NAME_NOT_UNIQUE);
 				return
 			}
-			if (relationship.inverse.isMany) {
-				val table = getImplementingTable(relationship.eContainer.eContainer as YAnnotEntity)
-				if (table !== null) {
-					for (foreignKey : table.foreignkeys) {
-						if (foreignKey.relationship == relationship) {
-							return
+		}
+
+		@Check
+		def void checkIdentifierHasTechDesign(YAnnotId identifier) {
+			if (isTechnicalDesign(identifier.eContainer as YAnnotEntity)) {
+				val table = getImplementingTable(identifier.eContainer as YAnnotEntity)
+				if (table.primarykey === null) {
+					warning("The declared identifier is not yet implemented as primary key", identifier,
+						LangPackage.Literals.YANNOT_ID__NAME, IDENTIFIER_NO_TECH_DESIGN)
+				}
+			}
+		}
+
+		@Check
+		def void checkRelationshipHasTechDesign(YAnnotRel relationship) {
+			if (isTechnicalDesign(relationship.eContainer as YAnnotEntity)) {
+				if (relationship.isMany) {
+					return
+				}
+				if (relationship.inverse.isMany) {
+					val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
+					if (table !== null) {
+						for (foreignKey : table.foreignkeys) {
+							if (foreignKey.relationship == relationship) {
+								return
+							}
 						}
+						warning("The declared relationship is not yet implemented as a foreign key", relationship,
+							LangPackage.Literals.YANNOT_REL__NAME, RELATIONSSHIP_NOT_IMPLEMENTED)
 					}
-					warning("The declared relationship is not yet implemented as a foreign key", relationship,
-						LangPackage.Literals.YANNOT_REL__NAME, RELATIONSSHIP_NOT_IMPLEMENTED)
 				}
 			}
 		}
 	}
-}
+	

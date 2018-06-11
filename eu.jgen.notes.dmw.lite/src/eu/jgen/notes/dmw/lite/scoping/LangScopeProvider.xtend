@@ -35,17 +35,7 @@ import eu.jgen.notes.dmw.lite.lang.YMemberSelection
 import com.google.inject.Inject
 import eu.jgen.notes.dmw.lite.utility.LangUtil
 import eu.jgen.notes.dmw.lite.typing.LangTypeComputer
-import eu.jgen.notes.dmw.lite.lang.YParameter  
-import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
-import org.eclipse.emf.ecore.util.EcoreUtil
-import eu.jgen.notes.dmw.lite.lang.YSymbolRef
 
-/**
- * This class contains custom scoping description.
- * 
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
- * on how and when to use it.
- */
 class LangScopeProvider extends AbstractLangScopeProvider {
 
 	val epackage = LangPackage.eINSTANCE
@@ -70,22 +60,22 @@ class LangScopeProvider extends AbstractLangScopeProvider {
 			YBlock:
 				Scopes.scopeFor(
 					container.statements.takeWhile[it != context].filter(YVariableDeclaration),
-					scopeForSymbolRef(container)  // outer scope					
+					scopeForSymbolRef(container)  			
 				)
 			default:
 				scopeForSymbolRef(container)
 		}
 	}
 
-	def protected IScope scopeForMemberSelection(YMemberSelection sel, EReference reference) {		
-		val type = sel.receiver.typeFor
+	def protected IScope scopeForMemberSelection(YMemberSelection selection, EReference reference) {		
+		val type = selection.receiver.typeFor
 		if (type === null || type.isPrimitive)
 			return IScope.NULLSCOPE
 		val grouped = type.
 			classHierarchyMembers.groupBy[it instanceof YFunction]
 		val inheritedMethods = grouped.get(true) ?: emptyList
 		val inheritedFields = grouped.get(false) ?: emptyList
-		if (sel.functioninvocation) {
+		if (selection.functioninvocation) {
 			return Scopes.scopeFor(
 				type.functions + type.properties,
 				Scopes.scopeFor(inheritedMethods + inheritedFields)

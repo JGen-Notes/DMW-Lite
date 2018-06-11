@@ -204,7 +204,7 @@ YReadStatement:
 YReadEachStatement:
 	'read' 'each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere? 
 	'target' target=[YProperty] 
-	'success' success=YBlock;
+	success=YBlock;
 		
 YCreateStatement:
 	'create' struct=YStructRefPair
@@ -362,7 +362,7 @@ YAnnotForeignKey:
  */
  
   YAnnotDatabase:
- 	{YAnnotDatabase}'@database' name="MySQL"
+ 	{YAnnotDatabase}'@database' name=ValidID ';'
  ;
  
 

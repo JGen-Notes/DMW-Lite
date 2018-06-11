@@ -7823,7 +7823,6 @@ rule__YReadEachStatement__Group__8
 	}
 :
 	rule__YReadEachStatement__Group__8__Impl
-	rule__YReadEachStatement__Group__9
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -7835,35 +7834,9 @@ rule__YReadEachStatement__Group__8__Impl
 	}
 :
 (
-	{ before(grammarAccess.getYReadEachStatementAccess().getSuccessKeyword_8()); }
-	'success'
-	{ after(grammarAccess.getYReadEachStatementAccess().getSuccessKeyword_8()); }
-)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__YReadEachStatement__Group__9
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	rule__YReadEachStatement__Group__9__Impl
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__YReadEachStatement__Group__9__Impl
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-(
-	{ before(grammarAccess.getYReadEachStatementAccess().getSuccessAssignment_9()); }
-	(rule__YReadEachStatement__SuccessAssignment_9)
-	{ after(grammarAccess.getYReadEachStatementAccess().getSuccessAssignment_9()); }
+	{ before(grammarAccess.getYReadEachStatementAccess().getSuccessAssignment_8()); }
+	(rule__YReadEachStatement__SuccessAssignment_8)
+	{ after(grammarAccess.getYReadEachStatementAccess().getSuccessAssignment_8()); }
 )
 ;
 finally {
@@ -12548,6 +12521,7 @@ rule__YAnnotDatabase__Group__2
 	}
 :
 	rule__YAnnotDatabase__Group__2__Impl
+	rule__YAnnotDatabase__Group__3
 ;
 finally {
 	restoreStackSize(stackSize);
@@ -12562,6 +12536,32 @@ rule__YAnnotDatabase__Group__2__Impl
 	{ before(grammarAccess.getYAnnotDatabaseAccess().getNameAssignment_2()); }
 	(rule__YAnnotDatabase__NameAssignment_2)
 	{ after(grammarAccess.getYAnnotDatabaseAccess().getNameAssignment_2()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotDatabase__Group__3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__YAnnotDatabase__Group__3__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotDatabase__Group__3__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getYAnnotDatabaseAccess().getSemicolonKeyword_3()); }
+	';'
+	{ after(grammarAccess.getYAnnotDatabaseAccess().getSemicolonKeyword_3()); }
 )
 ;
 finally {
@@ -13675,15 +13675,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__YReadEachStatement__SuccessAssignment_9
+rule__YReadEachStatement__SuccessAssignment_8
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getYReadEachStatementAccess().getSuccessYBlockParserRuleCall_9_0()); }
+		{ before(grammarAccess.getYReadEachStatementAccess().getSuccessYBlockParserRuleCall_8_0()); }
 		ruleYBlock
-		{ after(grammarAccess.getYReadEachStatementAccess().getSuccessYBlockParserRuleCall_9_0()); }
+		{ after(grammarAccess.getYReadEachStatementAccess().getSuccessYBlockParserRuleCall_8_0()); }
 	)
 ;
 finally {
@@ -14805,13 +14805,9 @@ rule__YAnnotDatabase__NameAssignment_2
 	}
 :
 	(
-		{ before(grammarAccess.getYAnnotDatabaseAccess().getNameMySQLKeyword_2_0()); }
-		(
-			{ before(grammarAccess.getYAnnotDatabaseAccess().getNameMySQLKeyword_2_0()); }
-			'MySQL'
-			{ after(grammarAccess.getYAnnotDatabaseAccess().getNameMySQLKeyword_2_0()); }
-		)
-		{ after(grammarAccess.getYAnnotDatabaseAccess().getNameMySQLKeyword_2_0()); }
+		{ before(grammarAccess.getYAnnotDatabaseAccess().getNameValidIDParserRuleCall_2_0()); }
+		ruleValidID
+		{ after(grammarAccess.getYAnnotDatabaseAccess().getNameValidIDParserRuleCall_2_0()); }
 	)
 ;
 finally {

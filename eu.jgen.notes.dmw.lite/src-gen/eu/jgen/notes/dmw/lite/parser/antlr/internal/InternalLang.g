@@ -2930,16 +2930,12 @@ ruleYReadEachStatement returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_9='success'
-		{
-			newLeafNode(otherlv_9, grammarAccess.getYReadEachStatementAccess().getSuccessKeyword_8());
-		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYReadEachStatementAccess().getSuccessYBlockParserRuleCall_9_0());
+					newCompositeNode(grammarAccess.getYReadEachStatementAccess().getSuccessYBlockParserRuleCall_8_0());
 				}
-				lv_success_10_0=ruleYBlock
+				lv_success_9_0=ruleYBlock
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYReadEachStatementRule());
@@ -2947,7 +2943,7 @@ ruleYReadEachStatement returns [EObject current=null]
 					set(
 						$current,
 						"success",
-						lv_success_10_0,
+						lv_success_9_0,
 						"eu.jgen.notes.dmw.lite.Lang.YBlock");
 					afterParserOrEnumRuleCall();
 				}
@@ -5453,18 +5449,27 @@ ruleYAnnotDatabase returns [EObject current=null]
 		}
 		(
 			(
-				lv_name_2_0='MySQL'
 				{
-					newLeafNode(lv_name_2_0, grammarAccess.getYAnnotDatabaseAccess().getNameMySQLKeyword_2_0());
+					newCompositeNode(grammarAccess.getYAnnotDatabaseAccess().getNameValidIDParserRuleCall_2_0());
 				}
+				lv_name_2_0=ruleValidID
 				{
 					if ($current==null) {
-						$current = createModelElement(grammarAccess.getYAnnotDatabaseRule());
+						$current = createModelElementForParent(grammarAccess.getYAnnotDatabaseRule());
 					}
-					setWithLastConsumed($current, "name", lv_name_2_0, "MySQL");
+					set(
+						$current,
+						"name",
+						lv_name_2_0,
+						"eu.jgen.notes.dmw.lite.Lang.ValidID");
+					afterParserOrEnumRuleCall();
 				}
 			)
 		)
+		otherlv_3=';'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getYAnnotDatabaseAccess().getSemicolonKeyword_3());
+		}
 	)
 ;
 

@@ -480,7 +480,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnotDatabase returns YAnnotDatabase
 	 *
 	 * Constraint:
-	 *     name='MySQL'
+	 *     name=ValidID
 	 */
 	protected void sequence_YAnnotDatabase(ISerializationContext context, YAnnotDatabase semanticObject) {
 		if (errorAcceptor != null) {
@@ -488,7 +488,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YANNOT_DATABASE__NAME));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getYAnnotDatabaseAccess().getNameMySQLKeyword_2_0(), semanticObject.getName());
+		feeder.accept(grammarAccess.getYAnnotDatabaseAccess().getNameValidIDParserRuleCall_2_0(), semanticObject.getName());
 		feeder.finish();
 	}
 	

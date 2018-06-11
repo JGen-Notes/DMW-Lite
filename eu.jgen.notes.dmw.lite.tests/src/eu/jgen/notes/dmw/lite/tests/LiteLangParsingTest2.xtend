@@ -62,17 +62,21 @@ class LiteLangParsingTest2 {
 	@Test
 	def void testDefineExitStates() {
 		val text = '''
-			class Exits {
-				public var display : ExitState @prop(action : "normal", msgtype : "error", msg : "Display required");
-			}
+		class ExitStates {	
+			public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
+			public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
+			public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
+			public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
+		}
 						
 			class CheckExits : Widget {
-				var exits : Exits;
+				var exits : ExitStates;
 				public func hello() { 
-					super.setExitState(self.exits.display);
+					super.setExitState(self.exits.processStarted);
 				}
 			}		'''
 		val result = text.loadLibAndParse()
+		// result.validate.forEach[println(it)]
 		result.assertNoErrors
 	}
 
@@ -102,19 +106,20 @@ class LiteLangParsingTest2 {
 	@Test
 	def void testDefineEntityWithAttributes() {
 		val text = '''
-			@entity Person : Entity {
-			@attr number : Int  @size(length : 9);
-			@attr firstName : String @size(length : 25);
-			@attr lastName : String @size(length : 25);
-			@attr description : String @size(length : 200, variable : "yes");
+			@entity Person {
+			@attr number : Int  @length(9);
+			@attr firstName : String @length(25);
+			@attr lastName : String @length(25);
+			@attr description : String @length(250);
 			@attr dateOfBirth : Date;
 			@attr lastEntry : Time;
 			@attr lastUpdate : Timestamp;
 			@attr age: Short;
-			@attr rate: Double @size(length : 9, decimal : 2);
+			@attr rate: Double @length(9);
 			}
 		'''
 		val result = text.loadLibAndParse()
+		// result.validate.forEach[println(it)]
 		result.assertNoErrors
 	}
 
@@ -147,12 +152,7 @@ class LiteLangParsingTest2 {
 	@Test
 	def void testReadStatement() {
 		val text = '''
-		class ExitStates {	
-				public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
-				public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
-				public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
-				public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
-		}
+		package eu.jgen.notes.dmw.sample;
 		
 		@entity Person {     
 			@attr nationalid : Int  @length(9);
@@ -190,6 +190,13 @@ class LiteLangParsingTest2 {
 			@id addrid (number);          
 		}
 		
+		class ExitStates {	
+			public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
+			public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
+			public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
+			public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
+		}
+		
 		class ReadPerson : Widget { 
 			
 			class ExpPerson : Structure -> Person {
@@ -222,7 +229,7 @@ class LiteLangParsingTest2 {
 				   read currentPerson -> Person
 				   where self.currentPerson.number == self.impPerson.number
 				    success {
-				      super.moveView(self.currentPerson, self.expPerson); 
+				      super.moveStruct(self.currentPerson, self.expPerson); 
 				   	  super.setExitState(self.exits.processCompleted);
 				   } not found {
 				   	 super.setExitState(self.exits.personNF);
@@ -232,18 +239,13 @@ class LiteLangParsingTest2 {
 		}	
 		'''
 		val result = text.loadLibAndParse()
+		// result.validate.forEach[println(it)]
 		result.assertNoErrors
 	}
 	
 	@Test
 	def void testReadEachStatement() {
 		val text = '''
-		class ExitStates {	
-				public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
-				public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
-				public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
-				public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
-		}
 		
 		@entity Person {     
 			@attr nationalid : Int  @length(9);
@@ -251,10 +253,16 @@ class LiteLangParsingTest2 {
 			@attr lastName : String  @length(25);
 			@attr description : String? @length (200);
 			@attr dateOfBirth : Date? ;	
-			@rel livesIn -> Address <- Address.isPlaceFor ;
 			@id personid (nationalid);    
 		}	
-		
+
+		class ExitStates {	
+				public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
+				public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
+				public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
+				public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
+		}
+				
 		class ReadEachPerson : Widget {  
 			
 			class ExpPerson : Structure -> Person {
@@ -287,24 +295,21 @@ class LiteLangParsingTest2 {
 				if (super.isExitState(self.exits.processStarted)) {
 					read each currentPerson -> Person 
 					where self.currentPerson.number > self.impPerson.number
-				    target currentPerson;
+				    target currentPerson {
+				    	
+				    }
 				}
 			}
 		}
 		'''
 		val result = text.loadLibAndParse()
+		result.validate.forEach[println(it)]
 		result.assertNoErrors
 	}
 	
 	@Test
 	def void testCreateStatement() {
 		val text = '''
-		class ExitStates {	
-				public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
-				public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
-				public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
-				public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
-		}
 		
 		@entity Person {     
 			@attr nationalid : Int  @length(9);
@@ -312,9 +317,16 @@ class LiteLangParsingTest2 {
 			@attr lastName : String  @length(25);
 			@attr description : String? @length (200);
 			@attr dateOfBirth : Date? ;	
-			@rel livesIn -> Address <- Address.isPlaceFor ;
 			@id personid (nationalid);    
 		}	
+		
+		class ExitStates {	
+			public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
+			public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
+			public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
+			public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
+		}
+		
 		
 		class CreatePerson : Widget {
 			
@@ -354,28 +366,28 @@ class LiteLangParsingTest2 {
 		}	
 		'''
 		val result = text.loadLibAndParse()
+			result.validate.forEach[println(it)]
 		result.assertNoErrors
 	}
 	
 	@Test
 	def void testDeleteStatement() {
 		val text = '''
-		class ExitStates {	
-			public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
-			public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
-			public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
-			public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
-		}
-		
 		@entity Person {     
 			@attr nationalid : Int  @length(9);
 			@attr firstName : String  @length(25);
 			@attr lastName : String  @length(25);
 			@attr description : String? @length (200);
 			@attr dateOfBirth : Date? ;	
-			@rel livesIn -> Address <- Address.isPlaceFor ;
 			@id personid (nationalid);    
-		}		
+		}	
+		
+		class ExitStates {	
+			public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
+			public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
+			public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
+			public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
+		}	
 		
 		class DeletePerson : Widget {   
 			
@@ -409,18 +421,13 @@ class LiteLangParsingTest2 {
 		}	
 		'''
 		val result = text.loadLibAndParse()
+		// result.validate.forEach[println(it)]
 		result.assertNoErrors
 	}
 	
 	@Test
 	def void testUpdateStatement() {
 		val text = '''
-		class ExitStates {	
-			public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
-			public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
-			public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
-			public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
-		}
 		
 		@entity Person {     
 			@attr nationalid : Int  @length(9);
@@ -428,8 +435,14 @@ class LiteLangParsingTest2 {
 			@attr lastName : String  @length(25);
 			@attr description : String? @length (200);
 			@attr dateOfBirth : Date? ;	
-			@rel livesIn -> Address <- Address.isPlaceFor ;
 			@id personid (nationalid);    
+		}
+
+		class ExitStates {	
+			public var processStarted : ExitState @action (normal)  @msgtype(none) @message("Process started.");
+			public var processCompleted : ExitState  @action (normal)  @msgtype(none) @message("Process completed.");
+			public var personNF : ExitState  @action (normal)  @msgtype(none) @message("Person not found.");
+			public var personAE : ExitState  @action (normal)  @msgtype(none) @message("Person already exists.");
 		}
 		
 		class UpdatePerson : Widget {  
@@ -471,6 +484,7 @@ class LiteLangParsingTest2 {
 		}	
 		'''
 		val result = text.loadLibAndParse()
+		result.validate.forEach[println(it)]
 		result.assertNoErrors
 	}
 		

@@ -48,12 +48,6 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
-/**
- * This class contains custom scoping description.
- * 
- * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#scoping
- * on how and when to use it.
- */
 @SuppressWarnings("all")
 public class LangScopeProvider extends AbstractLangScopeProvider {
   private final LangPackage epackage = LangPackage.eINSTANCE;
@@ -105,8 +99,8 @@ public class LangScopeProvider extends AbstractLangScopeProvider {
     return _switchResult;
   }
   
-  protected IScope scopeForMemberSelection(final YMemberSelection sel, final EReference reference) {
-    final YClass type = this._langTypeComputer.typeFor(sel.getReceiver());
+  protected IScope scopeForMemberSelection(final YMemberSelection selection, final EReference reference) {
+    final YClass type = this._langTypeComputer.typeFor(selection.getReceiver());
     if (((type == null) || this._langTypeComputer.isPrimitive(type))) {
       return IScope.NULLSCOPE;
     }
@@ -132,7 +126,7 @@ public class LangScopeProvider extends AbstractLangScopeProvider {
       _elvis_1 = _emptyList_1;
     }
     final List<YMember> inheritedFields = _elvis_1;
-    boolean _isFunctioninvocation = sel.isFunctioninvocation();
+    boolean _isFunctioninvocation = selection.isFunctioninvocation();
     if (_isFunctioninvocation) {
       Iterable<YFunction> _functions = this._langUtil.functions(type);
       Iterable<YProperty> _properties = this._langUtil.properties(type);

@@ -88,7 +88,7 @@ public class LiteLangGeneratorTest {
       _builder.append("class C {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("C f;");
+      _builder.append("var f : C;");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();

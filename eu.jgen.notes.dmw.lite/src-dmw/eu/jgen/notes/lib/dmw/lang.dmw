@@ -1,0 +1,196 @@
+package eu.jgen.notes.lib.dmw;
+
+
+class Object {
+  public  func clone() -> Object {
+    return null;
+  }
+
+  public  func toString() -> String {
+    // fake implementation
+    return "not implemented";
+  }
+
+  public  func equals(value : Object) -> Boolean {
+    // fake implementation
+    return false;
+  }
+}
+
+/**
+ * A string is a series of characters.  Strings are 
+ * represented by the <code>String</code>. String exposes some
+ * useful methods allowing operating on strings.
+ * 
+ * <code>String</code> can be decorated by the following annotations:
+ * 
+ *    @length() setting limits of length
+ * 
+ * TODO
+ */
+ class String : Object {
+   
+} 
+
+/*
+ * Integers are whole numbers with with no fractional component. Integers
+ * are either signed or unsigned. <code>Int</code> is 32-bit signed integer.
+ * 
+ * <code>Int</code> can be decorated by the following annotations:
+ * 
+ *    @length() setting limits of length
+ */
+ class Int : Object {
+ 	 
+}
+
+/*
+ * Integers are whole numbers with with no fractional component. Integers
+ * are either signed or unsigned. <code>Short</code> is 8-bit signed integer.
+ * 
+ * <code>Short</code> can be decorated by the following annotations:
+ * 
+ *    @length() setting limits of length
+ */
+ class Short : Object {
+   
+}
+
+/*
+ * <code>Double</code> represents a 64-bit floating-point number and 
+ * has precision of at least 15 decimal digits.
+ * 
+ * <code>Double</code> can be decorated by the following annotations:
+ * 
+ *    @length() setting limits of length,
+ *    @decimal()  setting limit on decimal digits.
+ */
+ class Double : Object {
+}
+
+/*
+ * Boolean values are referred to as logical and they can only be <code>true</code> 
+ * or <code>false</code>.
+ */
+ class Boolean : Object {
+    
+}
+
+ class Date : Object {
+}  
+
+ class Time : Object {
+}
+
+ class Timestamp : Object {
+}
+
+ class Blob : Object {
+}
+/*
+ * This class is a building foundation for every widget. Any widget class 
+ * need to extent directly or indirectly <code>Widget</code> class.
+ * <code>Widget</code> class provides a lot of useful functions allowing
+ * development fully functional widgets.
+ */
+ class Widget : Object {
+	
+	/*
+	 *  This function allows to set global exit state value .
+	 */
+	 public func setExitState(exitState : ExitState)  {
+	 
+	}
+	
+	/*
+	 *  This function allows to set global command value .
+	 */
+	 public func setCommand(command : Command) {
+
+	}
+	
+	/*
+	 *  This function allows to check if global exist state is set to the
+	 *  concrete value .
+	 */
+	 public func isExitState(exitState : ExitState) -> Boolean {
+		return false;
+	}
+	
+	/*
+	 *  This function allows to check if global command is set to the
+	 *  concrete value .
+	 */
+	 public func isCommand(command : Command) -> Boolean {
+	 	return false;
+	}
+	
+	 public func moveStruct(fromview : Structure, toview : Structure) -> String {
+		return null;
+	}
+	
+}
+
+ class ExitState : Object {
+ 
+ 	public func isNormal() -> Boolean {
+ 	   return false;
+ 	}
+	
+}
+
+class Command : Object {
+	
+}
+
+class Structure : Object {
+	
+}
+
+/*
+ * Array is collection of structures.
+ */
+ class Array : Object {
+	
+	/*
+	 * Sets current subscript to the specific value.
+	 */
+	 public func setSubscript(value : Int)  {
+	}
+	
+	/*
+	 * Gets current value subscript.
+	 */
+	 public func getSubscript() -> Int {
+		return 0;
+	}
+	
+	/*
+	 * Gets maximum value of the subscript.
+	 */
+	 public func getMax() -> Int {
+		return 0;
+	}
+	
+	/*
+	 * Gets last value of the subscript.
+	 */
+	 public func getLast() -> Int {
+		return 0;
+	}
+	
+}
+
+/*
+ * Defines global exit states
+ */
+class GlobalExitStates : Object {
+ 
+}
+
+/*
+ * Defines global commands
+ */
+class GlobalCommands : Object {
+ 
+}

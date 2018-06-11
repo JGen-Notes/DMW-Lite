@@ -54,7 +54,7 @@ public class CreatePrimaryKeyUsingIdentifierAsTemplateTests {
   @Test
   public void testEntityDefault() {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("package blue.dm");
+    _builder.append("package blue.dm;");
     _builder.newLine();
     _builder.newLine();
     _builder.append("@entity Log {");
@@ -63,15 +63,16 @@ public class CreatePrimaryKeyUsingIdentifierAsTemplateTests {
     _builder.append("@attr entryType : Short @length (2);");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@rel has -> Description* <- Description.isFor;");
-    _builder.newLine();
-    _builder.append("\t");
     _builder.append("@id logid (entryType);");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.newLine();
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@table LOG -> Log {");
@@ -80,7 +81,7 @@ public class CreatePrimaryKeyUsingIdentifierAsTemplateTests {
     _builder.append("@column ENTRY_TYPE -> Log.entryType as CHAR @length(23);");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("@primary (ENTRY_TYPE)");
+    _builder.append("@primary (ENTRY_TYPE);");
     _builder.newLine();
     _builder.append("\t\t");
     _builder.newLine();

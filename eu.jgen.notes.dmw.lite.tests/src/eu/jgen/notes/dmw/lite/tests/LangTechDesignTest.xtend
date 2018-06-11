@@ -24,20 +24,18 @@
 package eu.jgen.notes.dmw.lite.tests
 
 import com.google.inject.Inject
+import com.google.inject.Provider
+import eu.jgen.notes.dmw.lite.lang.LangPackage
+import eu.jgen.notes.dmw.lite.lang.YWidget
+import eu.jgen.notes.dmw.lite.utility.LangLib
+import eu.jgen.notes.dmw.lite.validation.LangValidator
+import org.eclipse.emf.ecore.resource.ResourceSet
 import org.eclipse.xtext.testing.InjectWith
 import org.eclipse.xtext.testing.XtextRunner
 import org.eclipse.xtext.testing.util.ParseHelper
 import org.eclipse.xtext.testing.validation.ValidationTestHelper
-import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
-import eu.jgen.notes.dmw.lite.utility.LangLib
-import com.google.inject.Provider
-import org.eclipse.emf.ecore.resource.ResourceSet
-import eu.jgen.notes.dmw.lite.lang.YWidget
-import eu.jgen.notes.dmw.lite.lang.LangPackage
-import eu.jgen.notes.dmw.lite.validation.LangValidator
-import eu.jgen.notes.dmw.lite.runtimes.XWidget
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
@@ -64,7 +62,7 @@ class LangTechDesignTest {
 				@id logid (timeCreated);
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
+		// model.validate.forEach[println(it)]
 		model.assertNoIssues
 
 	}
@@ -77,11 +75,13 @@ class LangTechDesignTest {
 			@entity LogRecord {
 			}
 			
-			@td {
+			@database MySQL;
+						
+			@td database MySQL {
 				
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
+		// model.validate.forEach[println(it)]
 		model.assertWarning(LangPackage::eINSTANCE.YAnnotEntity, LangValidator.ENTITY_NO_TECH_DESIGN,
 			"The declared entity is not yet implemented as table")
 	}
@@ -94,13 +94,15 @@ class LangTechDesignTest {
 			@entity LogRecord {
 			}
 			
-			@td {
+			@database MySQL;
+						
+			@td database MySQL {
 				@table LOG_RECORD -> LogRecord {
 					
-			    }
+					  }
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
+		// model.validate.forEach[println(it)]
 		model.assertError(LangPackage::eINSTANCE.YAnnotTable, LangValidator.TABLE_DOES_NOT_HAVE_COLUMNS,
 			"Table does not have any columns.")
 	}
@@ -112,16 +114,18 @@ class LangTechDesignTest {
 			
 			@entity LogRecord {
 				@attr entryType : Short @length (2);
-
+			
 			}
 			
-			@td {
+			@database MySQL;
+						
+			@td database MySQL {
 				@table LOG_RECORD -> LogRecord {
 					
-			    }
+					  }
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
+		// model.validate.forEach[println(it)]
 		model.assertWarning(LangPackage::eINSTANCE.YAnnotAttr, LangValidator.ATTRIBUTE_NO_TECH_DESIGN,
 			"The declared attribute is not yet implemented as a column")
 
@@ -133,41 +137,42 @@ class LangTechDesignTest {
 			package eu.jgen.notes.dmw.sample;
 			
 			@entity LogRecord {
-				/*
-				 *  How to read below: Log has attribute <code>entryType</code> of type <code>Short</code> having
-				 *  maximum length of 2 digits.
-				 */ 
 				@attr entryType : Short @length (2);
-				@attr message : String @length (128);
 				@attr timeCreated : Time;
 				@id logid (timeCreated);
 			}
 			
-			@td {
-				
+			@database MySQL;
+						
+			@td database MySQL {
+				@table LOG_RECORD -> LogRecord {
+					@column ENTRY_TYPE -> LogRecord.entryType as SMALLINT;					
+				}
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
-		model.assertNoIssues
-		model.assertWarning(LangPackage::eINSTANCE.YAnnotEntity, LangValidator.ENTITY_NO_TECH_DESIGN,
-			"The declared entity is not yet implemented as table")
+		// model.validate.forEach[println(it)]
+		// model.assertNoIssues
+		model.assertWarning(LangPackage::eINSTANCE.YAnnotAttr, LangValidator.ATTRIBUTE_NO_TECH_DESIGN,
+			"The declared attribute is not yet implemented as a column")
 	}
 
 	@Test
 	def void testCheckIfTableComplete1() {
-	val model = '''
+		val model = '''
 			package eu.jgen.notes.dmw.sample;
 			
 			@entity LogRecord {
 			}
 			
-			@td {
+			@database MySQL;
+						
+			@td database MySQL {
 				@table LOG_RECORD -> LogRecord {
 					
-			    }
+					  }
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
+		// model.validate.forEach[println(it)]
 		model.assertError(LangPackage::eINSTANCE.YAnnotTable, LangValidator.TABLE_DOES_NOT_HAVE_COLUMNS,
 			"Table does not have any columns.")
 	}
@@ -178,20 +183,22 @@ class LangTechDesignTest {
 			package eu.jgen.notes.dmw.sample;
 			
 			@entity LogRecord {
-
+			
 				@attr entryType : Short @length (2);
-
+			
 			}
 			
-			@td {
+			@database MySQL;
+						
+			@td database MySQL {
 				@table LOG_RECORD -> LogRecord {
 					 @column ENTRY_TYPE -> LogRecord.entryType as SMALLINT;
-					  @column ENTRY_TYPE -> LogRecord.entryType as SMALLINT;
-			    }
+					 @column ENTRY_TYPE -> LogRecord.entryType as SMALLINT;
+					  }
 				
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
+		// model.validate.forEach[println(it)]
 		model.assertError(LangPackage::eINSTANCE.YAnnotAbstractColumn, LangValidator.COLUMN_NAME_NOT_UNIQUE,
 			"Table column name is not unique.")
 	}
@@ -202,24 +209,63 @@ class LangTechDesignTest {
 			package eu.jgen.notes.dmw.sample;
 			
 			@entity LogRecord {
-				/*
-				 *  How to read below: Log has attribute <code>entryType</code> of type <code>Short</code> having
-				 *  maximum length of 2 digits.
-				 */ 
-				@attr entryType : Short @length (2);
-				@attr message : String @length (128);
 				@attr timeCreated : Time;
 				@id logid (timeCreated);
 			}
 			
-			@td {
+			@database MySQL;
+									
+			@td database MySQL {
+				@table LOG_RECORD -> LogRecord {
+					  @column TIME_CREATED -> LogRecord.timeCreated as TIME;
+				}
+			}
+		'''.loadLibAndParse
+		// model.validate.forEach[println(it)]
+		// model.assertNoIssues
+		model.assertWarning(LangPackage::eINSTANCE.YAnnotId, LangValidator.IDENTIFIER_NO_TECH_DESIGN,
+			"The declared identifier is not yet implemented as primary key")
+	}
+	
+		@Test
+	def void testCheckIfRelationshipImplemented() {
+		val model = '''
+			@entity Server {
+				@attr name : String @length(8);
+				@id myid (name);
+				@rel produces -> Log * <- Log.isFor;
+			}
+			
+			@entity Log {
+				@attr entryType : Short @length (2);
+				@attr message : String @length (128);
+				@attr timeCreated : Time;
+				@id logid (timeCreated);
+				@rel isFor -> Server <- Server.produces;
+			}
+			
+			@database MySQL;
+			
+			@td database MySQL {
+				
+				@table SERVER -> Server {		
+				   @column NAME -> Server.name as CHAR @length ( 8 ) ; 
+				   @primary ( NAME ) ; 
+				}
+				
+				@table LOG -> Log {		
+				   @column ENTRY_TYPE -> Log.entryType as SMALLINT @length ( 2 ) ; 
+				   @column MESSAGE -> Log.message as CHAR @length ( 128 ) ; 
+				   @column TIME_CREATED -> Log.timeCreated as TIME ; 
+				   @primary ( TIME_CREATED ) ; 
+				}
 				
 			}
 		'''.loadLibAndParse
-		model.validate.forEach[println(it)]
-		model.assertNoIssues
-		model.assertWarning(LangPackage::eINSTANCE.YAnnotEntity, LangValidator.ENTITY_NO_TECH_DESIGN,
-			"The declared entity is not yet implemented as table")
+		// model.validate.forEach[println(it)]
+		// model.assertNoIssues
+		model.assertWarning(LangPackage::eINSTANCE.YAnnotRel, LangValidator.RELATIONSSHIP_NOT_IMPLEMENTED,
+			"The declared relationship is not yet implemented as a foreign key")
 	}
 
 	def private loadLibAndParse(CharSequence p) {

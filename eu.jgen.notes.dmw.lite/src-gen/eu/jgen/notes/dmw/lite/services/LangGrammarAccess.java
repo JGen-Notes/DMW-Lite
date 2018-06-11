@@ -1799,18 +1799,16 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cTargetAssignment_7 = (Assignment)cGroup.eContents().get(7);
 		private final CrossReference cTargetYPropertyCrossReference_7_0 = (CrossReference)cTargetAssignment_7.eContents().get(0);
 		private final RuleCall cTargetYPropertyIDTerminalRuleCall_7_0_1 = (RuleCall)cTargetYPropertyCrossReference_7_0.eContents().get(1);
-		private final Keyword cSuccessKeyword_8 = (Keyword)cGroup.eContents().get(8);
-		private final Assignment cSuccessAssignment_9 = (Assignment)cGroup.eContents().get(9);
-		private final RuleCall cSuccessYBlockParserRuleCall_9_0 = (RuleCall)cSuccessAssignment_9.eContents().get(0);
+		private final Assignment cSuccessAssignment_8 = (Assignment)cGroup.eContents().get(8);
+		private final RuleCall cSuccessYBlockParserRuleCall_8_0 = (RuleCall)cSuccessAssignment_8.eContents().get(0);
 		
 		//YReadEachStatement:
 		//	'read' 'each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
-		//	'target' target=[YProperty]
-		//	'success' success=YBlock;
+		//	'target' target=[YProperty] success=YBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//'read' 'each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere? 'target'
-		//target=[YProperty] 'success' success=YBlock
+		//target=[YProperty] success=YBlock
 		public Group getGroup() { return cGroup; }
 		
 		//'read'
@@ -1861,14 +1859,11 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getTargetYPropertyIDTerminalRuleCall_7_0_1() { return cTargetYPropertyIDTerminalRuleCall_7_0_1; }
 		
-		//'success'
-		public Keyword getSuccessKeyword_8() { return cSuccessKeyword_8; }
-		
 		//success=YBlock
-		public Assignment getSuccessAssignment_9() { return cSuccessAssignment_9; }
+		public Assignment getSuccessAssignment_8() { return cSuccessAssignment_8; }
 		
 		//YBlock
-		public RuleCall getSuccessYBlockParserRuleCall_9_0() { return cSuccessYBlockParserRuleCall_9_0; }
+		public RuleCall getSuccessYBlockParserRuleCall_8_0() { return cSuccessYBlockParserRuleCall_8_0; }
 	}
 	public class YCreateStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YCreateStatement");
@@ -3421,15 +3416,16 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cYAnnotDatabaseAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cDatabaseKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final Keyword cNameMySQLKeyword_2_0 = (Keyword)cNameAssignment_2.eContents().get(0);
+		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
+		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		///*
 		// * Database Generation Annotations
 		// */ YAnnotDatabase:
-		//	{YAnnotDatabase} '@database' name="MySQL";
+		//	{YAnnotDatabase} '@database' name=ValidID ';';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotDatabase} '@database' name="MySQL"
+		//{YAnnotDatabase} '@database' name=ValidID ';'
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotDatabase}
@@ -3438,11 +3434,14 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'@database'
 		public Keyword getDatabaseKeyword_1() { return cDatabaseKeyword_1; }
 		
-		//name="MySQL"
+		//name=ValidID
 		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
-		//"MySQL"
-		public Keyword getNameMySQLKeyword_2_0() { return cNameMySQLKeyword_2_0; }
+		//ValidID
+		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
+		
+		//';'
+		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
 	}
 	
 	public class YAccessLevelElements extends AbstractEnumRuleElementFinder {
@@ -4107,8 +4106,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//YReadEachStatement:
 	//	'read' 'each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
-	//	'target' target=[YProperty]
-	//	'success' success=YBlock;
+	//	'target' target=[YProperty] success=YBlock;
 	public YReadEachStatementElements getYReadEachStatementAccess() {
 		return pYReadEachStatement;
 	}
@@ -4480,7 +4478,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * Database Generation Annotations
 	// */ YAnnotDatabase:
-	//	{YAnnotDatabase} '@database' name="MySQL";
+	//	{YAnnotDatabase} '@database' name=ValidID ';';
 	public YAnnotDatabaseElements getYAnnotDatabaseAccess() {
 		return pYAnnotDatabase;
 	}

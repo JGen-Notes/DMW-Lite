@@ -227,7 +227,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYReadEachStatementAccess().getJoinclauseAssignment_4(), "rule__YReadEachStatement__JoinclauseAssignment_4");
 					put(grammarAccess.getYReadEachStatementAccess().getWhereclauseAssignment_5(), "rule__YReadEachStatement__WhereclauseAssignment_5");
 					put(grammarAccess.getYReadEachStatementAccess().getTargetAssignment_7(), "rule__YReadEachStatement__TargetAssignment_7");
-					put(grammarAccess.getYReadEachStatementAccess().getSuccessAssignment_9(), "rule__YReadEachStatement__SuccessAssignment_9");
+					put(grammarAccess.getYReadEachStatementAccess().getSuccessAssignment_8(), "rule__YReadEachStatement__SuccessAssignment_8");
 					put(grammarAccess.getYCreateStatementAccess().getStructAssignment_1(), "rule__YCreateStatement__StructAssignment_1");
 					put(grammarAccess.getYCreateStatementAccess().getSetBlockAssignment_2(), "rule__YCreateStatement__SetBlockAssignment_2");
 					put(grammarAccess.getYCreateStatementAccess().getSuccessAssignment_4(), "rule__YCreateStatement__SuccessAssignment_4");

@@ -28,18 +28,20 @@ class CreatePrimaryKeyUsingIdentifierAsTemplateTests {
 	@Test
 	def void testEntityDefault() {
 		val model = '''
-			package blue.dm
+			package blue.dm;
 			
 			@entity Log {
 				@attr entryType : Short @length (2);
-				@rel has -> Description* <- Description.isFor;
 				@id logid (entryType);
 			}
 			
-			@td {
+			
+			@database MySQL;
+			
+			@td database MySQL {
 				@table LOG -> Log {
 					@column ENTRY_TYPE -> Log.entryType as CHAR @length(23);
-					@primary (ENTRY_TYPE)
+					@primary (ENTRY_TYPE);
 					
 				}
 			}

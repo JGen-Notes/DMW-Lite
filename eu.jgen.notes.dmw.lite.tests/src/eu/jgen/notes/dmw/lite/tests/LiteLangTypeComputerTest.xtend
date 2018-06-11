@@ -41,6 +41,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static extension org.junit.Assert.*
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
@@ -48,9 +49,10 @@ class LiteLangTypeComputerTest {
 	@Inject extension ParseHelper<YWidget>
 	@Inject extension LangTypeComputer
 	@Inject extension LangUtil
+		@Inject extension ValidationTestHelper
 
-	@Test def void thisType() {
-		"this".assertType("C")
+	@Test def void thisSelf() {
+		"self".assertType("C")
 	}
 
 	@Test def void paramRefType() {
@@ -66,11 +68,11 @@ class LiteLangTypeComputerTest {
 	}
 
 	@Test def void fieldSelectionType() {
-		"this.f".assertType("F")
+		"self.f".assertType("F")
 	}
 
 	@Test def void methodInvocationType() {
-		"this.m(new P())".assertType("R")
+		"self.m(new P())".assertType("R")
 	}
 
 	@Test def void assignmentType() {
@@ -115,7 +117,7 @@ class LiteLangTypeComputerTest {
 	@Test def void testIsPrimitiveType() {
 		'''
 			class C {
-				C m() {
+				func m() -> C {
 					return true;
 				}
 			}
@@ -126,17 +128,17 @@ class LiteLangTypeComputerTest {
 	}
 
 	@Test def void testVarDeclExpectedType() {
-		('''V v = null;'''.testStatements.head as YVariableDeclaration).
+		('''v : V = null;'''.testStatements.head as YVariableDeclaration).
 			expression.assertExpectedType("V")
 	}
 
 	@Test def void testAssignmentRightExpectedType() {
-		('''this.f = null;'''.testStatements.head as YAssignment).
+		('''self.f = null;'''.testStatements.head as YAssignment).
 			right.assertExpectedType("F")
 	}
 
 	@Test def void testAssignmentLeftExpectedType() {
-		('''this.f = null;'''.testStatements.head as YAssignment).
+		('''self.f = null;'''.testStatements.head as YAssignment).
 			left.expectedType.assertNull
 	}
 
@@ -151,7 +153,7 @@ class LiteLangTypeComputerTest {
 	}
 
 	@Test def void testMethodInvocationArgsExpectedType() {
-		("this.m(new P1(), new P2());".testStatements.head as YMemberSelection).
+		("self.m(new P1(), new P2());".testStatements.head as YMemberSelection).
 			args => [
 				get(0).assertExpectedType("P1")
 				get(1).assertExpectedType("P2")
@@ -159,7 +161,7 @@ class LiteLangTypeComputerTest {
 	}
 
 	@Test def void testMethodInvocationReceiverExpectedType() {
-		("this.m();".testStatements.head as YMemberSelection).
+		("self.m();".testStatements.head as YMemberSelection).
 			receiver.expectedType.assertNull
 	}
 
@@ -167,8 +169,8 @@ class LiteLangTypeComputerTest {
 		// a standalone method invocation has no expected type
 		'''
 			class A {
-				A a;
-				A m() { this.a; this.m(); return null; }
+				var a : A;
+				func m() -> { self.a; self.m(); return null; }
 			}
 		'''.parse => [
 			classes.head.functions.head.body.statements => [
@@ -180,14 +182,14 @@ class LiteLangTypeComputerTest {
 
 	@Test def void testWrongMethodInvocationArgsExpectedType() {
 		// method n does not exist
-		("this.n(new P1(), new P2());".testStatements.head as YMemberSelection).
+		("self.n(new P1(), new P2());".testStatements.head as YMemberSelection).
 			args => [
 				get(0).expectedType.assertNull
 				get(1).expectedType.assertNull
 			]
 		
 		// too many arguments
-		("this.m(new P1(), new P2(), new P1());".testStatements.head as YMemberSelection).
+		("self.m(new P1(), new P2(), new P1());".testStatements.head as YMemberSelection).
 			args.get(2).expectedType.assertNull
 	}
 
@@ -200,11 +202,11 @@ class LiteLangTypeComputerTest {
 			class F { }
 			
 			class C {
-			  F f;
+			  var f : F;
 			  
-			  R m(P p) {
-			    V v = null;
-			    «testExp»;
+			  func m(p : P) -> R {
+			    v : V = null;
+			   «testExp»;
 			    return null;
 			  }
 			}
@@ -214,6 +216,28 @@ class LiteLangTypeComputerTest {
 			)
 		]
 	}
+	
+		@Test def  test1() {
+		val model = '''
+			class R { }
+			class P { }
+			class V { }
+			class N { }
+			class F { }
+			
+			class C {
+			  var f : F;
+			  
+			  func m(p : P) -> R {
+			    v : V = null;
+			    new N();
+			    return null;
+			  }
+			}
+		'''.parse 
+		model.validate.forEach[print(it)]
+	}
+	
 
 	def private statementExpressionType(YStatement s) {
 		(s as YExpression).typeFor
@@ -228,13 +252,32 @@ class LiteLangTypeComputerTest {
 			class F {  }
 			
 			class C {
-				F f;
-				R m(P1 p1, P2 p2) {
-					«statement»
+				var f : F;
+				func m(p1 : P1, p2 : P2) -> R {
+				 «statement»;;
 					return null;
 				}
 			}
 		'''.parse.classes.last.functions.last.body.statements
+	}
+	
+		@Test def  test2() {
+		val model = '''
+			class R {  }
+			class P1 {  }
+			class P2 {  }
+			class V {  }
+			class F {  }
+			
+			class C {
+				var f : F;
+				func m(p1 : P1, p2 : P2) -> R {
+					self.m(new P1(), new P2());
+					return null;
+				}
+			}
+		'''.parse
+		model.validate.forEach[print(it)]
 	}
 
 	def private assertExpectedType(YExpression exp, String expectedClassName) {

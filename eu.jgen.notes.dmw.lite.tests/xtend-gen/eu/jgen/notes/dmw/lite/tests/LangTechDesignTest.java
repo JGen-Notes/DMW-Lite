@@ -29,17 +29,14 @@ import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
 import eu.jgen.notes.dmw.lite.utility.LangLib;
 import eu.jgen.notes.dmw.lite.validation.LangValidator;
-import java.util.function.Consumer;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.testing.validation.ValidationTestHelper;
-import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -97,10 +94,6 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
     this._validationTestHelper.assertNoIssues(model);
   }
   
@@ -115,17 +108,17 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
     this._validationTestHelper.assertWarning(model, LangPackage.eINSTANCE.getYAnnotEntity(), LangValidator.ENTITY_NO_TECH_DESIGN, 
       "The declared entity is not yet implemented as table");
   }
@@ -141,23 +134,23 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@table LOG_RECORD -> LogRecord {");
     _builder.newLine();
     _builder.append("\t\t");
     _builder.newLine();
-    _builder.append("    ");
+    _builder.append("\t\t  ");
     _builder.append("}");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
     this._validationTestHelper.assertError(model, LangPackage.eINSTANCE.getYAnnotTable(), LangValidator.TABLE_DOES_NOT_HAVE_COLUMNS, 
       "Table does not have any columns.");
   }
@@ -177,23 +170,23 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@table LOG_RECORD -> LogRecord {");
     _builder.newLine();
     _builder.append("\t\t");
     _builder.newLine();
-    _builder.append("    ");
+    _builder.append("\t\t  ");
     _builder.append("}");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
     this._validationTestHelper.assertWarning(model, LangPackage.eINSTANCE.getYAnnotAttr(), LangValidator.ATTRIBUTE_NO_TECH_DESIGN, 
       "The declared attribute is not yet implemented as a column");
   }
@@ -207,22 +200,7 @@ public class LangTechDesignTest {
     _builder.append("@entity LogRecord {");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("/*");
-    _builder.newLine();
-    _builder.append("\t ");
-    _builder.append("*  How to read below: Log has attribute <code>entryType</code> of type <code>Short</code> having");
-    _builder.newLine();
-    _builder.append("\t ");
-    _builder.append("*  maximum length of 2 digits.");
-    _builder.newLine();
-    _builder.append("\t ");
-    _builder.append("*/ ");
-    _builder.newLine();
-    _builder.append("\t");
     _builder.append("@attr entryType : Short @length (2);");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("@attr message : String @length (128);");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@attr timeCreated : Time;");
@@ -233,20 +211,26 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
+    _builder.append("@table LOG_RECORD -> LogRecord {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("@column ENTRY_TYPE -> LogRecord.entryType as SMALLINT;\t\t\t\t\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
-    this._validationTestHelper.assertNoIssues(model);
-    this._validationTestHelper.assertWarning(model, LangPackage.eINSTANCE.getYAnnotEntity(), LangValidator.ENTITY_NO_TECH_DESIGN, 
-      "The declared entity is not yet implemented as table");
+    this._validationTestHelper.assertWarning(model, LangPackage.eINSTANCE.getYAnnotAttr(), LangValidator.ATTRIBUTE_NO_TECH_DESIGN, 
+      "The declared attribute is not yet implemented as a column");
   }
   
   @Test
@@ -260,23 +244,23 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@table LOG_RECORD -> LogRecord {");
     _builder.newLine();
     _builder.append("\t\t");
     _builder.newLine();
-    _builder.append("    ");
+    _builder.append("\t\t  ");
     _builder.append("}");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
     this._validationTestHelper.assertError(model, LangPackage.eINSTANCE.getYAnnotTable(), LangValidator.TABLE_DOES_NOT_HAVE_COLUMNS, 
       "Table does not have any columns.");
   }
@@ -297,7 +281,11 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.append("\t\t\t");
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@table LOG_RECORD -> LogRecord {");
@@ -305,10 +293,10 @@ public class LangTechDesignTest {
     _builder.append("\t\t ");
     _builder.append("@column ENTRY_TYPE -> LogRecord.entryType as SMALLINT;");
     _builder.newLine();
-    _builder.append("\t\t  ");
+    _builder.append("\t\t ");
     _builder.append("@column ENTRY_TYPE -> LogRecord.entryType as SMALLINT;");
     _builder.newLine();
-    _builder.append("    ");
+    _builder.append("\t\t  ");
     _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
@@ -316,10 +304,6 @@ public class LangTechDesignTest {
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
     this._validationTestHelper.assertError(model, LangPackage.eINSTANCE.getYAnnotAbstractColumn(), LangValidator.COLUMN_NAME_NOT_UNIQUE, 
       "Table column name is not unique.");
   }
@@ -333,16 +317,54 @@ public class LangTechDesignTest {
     _builder.append("@entity LogRecord {");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("/*");
+    _builder.append("@attr timeCreated : Time;");
     _builder.newLine();
-    _builder.append("\t ");
-    _builder.append("*  How to read below: Log has attribute <code>entryType</code> of type <code>Short</code> having");
+    _builder.append("\t");
+    _builder.append("@id logid (timeCreated);");
     _builder.newLine();
-    _builder.append("\t ");
-    _builder.append("*  maximum length of 2 digits.");
+    _builder.append("}");
     _builder.newLine();
-    _builder.append("\t ");
-    _builder.append("*/ ");
+    _builder.newLine();
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.append("\t\t\t\t\t\t");
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@table LOG_RECORD -> LogRecord {");
+    _builder.newLine();
+    _builder.append("\t\t  ");
+    _builder.append("@column TIME_CREATED -> LogRecord.timeCreated as TIME;");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    final YWidget model = this.loadLibAndParse(_builder);
+    this._validationTestHelper.assertWarning(model, LangPackage.eINSTANCE.getYAnnotId(), LangValidator.IDENTIFIER_NO_TECH_DESIGN, 
+      "The declared identifier is not yet implemented as primary key");
+  }
+  
+  @Test
+  public void testCheckIfRelationshipImplemented() {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("@entity Server {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@attr name : String @length(8);");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@id myid (name);");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@rel produces -> Log * <- Log.isFor;");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("@entity Log {");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@attr entryType : Short @length (2);");
@@ -356,23 +378,58 @@ public class LangTechDesignTest {
     _builder.append("\t");
     _builder.append("@id logid (timeCreated);");
     _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@rel isFor -> Server <- Server.produces;");
+    _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@database MySQL;");
+    _builder.newLine();
+    _builder.newLine();
+    _builder.append("@td database MySQL {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@table SERVER -> Server {\t\t");
+    _builder.newLine();
+    _builder.append("\t   ");
+    _builder.append("@column NAME -> Server.name as CHAR @length ( 8 ) ; ");
+    _builder.newLine();
+    _builder.append("\t   ");
+    _builder.append("@primary ( NAME ) ; ");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@table LOG -> Log {\t\t");
+    _builder.newLine();
+    _builder.append("\t   ");
+    _builder.append("@column ENTRY_TYPE -> Log.entryType as SMALLINT @length ( 2 ) ; ");
+    _builder.newLine();
+    _builder.append("\t   ");
+    _builder.append("@column MESSAGE -> Log.message as CHAR @length ( 128 ) ; ");
+    _builder.newLine();
+    _builder.append("\t   ");
+    _builder.append("@column TIME_CREATED -> Log.timeCreated as TIME ; ");
+    _builder.newLine();
+    _builder.append("\t   ");
+    _builder.append("@primary ( TIME_CREATED ) ; ");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("}");
     _builder.newLine();
     _builder.append("\t");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     final YWidget model = this.loadLibAndParse(_builder);
-    final Consumer<Issue> _function = (Issue it) -> {
-      InputOutput.<Issue>println(it);
-    };
-    this._validationTestHelper.validate(model).forEach(_function);
-    this._validationTestHelper.assertNoIssues(model);
-    this._validationTestHelper.assertWarning(model, LangPackage.eINSTANCE.getYAnnotEntity(), LangValidator.ENTITY_NO_TECH_DESIGN, 
-      "The declared entity is not yet implemented as table");
+    this._validationTestHelper.assertWarning(model, LangPackage.eINSTANCE.getYAnnotRel(), LangValidator.RELATIONSSHIP_NOT_IMPLEMENTED, 
+      "The declared relationship is not yet implemented as a foreign key");
   }
   
   private YWidget loadLibAndParse(final CharSequence p) {

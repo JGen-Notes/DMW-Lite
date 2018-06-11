@@ -36,13 +36,17 @@ import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
 import eu.jgen.notes.dmw.lite.typing.LangTypeComputer;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
+import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
+import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ObjectExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
@@ -66,9 +70,13 @@ public class LiteLangTypeComputerTest {
   @Extension
   private LangUtil _langUtil;
   
+  @Inject
+  @Extension
+  private ValidationTestHelper _validationTestHelper;
+  
   @Test
-  public void thisType() {
-    this.assertType("this", "C");
+  public void thisSelf() {
+    this.assertType("self", "C");
   }
   
   @Test
@@ -88,12 +96,12 @@ public class LiteLangTypeComputerTest {
   
   @Test
   public void fieldSelectionType() {
-    this.assertType("this.f", "F");
+    this.assertType("self.f", "F");
   }
   
   @Test
   public void methodInvocationType() {
-    this.assertType("this.m(new P())", "R");
+    this.assertType("self.m(new P())", "R");
   }
   
   @Test
@@ -170,7 +178,7 @@ public class LiteLangTypeComputerTest {
       _builder.append("class C {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("C m() {");
+      _builder.append("func m() -> C {");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("return true;");
@@ -194,7 +202,7 @@ public class LiteLangTypeComputerTest {
   @Test
   public void testVarDeclExpectedType() {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("V v = null;");
+    _builder.append("v : V = null;");
     YStatement _head = IterableExtensions.<YStatement>head(this.testStatements(_builder));
     this.assertExpectedType(((YVariableDeclaration) _head).getExpression(), "V");
   }
@@ -202,7 +210,7 @@ public class LiteLangTypeComputerTest {
   @Test
   public void testAssignmentRightExpectedType() {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("this.f = null;");
+    _builder.append("self.f = null;");
     YStatement _head = IterableExtensions.<YStatement>head(this.testStatements(_builder));
     this.assertExpectedType(((YAssignment) _head).getRight(), "F");
   }
@@ -210,7 +218,7 @@ public class LiteLangTypeComputerTest {
   @Test
   public void testAssignmentLeftExpectedType() {
     StringConcatenation _builder = new StringConcatenation();
-    _builder.append("this.f = null;");
+    _builder.append("self.f = null;");
     YStatement _head = IterableExtensions.<YStatement>head(this.testStatements(_builder));
     Assert.assertNull(this._langTypeComputer.expectedType(((YAssignment) _head).getLeft()));
   }
@@ -229,7 +237,7 @@ public class LiteLangTypeComputerTest {
   
   @Test
   public void testMethodInvocationArgsExpectedType() {
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("this.m(new P1(), new P2());"));
+    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("self.m(new P1(), new P2());"));
     EList<YExpression> _args = ((YMemberSelection) _head).getArgs();
     final Procedure1<EList<YExpression>> _function = (EList<YExpression> it) -> {
       this.assertExpectedType(it.get(0), "P1");
@@ -240,7 +248,7 @@ public class LiteLangTypeComputerTest {
   
   @Test
   public void testMethodInvocationReceiverExpectedType() {
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("this.m();"));
+    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("self.m();"));
     Assert.assertNull(this._langTypeComputer.expectedType(((YMemberSelection) _head).getReceiver()));
   }
   
@@ -251,10 +259,10 @@ public class LiteLangTypeComputerTest {
       _builder.append("class A {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("A a;");
+      _builder.append("var a : A;");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("A m() { this.a; this.m(); return null; }");
+      _builder.append("func m() -> { self.a; self.m(); return null; }");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -277,14 +285,14 @@ public class LiteLangTypeComputerTest {
   
   @Test
   public void testWrongMethodInvocationArgsExpectedType() {
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("this.n(new P1(), new P2());"));
+    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("self.n(new P1(), new P2());"));
     EList<YExpression> _args = ((YMemberSelection) _head).getArgs();
     final Procedure1<EList<YExpression>> _function = (EList<YExpression> it) -> {
       Assert.assertNull(this._langTypeComputer.expectedType(it.get(0)));
       Assert.assertNull(this._langTypeComputer.expectedType(it.get(1)));
     };
     ObjectExtensions.<EList<YExpression>>operator_doubleArrow(_args, _function);
-    YStatement _head_1 = IterableExtensions.<YStatement>head(this.testStatements("this.m(new P1(), new P2(), new P1());"));
+    YStatement _head_1 = IterableExtensions.<YStatement>head(this.testStatements("self.m(new P1(), new P2(), new P1());"));
     Assert.assertNull(this._langTypeComputer.expectedType(((YMemberSelection) _head_1).getArgs().get(2)));
   }
   
@@ -305,18 +313,18 @@ public class LiteLangTypeComputerTest {
       _builder.append("class C {");
       _builder.newLine();
       _builder.append("  ");
-      _builder.append("F f;");
+      _builder.append("var f : F;");
       _builder.newLine();
       _builder.append("  ");
       _builder.newLine();
       _builder.append("  ");
-      _builder.append("R m(P p) {");
+      _builder.append("func m(p : P) -> R {");
       _builder.newLine();
       _builder.append("    ");
-      _builder.append("V v = null;");
+      _builder.append("v : V = null;");
       _builder.newLine();
-      _builder.append("    ");
-      _builder.append(testExp, "    ");
+      _builder.append("   ");
+      _builder.append(testExp, "   ");
       _builder.append(";");
       _builder.newLineIfNotEmpty();
       _builder.append("    ");
@@ -333,6 +341,55 @@ public class LiteLangTypeComputerTest {
           this.statementExpressionType(IterableExtensions.<YFunction>last(this._langUtil.functions(IterableExtensions.<YClass>last(it.getClasses()))).getBody().getStatements().get(1)).getName());
       };
       return ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void test1() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("class R { }");
+      _builder.newLine();
+      _builder.append("class P { }");
+      _builder.newLine();
+      _builder.append("class V { }");
+      _builder.newLine();
+      _builder.append("class N { }");
+      _builder.newLine();
+      _builder.append("class F { }");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("class C {");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("var f : F;");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("func m(p : P) -> R {");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("v : V = null;");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("new N();");
+      _builder.newLine();
+      _builder.append("    ");
+      _builder.append("return null;");
+      _builder.newLine();
+      _builder.append("  ");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final YWidget model = this._parseHelper.parse(_builder);
+      final Consumer<Issue> _function = (Issue it) -> {
+        InputOutput.<Issue>print(it);
+      };
+      this._validationTestHelper.validate(model).forEach(_function);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
@@ -359,13 +416,14 @@ public class LiteLangTypeComputerTest {
       _builder.append("class C {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("F f;");
+      _builder.append("var f : F;");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("R m(P1 p1, P2 p2) {");
+      _builder.append("func m(p1 : P1, p2 : P2) -> R {");
       _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append(statement, "\t\t");
+      _builder.append("\t ");
+      _builder.append(statement, "\t ");
+      _builder.append(";;");
       _builder.newLineIfNotEmpty();
       _builder.append("\t\t");
       _builder.append("return null;");
@@ -376,6 +434,50 @@ public class LiteLangTypeComputerTest {
       _builder.append("}");
       _builder.newLine();
       return IterableExtensions.<YFunction>last(this._langUtil.functions(IterableExtensions.<YClass>last(this._parseHelper.parse(_builder).getClasses()))).getBody().getStatements();
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void test2() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("class R {  }");
+      _builder.newLine();
+      _builder.append("class P1 {  }");
+      _builder.newLine();
+      _builder.append("class P2 {  }");
+      _builder.newLine();
+      _builder.append("class V {  }");
+      _builder.newLine();
+      _builder.append("class F {  }");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("class C {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("var f : F;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("func m(p1 : P1, p2 : P2) -> R {");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("self.m(new P1(), new P2());");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return null;");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final YWidget model = this._parseHelper.parse(_builder);
+      final Consumer<Issue> _function = (Issue it) -> {
+        InputOutput.<Issue>print(it);
+      };
+      this._validationTestHelper.validate(model).forEach(_function);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }

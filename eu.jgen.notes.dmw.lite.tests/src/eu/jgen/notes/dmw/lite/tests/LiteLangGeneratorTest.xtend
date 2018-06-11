@@ -61,7 +61,7 @@ class LiteLangGeneratorTest {
 	def void testGeneratedCodeWithoutPackage() {
 		'''
 			class C {
-				C f;
+				var f : C;
 			}
 		'''.assertCompilesTo(
 			'''
