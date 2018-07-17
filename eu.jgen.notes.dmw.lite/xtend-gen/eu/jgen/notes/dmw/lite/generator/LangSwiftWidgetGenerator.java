@@ -3,8 +3,11 @@ package eu.jgen.notes.dmw.lite.generator;
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.generator.LangOutputProvider;
+import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotSwift;
+import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
+import eu.jgen.notes.dmw.lite.lang.YAnnotTop;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
@@ -47,6 +50,7 @@ public class LangSwiftWidgetGenerator implements IGenerator {
       };
       final Procedure1<EObject> _function_3 = (EObject element2) -> {
         final YWidget widget = ((YWidget) element2);
+        this.generateTableClasses(fsa, widget, annotSwift);
         this.generateWidget(fsa, widget, annotSwift);
       };
       IteratorExtensions.<EObject>forEach(IteratorExtensions.<EObject>filter(input.getAllContents(), _function_2), _function_3);
@@ -107,6 +111,52 @@ public class LangSwiftWidgetGenerator implements IGenerator {
         _builder_1.newLineIfNotEmpty();
         fsa.generateFile(_plus_4, 
           LangOutputProvider.SWIFT, _builder_1);
+        String _name_4 = annotSwift.getName();
+        String _plus_5 = (_name_4 + "/Sources/");
+        String _name_5 = annotSwift.getName();
+        String _plus_6 = (_plus_5 + _name_5);
+        String _plus_7 = (_plus_6 + "/");
+        String _plus_8 = (_plus_7 + "main.swift");
+        StringConcatenation _builder_2 = new StringConcatenation();
+        _builder_2.append("// dmw-generator-version: 0.2");
+        _builder_2.newLine();
+        _builder_2.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+        _builder_2.newLine();
+        _builder_2.append("//  Created by Marek Stankiewicz on 17.04.2018.");
+        _builder_2.newLine();
+        _builder_2.append("//  Copyright © 2018 JGen. All rights reserved.");
+        _builder_2.newLine();
+        _builder_2.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+        _builder_2.newLine();
+        _builder_2.append("import Foundation");
+        _builder_2.newLine();
+        _builder_2.append("import Kitura");
+        _builder_2.newLine();
+        _builder_2.append("import HeliumLogger");
+        _builder_2.newLine();
+        _builder_2.append("import LoggerAPI");
+        _builder_2.newLine();
+        _builder_2.newLine();
+        _builder_2.append("let logger = HeliumLogger()");
+        _builder_2.newLine();
+        _builder_2.append("let router = Router()");
+        _builder_2.newLine();
+        _builder_2.newLine();
+        _builder_2.append("router.get(\"/\") { request, response, next in");
+        _builder_2.newLine();
+        _builder_2.append("response.send(\"Hello\")");
+        _builder_2.newLine();
+        _builder_2.append("next()");
+        _builder_2.newLine();
+        _builder_2.append("}");
+        _builder_2.newLine();
+        _builder_2.newLine();
+        _builder_2.append("Kitura.addHTTPServer(onPort: 8080, with: router)");
+        _builder_2.newLine();
+        _builder_2.append("Kitura.run()");
+        _builder_2.newLine();
+        fsa.generateFile(_plus_8, 
+          LangOutputProvider.SWIFT, _builder_2);
       }
     };
     widget.getClasses().forEach(_function);
@@ -323,60 +373,45 @@ public class LangSwiftWidgetGenerator implements IGenerator {
     _builder.append("    ");
     _builder.append("dependencies: [");
     _builder.newLine();
-    _builder.append("        ");
-    _builder.append("// Dependencies declare other packages that this package depends on.");
+    _builder.append("            ");
+    _builder.append(".package(url: \"https://github.com/IBM-Swift/Kitura.git\", from: \"2.0.0\"),");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append(".package(url: \"https://github.com/IBM-Swift/HeliumLogger.git\", from: \"1.7.1\"),");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append(".package(url: \"https://github.com/IBM-Swift/SwiftKueryMySQL.git\", from: \"1.2.0\"),");
+    _builder.newLine();
+    _builder.append("            ");
+    _builder.append(".package(url: \"https://github.com/IBM-Swift/LoggerAPI.git\", from: \"1.7.3\"),");
     _builder.newLine();
     _builder.append("        ");
-    _builder.append("// .package(url: /* package url */, from: \"1.0.0\"),");
-    _builder.newLine();
-    _builder.append("    ");
     _builder.append("],");
     _builder.newLine();
-    _builder.append("    ");
+    _builder.append("        ");
     _builder.append("targets: [");
     _builder.newLine();
-    _builder.append("        ");
-    _builder.append("// Targets are the basic building blocks of a package. A target can define a module or a test suite.");
-    _builder.newLine();
-    _builder.append("        ");
-    _builder.append("// Targets can depend on other targets in this package, and on products in packages which this package depends on.");
-    _builder.newLine();
-    _builder.append("        ");
+    _builder.append("             ");
     _builder.append(".target(");
     _builder.newLine();
-    _builder.append("            ");
+    _builder.append("                ");
     _builder.append("name: \"");
     String _name_4 = annotSwift.getName();
-    _builder.append(_name_4, "            ");
+    _builder.append(_name_4, "                ");
     _builder.append("\",");
     _builder.newLineIfNotEmpty();
-    _builder.append("            ");
-    _builder.append("dependencies: []),");
+    _builder.append("                ");
+    _builder.append("dependencies: [\"Kitura\",\"HeliumLogger\",\"SwiftKueryMySQL\", \"LoggerAPI\"]),");
     _builder.newLine();
     _builder.append("        ");
-    _builder.append(".testTarget(");
-    _builder.newLine();
-    _builder.append("            ");
-    _builder.append("name: \"");
-    String _name_5 = annotSwift.getName();
-    _builder.append(_name_5, "            ");
-    _builder.append("Tests\",");
-    _builder.newLineIfNotEmpty();
-    _builder.append("            ");
-    _builder.append("dependencies: [\"");
-    String _name_6 = annotSwift.getName();
-    _builder.append(_name_6, "            ");
-    _builder.append("\"]),");
-    _builder.newLineIfNotEmpty();
-    _builder.append("    ");
     _builder.append("]");
     _builder.newLine();
     _builder.append(")");
     _builder.newLine();
     fsa.generateFile(_plus_2, 
       LangOutputProvider.SWIFT, _builder);
-    String _name_7 = annotSwift.getName();
-    String _plus_3 = (_name_7 + "/");
+    String _name_5 = annotSwift.getName();
+    String _plus_3 = (_name_5 + "/");
     String _plus_4 = (_plus_3 + ".gitignore");
     StringConcatenation _builder_1 = new StringConcatenation();
     _builder_1.append(".DS_Store");
@@ -389,13 +424,13 @@ public class LangSwiftWidgetGenerator implements IGenerator {
     _builder_1.newLine();
     fsa.generateFile(_plus_4, 
       LangOutputProvider.SWIFT, _builder_1);
-    String _name_8 = annotSwift.getName();
-    String _plus_5 = (_name_8 + "/");
+    String _name_6 = annotSwift.getName();
+    String _plus_5 = (_name_6 + "/");
     String _plus_6 = (_plus_5 + "README.md");
     StringConcatenation _builder_2 = new StringConcatenation();
     _builder_2.append("# ");
-    String _name_9 = annotSwift.getName();
-    _builder_2.append(_name_9);
+    String _name_7 = annotSwift.getName();
+    _builder_2.append(_name_7);
     _builder_2.newLineIfNotEmpty();
     _builder_2.newLine();
     String _documentation = this._langSwiftGeneratorHelper.getDocumentation(annotSwift);
@@ -403,5 +438,100 @@ public class LangSwiftWidgetGenerator implements IGenerator {
     _builder_2.newLineIfNotEmpty();
     fsa.generateFile(_plus_6, 
       LangOutputProvider.SWIFT, _builder_2);
+  }
+  
+  /**
+   * Generate table classes for SwiftKuery
+   */
+  public void generateTableClasses(final IFileSystemAccess fsa, final YWidget widget, final YAnnotSwift annotSwift) {
+    final Consumer<YAnnotTop> _function = (YAnnotTop annotation) -> {
+      EObject _type = annotation.getType();
+      if ((_type instanceof YAnnotEntity)) {
+        EObject _type_1 = annotation.getType();
+        final YAnnotEntity annotEntity = ((YAnnotEntity) _type_1);
+        final YAnnotTable table = this._langUtil.getImplementingTable(annotEntity);
+        StringConcatenation _builder = new StringConcatenation();
+        _builder.append("// dmw-generator-version: 0.2");
+        _builder.newLine();
+        _builder.append("\t\t\t\t\t\t\t\t\t\t");
+        _builder.newLine();
+        _builder.append("//  Created by Marek Stankiewicz on 17.04.2018.");
+        _builder.newLine();
+        _builder.append("//  Copyright © 2018 JGen. All rights reserved.");
+        _builder.newLine();
+        _builder.append("\t\t\t\t\t\t\t\t\t\t");
+        _builder.newLine();
+        _builder.append("import Foundation");
+        _builder.newLine();
+        _builder.append("import SwiftKuery");
+        _builder.newLine();
+        _builder.append("import SwiftKueryMySQL");
+        _builder.newLine();
+        _builder.append("import HeliumLogger");
+        _builder.newLine();
+        _builder.append("import LoggerAPI");
+        _builder.newLine();
+        _builder.newLine();
+        String _documentation = this._langSwiftGeneratorHelper.getDocumentation(annotEntity);
+        _builder.append(_documentation);
+        _builder.newLineIfNotEmpty();
+        _builder.append("class ");
+        String _name = annotEntity.getName();
+        _builder.append(_name);
+        _builder.append("  : Table {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t");
+        _builder.append("let tableName = \"");
+        String _name_1 = this._langUtil.getImplementingTable(annotEntity).getName();
+        _builder.append(_name_1, "\t");
+        _builder.append("\"");
+        _builder.newLineIfNotEmpty();
+        {
+          EList<YAnnotAbstractColumn> _columns = table.getColumns();
+          for(final YAnnotAbstractColumn abstractColumn : _columns) {
+            _builder.append("\t");
+            String _generateColumns = this.generateColumns(abstractColumn);
+            _builder.append(_generateColumns, "\t");
+            _builder.newLineIfNotEmpty();
+          }
+        }
+        _builder.append("}");
+        _builder.newLine();
+        final String body = _builder.toString();
+        String _name_2 = annotSwift.getName();
+        String _plus = (_name_2 + "/Sources/");
+        String _name_3 = annotSwift.getName();
+        String _plus_1 = (_plus + _name_3);
+        String _plus_2 = (_plus_1 + "/");
+        String _name_4 = annotEntity.getName();
+        String _plus_3 = (_plus_2 + _name_4);
+        String _plus_4 = (_plus_3 + ".swift");
+        StringConcatenation _builder_1 = new StringConcatenation();
+        _builder_1.newLine();
+        _builder_1.append("\t");
+        _builder_1.append(body, "\t");
+        _builder_1.newLineIfNotEmpty();
+        fsa.generateFile(_plus_4, 
+          LangOutputProvider.SWIFT, _builder_1);
+      }
+    };
+    widget.getAnnotations().forEach(_function);
+  }
+  
+  private String generateColumns(final YAnnotAbstractColumn abstractColumn) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("let ");
+    String _swiftColumnName = this._langSwiftGeneratorHelper.getSwiftColumnName(abstractColumn);
+    _builder.append(_swiftColumnName);
+    _builder.append(" = Column(\"");
+    String _name = abstractColumn.getName();
+    _builder.append(_name);
+    _builder.append("\", ");
+    String _swiftColumnType = this._langSwiftGeneratorHelper.getSwiftColumnType(abstractColumn);
+    _builder.append(_swiftColumnType);
+    _builder.append(") ");
+    _builder.newLineIfNotEmpty();
+    final String text = _builder.toString();
+    return text;
   }
 }

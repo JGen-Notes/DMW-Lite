@@ -17,6 +17,7 @@ import eu.jgen.notes.dmw.lite.utility.LangUtil
 import eu.jgen.notes.dmw.lite.utility.LangSwiftGeneratorHelper
 import eu.jgen.notes.dmw.lite.lang.YClass
 import eu.jgen.notes.dmw.lite.lang.YProperty
+import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
 
 class LangSwiftWidgetGenerator implements IGenerator {
 
@@ -27,8 +28,10 @@ class LangSwiftWidgetGenerator implements IGenerator {
 		input.allContents.filter[element|element instanceof YAnnotSwift].forEach [ element |
 			val annotSwift = element as YAnnotSwift
 			generatePackageModule(fsa, annotSwift)
+
 			input.allContents.filter[element2|element2 instanceof YWidget].forEach [ element2 |
 				val widget = element2 as YWidget
+				generateTableClasses(fsa, widget, annotSwift)
 				generateWidget(fsa, widget, annotSwift)
 			]
 		]
@@ -61,26 +64,52 @@ class LangSwiftWidgetGenerator implements IGenerator {
 						«body»
 					'''
 				)
+				fsa.generateFile(
+					annotSwift.name + "/Sources/" + annotSwift.name + "/" + "main.swift",
+					LangOutputProvider.SWIFT,
+					'''		
+						// dmw-generator-version: 0.2
+																					
+						//  Created by Marek Stankiewicz on 17.04.2018.
+						//  Copyright © 2018 JGen. All rights reserved.
+																					
+						import Foundation
+						import Kitura
+						import HeliumLogger
+						import LoggerAPI
+						
+						let logger = HeliumLogger()
+						let router = Router()
+						
+						router.get("/") { request, response, next in
+						response.send("Hello")
+						next()
+						}
+						
+						Kitura.addHTTPServer(onPort: 8080, with: router)
+						Kitura.run()
+					'''
+				)
 
 			}
 		]
 	}
-	
+
 	protected def String generateTableClasses(YClass clazz) {
-		
-		for ( inner : clazz.inners) {
-			if(inner.entity !== null) {
+
+		for (inner : clazz.inners) {
+			if (inner.entity !== null) {
 				println(inner.entity.name)
 			}
 		}
-		 return ""
+		return ""
 	}
 
 	protected def String generateInnerClasses(YClass clazz) {
 		'''
 			«FOR innerclazz : clazz.inners»
-			«generateClass(innerclazz)»
-			
+				«generateClass(innerclazz)»
+				
 			«ENDFOR»
 		'''
 	}
@@ -100,38 +129,38 @@ class LangSwiftWidgetGenerator implements IGenerator {
 			'''
 		}
 	}
-	
+
 	def generateFunctionInit(YClass clazz) {
 		'''
-		init() {
-			«FOR member : clazz.members»
-			«IF member instanceof YProperty»
-			«generatePropertyInit(member as YProperty)»
-			«ENDIF»
-			«ENDFOR»
-		}
-		'''	 
+			init() {
+				«FOR member : clazz.members»
+					«IF member instanceof YProperty»
+						«generatePropertyInit(member as YProperty)»
+					«ENDIF»
+				«ENDFOR»
+			}
+		'''
 	}
-	
+
 	def generatePropertyInit(YProperty property) {
-		 		switch (property.type.name) {
+		switch (property.type.name) {
 			case "Double": {
-				return property.name +" = " + "0;"
+				return property.name + " = " + "0;"
 			}
 			case "Int": {
-				return property.name +" = " + "0;"
+				return property.name + " = " + "0;"
 			}
 			case "Short": {
-				return property.name +" = " + "0;"
+				return property.name + " = " + "0;"
 			}
 			case "String": {
-				return property.name +" = " + "\"\";"
+				return property.name + " = " + "\"\";"
 			}
 			case "Date": {
-				return property.name +" = " + "Date();"
+				return property.name + " = " + "Date();"
 			}
 			case "Time": {
-				return property.name +" = " + "Date();"
+				return property.name + " = " + "Date();"
 			}
 			default: {
 				return "unknown"
@@ -190,19 +219,16 @@ class LangSwiftWidgetGenerator implements IGenerator {
 				            targets: ["«annotSwift.name»"]),
 				    ],
 				    dependencies: [
-				        // Dependencies declare other packages that this package depends on.
-				        // .package(url: /* package url */, from: "1.0.0"),
-				    ],
-				    targets: [
-				        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-				        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
-				        .target(
-				            name: "«annotSwift.name»",
-				            dependencies: []),
-				        .testTarget(
-				            name: "«annotSwift.name»Tests",
-				            dependencies: ["«annotSwift.name»"]),
-				    ]
+				            .package(url: "https://github.com/IBM-Swift/Kitura.git", from: "2.0.0"),
+				            .package(url: "https://github.com/IBM-Swift/HeliumLogger.git", from: "1.7.1"),
+				            .package(url: "https://github.com/IBM-Swift/SwiftKueryMySQL.git", from: "1.2.0"),
+				            .package(url: "https://github.com/IBM-Swift/LoggerAPI.git", from: "1.7.3"),
+				        ],
+				        targets: [
+				             .target(
+				                name: "«annotSwift.name»",
+				                dependencies: ["Kitura","HeliumLogger","SwiftKueryMySQL", "LoggerAPI"]),
+				        ]
 				)
 			'''
 		)
@@ -230,6 +256,53 @@ class LangSwiftWidgetGenerator implements IGenerator {
 			'''
 		)
 
+	}
+
+	/*
+	 *  Generate table classes for SwiftKuery
+	 */
+	def generateTableClasses(IFileSystemAccess fsa, YWidget widget, YAnnotSwift annotSwift) {
+		widget.annotations.forEach [ annotation |
+			if (annotation.type instanceof YAnnotEntity) {
+				val annotEntity = annotation.type as YAnnotEntity
+				val table = annotEntity.implementingTable
+				val body = '''
+					// dmw-generator-version: 0.2
+															
+					//  Created by Marek Stankiewicz on 17.04.2018.
+					//  Copyright © 2018 JGen. All rights reserved.
+															
+					import Foundation
+					import SwiftKuery
+					import SwiftKueryMySQL
+					import HeliumLogger
+					import LoggerAPI
+					
+					«annotEntity.documentation»
+					class «annotEntity.name»  : Table {
+						let tableName = "«annotEntity.implementingTable.name»"
+						«FOR abstractColumn : table.columns»
+							«generateColumns(abstractColumn)»
+						«ENDFOR»
+					}
+				'''
+				fsa.generateFile(
+					annotSwift.name + "/Sources/" + annotSwift.name + "/" + annotEntity.name + ".swift",
+					LangOutputProvider.SWIFT,
+					'''		
+						
+							«body»
+					'''
+				)
+			}
+		]
+	}
+
+	def private String generateColumns(YAnnotAbstractColumn abstractColumn) {
+		val text = '''
+			let «abstractColumn.getSwiftColumnName» = Column("«abstractColumn.name»", «abstractColumn.getSwiftColumnType») 
+		'''
+		return text
 	}
 
 }

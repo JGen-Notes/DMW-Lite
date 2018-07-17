@@ -326,7 +326,7 @@ YAnnotTable:
 
 YAnnotColumn:
 	{YAnnotColumn} '->' attrref=[YAnnotAttr|QualifiedName]
-	'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP')
+	'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'BIGINT' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP' | 'BOOLEAN')
 	(optional='?')? annots+=(YAnnotLength | YAnnotDecimal)* ';';
 
 YAnnotColumnLike:
