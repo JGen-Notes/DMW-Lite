@@ -99,7 +99,7 @@ class LangSwiftWidgetGenerator implements IGenerator {
 
 		for (inner : clazz.inners) {
 			if (inner.entity !== null) {
-				println(inner.entity.name)
+			 
 			}
 		}
 		return ""
@@ -266,6 +266,9 @@ class LangSwiftWidgetGenerator implements IGenerator {
 			if (annotation.type instanceof YAnnotEntity) {
 				val annotEntity = annotation.type as YAnnotEntity
 				val table = annotEntity.implementingTable
+				if(table === null){
+					return
+				}
 				val body = '''
 					// dmw-generator-version: 0.2
 															

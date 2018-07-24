@@ -72,16 +72,31 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 		]
 	}
 
+	// TODO
 	@Fix(LangValidator.RELATIONSSHIP_NOT_IMPLEMENTED)
 	def createFKColumnForAttributeType(Issue issue, IssueResolutionAcceptor acceptor) {
-		acceptor.accept(issue, 'Create missing foreign key', 'Creates foreign key column implementing realtionship.',
+		acceptor.accept(issue, 'Create missing foreign key', 'Adds foreign key column implementing relationship.',
 			'relationship.png') [ element, context |
 			if (element instanceof YAnnotRel) {
 				val relationship = element as YAnnotRel
-				val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
-				val foreignKey = relationship.converRelationshipIntoForeignKeys
-				table.foreignkeys.add(foreignKey)
-				table.eContainer.eResource.save(null)
+				println(relationship) 
+//					if(relationship.many ) {
+//					return;
+//				}			
+			 
+				//val a = relationship
+				
+				
+	//			val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
+				
+
+				
+				
+	//			val foreignKey = relationship.converRelationshipIntoForeignKeys
+				
+				
+	//			table.foreignkeys.add(foreignKey)
+	//			table.eContainer.eResource.save(null)
 			}
 		]
 	}

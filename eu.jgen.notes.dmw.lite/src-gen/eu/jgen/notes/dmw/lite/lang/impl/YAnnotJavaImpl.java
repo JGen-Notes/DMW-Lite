@@ -7,15 +7,13 @@ import eu.jgen.notes.dmw.lite.lang.LangPackage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotJava;
 
-import java.util.Collection;
-
-import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
+import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -33,14 +31,14 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 public class YAnnotJavaImpl extends MinimalEObjectImpl.Container implements YAnnotJava
 {
   /**
-   * The cached value of the '{@link #getDatabase() <em>Database</em>}' reference list.
+   * The cached value of the '{@link #getDatabase() <em>Database</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getDatabase()
    * @generated
    * @ordered
    */
-  protected EList<YAnnotDatabase> database;
+  protected YAnnotDatabase database;
 
   /**
    * <!-- begin-user-doc -->
@@ -68,13 +66,42 @@ public class YAnnotJavaImpl extends MinimalEObjectImpl.Container implements YAnn
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<YAnnotDatabase> getDatabase()
+  public YAnnotDatabase getDatabase()
   {
-    if (database == null)
+    if (database != null && database.eIsProxy())
     {
-      database = new EObjectResolvingEList<YAnnotDatabase>(YAnnotDatabase.class, this, LangPackage.YANNOT_JAVA__DATABASE);
+      InternalEObject oldDatabase = (InternalEObject)database;
+      database = (YAnnotDatabase)eResolveProxy(oldDatabase);
+      if (database != oldDatabase)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, LangPackage.YANNOT_JAVA__DATABASE, oldDatabase, database));
+      }
     }
     return database;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotDatabase basicGetDatabase()
+  {
+    return database;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setDatabase(YAnnotDatabase newDatabase)
+  {
+    YAnnotDatabase oldDatabase = database;
+    database = newDatabase;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YANNOT_JAVA__DATABASE, oldDatabase, database));
   }
 
   /**
@@ -88,7 +115,8 @@ public class YAnnotJavaImpl extends MinimalEObjectImpl.Container implements YAnn
     switch (featureID)
     {
       case LangPackage.YANNOT_JAVA__DATABASE:
-        return getDatabase();
+        if (resolve) return getDatabase();
+        return basicGetDatabase();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -98,15 +126,13 @@ public class YAnnotJavaImpl extends MinimalEObjectImpl.Container implements YAnn
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
     switch (featureID)
     {
       case LangPackage.YANNOT_JAVA__DATABASE:
-        getDatabase().clear();
-        getDatabase().addAll((Collection<? extends YAnnotDatabase>)newValue);
+        setDatabase((YAnnotDatabase)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -123,7 +149,7 @@ public class YAnnotJavaImpl extends MinimalEObjectImpl.Container implements YAnn
     switch (featureID)
     {
       case LangPackage.YANNOT_JAVA__DATABASE:
-        getDatabase().clear();
+        setDatabase((YAnnotDatabase)null);
         return;
     }
     super.eUnset(featureID);
@@ -140,7 +166,7 @@ public class YAnnotJavaImpl extends MinimalEObjectImpl.Container implements YAnn
     switch (featureID)
     {
       case LangPackage.YANNOT_JAVA__DATABASE:
-        return database != null && !database.isEmpty();
+        return database != null;
     }
     return super.eIsSet(featureID);
   }

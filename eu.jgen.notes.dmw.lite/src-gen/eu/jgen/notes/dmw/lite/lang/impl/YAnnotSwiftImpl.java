@@ -7,18 +7,13 @@ import eu.jgen.notes.dmw.lite.lang.LangPackage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotSwift;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -57,14 +52,14 @@ public class YAnnotSwiftImpl extends MinimalEObjectImpl.Container implements YAn
   protected String name = NAME_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getDatabase() <em>Database</em>}' reference list.
+   * The cached value of the '{@link #getDatabase() <em>Database</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getDatabase()
    * @generated
    * @ordered
    */
-  protected EList<YAnnotDatabase> database;
+  protected YAnnotDatabase database;
 
   /**
    * <!-- begin-user-doc -->
@@ -115,13 +110,42 @@ public class YAnnotSwiftImpl extends MinimalEObjectImpl.Container implements YAn
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<YAnnotDatabase> getDatabase()
+  public YAnnotDatabase getDatabase()
   {
-    if (database == null)
+    if (database != null && database.eIsProxy())
     {
-      database = new EObjectResolvingEList<YAnnotDatabase>(YAnnotDatabase.class, this, LangPackage.YANNOT_SWIFT__DATABASE);
+      InternalEObject oldDatabase = (InternalEObject)database;
+      database = (YAnnotDatabase)eResolveProxy(oldDatabase);
+      if (database != oldDatabase)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, LangPackage.YANNOT_SWIFT__DATABASE, oldDatabase, database));
+      }
     }
     return database;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotDatabase basicGetDatabase()
+  {
+    return database;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setDatabase(YAnnotDatabase newDatabase)
+  {
+    YAnnotDatabase oldDatabase = database;
+    database = newDatabase;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YANNOT_SWIFT__DATABASE, oldDatabase, database));
   }
 
   /**
@@ -137,7 +161,8 @@ public class YAnnotSwiftImpl extends MinimalEObjectImpl.Container implements YAn
       case LangPackage.YANNOT_SWIFT__NAME:
         return getName();
       case LangPackage.YANNOT_SWIFT__DATABASE:
-        return getDatabase();
+        if (resolve) return getDatabase();
+        return basicGetDatabase();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -147,7 +172,6 @@ public class YAnnotSwiftImpl extends MinimalEObjectImpl.Container implements YAn
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -157,8 +181,7 @@ public class YAnnotSwiftImpl extends MinimalEObjectImpl.Container implements YAn
         setName((String)newValue);
         return;
       case LangPackage.YANNOT_SWIFT__DATABASE:
-        getDatabase().clear();
-        getDatabase().addAll((Collection<? extends YAnnotDatabase>)newValue);
+        setDatabase((YAnnotDatabase)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -178,7 +201,7 @@ public class YAnnotSwiftImpl extends MinimalEObjectImpl.Container implements YAn
         setName(NAME_EDEFAULT);
         return;
       case LangPackage.YANNOT_SWIFT__DATABASE:
-        getDatabase().clear();
+        setDatabase((YAnnotDatabase)null);
         return;
     }
     super.eUnset(featureID);
@@ -197,7 +220,7 @@ public class YAnnotSwiftImpl extends MinimalEObjectImpl.Container implements YAn
       case LangPackage.YANNOT_SWIFT__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case LangPackage.YANNOT_SWIFT__DATABASE:
-        return database != null && !database.isEmpty();
+        return database != null;
     }
     return super.eIsSet(featureID);
   }

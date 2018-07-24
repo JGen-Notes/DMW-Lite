@@ -23,19 +23,27 @@
  */
 package eu.jgen.notes.dmw.lite.ui.outline
 
-import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
-import eu.jgen.notes.dmw.lite.lang.YFunction
-import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
-import eu.jgen.notes.dmw.lite.lang.YWidget
-import eu.jgen.notes.dmw.lite.lang.YClass
 import com.google.inject.Inject
-import org.eclipse.xtext.ui.PluginImageHelper
-import eu.jgen.notes.dmw.lite.lang.YProperty
-import eu.jgen.notes.dmw.lite.lang.YImport
+import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr
-import eu.jgen.notes.dmw.lite.lang.YAnnotRel
-import eu.jgen.notes.dmw.lite.lang.YAnnotId
+import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
+import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey
+import eu.jgen.notes.dmw.lite.lang.YAnnotId
+import eu.jgen.notes.dmw.lite.lang.YAnnotJava
+import eu.jgen.notes.dmw.lite.lang.YAnnotRel
+import eu.jgen.notes.dmw.lite.lang.YAnnotSwift
+import eu.jgen.notes.dmw.lite.lang.YAnnotTable
+import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign
+import eu.jgen.notes.dmw.lite.lang.YAnnotTop
+import eu.jgen.notes.dmw.lite.lang.YClass
+import eu.jgen.notes.dmw.lite.lang.YFunction
+import eu.jgen.notes.dmw.lite.lang.YImport
+import eu.jgen.notes.dmw.lite.lang.YProperty
+import eu.jgen.notes.dmw.lite.lang.YWidget
+import org.eclipse.xtext.ui.PluginImageHelper
+import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
+import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
 
 /**
  * Customization of the default outline structure.
@@ -47,22 +55,155 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	@Inject
 	private PluginImageHelper imageHelper;
 
-	def _isLeaf(YFunction function) {
-		true
-	}
-
 	def void _createChildren(DocumentRootNode outlineNode, YWidget widget) {
-		widget.eAllContents.filter(YAnnotEntity).forEach [ annotEntity |
-			createNode(outlineNode, annotEntity);
-			annotEntity.annots.forEach [ annot |
-				createNode(outlineNode, annot)
-			]
-		]
-		widget.classes.forEach [ cl |
-			createNode(outlineNode, cl);
+		createNode(outlineNode, widget);
+		widget.imports.forEach[element|createNode(outlineNode, element)]
+		widget.annotations.forEach[element|createNode(outlineNode, element.type)]
+		widget.classes.forEach[element|createNode(outlineNode, element)]
+	}
+
+	def void _createChildren(DocumentRootNode outlineNode, YAnnotTop annotTop) {
+		createNode(outlineNode, annotTop.type)
+	}
+
+	def void _createChildren(DocumentRootNode outlineNode, YAnnotEntity annotEntity) {
+		annotEntity.annots.forEach [ annot |
+			createNode(outlineNode, annot)
 		]
 	}
 
+	def boolean _isLeaf(YWidget element) {
+		return true
+	}
+
+	def Object _text(YWidget widget) {
+		if (widget.name !== null) {
+			return widget.name
+		}
+	}
+
+	/*
+	 * Widget
+	 */
+	def Object _image(YWidget widget) {
+		if (widget.name !== null) {
+			return imageHelper.getImage("package.gif")
+		}
+	}
+
+	/*
+	 * Database
+	 */
+	def Object _text(YAnnotDatabase annotDatabase) {
+		if (annotDatabase.name !== null) {
+			return annotDatabase.name
+		}
+	}
+
+	def Object _image(YAnnotDatabase annotDatabase) {
+		if (annotDatabase.name !== null) {
+			return imageHelper.getImage("database.gif")
+		}
+	}
+
+	/*
+	 * Swift
+	 */
+	def Object _text(YAnnotSwift annotSwift) {
+		if (annotSwift.name !== null) {
+			if (annotSwift.database !== null)
+				return "Swift " + annotSwift.name + " + " + annotSwift.database.name
+		}
+	}
+
+	def Object _image(YAnnotSwift annotSwift) {
+		return imageHelper.getImage("swift.png")
+	}
+
+	/*
+	 * Java
+	 */
+	def Object _text(YAnnotJava annotJava) {
+		if (annotJava.database !== null) {
+			return "Java + " + annotJava.database.name
+		} else {
+			return "Java"
+		}
+	}
+
+	def Object _image(YAnnotJava annotJava) {
+		return imageHelper.getImage("java.png")
+	}
+
+	/*
+	 *  Technical Design
+	 */
+	def Object _text(YAnnotTechnicalDesign element) {
+		return element.database.name
+	}
+
+	def Object _image(YAnnotTechnicalDesign element) {
+		return imageHelper.getImage("td.gif")
+	}
+
+	/*
+	 *  Table
+	 */
+	def Object _text(YAnnotTable element) {
+		return element.name
+	}
+
+	def Object _image(YAnnotTable element) {
+		return imageHelper.getImage("table.gif")
+	}
+
+	/*
+	 *  Table Column
+	 */
+	def Object _text(YAnnotAbstractColumn element) {
+		return element.name
+	}
+
+	def Object _image(YAnnotAbstractColumn element) {
+		if (element.eContainer instanceof YAnnotForeignKey) {
+				return imageHelper.getImage("foreignKey.gif")
+		} else if (element.eContainer instanceof YAnnotTable) {
+			val pk = (element.eContainer as YAnnotTable).primarykey
+			if (pk !== null) {
+				for (column : pk.columns) {
+					if (column.name == element.name) {
+						return imageHelper.getImage("column_pkey.gif")
+					}
+				}
+			}
+		}
+		return imageHelper.getImage("column.gif")
+	}
+
+	def boolean _isLeaf(YAnnotAbstractColumn element) {
+		return true
+	}
+	
+	/*
+	 * Foreign Key
+	 */
+	 def void _createChildren(DocumentRootNode outlineNode, YAnnotForeignKey element) {
+	 	element.columns.forEach[column |
+	 		createNode(outlineNode, column)
+	 	]	 	
+	 }
+	 
+	 def Object _text(YAnnotForeignKey element) {
+		return element.relationship.name + " -> " + element.relationship.target.name
+	}
+	
+	def Object _image(YAnnotForeignKey element) {
+		return imageHelper.getImage("fk.gif")
+	}
+
+	/*
+	 * Entity
+	 */
 	def Object _text(YAnnotEntity element) {
 		return element.name
 	}
@@ -70,13 +211,13 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	def Object _text(YAnnotAttr element) {
 		return element.name + " : " + element.yclass.name
 	}
-	
+
 	def Object _text(YAnnotRel element) {
-		if(element.many) {
+		if (element.many) {
 			return element.name + " -> " + element.target.name + "*"
 		} else {
 			return element.name + " -> " + element.target.name
-		}		
+		}
 	}
 
 	def Object _text(YProperty element) {
@@ -84,9 +225,16 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (element.tuples !== null) {
 			tuple = "<>"
 		}
-		return element.name + " : " + element.type.name + tuple
+		if (element.name !== null) {
+				return element.name 
+		}
+		if (element.type !== null) {
+				return element.name + " : " + element.type.name + tuple
+		}
+		return ""
 	}
-		def Object _text(YFunction element) {
+
+	def Object _text(YFunction element) {
 		return element.name + "()"
 	}
 
@@ -139,11 +287,11 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	def Object _image(YAnnotRel element) {
-		if(element.many) {
+		if (element.many) {
 			return imageHelper.getImage("onetomany.gif")
 		} else {
 			return imageHelper.getImage("onetoone.gif")
-		}		
+		}
 	}
 
 	def boolean _isLeaf(YAnnotRel element) {
@@ -155,6 +303,14 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	def boolean _isLeaf(YAnnotId element) {
+		return true
+	}
+
+	def boolean _isLeaf(YProperty element) {
+		return true
+	}
+
+	def boolean _isLeaf(YFunction element) {
 		return true
 	}
 }

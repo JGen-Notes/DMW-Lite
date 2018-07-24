@@ -99,8 +99,15 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_YAndExpression(context, (YAndExpression) semanticObject); 
 				return; 
 			case LangPackage.YANNOT:
-				sequence_YAnnotMsgType(context, (YAnnot) semanticObject); 
-				return; 
+				if (rule == grammarAccess.getYAnnotMsgTypeRule()) {
+					sequence_YAnnotMsgType(context, (YAnnot) semanticObject); 
+					return; 
+				}
+				else if (rule == grammarAccess.getYAnnotRule()) {
+					sequence_YAnnot(context, (YAnnot) semanticObject); 
+					return; 
+				}
+				else break;
 			case LangPackage.YANNOT_ABSTRACT_COLUMN:
 				sequence_YAnnotAbstractColumn(context, (YAnnotAbstractColumn) semanticObject); 
 				return; 
@@ -399,7 +406,6 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     YAnnot returns YAnnotAction
 	 *     YAnnotAction returns YAnnotAction
 	 *
 	 * Constraint:
@@ -423,7 +429,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnotIdInner returns YAnnotAttr
 	 *
 	 * Constraint:
-	 *     (name=ValidID yclass=[YClass|QualifiedName] optional='?'? (annots+=YAnnotLength | annots+=YAnnotDecimal)*)
+	 *     (name=ValidID yclass=[YClass|QualifiedName] optional='?'? annots+=YAnnot*)
 	 */
 	protected void sequence_YAnnotAttr(ISerializationContext context, YAnnotAttr semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -459,11 +465,13 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *             type='VARCHAR' | 
 	 *             type='CHAR' | 
 	 *             type='INTEGER' | 
+	 *             type='BIGINT' | 
 	 *             type='SMALLINT' | 
 	 *             type='DECIMAL' | 
 	 *             type='TIME' | 
 	 *             type='DATE' | 
-	 *             type='TIMESTAMP'
+	 *             type='TIMESTAMP' | 
+	 *             type='BOOLEAN'
 	 *         ) 
 	 *         optional='?'? 
 	 *         annots+=YAnnotLength? 
@@ -495,7 +503,6 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     YAnnot returns YAnnotDecimal
 	 *     YAnnotDecimal returns YAnnotDecimal
 	 *
 	 * Constraint:
@@ -532,7 +539,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnotForeignKey returns YAnnotForeignKey
 	 *
 	 * Constraint:
-	 *     (relationship=[YAnnotRel|QualifiedName] columns+=YAnnotAbstractColumn*)
+	 *     (relationship=[YAnnotRel|QualifiedName] columns+=YAnnotAbstractColumn columns+=YAnnotAbstractColumn*)
 	 */
 	protected void sequence_YAnnotForeignKey(ISerializationContext context, YAnnotForeignKey semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -557,7 +564,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnotJava returns YAnnotJava
 	 *
 	 * Constraint:
-	 *     database+=[YAnnotDatabase|ID]?
+	 *     database=[YAnnotDatabase|ID]?
 	 */
 	protected void sequence_YAnnotJava(ISerializationContext context, YAnnotJava semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -566,7 +573,6 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     YAnnot returns YAnnotLength
 	 *     YAnnotLength returns YAnnotLength
 	 *
 	 * Constraint:
@@ -585,7 +591,6 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     YAnnot returns YAnnotMessage
 	 *     YAnnotMessage returns YAnnotMessage
 	 *
 	 * Constraint:
@@ -604,7 +609,6 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     YAnnot returns YAnnot
 	 *     YAnnotMsgType returns YAnnot
 	 *
 	 * Constraint:
@@ -652,7 +656,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnotSwift returns YAnnotSwift
 	 *
 	 * Constraint:
-	 *     (name=ValidID database+=[YAnnotDatabase|ID]?)
+	 *     (name=ValidID database=[YAnnotDatabase|ID]?)
 	 */
 	protected void sequence_YAnnotSwift(ISerializationContext context, YAnnotSwift semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -691,6 +695,18 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     (type=YAnnotEntity | type=YAnnotTechnicalDesign | type=YAnnotSwift | type=YAnnotJava | type=YAnnotDatabase)
 	 */
 	protected void sequence_YAnnotTop(ISerializationContext context, YAnnotTop semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     YAnnot returns YAnnot
+	 *
+	 * Constraint:
+	 *     (type=YAnnotLength | type=YAnnotDecimal | type=YAnnotAction | type=YAnnotMessage | type=YAnnotMsgType)
+	 */
+	protected void sequence_YAnnot(ISerializationContext context, YAnnot semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
 	}
 	

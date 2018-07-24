@@ -1397,13 +1397,22 @@ public interface LangPackage extends EPackage
   int YANNOT = 32;
 
   /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT__TYPE = 0;
+
+  /**
    * The feature id for the '<em><b>Msgtype</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YANNOT__MSGTYPE = 0;
+  int YANNOT__MSGTYPE = 1;
 
   /**
    * The number of structural features of the '<em>YAnnot</em>' class.
@@ -1412,7 +1421,7 @@ public interface LangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int YANNOT_FEATURE_COUNT = 1;
+  int YANNOT_FEATURE_COUNT = 2;
 
   /**
    * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotTopImpl <em>YAnnot Top</em>}' class.
@@ -1979,7 +1988,7 @@ public interface LangPackage extends EPackage
   int YANNOT_JAVA = 47;
 
   /**
-   * The feature id for the '<em><b>Database</b></em>' reference list.
+   * The feature id for the '<em><b>Database</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2016,7 +2025,7 @@ public interface LangPackage extends EPackage
   int YANNOT_SWIFT__NAME = 0;
 
   /**
-   * The feature id for the '<em><b>Database</b></em>' reference list.
+   * The feature id for the '<em><b>Database</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -2656,6 +2665,15 @@ public interface LangPackage extends EPackage
   int YANNOT_LENGTH = 67;
 
   /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_LENGTH__TYPE = YANNOT__TYPE;
+
+  /**
    * The feature id for the '<em><b>Msgtype</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2691,6 +2709,15 @@ public interface LangPackage extends EPackage
    * @generated
    */
   int YANNOT_DECIMAL = 68;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DECIMAL__TYPE = YANNOT__TYPE;
 
   /**
    * The feature id for the '<em><b>Msgtype</b></em>' attribute.
@@ -2739,6 +2766,15 @@ public interface LangPackage extends EPackage
   int YANNOT_ACTION = 69;
 
   /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_ACTION__TYPE = YANNOT__TYPE;
+
+  /**
    * The feature id for the '<em><b>Msgtype</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2774,6 +2810,15 @@ public interface LangPackage extends EPackage
    * @generated
    */
   int YANNOT_MESSAGE = 70;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_MESSAGE__TYPE = YANNOT__TYPE;
 
   /**
    * The feature id for the '<em><b>Msgtype</b></em>' attribute.
@@ -3881,6 +3926,17 @@ public interface LangPackage extends EPackage
   EClass getYAnnot();
 
   /**
+   * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YAnnot#getType <em>Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Type</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnot#getType()
+   * @see #getYAnnot()
+   * @generated
+   */
+  EReference getYAnnot_Type();
+
+  /**
    * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnot#getMsgtype <em>Msgtype</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -4394,10 +4450,10 @@ public interface LangPackage extends EPackage
   EClass getYAnnotJava();
 
   /**
-   * Returns the meta object for the reference list '{@link eu.jgen.notes.dmw.lite.lang.YAnnotJava#getDatabase <em>Database</em>}'.
+   * Returns the meta object for the reference '{@link eu.jgen.notes.dmw.lite.lang.YAnnotJava#getDatabase <em>Database</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Database</em>'.
+   * @return the meta object for the reference '<em>Database</em>'.
    * @see eu.jgen.notes.dmw.lite.lang.YAnnotJava#getDatabase()
    * @see #getYAnnotJava()
    * @generated
@@ -4426,10 +4482,10 @@ public interface LangPackage extends EPackage
   EAttribute getYAnnotSwift_Name();
 
   /**
-   * Returns the meta object for the reference list '{@link eu.jgen.notes.dmw.lite.lang.YAnnotSwift#getDatabase <em>Database</em>}'.
+   * Returns the meta object for the reference '{@link eu.jgen.notes.dmw.lite.lang.YAnnotSwift#getDatabase <em>Database</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Database</em>'.
+   * @return the meta object for the reference '<em>Database</em>'.
    * @see eu.jgen.notes.dmw.lite.lang.YAnnotSwift#getDatabase()
    * @see #getYAnnotSwift()
    * @generated
@@ -5941,6 +5997,14 @@ public interface LangPackage extends EPackage
     EClass YANNOT = eINSTANCE.getYAnnot();
 
     /**
+     * The meta object literal for the '<em><b>Type</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference YANNOT__TYPE = eINSTANCE.getYAnnot_Type();
+
+    /**
      * The meta object literal for the '<em><b>Msgtype</b></em>' attribute feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -6355,7 +6419,7 @@ public interface LangPackage extends EPackage
     EClass YANNOT_JAVA = eINSTANCE.getYAnnotJava();
 
     /**
-     * The meta object literal for the '<em><b>Database</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Database</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
@@ -6381,7 +6445,7 @@ public interface LangPackage extends EPackage
     EAttribute YANNOT_SWIFT__NAME = eINSTANCE.getYAnnotSwift_Name();
 
     /**
-     * The meta object literal for the '<em><b>Database</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Database</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

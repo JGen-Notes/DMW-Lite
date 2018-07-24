@@ -56,6 +56,7 @@ import static extension org.eclipse.xtext.EcoreUtil2.*
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
+import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase
 
 /**
  * This class contains custom validation rules. 
@@ -90,6 +91,7 @@ class LangValidator extends AbstractLangValidator {
 	public static val COLUMN_NAME_NOT_UNIQUE = ISSUE_CODE_PREFIX + "ColumnNameNotUnique"
 	public static val IDENTIFIER_NO_TECH_DESIGN = ISSUE_CODE_PREFIX + "IdentifgierNoTechDesign"
 	public static val RELATIONSSHIP_NOT_IMPLEMENTED = ISSUE_CODE_PREFIX + "RelationshipNotImplemented"
+	public static val UNSUPPORTED_DATABASE = ISSUE_CODE_PREFIX + "UnsupportedDatabase"
 
 	@Inject extension LangUtil
 	@Inject extension LangTypeComputer
@@ -97,6 +99,22 @@ class LangValidator extends AbstractLangValidator {
 	@Inject extension LangAccessibility
 	@Inject extension LangIndex
 	@Inject extension IQualifiedNameProvider
+
+	/*********************************************************
+	 * Supported Database
+	 ********************************************************/
+	@Check
+	def checkIfSupportedDatabase(YAnnotDatabase annotDatabase) {
+		if (annotDatabase.name !== null) {
+			if (annotDatabase.name == "MySQL" || annotDatabase.name == "SQLite" || annotDatabase.name == "PostgreSQL" ||
+				annotDatabase.name == "MongoDB") {
+				return
+			} else {
+				error("This database is not supported yet.", LangPackage.eINSTANCE.YAnnotDatabase_Name,
+					UNSUPPORTED_DATABASE, annotDatabase.name)
+			}
+		}
+	}
 
 	/*********************************************************
 	 * Entities
@@ -459,16 +477,21 @@ class LangValidator extends AbstractLangValidator {
 	@Check
 	def void checkDuplicateColumnName(YAnnotColumn column) {
 		var count = 0
-		val table = column.eContainer.eContainer as YAnnotTable
-		for (abstractColumn : table.columns) {
-			if (abstractColumn.name == (column.eContainer as YAnnotAbstractColumn).name) {
-				count++
-			}
-		}
-		for (foreignKey : table.foreignkeys) {
-			for (abstractColumn : foreignKey.columns) {
+		if (column.eContainer.eContainer instanceof YAnnotTable) {
+			val table = column.eContainer.eContainer as YAnnotTable
+			for (abstractColumn : table.columns) {
 				if (abstractColumn.name == (column.eContainer as YAnnotAbstractColumn).name) {
 					count++
+				}
+			}
+		}
+		if (column.eContainer.eContainer.eContainer instanceof YAnnotTable) {
+			val table = column.eContainer.eContainer.eContainer as YAnnotTable
+			for (foreignKey : table.foreignkeys) {
+				for (abstractColumn : foreignKey.columns) {
+					if (abstractColumn.name == (column.eContainer as YAnnotAbstractColumn).name) {
+						count++
+					}
 				}
 			}
 		}

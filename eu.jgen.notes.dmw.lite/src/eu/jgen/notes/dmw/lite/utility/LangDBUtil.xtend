@@ -96,7 +96,7 @@ class LangDBUtil {
 			column.type = "BLOB"
 		}
 		attribute.annots.forEach [ annot |
-			column.annots.add(annot.cloneYAnnot)
+			column.annots.add(annot.type.cloneYAnnot)
 		]
 		if (attribute.optional !== null && attribute.optional == "?") {
 			column.optional = "?"

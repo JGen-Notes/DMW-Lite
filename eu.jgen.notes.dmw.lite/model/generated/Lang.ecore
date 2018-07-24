@@ -182,6 +182,8 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnot">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//YAnnot"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="msgtype" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotTop">
@@ -255,13 +257,11 @@
         eType="#//YAnnotAbstractColumn" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotJava">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="database" unique="false"
-        upperBound="-1" eType="#//YAnnotDatabase"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="database" eType="#//YAnnotDatabase"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotSwift">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="database" unique="false"
-        upperBound="-1" eType="#//YAnnotDatabase"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="database" eType="#//YAnnotDatabase"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotDatabase">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>

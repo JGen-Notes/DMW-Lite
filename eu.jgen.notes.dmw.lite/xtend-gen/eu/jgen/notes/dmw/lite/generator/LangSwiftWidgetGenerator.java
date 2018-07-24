@@ -23,7 +23,6 @@ import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
@@ -168,7 +167,6 @@ public class LangSwiftWidgetGenerator implements IGenerator {
       YAnnotEntity _entity = inner.getEntity();
       boolean _tripleNotEquals = (_entity != null);
       if (_tripleNotEquals) {
-        InputOutput.<String>println(inner.getEntity().getName());
       }
     }
     return "";
@@ -450,6 +448,9 @@ public class LangSwiftWidgetGenerator implements IGenerator {
         EObject _type_1 = annotation.getType();
         final YAnnotEntity annotEntity = ((YAnnotEntity) _type_1);
         final YAnnotTable table = this._langUtil.getImplementingTable(annotEntity);
+        if ((table == null)) {
+          return;
+        }
         StringConcatenation _builder = new StringConcatenation();
         _builder.append("// dmw-generator-version: 0.2");
         _builder.newLine();

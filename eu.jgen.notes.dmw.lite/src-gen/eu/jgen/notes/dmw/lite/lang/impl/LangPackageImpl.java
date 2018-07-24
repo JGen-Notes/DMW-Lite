@@ -1666,9 +1666,19 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EReference getYAnnot_Type()
+  {
+    return (EReference)yAnnotEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EAttribute getYAnnot_Msgtype()
   {
-    return (EAttribute)yAnnotEClass.getEStructuralFeatures().get(0);
+    return (EAttribute)yAnnotEClass.getEStructuralFeatures().get(1);
   }
 
   /**
@@ -2923,6 +2933,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEReference(yForInStatementEClass, YFOR_IN_STATEMENT__BODY);
 
     yAnnotEClass = createEClass(YANNOT);
+    createEReference(yAnnotEClass, YANNOT__TYPE);
     createEAttribute(yAnnotEClass, YANNOT__MSGTYPE);
 
     yAnnotTopEClass = createEClass(YANNOT_TOP);
@@ -3285,6 +3296,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYForInStatement_Body(), this.getYBlock(), null, "body", null, 0, 1, YForInStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotEClass, YAnnot.class, "YAnnot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getYAnnot_Type(), this.getYAnnot(), null, "type", null, 0, 1, YAnnot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYAnnot_Msgtype(), ecorePackage.getEString(), "msgtype", null, 0, 1, YAnnot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotTopEClass, YAnnotTop.class, "YAnnotTop", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3348,11 +3360,11 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYAnnotForeignKey_Columns(), this.getYAnnotAbstractColumn(), null, "columns", null, 0, -1, YAnnotForeignKey.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotJavaEClass, YAnnotJava.class, "YAnnotJava", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getYAnnotJava_Database(), this.getYAnnotDatabase(), null, "database", null, 0, -1, YAnnotJava.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYAnnotJava_Database(), this.getYAnnotDatabase(), null, "database", null, 0, 1, YAnnotJava.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotSwiftEClass, YAnnotSwift.class, "YAnnotSwift", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotSwift_Name(), ecorePackage.getEString(), "name", null, 0, 1, YAnnotSwift.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getYAnnotSwift_Database(), this.getYAnnotDatabase(), null, "database", null, 0, -1, YAnnotSwift.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYAnnotSwift_Database(), this.getYAnnotDatabase(), null, "database", null, 0, 1, YAnnotSwift.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotDatabaseEClass, YAnnotDatabase.class, "YAnnotDatabase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotDatabase_Name(), ecorePackage.getEString(), "name", null, 0, 1, YAnnotDatabase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

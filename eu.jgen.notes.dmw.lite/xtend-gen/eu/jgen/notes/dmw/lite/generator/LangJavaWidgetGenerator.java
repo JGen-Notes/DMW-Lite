@@ -3,7 +3,6 @@ package eu.jgen.notes.dmw.lite.generator;
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.generator.LangOutputProvider;
-import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotJava;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
@@ -45,8 +44,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
     };
     final Procedure1<EObject> _function_1 = (EObject element) -> {
       final YAnnotJava annotSwift = ((YAnnotJava) element);
-      EList<YAnnotDatabase> _database = annotSwift.getDatabase();
-      boolean _equals = Objects.equal(_database, "MySQL");
+      String _name = annotSwift.getDatabase().getName();
+      boolean _equals = Objects.equal(_name, "MySQL");
       if (_equals) {
         final Function1<EObject, Boolean> _function_2 = (EObject element2) -> {
           return Boolean.valueOf((element instanceof YWidget));

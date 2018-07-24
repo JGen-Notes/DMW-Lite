@@ -60,6 +60,14 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   private LangIndex _langIndex;
   
   @Override
+  public void completeYAnnotDatabase_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    acceptor.accept(this.createCompletionProposal("MySQL", "MySQL", this.imageHelper.getImage("database.gif"), context));
+    acceptor.accept(this.createCompletionProposal("SQLite", "SQLite", this.imageHelper.getImage("database.gif"), context));
+    acceptor.accept(this.createCompletionProposal("PostgreSQL", "PostgreSQL", this.imageHelper.getImage("database.gif"), context));
+    acceptor.accept(this.createCompletionProposal("MongoDB", "MongoDB", this.imageHelper.getImage("database.gif"), context));
+  }
+  
+  @Override
   public void completeYAnnotEntity_Superannot(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     final Set<IEObjectDescription> allVisibleEntities = IterableExtensions.<IEObjectDescription>toSet(this._langIndex.getVisibleEntitiesDescriptions(((YAnnotEntity) model)));
     for (final IEObjectDescription element : allVisibleEntities) {

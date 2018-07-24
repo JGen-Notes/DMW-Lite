@@ -31,6 +31,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
@@ -139,6 +140,8 @@ public class LangValidator extends AbstractLangValidator {
   
   public final static String RELATIONSSHIP_NOT_IMPLEMENTED = (LangValidator.ISSUE_CODE_PREFIX + "RelationshipNotImplemented");
   
+  public final static String UNSUPPORTED_DATABASE = (LangValidator.ISSUE_CODE_PREFIX + "UnsupportedDatabase");
+  
   @Inject
   @Extension
   private LangUtil _langUtil;
@@ -162,6 +165,24 @@ public class LangValidator extends AbstractLangValidator {
   @Inject
   @Extension
   private IQualifiedNameProvider _iQualifiedNameProvider;
+  
+  /**
+   * Supported Database
+   */
+  @Check
+  public void checkIfSupportedDatabase(final YAnnotDatabase annotDatabase) {
+    String _name = annotDatabase.getName();
+    boolean _tripleNotEquals = (_name != null);
+    if (_tripleNotEquals) {
+      if ((((Objects.equal(annotDatabase.getName(), "MySQL") || Objects.equal(annotDatabase.getName(), "SQLite")) || Objects.equal(annotDatabase.getName(), "PostgreSQL")) || 
+        Objects.equal(annotDatabase.getName(), "MongoDB"))) {
+        return;
+      } else {
+        this.error("This database is not supported yet.", LangPackage.eINSTANCE.getYAnnotDatabase_Name(), 
+          LangValidator.UNSUPPORTED_DATABASE, annotDatabase.getName());
+      }
+    }
+  }
   
   /**
    * Entities
@@ -703,27 +724,35 @@ public class LangValidator extends AbstractLangValidator {
   public void checkDuplicateColumnName(final YAnnotColumn column) {
     int count = 0;
     EObject _eContainer = column.eContainer().eContainer();
-    final YAnnotTable table = ((YAnnotTable) _eContainer);
-    EList<YAnnotAbstractColumn> _columns = table.getColumns();
-    for (final YAnnotAbstractColumn abstractColumn : _columns) {
-      String _name = abstractColumn.getName();
-      EObject _eContainer_1 = column.eContainer();
-      String _name_1 = ((YAnnotAbstractColumn) _eContainer_1).getName();
-      boolean _equals = Objects.equal(_name, _name_1);
-      if (_equals) {
-        count++;
+    if ((_eContainer instanceof YAnnotTable)) {
+      EObject _eContainer_1 = column.eContainer().eContainer();
+      final YAnnotTable table = ((YAnnotTable) _eContainer_1);
+      EList<YAnnotAbstractColumn> _columns = table.getColumns();
+      for (final YAnnotAbstractColumn abstractColumn : _columns) {
+        String _name = abstractColumn.getName();
+        EObject _eContainer_2 = column.eContainer();
+        String _name_1 = ((YAnnotAbstractColumn) _eContainer_2).getName();
+        boolean _equals = Objects.equal(_name, _name_1);
+        if (_equals) {
+          count++;
+        }
       }
     }
-    EList<YAnnotForeignKey> _foreignkeys = table.getForeignkeys();
-    for (final YAnnotForeignKey foreignKey : _foreignkeys) {
-      EList<YAnnotAbstractColumn> _columns_1 = foreignKey.getColumns();
-      for (final YAnnotAbstractColumn abstractColumn_1 : _columns_1) {
-        String _name_2 = abstractColumn_1.getName();
-        EObject _eContainer_2 = column.eContainer();
-        String _name_3 = ((YAnnotAbstractColumn) _eContainer_2).getName();
-        boolean _equals_1 = Objects.equal(_name_2, _name_3);
-        if (_equals_1) {
-          count++;
+    EObject _eContainer_3 = column.eContainer().eContainer().eContainer();
+    if ((_eContainer_3 instanceof YAnnotTable)) {
+      EObject _eContainer_4 = column.eContainer().eContainer().eContainer();
+      final YAnnotTable table_1 = ((YAnnotTable) _eContainer_4);
+      EList<YAnnotForeignKey> _foreignkeys = table_1.getForeignkeys();
+      for (final YAnnotForeignKey foreignKey : _foreignkeys) {
+        EList<YAnnotAbstractColumn> _columns_1 = foreignKey.getColumns();
+        for (final YAnnotAbstractColumn abstractColumn_1 : _columns_1) {
+          String _name_2 = abstractColumn_1.getName();
+          EObject _eContainer_5 = column.eContainer();
+          String _name_3 = ((YAnnotAbstractColumn) _eContainer_5).getName();
+          boolean _equals_1 = Objects.equal(_name_2, _name_3);
+          if (_equals_1) {
+            count++;
+          }
         }
       }
     }

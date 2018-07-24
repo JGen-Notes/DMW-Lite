@@ -76,7 +76,7 @@ class Object {
     
 }
 
- class BigInt : Object {
+ class Long : Object {
 }  
 
  class Date : Object {

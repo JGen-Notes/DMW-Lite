@@ -43,16 +43,16 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cClassesYClassParserRuleCall_3_0 = (RuleCall)cClassesAssignment_3.eContents().get(0);
 		
 		//YWidget:
-		//	('package' name=QualifiedName ';')?
+		//	('package' name=QualifiedName ';'?)?
 		//	imports+=YImport*
 		//	annotations+=YAnnotTop*
 		//	classes+=YClass*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//('package' name=QualifiedName ';')? imports+=YImport* annotations+=YAnnotTop* classes+=YClass*
+		//('package' name=QualifiedName ';'?)? imports+=YImport* annotations+=YAnnotTop* classes+=YClass*
 		public Group getGroup() { return cGroup; }
 		
-		//('package' name=QualifiedName ';')?
+		//('package' name=QualifiedName ';'?)?
 		public Group getGroup_0() { return cGroup_0; }
 		
 		//'package'
@@ -64,7 +64,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getNameQualifiedNameParserRuleCall_0_1_0() { return cNameQualifiedNameParserRuleCall_0_1_0; }
 		
-		//';'
+		//';'?
 		public Keyword getSemicolonKeyword_0_2() { return cSemicolonKeyword_0_2; }
 		
 		//imports+=YImport*
@@ -2320,36 +2320,48 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	public class YAnnotElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnot");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final RuleCall cYAnnotLengthParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
-		private final RuleCall cYAnnotDecimalParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		private final RuleCall cYAnnotActionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
-		private final RuleCall cYAnnotMessageParserRuleCall_3 = (RuleCall)cAlternatives.eContents().get(3);
-		private final RuleCall cYAnnotMsgTypeParserRuleCall_4 = (RuleCall)cAlternatives.eContents().get(4);
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cYAnnotAction_0 = (Action)cGroup.eContents().get(0);
+		private final Assignment cTypeAssignment_1 = (Assignment)cGroup.eContents().get(1);
+		private final Alternatives cTypeAlternatives_1_0 = (Alternatives)cTypeAssignment_1.eContents().get(0);
+		private final RuleCall cTypeYAnnotLengthParserRuleCall_1_0_0 = (RuleCall)cTypeAlternatives_1_0.eContents().get(0);
+		private final RuleCall cTypeYAnnotDecimalParserRuleCall_1_0_1 = (RuleCall)cTypeAlternatives_1_0.eContents().get(1);
+		private final RuleCall cTypeYAnnotActionParserRuleCall_1_0_2 = (RuleCall)cTypeAlternatives_1_0.eContents().get(2);
+		private final RuleCall cTypeYAnnotMessageParserRuleCall_1_0_3 = (RuleCall)cTypeAlternatives_1_0.eContents().get(3);
+		private final RuleCall cTypeYAnnotMsgTypeParserRuleCall_1_0_4 = (RuleCall)cTypeAlternatives_1_0.eContents().get(4);
 		
 		///*
 		// * Predefined annotations
 		// */ YAnnot:
-		//	YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType;
+		//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType
-		public Alternatives getAlternatives() { return cAlternatives; }
+		//{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType)
+		public Group getGroup() { return cGroup; }
+		
+		//{YAnnot}
+		public Action getYAnnotAction_0() { return cYAnnotAction_0; }
+		
+		//type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType)
+		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
+		
+		//(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType)
+		public Alternatives getTypeAlternatives_1_0() { return cTypeAlternatives_1_0; }
 		
 		//YAnnotLength
-		public RuleCall getYAnnotLengthParserRuleCall_0() { return cYAnnotLengthParserRuleCall_0; }
+		public RuleCall getTypeYAnnotLengthParserRuleCall_1_0_0() { return cTypeYAnnotLengthParserRuleCall_1_0_0; }
 		
 		//YAnnotDecimal
-		public RuleCall getYAnnotDecimalParserRuleCall_1() { return cYAnnotDecimalParserRuleCall_1; }
+		public RuleCall getTypeYAnnotDecimalParserRuleCall_1_0_1() { return cTypeYAnnotDecimalParserRuleCall_1_0_1; }
 		
 		//YAnnotAction
-		public RuleCall getYAnnotActionParserRuleCall_2() { return cYAnnotActionParserRuleCall_2; }
+		public RuleCall getTypeYAnnotActionParserRuleCall_1_0_2() { return cTypeYAnnotActionParserRuleCall_1_0_2; }
 		
 		//YAnnotMessage
-		public RuleCall getYAnnotMessageParserRuleCall_3() { return cYAnnotMessageParserRuleCall_3; }
+		public RuleCall getTypeYAnnotMessageParserRuleCall_1_0_3() { return cTypeYAnnotMessageParserRuleCall_1_0_3; }
 		
 		//YAnnotMsgType
-		public RuleCall getYAnnotMsgTypeParserRuleCall_4() { return cYAnnotMsgTypeParserRuleCall_4; }
+		public RuleCall getTypeYAnnotMsgTypeParserRuleCall_1_0_4() { return cTypeYAnnotMsgTypeParserRuleCall_1_0_4; }
 	}
 	public class YAnnotTopElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotTop");
@@ -2667,18 +2679,14 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cOptionalAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final Keyword cOptionalQuestionMarkKeyword_5_0 = (Keyword)cOptionalAssignment_5.eContents().get(0);
 		private final Assignment cAnnotsAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final Alternatives cAnnotsAlternatives_6_0 = (Alternatives)cAnnotsAssignment_6.eContents().get(0);
-		private final RuleCall cAnnotsYAnnotLengthParserRuleCall_6_0_0 = (RuleCall)cAnnotsAlternatives_6_0.eContents().get(0);
-		private final RuleCall cAnnotsYAnnotDecimalParserRuleCall_6_0_1 = (RuleCall)cAnnotsAlternatives_6_0.eContents().get(1);
+		private final RuleCall cAnnotsYAnnotParserRuleCall_6_0 = (RuleCall)cAnnotsAssignment_6.eContents().get(0);
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		//YAnnotAttr:
-		//	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] optional='?'? annots+=(YAnnotLength |
-		//	YAnnotDecimal)* ';';
+		//	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] optional='?'? annots+=YAnnot* ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] optional='?'? annots+=(YAnnotLength |
-		//YAnnotDecimal)* ';'
+		//{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] optional='?'? annots+=YAnnot* ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotAttr}
@@ -2711,19 +2719,13 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'?'
 		public Keyword getOptionalQuestionMarkKeyword_5_0() { return cOptionalQuestionMarkKeyword_5_0; }
 		
-		//annots+=(YAnnotLength | YAnnotDecimal)*
+		//annots+=YAnnot*
 		public Assignment getAnnotsAssignment_6() { return cAnnotsAssignment_6; }
 		
-		//(YAnnotLength | YAnnotDecimal)
-		public Alternatives getAnnotsAlternatives_6_0() { return cAnnotsAlternatives_6_0; }
+		//YAnnot
+		public RuleCall getAnnotsYAnnotParserRuleCall_6_0() { return cAnnotsYAnnotParserRuleCall_6_0; }
 		
-		//YAnnotLength
-		public RuleCall getAnnotsYAnnotLengthParserRuleCall_6_0_0() { return cAnnotsYAnnotLengthParserRuleCall_6_0_0; }
-		
-		//YAnnotDecimal
-		public RuleCall getAnnotsYAnnotDecimalParserRuleCall_6_0_1() { return cAnnotsYAnnotDecimalParserRuleCall_6_0_1; }
-		
-		//';'
+		//';'?
 		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
 	}
 	public class YAnnotRelElements extends AbstractParserRuleElementFinder {
@@ -2750,11 +2752,11 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//YAnnotRel:
 		//	{YAnnotRel} '@rel' name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'? ('<-'
-		//	inverse=[YAnnotRel|QualifiedName])? ';';
+		//	inverse=[YAnnotRel|QualifiedName])? ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{YAnnotRel} '@rel' name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'? ('<-'
-		//inverse=[YAnnotRel|QualifiedName])? ';'
+		//inverse=[YAnnotRel|QualifiedName])? ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotRel}
@@ -2808,7 +2810,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getInverseYAnnotRelQualifiedNameParserRuleCall_7_1_0_1() { return cInverseYAnnotRelQualifiedNameParserRuleCall_7_1_0_1; }
 		
-		//';'
+		//';'?
 		public Keyword getSemicolonKeyword_8() { return cSemicolonKeyword_8; }
 	}
 	public class YAnnotIdInnerElements extends AbstractParserRuleElementFinder {
@@ -2850,10 +2852,10 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		//YAnnotId:
-		//	{YAnnotId} '@id' name=ValidID '(' annots+=[YAnnotEntityInner] (',' annots+=[YAnnotEntityInner])* ')' ';';
+		//	{YAnnotId} '@id' name=ValidID '(' annots+=[YAnnotEntityInner] (',' annots+=[YAnnotEntityInner])* ')' ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotId} '@id' name=ValidID '(' annots+=[YAnnotEntityInner] (',' annots+=[YAnnotEntityInner])* ')' ';'
+		//{YAnnotId} '@id' name=ValidID '(' annots+=[YAnnotEntityInner] (',' annots+=[YAnnotEntityInner])* ')' ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotId}
@@ -2898,7 +2900,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
 		
-		//';'
+		//';'?
 		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
 	}
 	public class YAnnotTechnicalDesignElements extends AbstractParserRuleElementFinder {
@@ -3050,11 +3052,13 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cTypeVARCHARKeyword_4_0_0 = (Keyword)cTypeAlternatives_4_0.eContents().get(0);
 		private final Keyword cTypeCHARKeyword_4_0_1 = (Keyword)cTypeAlternatives_4_0.eContents().get(1);
 		private final Keyword cTypeINTEGERKeyword_4_0_2 = (Keyword)cTypeAlternatives_4_0.eContents().get(2);
-		private final Keyword cTypeSMALLINTKeyword_4_0_3 = (Keyword)cTypeAlternatives_4_0.eContents().get(3);
-		private final Keyword cTypeDECIMALKeyword_4_0_4 = (Keyword)cTypeAlternatives_4_0.eContents().get(4);
-		private final Keyword cTypeTIMEKeyword_4_0_5 = (Keyword)cTypeAlternatives_4_0.eContents().get(5);
-		private final Keyword cTypeDATEKeyword_4_0_6 = (Keyword)cTypeAlternatives_4_0.eContents().get(6);
-		private final Keyword cTypeTIMESTAMPKeyword_4_0_7 = (Keyword)cTypeAlternatives_4_0.eContents().get(7);
+		private final Keyword cTypeBIGINTKeyword_4_0_3 = (Keyword)cTypeAlternatives_4_0.eContents().get(3);
+		private final Keyword cTypeSMALLINTKeyword_4_0_4 = (Keyword)cTypeAlternatives_4_0.eContents().get(4);
+		private final Keyword cTypeDECIMALKeyword_4_0_5 = (Keyword)cTypeAlternatives_4_0.eContents().get(5);
+		private final Keyword cTypeTIMEKeyword_4_0_6 = (Keyword)cTypeAlternatives_4_0.eContents().get(6);
+		private final Keyword cTypeDATEKeyword_4_0_7 = (Keyword)cTypeAlternatives_4_0.eContents().get(7);
+		private final Keyword cTypeTIMESTAMPKeyword_4_0_8 = (Keyword)cTypeAlternatives_4_0.eContents().get(8);
+		private final Keyword cTypeBOOLEANKeyword_4_0_9 = (Keyword)cTypeAlternatives_4_0.eContents().get(9);
 		private final Assignment cOptionalAssignment_5 = (Assignment)cGroup.eContents().get(5);
 		private final Keyword cOptionalQuestionMarkKeyword_5_0 = (Keyword)cOptionalAssignment_5.eContents().get(0);
 		private final Assignment cAnnotsAssignment_6 = (Assignment)cGroup.eContents().get(6);
@@ -3065,12 +3069,12 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//YAnnotColumn:
 		//	{YAnnotColumn} '->' attrref=[YAnnotAttr|QualifiedName]
-		//	'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP') optional='?'?
-		//	annots+=(YAnnotLength | YAnnotDecimal)* ';';
+		//	'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'BIGINT' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP' |
+		//	'BOOLEAN') optional='?'? annots+=(YAnnotLength | YAnnotDecimal)* ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotColumn} '->' attrref=[YAnnotAttr|QualifiedName] 'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'SMALLINT' |
-		//'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP') optional='?'? annots+=(YAnnotLength | YAnnotDecimal)* ';'
+		//{YAnnotColumn} '->' attrref=[YAnnotAttr|QualifiedName] 'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'BIGINT' | 'SMALLINT'
+		//| 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP' | 'BOOLEAN') optional='?'? annots+=(YAnnotLength | YAnnotDecimal)* ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotColumn}
@@ -3091,10 +3095,10 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'as'
 		public Keyword getAsKeyword_3() { return cAsKeyword_3; }
 		
-		//type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP')
+		//type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'BIGINT' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP' | 'BOOLEAN')
 		public Assignment getTypeAssignment_4() { return cTypeAssignment_4; }
 		
-		//('VARCHAR' | 'CHAR' | 'INTEGER' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP')
+		//('VARCHAR' | 'CHAR' | 'INTEGER' | 'BIGINT' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP' | 'BOOLEAN')
 		public Alternatives getTypeAlternatives_4_0() { return cTypeAlternatives_4_0; }
 		
 		//'VARCHAR'
@@ -3106,20 +3110,26 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'INTEGER'
 		public Keyword getTypeINTEGERKeyword_4_0_2() { return cTypeINTEGERKeyword_4_0_2; }
 		
+		//'BIGINT'
+		public Keyword getTypeBIGINTKeyword_4_0_3() { return cTypeBIGINTKeyword_4_0_3; }
+		
 		//'SMALLINT'
-		public Keyword getTypeSMALLINTKeyword_4_0_3() { return cTypeSMALLINTKeyword_4_0_3; }
+		public Keyword getTypeSMALLINTKeyword_4_0_4() { return cTypeSMALLINTKeyword_4_0_4; }
 		
 		//'DECIMAL'
-		public Keyword getTypeDECIMALKeyword_4_0_4() { return cTypeDECIMALKeyword_4_0_4; }
+		public Keyword getTypeDECIMALKeyword_4_0_5() { return cTypeDECIMALKeyword_4_0_5; }
 		
 		//'TIME'
-		public Keyword getTypeTIMEKeyword_4_0_5() { return cTypeTIMEKeyword_4_0_5; }
+		public Keyword getTypeTIMEKeyword_4_0_6() { return cTypeTIMEKeyword_4_0_6; }
 		
 		//'DATE'
-		public Keyword getTypeDATEKeyword_4_0_6() { return cTypeDATEKeyword_4_0_6; }
+		public Keyword getTypeDATEKeyword_4_0_7() { return cTypeDATEKeyword_4_0_7; }
 		
 		//'TIMESTAMP'
-		public Keyword getTypeTIMESTAMPKeyword_4_0_7() { return cTypeTIMESTAMPKeyword_4_0_7; }
+		public Keyword getTypeTIMESTAMPKeyword_4_0_8() { return cTypeTIMESTAMPKeyword_4_0_8; }
+		
+		//'BOOLEAN'
+		public Keyword getTypeBOOLEANKeyword_4_0_9() { return cTypeBOOLEANKeyword_4_0_9; }
 		
 		//optional='?'?
 		public Assignment getOptionalAssignment_5() { return cOptionalAssignment_5; }
@@ -3139,7 +3149,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//YAnnotDecimal
 		public RuleCall getAnnotsYAnnotDecimalParserRuleCall_6_0_1() { return cAnnotsYAnnotDecimalParserRuleCall_6_0_1; }
 		
-		//';'
+		//';'?
 		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
 	}
 	public class YAnnotColumnLikeElements extends AbstractParserRuleElementFinder {
@@ -3150,12 +3160,13 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cColumnrefAssignment_2 = (Assignment)cGroup.eContents().get(2);
 		private final CrossReference cColumnrefYAnnotColumnCrossReference_2_0 = (CrossReference)cColumnrefAssignment_2.eContents().get(0);
 		private final RuleCall cColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cColumnrefYAnnotColumnCrossReference_2_0.eContents().get(1);
+		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//YAnnotColumnLike:
-		//	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName];
+		//	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName] ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName]
+		//{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName] ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotColumnLike}
@@ -3172,6 +3183,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//QualifiedName
 		public RuleCall getColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1() { return cColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1; }
+		
+		//';'?
+		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
 	}
 	public class YAnnotAbstractColumnElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotAbstractColumn");
@@ -3290,15 +3304,21 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cColumnsAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cColumnsYAnnotAbstractColumnParserRuleCall_4_0 = (RuleCall)cColumnsAssignment_4.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
+		private final Keyword cCommaKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
+		private final Assignment cColumnsAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final RuleCall cColumnsYAnnotAbstractColumnParserRuleCall_5_1_0 = (RuleCall)cColumnsAssignment_5_1.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
+		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		//YAnnotForeignKey:
 		//	{YAnnotForeignKey} '@foreign' relationship=[YAnnotRel|QualifiedName] '{'
-		//	columns+=YAnnotAbstractColumn*
-		//	'}';
+		//	columns+=YAnnotAbstractColumn (',' columns+=YAnnotAbstractColumn)*
+		//	'}' ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotForeignKey} '@foreign' relationship=[YAnnotRel|QualifiedName] '{' columns+=YAnnotAbstractColumn* '}'
+		//{YAnnotForeignKey} '@foreign' relationship=[YAnnotRel|QualifiedName] '{' columns+=YAnnotAbstractColumn (','
+		//columns+=YAnnotAbstractColumn)* '}' ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotForeignKey}
@@ -3319,31 +3339,49 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
 		
-		//columns+=YAnnotAbstractColumn*
+		//columns+=YAnnotAbstractColumn
 		public Assignment getColumnsAssignment_4() { return cColumnsAssignment_4; }
 		
 		//YAnnotAbstractColumn
 		public RuleCall getColumnsYAnnotAbstractColumnParserRuleCall_4_0() { return cColumnsYAnnotAbstractColumnParserRuleCall_4_0; }
 		
+		//(',' columns+=YAnnotAbstractColumn)*
+		public Group getGroup_5() { return cGroup_5; }
+		
+		//','
+		public Keyword getCommaKeyword_5_0() { return cCommaKeyword_5_0; }
+		
+		//columns+=YAnnotAbstractColumn
+		public Assignment getColumnsAssignment_5_1() { return cColumnsAssignment_5_1; }
+		
+		//YAnnotAbstractColumn
+		public RuleCall getColumnsYAnnotAbstractColumnParserRuleCall_5_1_0() { return cColumnsYAnnotAbstractColumnParserRuleCall_5_1_0; }
+		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_5() { return cRightCurlyBracketKeyword_5; }
+		public Keyword getRightCurlyBracketKeyword_6() { return cRightCurlyBracketKeyword_6; }
+		
+		//';'?
+		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
 	}
 	public class YAnnotJavaElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotJava");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cYAnnotJavaAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cJavaKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cDatabaseAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cDatabaseYAnnotDatabaseCrossReference_2_0 = (CrossReference)cDatabaseAssignment_2.eContents().get(0);
-		private final RuleCall cDatabaseYAnnotDatabaseIDTerminalRuleCall_2_0_1 = (RuleCall)cDatabaseYAnnotDatabaseCrossReference_2_0.eContents().get(1);
+		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
+		private final Keyword cUsesKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
+		private final Assignment cDatabaseAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
+		private final CrossReference cDatabaseYAnnotDatabaseCrossReference_2_1_0 = (CrossReference)cDatabaseAssignment_2_1.eContents().get(0);
+		private final RuleCall cDatabaseYAnnotDatabaseIDTerminalRuleCall_2_1_0_1 = (RuleCall)cDatabaseYAnnotDatabaseCrossReference_2_1_0.eContents().get(1);
+		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		///*
 		// * Swift Generation Annotations
 		// */ YAnnotJava:
-		//	{YAnnotJava} '@java' database+=[YAnnotDatabase]?;
+		//	{YAnnotJava} '@java' ('uses' database=[YAnnotDatabase])? ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotJava} '@java' database+=[YAnnotDatabase]?
+		//{YAnnotJava} '@java' ('uses' database=[YAnnotDatabase])? ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotJava}
@@ -3352,35 +3390,46 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'@java'
 		public Keyword getJavaKeyword_1() { return cJavaKeyword_1; }
 		
-		//database+=[YAnnotDatabase]?
-		public Assignment getDatabaseAssignment_2() { return cDatabaseAssignment_2; }
+		//('uses' database=[YAnnotDatabase])?
+		public Group getGroup_2() { return cGroup_2; }
+		
+		//'uses'
+		public Keyword getUsesKeyword_2_0() { return cUsesKeyword_2_0; }
+		
+		//database=[YAnnotDatabase]
+		public Assignment getDatabaseAssignment_2_1() { return cDatabaseAssignment_2_1; }
 		
 		//[YAnnotDatabase]
-		public CrossReference getDatabaseYAnnotDatabaseCrossReference_2_0() { return cDatabaseYAnnotDatabaseCrossReference_2_0; }
+		public CrossReference getDatabaseYAnnotDatabaseCrossReference_2_1_0() { return cDatabaseYAnnotDatabaseCrossReference_2_1_0; }
 		
 		//ID
-		public RuleCall getDatabaseYAnnotDatabaseIDTerminalRuleCall_2_0_1() { return cDatabaseYAnnotDatabaseIDTerminalRuleCall_2_0_1; }
+		public RuleCall getDatabaseYAnnotDatabaseIDTerminalRuleCall_2_1_0_1() { return cDatabaseYAnnotDatabaseIDTerminalRuleCall_2_1_0_1; }
+		
+		//';'?
+		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
 	}
 	public class YAnnotSwiftElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotSwift");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cYAnnotSwiftAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cSwiftKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
-		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cUsesKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cDatabaseAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cDatabaseYAnnotDatabaseCrossReference_3_1_0 = (CrossReference)cDatabaseAssignment_3_1.eContents().get(0);
-		private final RuleCall cDatabaseYAnnotDatabaseIDTerminalRuleCall_3_1_0_1 = (RuleCall)cDatabaseYAnnotDatabaseCrossReference_3_1_0.eContents().get(1);
+		private final Keyword cModuleKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cNameValidIDParserRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cUsesKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cDatabaseAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final CrossReference cDatabaseYAnnotDatabaseCrossReference_4_1_0 = (CrossReference)cDatabaseAssignment_4_1.eContents().get(0);
+		private final RuleCall cDatabaseYAnnotDatabaseIDTerminalRuleCall_4_1_0_1 = (RuleCall)cDatabaseYAnnotDatabaseCrossReference_4_1_0.eContents().get(1);
+		private final Keyword cSemicolonKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		
 		///*
 		// * Swift Generation Annotations
 		// */ YAnnotSwift:
-		//	{YAnnotSwift} '@swift' name=ValidID ('uses' database+=[YAnnotDatabase])?;
+		//	{YAnnotSwift} '@swift' 'module' name=ValidID ('uses' database=[YAnnotDatabase])? ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotSwift} '@swift' name=ValidID ('uses' database+=[YAnnotDatabase])?
+		//{YAnnotSwift} '@swift' 'module' name=ValidID ('uses' database=[YAnnotDatabase])? ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotSwift}
@@ -3389,26 +3438,32 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'@swift'
 		public Keyword getSwiftKeyword_1() { return cSwiftKeyword_1; }
 		
+		//'module'
+		public Keyword getModuleKeyword_2() { return cModuleKeyword_2; }
+		
 		//name=ValidID
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
 		
 		//ValidID
-		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
+		public RuleCall getNameValidIDParserRuleCall_3_0() { return cNameValidIDParserRuleCall_3_0; }
 		
-		//('uses' database+=[YAnnotDatabase])?
-		public Group getGroup_3() { return cGroup_3; }
+		//('uses' database=[YAnnotDatabase])?
+		public Group getGroup_4() { return cGroup_4; }
 		
 		//'uses'
-		public Keyword getUsesKeyword_3_0() { return cUsesKeyword_3_0; }
+		public Keyword getUsesKeyword_4_0() { return cUsesKeyword_4_0; }
 		
-		//database+=[YAnnotDatabase]
-		public Assignment getDatabaseAssignment_3_1() { return cDatabaseAssignment_3_1; }
+		//database=[YAnnotDatabase]
+		public Assignment getDatabaseAssignment_4_1() { return cDatabaseAssignment_4_1; }
 		
 		//[YAnnotDatabase]
-		public CrossReference getDatabaseYAnnotDatabaseCrossReference_3_1_0() { return cDatabaseYAnnotDatabaseCrossReference_3_1_0; }
+		public CrossReference getDatabaseYAnnotDatabaseCrossReference_4_1_0() { return cDatabaseYAnnotDatabaseCrossReference_4_1_0; }
 		
 		//ID
-		public RuleCall getDatabaseYAnnotDatabaseIDTerminalRuleCall_3_1_0_1() { return cDatabaseYAnnotDatabaseIDTerminalRuleCall_3_1_0_1; }
+		public RuleCall getDatabaseYAnnotDatabaseIDTerminalRuleCall_4_1_0_1() { return cDatabaseYAnnotDatabaseIDTerminalRuleCall_4_1_0_1; }
+		
+		//';'?
+		public Keyword getSemicolonKeyword_5() { return cSemicolonKeyword_5; }
 	}
 	public class YAnnotDatabaseElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotDatabase");
@@ -3422,10 +3477,10 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		///*
 		// * Database Generation Annotations
 		// */ YAnnotDatabase:
-		//	{YAnnotDatabase} '@database' name=ValidID ';';
+		//	{YAnnotDatabase} '@database' name=ValidID ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotDatabase} '@database' name=ValidID ';'
+		//{YAnnotDatabase} '@database' name=ValidID ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotDatabase}
@@ -3440,7 +3495,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//ValidID
 		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 		
-		//';'
+		//';'?
 		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
 	}
 	
@@ -3672,7 +3727,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 
 	
 	//YWidget:
-	//	('package' name=QualifiedName ';')?
+	//	('package' name=QualifiedName ';'?)?
 	//	imports+=YImport*
 	//	annotations+=YAnnotTop*
 	//	classes+=YClass*;
@@ -4236,7 +4291,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * Predefined annotations
 	// */ YAnnot:
-	//	YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType;
+	//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType);
 	public YAnnotElements getYAnnotAccess() {
 		return pYAnnot;
 	}
@@ -4328,8 +4383,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YAnnotAttr:
-	//	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] optional='?'? annots+=(YAnnotLength |
-	//	YAnnotDecimal)* ';';
+	//	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] optional='?'? annots+=YAnnot* ';'?;
 	public YAnnotAttrElements getYAnnotAttrAccess() {
 		return pYAnnotAttr;
 	}
@@ -4340,7 +4394,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//YAnnotRel:
 	//	{YAnnotRel} '@rel' name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'? ('<-'
-	//	inverse=[YAnnotRel|QualifiedName])? ';';
+	//	inverse=[YAnnotRel|QualifiedName])? ';'?;
 	public YAnnotRelElements getYAnnotRelAccess() {
 		return pYAnnotRel;
 	}
@@ -4360,7 +4414,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YAnnotId:
-	//	{YAnnotId} '@id' name=ValidID '(' annots+=[YAnnotEntityInner] (',' annots+=[YAnnotEntityInner])* ')' ';';
+	//	{YAnnotId} '@id' name=ValidID '(' annots+=[YAnnotEntityInner] (',' annots+=[YAnnotEntityInner])* ')' ';'?;
 	public YAnnotIdElements getYAnnotIdAccess() {
 		return pYAnnotId;
 	}
@@ -4399,8 +4453,8 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//YAnnotColumn:
 	//	{YAnnotColumn} '->' attrref=[YAnnotAttr|QualifiedName]
-	//	'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP') optional='?'?
-	//	annots+=(YAnnotLength | YAnnotDecimal)* ';';
+	//	'as' type=('VARCHAR' | 'CHAR' | 'INTEGER' | 'BIGINT' | 'SMALLINT' | 'DECIMAL' | 'TIME' | 'DATE' | 'TIMESTAMP' |
+	//	'BOOLEAN') optional='?'? annots+=(YAnnotLength | YAnnotDecimal)* ';'?;
 	public YAnnotColumnElements getYAnnotColumnAccess() {
 		return pYAnnotColumn;
 	}
@@ -4410,7 +4464,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YAnnotColumnLike:
-	//	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName];
+	//	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName] ';'?;
 	public YAnnotColumnLikeElements getYAnnotColumnLikeAccess() {
 		return pYAnnotColumnLike;
 	}
@@ -4441,8 +4495,8 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//YAnnotForeignKey:
 	//	{YAnnotForeignKey} '@foreign' relationship=[YAnnotRel|QualifiedName] '{'
-	//	columns+=YAnnotAbstractColumn*
-	//	'}';
+	//	columns+=YAnnotAbstractColumn (',' columns+=YAnnotAbstractColumn)*
+	//	'}' ';'?;
 	public YAnnotForeignKeyElements getYAnnotForeignKeyAccess() {
 		return pYAnnotForeignKey;
 	}
@@ -4454,7 +4508,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * Swift Generation Annotations
 	// */ YAnnotJava:
-	//	{YAnnotJava} '@java' database+=[YAnnotDatabase]?;
+	//	{YAnnotJava} '@java' ('uses' database=[YAnnotDatabase])? ';'?;
 	public YAnnotJavaElements getYAnnotJavaAccess() {
 		return pYAnnotJava;
 	}
@@ -4466,7 +4520,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * Swift Generation Annotations
 	// */ YAnnotSwift:
-	//	{YAnnotSwift} '@swift' name=ValidID ('uses' database+=[YAnnotDatabase])?;
+	//	{YAnnotSwift} '@swift' 'module' name=ValidID ('uses' database=[YAnnotDatabase])? ';'?;
 	public YAnnotSwiftElements getYAnnotSwiftAccess() {
 		return pYAnnotSwift;
 	}
@@ -4478,7 +4532,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * Database Generation Annotations
 	// */ YAnnotDatabase:
-	//	{YAnnotDatabase} '@database' name=ValidID ';';
+	//	{YAnnotDatabase} '@database' name=ValidID ';'?;
 	public YAnnotDatabaseElements getYAnnotDatabaseAccess() {
 		return pYAnnotDatabase;
 	}

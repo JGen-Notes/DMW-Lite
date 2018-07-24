@@ -44,10 +44,9 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYMultiplicativeExpressionAccess().getOpAlternatives_1_1_0(), "rule__YMultiplicativeExpression__OpAlternatives_1_1_0");
 					put(grammarAccess.getYTerminalExpressionAccess().getAlternatives(), "rule__YTerminalExpression__Alternatives");
 					put(grammarAccess.getYTerminalExpressionAccess().getValueAlternatives_2_1_0(), "rule__YTerminalExpression__ValueAlternatives_2_1_0");
-					put(grammarAccess.getYAnnotAccess().getAlternatives(), "rule__YAnnot__Alternatives");
+					put(grammarAccess.getYAnnotAccess().getTypeAlternatives_1_0(), "rule__YAnnot__TypeAlternatives_1_0");
 					put(grammarAccess.getYAnnotTopAccess().getTypeAlternatives_0(), "rule__YAnnotTop__TypeAlternatives_0");
 					put(grammarAccess.getYAnnotEntityInnerAccess().getAlternatives(), "rule__YAnnotEntityInner__Alternatives");
-					put(grammarAccess.getYAnnotAttrAccess().getAnnotsAlternatives_6_0(), "rule__YAnnotAttr__AnnotsAlternatives_6_0");
 					put(grammarAccess.getYAnnotIdInnerAccess().getAlternatives(), "rule__YAnnotIdInner__Alternatives");
 					put(grammarAccess.getYAnnotColumnAccess().getTypeAlternatives_4_0(), "rule__YAnnotColumn__TypeAlternatives_4_0");
 					put(grammarAccess.getYAnnotColumnAccess().getAnnotsAlternatives_6_0(), "rule__YAnnotColumn__AnnotsAlternatives_6_0");
@@ -131,6 +130,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYWhileStatementAccess().getGroup(), "rule__YWhileStatement__Group__0");
 					put(grammarAccess.getYRepeatWhileStatementAccess().getGroup(), "rule__YRepeatWhileStatement__Group__0");
 					put(grammarAccess.getYForInStatementAccess().getGroup(), "rule__YForInStatement__Group__0");
+					put(grammarAccess.getYAnnotAccess().getGroup(), "rule__YAnnot__Group__0");
 					put(grammarAccess.getYAnnotLengthAccess().getGroup(), "rule__YAnnotLength__Group__0");
 					put(grammarAccess.getYAnnotDecimalAccess().getGroup(), "rule__YAnnotDecimal__Group__0");
 					put(grammarAccess.getYAnnotActionAccess().getGroup(), "rule__YAnnotAction__Group__0");
@@ -151,9 +151,11 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotPrimaryKeyAccess().getGroup(), "rule__YAnnotPrimaryKey__Group__0");
 					put(grammarAccess.getYAnnotPrimaryKeyAccess().getGroup_4(), "rule__YAnnotPrimaryKey__Group_4__0");
 					put(grammarAccess.getYAnnotForeignKeyAccess().getGroup(), "rule__YAnnotForeignKey__Group__0");
+					put(grammarAccess.getYAnnotForeignKeyAccess().getGroup_5(), "rule__YAnnotForeignKey__Group_5__0");
 					put(grammarAccess.getYAnnotJavaAccess().getGroup(), "rule__YAnnotJava__Group__0");
+					put(grammarAccess.getYAnnotJavaAccess().getGroup_2(), "rule__YAnnotJava__Group_2__0");
 					put(grammarAccess.getYAnnotSwiftAccess().getGroup(), "rule__YAnnotSwift__Group__0");
-					put(grammarAccess.getYAnnotSwiftAccess().getGroup_3(), "rule__YAnnotSwift__Group_3__0");
+					put(grammarAccess.getYAnnotSwiftAccess().getGroup_4(), "rule__YAnnotSwift__Group_4__0");
 					put(grammarAccess.getYAnnotDatabaseAccess().getGroup(), "rule__YAnnotDatabase__Group__0");
 					put(grammarAccess.getYWidgetAccess().getNameAssignment_0_1(), "rule__YWidget__NameAssignment_0_1");
 					put(grammarAccess.getYWidgetAccess().getImportsAssignment_1(), "rule__YWidget__ImportsAssignment_1");
@@ -252,6 +254,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYForInStatementAccess().getItemAssignment_1(), "rule__YForInStatement__ItemAssignment_1");
 					put(grammarAccess.getYForInStatementAccess().getCollectionAssignment_3(), "rule__YForInStatement__CollectionAssignment_3");
 					put(grammarAccess.getYForInStatementAccess().getBodyAssignment_4(), "rule__YForInStatement__BodyAssignment_4");
+					put(grammarAccess.getYAnnotAccess().getTypeAssignment_1(), "rule__YAnnot__TypeAssignment_1");
 					put(grammarAccess.getYAnnotTopAccess().getTypeAssignment(), "rule__YAnnotTop__TypeAssignment");
 					put(grammarAccess.getYAnnotLengthAccess().getLengthAssignment_3(), "rule__YAnnotLength__LengthAssignment_3");
 					put(grammarAccess.getYAnnotDecimalAccess().getLengthAssignment_3(), "rule__YAnnotDecimal__LengthAssignment_3");
@@ -292,9 +295,10 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotPrimaryKeyAccess().getColumnsAssignment_4_1(), "rule__YAnnotPrimaryKey__ColumnsAssignment_4_1");
 					put(grammarAccess.getYAnnotForeignKeyAccess().getRelationshipAssignment_2(), "rule__YAnnotForeignKey__RelationshipAssignment_2");
 					put(grammarAccess.getYAnnotForeignKeyAccess().getColumnsAssignment_4(), "rule__YAnnotForeignKey__ColumnsAssignment_4");
-					put(grammarAccess.getYAnnotJavaAccess().getDatabaseAssignment_2(), "rule__YAnnotJava__DatabaseAssignment_2");
-					put(grammarAccess.getYAnnotSwiftAccess().getNameAssignment_2(), "rule__YAnnotSwift__NameAssignment_2");
-					put(grammarAccess.getYAnnotSwiftAccess().getDatabaseAssignment_3_1(), "rule__YAnnotSwift__DatabaseAssignment_3_1");
+					put(grammarAccess.getYAnnotForeignKeyAccess().getColumnsAssignment_5_1(), "rule__YAnnotForeignKey__ColumnsAssignment_5_1");
+					put(grammarAccess.getYAnnotJavaAccess().getDatabaseAssignment_2_1(), "rule__YAnnotJava__DatabaseAssignment_2_1");
+					put(grammarAccess.getYAnnotSwiftAccess().getNameAssignment_3(), "rule__YAnnotSwift__NameAssignment_3");
+					put(grammarAccess.getYAnnotSwiftAccess().getDatabaseAssignment_4_1(), "rule__YAnnotSwift__DatabaseAssignment_4_1");
 					put(grammarAccess.getYAnnotDatabaseAccess().getNameAssignment_2(), "rule__YAnnotDatabase__NameAssignment_2");
 				}
 			};

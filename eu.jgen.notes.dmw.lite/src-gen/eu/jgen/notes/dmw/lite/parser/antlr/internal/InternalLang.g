@@ -101,10 +101,12 @@ ruleYWidget returns [EObject current=null]
 					}
 				)
 			)
-			otherlv_2=';'
-			{
-				newLeafNode(otherlv_2, grammarAccess.getYWidgetAccess().getSemicolonKeyword_0_2());
-			}
+			(
+				otherlv_2=';'
+				{
+					newLeafNode(otherlv_2, grammarAccess.getYWidgetAccess().getSemicolonKeyword_0_2());
+				}
+			)?
 		)?
 		(
 			(
@@ -3702,50 +3704,98 @@ ruleYAnnot returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		{
-			newCompositeNode(grammarAccess.getYAnnotAccess().getYAnnotLengthParserRuleCall_0());
-		}
-		this_YAnnotLength_0=ruleYAnnotLength
-		{
-			$current = $this_YAnnotLength_0.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getYAnnotAccess().getYAnnotDecimalParserRuleCall_1());
-		}
-		this_YAnnotDecimal_1=ruleYAnnotDecimal
-		{
-			$current = $this_YAnnotDecimal_1.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getYAnnotAccess().getYAnnotActionParserRuleCall_2());
-		}
-		this_YAnnotAction_2=ruleYAnnotAction
-		{
-			$current = $this_YAnnotAction_2.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getYAnnotAccess().getYAnnotMessageParserRuleCall_3());
-		}
-		this_YAnnotMessage_3=ruleYAnnotMessage
-		{
-			$current = $this_YAnnotMessage_3.current;
-			afterParserOrEnumRuleCall();
-		}
-		    |
-		{
-			newCompositeNode(grammarAccess.getYAnnotAccess().getYAnnotMsgTypeParserRuleCall_4());
-		}
-		this_YAnnotMsgType_4=ruleYAnnotMsgType
-		{
-			$current = $this_YAnnotMsgType_4.current;
-			afterParserOrEnumRuleCall();
-		}
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getYAnnotAccess().getYAnnotAction_0(),
+					$current);
+			}
+		)
+		(
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getYAnnotAccess().getTypeYAnnotLengthParserRuleCall_1_0_0());
+					}
+					lv_type_1_1=ruleYAnnotLength
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_1_1,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotLength");
+						afterParserOrEnumRuleCall();
+					}
+					    |
+					{
+						newCompositeNode(grammarAccess.getYAnnotAccess().getTypeYAnnotDecimalParserRuleCall_1_0_1());
+					}
+					lv_type_1_2=ruleYAnnotDecimal
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_1_2,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotDecimal");
+						afterParserOrEnumRuleCall();
+					}
+					    |
+					{
+						newCompositeNode(grammarAccess.getYAnnotAccess().getTypeYAnnotActionParserRuleCall_1_0_2());
+					}
+					lv_type_1_3=ruleYAnnotAction
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_1_3,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotAction");
+						afterParserOrEnumRuleCall();
+					}
+					    |
+					{
+						newCompositeNode(grammarAccess.getYAnnotAccess().getTypeYAnnotMessageParserRuleCall_1_0_3());
+					}
+					lv_type_1_4=ruleYAnnotMessage
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_1_4,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotMessage");
+						afterParserOrEnumRuleCall();
+					}
+					    |
+					{
+						newCompositeNode(grammarAccess.getYAnnotAccess().getTypeYAnnotMsgTypeParserRuleCall_1_0_4());
+					}
+					lv_type_1_5=ruleYAnnotMsgType
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_1_5,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotMsgType");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)
 	)
 ;
 
@@ -4366,45 +4416,29 @@ ruleYAnnotAttr returns [EObject current=null]
 		)?
 		(
 			(
-				(
-					{
-						newCompositeNode(grammarAccess.getYAnnotAttrAccess().getAnnotsYAnnotLengthParserRuleCall_6_0_0());
+				{
+					newCompositeNode(grammarAccess.getYAnnotAttrAccess().getAnnotsYAnnotParserRuleCall_6_0());
+				}
+				lv_annots_6_0=ruleYAnnot
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getYAnnotAttrRule());
 					}
-					lv_annots_6_1=ruleYAnnotLength
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getYAnnotAttrRule());
-						}
-						add(
-							$current,
-							"annots",
-							lv_annots_6_1,
-							"eu.jgen.notes.dmw.lite.Lang.YAnnotLength");
-						afterParserOrEnumRuleCall();
-					}
-					    |
-					{
-						newCompositeNode(grammarAccess.getYAnnotAttrAccess().getAnnotsYAnnotDecimalParserRuleCall_6_0_1());
-					}
-					lv_annots_6_2=ruleYAnnotDecimal
-					{
-						if ($current==null) {
-							$current = createModelElementForParent(grammarAccess.getYAnnotAttrRule());
-						}
-						add(
-							$current,
-							"annots",
-							lv_annots_6_2,
-							"eu.jgen.notes.dmw.lite.Lang.YAnnotDecimal");
-						afterParserOrEnumRuleCall();
-					}
-				)
+					add(
+						$current,
+						"annots",
+						lv_annots_6_0,
+						"eu.jgen.notes.dmw.lite.Lang.YAnnot");
+					afterParserOrEnumRuleCall();
+				}
 			)
 		)*
-		otherlv_7=';'
-		{
-			newLeafNode(otherlv_7, grammarAccess.getYAnnotAttrAccess().getSemicolonKeyword_7());
-		}
+		(
+			otherlv_7=';'
+			{
+				newLeafNode(otherlv_7, grammarAccess.getYAnnotAttrAccess().getSemicolonKeyword_7());
+			}
+		)?
 	)
 ;
 
@@ -4524,10 +4558,12 @@ ruleYAnnotRel returns [EObject current=null]
 				)
 			)
 		)?
-		otherlv_9=';'
-		{
-			newLeafNode(otherlv_9, grammarAccess.getYAnnotRelAccess().getSemicolonKeyword_8());
-		}
+		(
+			otherlv_9=';'
+			{
+				newLeafNode(otherlv_9, grammarAccess.getYAnnotRelAccess().getSemicolonKeyword_8());
+			}
+		)?
 	)
 ;
 
@@ -4617,10 +4653,12 @@ ruleYAnnotId returns [EObject current=null]
 		{
 			newLeafNode(otherlv_7, grammarAccess.getYAnnotIdAccess().getRightParenthesisKeyword_6());
 		}
-		otherlv_8=';'
-		{
-			newLeafNode(otherlv_8, grammarAccess.getYAnnotIdAccess().getSemicolonKeyword_7());
-		}
+		(
+			otherlv_8=';'
+			{
+				newLeafNode(otherlv_8, grammarAccess.getYAnnotIdAccess().getSemicolonKeyword_7());
+			}
+		)?
 	)
 ;
 
@@ -4915,9 +4953,9 @@ ruleYAnnotColumn returns [EObject current=null]
 						setWithLastConsumed($current, "type", lv_type_4_3, null);
 					}
 					    |
-					lv_type_4_4='SMALLINT'
+					lv_type_4_4='BIGINT'
 					{
-						newLeafNode(lv_type_4_4, grammarAccess.getYAnnotColumnAccess().getTypeSMALLINTKeyword_4_0_3());
+						newLeafNode(lv_type_4_4, grammarAccess.getYAnnotColumnAccess().getTypeBIGINTKeyword_4_0_3());
 					}
 					{
 						if ($current==null) {
@@ -4926,9 +4964,9 @@ ruleYAnnotColumn returns [EObject current=null]
 						setWithLastConsumed($current, "type", lv_type_4_4, null);
 					}
 					    |
-					lv_type_4_5='DECIMAL'
+					lv_type_4_5='SMALLINT'
 					{
-						newLeafNode(lv_type_4_5, grammarAccess.getYAnnotColumnAccess().getTypeDECIMALKeyword_4_0_4());
+						newLeafNode(lv_type_4_5, grammarAccess.getYAnnotColumnAccess().getTypeSMALLINTKeyword_4_0_4());
 					}
 					{
 						if ($current==null) {
@@ -4937,9 +4975,9 @@ ruleYAnnotColumn returns [EObject current=null]
 						setWithLastConsumed($current, "type", lv_type_4_5, null);
 					}
 					    |
-					lv_type_4_6='TIME'
+					lv_type_4_6='DECIMAL'
 					{
-						newLeafNode(lv_type_4_6, grammarAccess.getYAnnotColumnAccess().getTypeTIMEKeyword_4_0_5());
+						newLeafNode(lv_type_4_6, grammarAccess.getYAnnotColumnAccess().getTypeDECIMALKeyword_4_0_5());
 					}
 					{
 						if ($current==null) {
@@ -4948,9 +4986,9 @@ ruleYAnnotColumn returns [EObject current=null]
 						setWithLastConsumed($current, "type", lv_type_4_6, null);
 					}
 					    |
-					lv_type_4_7='DATE'
+					lv_type_4_7='TIME'
 					{
-						newLeafNode(lv_type_4_7, grammarAccess.getYAnnotColumnAccess().getTypeDATEKeyword_4_0_6());
+						newLeafNode(lv_type_4_7, grammarAccess.getYAnnotColumnAccess().getTypeTIMEKeyword_4_0_6());
 					}
 					{
 						if ($current==null) {
@@ -4959,15 +4997,37 @@ ruleYAnnotColumn returns [EObject current=null]
 						setWithLastConsumed($current, "type", lv_type_4_7, null);
 					}
 					    |
-					lv_type_4_8='TIMESTAMP'
+					lv_type_4_8='DATE'
 					{
-						newLeafNode(lv_type_4_8, grammarAccess.getYAnnotColumnAccess().getTypeTIMESTAMPKeyword_4_0_7());
+						newLeafNode(lv_type_4_8, grammarAccess.getYAnnotColumnAccess().getTypeDATEKeyword_4_0_7());
 					}
 					{
 						if ($current==null) {
 							$current = createModelElement(grammarAccess.getYAnnotColumnRule());
 						}
 						setWithLastConsumed($current, "type", lv_type_4_8, null);
+					}
+					    |
+					lv_type_4_9='TIMESTAMP'
+					{
+						newLeafNode(lv_type_4_9, grammarAccess.getYAnnotColumnAccess().getTypeTIMESTAMPKeyword_4_0_8());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getYAnnotColumnRule());
+						}
+						setWithLastConsumed($current, "type", lv_type_4_9, null);
+					}
+					    |
+					lv_type_4_10='BOOLEAN'
+					{
+						newLeafNode(lv_type_4_10, grammarAccess.getYAnnotColumnAccess().getTypeBOOLEANKeyword_4_0_9());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getYAnnotColumnRule());
+						}
+						setWithLastConsumed($current, "type", lv_type_4_10, null);
 					}
 				)
 			)
@@ -5023,10 +5083,12 @@ ruleYAnnotColumn returns [EObject current=null]
 				)
 			)
 		)*
-		otherlv_7=';'
-		{
-			newLeafNode(otherlv_7, grammarAccess.getYAnnotColumnAccess().getSemicolonKeyword_7());
-		}
+		(
+			otherlv_7=';'
+			{
+				newLeafNode(otherlv_7, grammarAccess.getYAnnotColumnAccess().getSemicolonKeyword_7());
+			}
+		)?
 	)
 ;
 
@@ -5073,6 +5135,12 @@ ruleYAnnotColumnLike returns [EObject current=null]
 				}
 			)
 		)
+		(
+			otherlv_3=';'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getYAnnotColumnLikeAccess().getSemicolonKeyword_3());
+			}
+		)?
 	)
 ;
 
@@ -5301,11 +5369,42 @@ ruleYAnnotForeignKey returns [EObject current=null]
 					afterParserOrEnumRuleCall();
 				}
 			)
+		)
+		(
+			otherlv_5=','
+			{
+				newLeafNode(otherlv_5, grammarAccess.getYAnnotForeignKeyAccess().getCommaKeyword_5_0());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getYAnnotForeignKeyAccess().getColumnsYAnnotAbstractColumnParserRuleCall_5_1_0());
+					}
+					lv_columns_6_0=ruleYAnnotAbstractColumn
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotForeignKeyRule());
+						}
+						add(
+							$current,
+							"columns",
+							lv_columns_6_0,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotAbstractColumn");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
 		)*
-		otherlv_5='}'
+		otherlv_7='}'
 		{
-			newLeafNode(otherlv_5, grammarAccess.getYAnnotForeignKeyAccess().getRightCurlyBracketKeyword_5());
+			newLeafNode(otherlv_7, grammarAccess.getYAnnotForeignKeyAccess().getRightCurlyBracketKeyword_6());
 		}
+		(
+			otherlv_8=';'
+			{
+				newLeafNode(otherlv_8, grammarAccess.getYAnnotForeignKeyAccess().getSemicolonKeyword_7());
+			}
+		)?
 	)
 ;
 
@@ -5337,17 +5436,29 @@ ruleYAnnotJava returns [EObject current=null]
 			newLeafNode(otherlv_1, grammarAccess.getYAnnotJavaAccess().getJavaKeyword_1());
 		}
 		(
+			otherlv_2='uses'
+			{
+				newLeafNode(otherlv_2, grammarAccess.getYAnnotJavaAccess().getUsesKeyword_2_0());
+			}
 			(
-				{
-					if ($current==null) {
-						$current = createModelElement(grammarAccess.getYAnnotJavaRule());
+				(
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getYAnnotJavaRule());
+						}
 					}
-				}
-				otherlv_2=RULE_ID
-				{
-					newLeafNode(otherlv_2, grammarAccess.getYAnnotJavaAccess().getDatabaseYAnnotDatabaseCrossReference_2_0());
-				}
+					otherlv_3=RULE_ID
+					{
+						newLeafNode(otherlv_3, grammarAccess.getYAnnotJavaAccess().getDatabaseYAnnotDatabaseCrossReference_2_1_0());
+					}
+				)
 			)
+		)?
+		(
+			otherlv_4=';'
+			{
+				newLeafNode(otherlv_4, grammarAccess.getYAnnotJavaAccess().getSemicolonKeyword_3());
+			}
 		)?
 	)
 ;
@@ -5379,12 +5490,16 @@ ruleYAnnotSwift returns [EObject current=null]
 		{
 			newLeafNode(otherlv_1, grammarAccess.getYAnnotSwiftAccess().getSwiftKeyword_1());
 		}
+		otherlv_2='module'
+		{
+			newLeafNode(otherlv_2, grammarAccess.getYAnnotSwiftAccess().getModuleKeyword_2());
+		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYAnnotSwiftAccess().getNameValidIDParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getYAnnotSwiftAccess().getNameValidIDParserRuleCall_3_0());
 				}
-				lv_name_2_0=ruleValidID
+				lv_name_3_0=ruleValidID
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYAnnotSwiftRule());
@@ -5392,16 +5507,16 @@ ruleYAnnotSwift returns [EObject current=null]
 					set(
 						$current,
 						"name",
-						lv_name_2_0,
+						lv_name_3_0,
 						"eu.jgen.notes.dmw.lite.Lang.ValidID");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
 		(
-			otherlv_3='uses'
+			otherlv_4='uses'
 			{
-				newLeafNode(otherlv_3, grammarAccess.getYAnnotSwiftAccess().getUsesKeyword_3_0());
+				newLeafNode(otherlv_4, grammarAccess.getYAnnotSwiftAccess().getUsesKeyword_4_0());
 			}
 			(
 				(
@@ -5410,12 +5525,18 @@ ruleYAnnotSwift returns [EObject current=null]
 							$current = createModelElement(grammarAccess.getYAnnotSwiftRule());
 						}
 					}
-					otherlv_4=RULE_ID
+					otherlv_5=RULE_ID
 					{
-						newLeafNode(otherlv_4, grammarAccess.getYAnnotSwiftAccess().getDatabaseYAnnotDatabaseCrossReference_3_1_0());
+						newLeafNode(otherlv_5, grammarAccess.getYAnnotSwiftAccess().getDatabaseYAnnotDatabaseCrossReference_4_1_0());
 					}
 				)
 			)
+		)?
+		(
+			otherlv_6=';'
+			{
+				newLeafNode(otherlv_6, grammarAccess.getYAnnotSwiftAccess().getSemicolonKeyword_5());
+			}
 		)?
 	)
 ;
@@ -5466,10 +5587,12 @@ ruleYAnnotDatabase returns [EObject current=null]
 				}
 			)
 		)
-		otherlv_3=';'
-		{
-			newLeafNode(otherlv_3, grammarAccess.getYAnnotDatabaseAccess().getSemicolonKeyword_3());
-		}
+		(
+			otherlv_3=';'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getYAnnotDatabaseAccess().getSemicolonKeyword_3());
+			}
+		)?
 	)
 ;
 

@@ -24,7 +24,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		input.allContents.filter[element|element instanceof YAnnotJava].forEach [ element |
 			val annotSwift = element as YAnnotJava
-			if (annotSwift.database == "MySQL") {
+			if (annotSwift.database.name == "MySQL") {
 				input.allContents.filter[element2|element instanceof YWidget].forEach [ element2 |
 					val widget = element2 as YWidget
 					generateWidget(fsa, widget)
