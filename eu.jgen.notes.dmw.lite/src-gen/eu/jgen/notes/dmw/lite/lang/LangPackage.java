@@ -1582,13 +1582,22 @@ public interface LangPackage extends EPackage
   int YANNOT_REL = 37;
 
   /**
+   * The feature id for the '<em><b>Parent</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_REL__PARENT = YANNOT_ENTITY_INNER_FEATURE_COUNT + 0;
+
+  /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YANNOT_REL__NAME = YANNOT_ENTITY_INNER_FEATURE_COUNT + 0;
+  int YANNOT_REL__NAME = YANNOT_ENTITY_INNER_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Optional</b></em>' attribute.
@@ -1597,7 +1606,7 @@ public interface LangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int YANNOT_REL__OPTIONAL = YANNOT_ENTITY_INNER_FEATURE_COUNT + 1;
+  int YANNOT_REL__OPTIONAL = YANNOT_ENTITY_INNER_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Target</b></em>' reference.
@@ -1606,7 +1615,7 @@ public interface LangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int YANNOT_REL__TARGET = YANNOT_ENTITY_INNER_FEATURE_COUNT + 2;
+  int YANNOT_REL__TARGET = YANNOT_ENTITY_INNER_FEATURE_COUNT + 3;
 
   /**
    * The feature id for the '<em><b>Many</b></em>' attribute.
@@ -1615,7 +1624,7 @@ public interface LangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int YANNOT_REL__MANY = YANNOT_ENTITY_INNER_FEATURE_COUNT + 3;
+  int YANNOT_REL__MANY = YANNOT_ENTITY_INNER_FEATURE_COUNT + 4;
 
   /**
    * The feature id for the '<em><b>Inverse</b></em>' reference.
@@ -1624,7 +1633,7 @@ public interface LangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int YANNOT_REL__INVERSE = YANNOT_ENTITY_INNER_FEATURE_COUNT + 4;
+  int YANNOT_REL__INVERSE = YANNOT_ENTITY_INNER_FEATURE_COUNT + 5;
 
   /**
    * The number of structural features of the '<em>YAnnot Rel</em>' class.
@@ -1633,7 +1642,7 @@ public interface LangPackage extends EPackage
    * @generated
    * @ordered
    */
-  int YANNOT_REL_FEATURE_COUNT = YANNOT_ENTITY_INNER_FEATURE_COUNT + 5;
+  int YANNOT_REL_FEATURE_COUNT = YANNOT_ENTITY_INNER_FEATURE_COUNT + 6;
 
   /**
    * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotIdInnerImpl <em>YAnnot Id Inner</em>}' class.
@@ -4086,6 +4095,17 @@ public interface LangPackage extends EPackage
   EClass getYAnnotRel();
 
   /**
+   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotRel#isParent <em>Parent</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Parent</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotRel#isParent()
+   * @see #getYAnnotRel()
+   * @generated
+   */
+  EAttribute getYAnnotRel_Parent();
+
+  /**
    * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotRel#getName <em>Name</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -6125,6 +6145,14 @@ public interface LangPackage extends EPackage
      * @generated
      */
     EClass YANNOT_REL = eINSTANCE.getYAnnotRel();
+
+    /**
+     * The meta object literal for the '<em><b>Parent</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute YANNOT_REL__PARENT = eINSTANCE.getYAnnotRel_Parent();
 
     /**
      * The meta object literal for the '<em><b>Name</b></em>' attribute feature.

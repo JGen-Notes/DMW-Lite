@@ -55,4 +55,28 @@ class LangJavaGeneratorHelper {
 
 		
 	}
+	
+	def String nameOfReturnValue(String typeName) {
+		  switch (typeName) {
+		  	case "Int": {
+		  		return "int"
+		  	}
+		  	case "Short": {
+		  		return "short"
+		  	}
+		  	case "Long": {
+		  		return "long"
+		  	}
+		   case "Decimal": {
+		  		return "double"
+		  	}
+		  	default: {
+		  		return typeName
+		  	}
+		  }
+	}
+	
+	
+	
+	
 }

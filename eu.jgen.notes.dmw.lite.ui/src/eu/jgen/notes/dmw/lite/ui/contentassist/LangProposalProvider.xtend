@@ -34,6 +34,8 @@ import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
 import eu.jgen.notes.dmw.lite.scoping.LangIndex
+import org.eclipse.xtext.CrossReference
+import eu.jgen.notes.dmw.lite.lang.YAnnotRel
 
 /**
  * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
@@ -98,6 +100,27 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 			super.completeYClass_Members(model, assignment, context, acceptor)
 		}
 	}
+	
+	override  def void completeYAnnotRel_Inverse(EObject object, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+		val annotRel = object as YAnnotRel
+		annotRel.target.annots.forEach[element | 
+			if(element instanceof YAnnotRel) {
+				val targetAnnotRel = element as YAnnotRel
+				if (targetAnnotRel.inverse !== null ) {
+					val targetEnntityName = (targetAnnotRel.eContainer as YAnnotEntity).name
+					if(targetEnntityName == annotRel.target.name) {
+						val proposal = annotRel.target.name + "." + targetAnnotRel.name
+						acceptor.accept(createCompletionProposal(proposal, proposal, imageHelper.getImage("relationship.gif"), context))
+						return
+					}
+				}
+				if (targetAnnotRel.inverse === null && targetAnnotRel !== annotRel) {
+					val proposal = annotRel.target.name + "." + targetAnnotRel.name
+						acceptor.accept(createCompletionProposal(proposal, proposal, imageHelper.getImage("relationship.gif"), context))
+				}
+			} 
+		]
+	}
 
 	protected def void createAttributeIncludeAll(YClass clazz, ICompletionProposalAcceptor acceptor,
 		ContentAssistContext context) {
@@ -144,5 +167,7 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 		}
 		return false
 	}
+	
+
 
 }

@@ -1816,7 +1816,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getYAnnotRel_Name()
+  public EAttribute getYAnnotRel_Parent()
   {
     return (EAttribute)yAnnotRelEClass.getEStructuralFeatures().get(0);
   }
@@ -1826,7 +1826,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getYAnnotRel_Optional()
+  public EAttribute getYAnnotRel_Name()
   {
     return (EAttribute)yAnnotRelEClass.getEStructuralFeatures().get(1);
   }
@@ -1836,9 +1836,19 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EAttribute getYAnnotRel_Optional()
+  {
+    return (EAttribute)yAnnotRelEClass.getEStructuralFeatures().get(2);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EReference getYAnnotRel_Target()
   {
-    return (EReference)yAnnotRelEClass.getEStructuralFeatures().get(2);
+    return (EReference)yAnnotRelEClass.getEStructuralFeatures().get(3);
   }
 
   /**
@@ -1848,7 +1858,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    */
   public EAttribute getYAnnotRel_Many()
   {
-    return (EAttribute)yAnnotRelEClass.getEStructuralFeatures().get(3);
+    return (EAttribute)yAnnotRelEClass.getEStructuralFeatures().get(4);
   }
 
   /**
@@ -1858,7 +1868,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    */
   public EReference getYAnnotRel_Inverse()
   {
-    return (EReference)yAnnotRelEClass.getEStructuralFeatures().get(4);
+    return (EReference)yAnnotRelEClass.getEStructuralFeatures().get(5);
   }
 
   /**
@@ -2953,6 +2963,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEReference(yAnnotAttrEClass, YANNOT_ATTR__ANNOTS);
 
     yAnnotRelEClass = createEClass(YANNOT_REL);
+    createEAttribute(yAnnotRelEClass, YANNOT_REL__PARENT);
     createEAttribute(yAnnotRelEClass, YANNOT_REL__NAME);
     createEAttribute(yAnnotRelEClass, YANNOT_REL__OPTIONAL);
     createEReference(yAnnotRelEClass, YANNOT_REL__TARGET);
@@ -3316,6 +3327,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYAnnotAttr_Annots(), this.getYAnnot(), null, "annots", null, 0, -1, YAnnotAttr.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotRelEClass, YAnnotRel.class, "YAnnotRel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getYAnnotRel_Parent(), ecorePackage.getEBoolean(), "parent", null, 0, 1, YAnnotRel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYAnnotRel_Name(), ecorePackage.getEString(), "name", null, 0, 1, YAnnotRel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYAnnotRel_Optional(), ecorePackage.getEBoolean(), "optional", null, 0, 1, YAnnotRel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYAnnotRel_Target(), this.getYAnnotEntity(), null, "target", null, 0, 1, YAnnotRel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

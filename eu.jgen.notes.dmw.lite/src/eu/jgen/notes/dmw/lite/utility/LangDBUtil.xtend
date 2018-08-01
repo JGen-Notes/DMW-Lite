@@ -126,6 +126,7 @@ class LangDBUtil {
 	def YAnnotTable converEntityIntoTable(YAnnotEntity entity) {
 		val table = LangFactory.eINSTANCE.createYAnnotTable => [
 			name = entity.name.convertToTechnicalDesignName
+			entityref = entity
 		]
 		return table
 	}

@@ -12,6 +12,8 @@ import java.util.List
 import eu.jgen.notes.dmw.lite.utility.LangJavaGeneratorHelper
 import eu.jgen.notes.dmw.lite.lang.YFunction
 import eu.jgen.notes.dmw.lite.lang.YAnnotJava
+import eu.jgen.notes.dmw.lite.lang.YBlock
+import eu.jgen.notes.dmw.lite.lang.YReturn
 
 class LangJavaWidgetGenerator implements IGenerator {
 
@@ -23,12 +25,10 @@ class LangJavaWidgetGenerator implements IGenerator {
 
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		input.allContents.filter[element|element instanceof YAnnotJava].forEach [ element |
-			val annotSwift = element as YAnnotJava
-			if (annotSwift.database.name == "MySQL") {
-				input.allContents.filter[element2|element instanceof YWidget].forEach [ element2 |
-					val widget = element2 as YWidget
-					generateWidget(fsa, widget)
-				]
+			val annotJava = element as YAnnotJava
+			if (annotJava.database.name == "MySQL") {
+				val a = input.contents.findFirst[e | e instanceof YWidget]
+				generateWidget(fsa, a as YWidget)
 			}
 		]
 	}
@@ -100,12 +100,39 @@ class LangJavaWidgetGenerator implements IGenerator {
 	protected def String generateFunctionForWidget(YFunction function) {
 		'''
 			«function.documentation»  
-			public «IF function.type !== null»«function.type.name»«ENDIF»«IF function.type === null»void«ENDIF» «function.name»() {
-			
+			public «IF function.type !== null»«function.type.name.nameOfReturnValue»«ENDIF» «IF function.type === null»void«ENDIF» «function.name»() {
+					«generateFunctionBody(function)»
 			}
 		'''
 	}
-
+    protected def String generateFunctionBody(YFunction function) {
+		if(function.body !== null) {
+				val block = function.body
+				generatenBody(block)
+		}
+    }
+    
+    protected def String generatenBody(YBlock block) {
+    	for (statement : block.statements) {
+    		switch (statement) {
+    			case statement instanceof YReturn: {
+    				//TODO replace mock with something real
+    				val returnValue =   statement as YReturn
+    				if(returnValue.expression === null)  {
+    					return  "return null;"
+    				} else {
+      					return "return 0;"
+    				}
+   				
+    			}
+    			default: {
+    				return ""
+    			}
+    		}    		
+    	}
+ 	  	return ""
+	  }
+    
 	protected def String generateProperties(YClass clazz) {
 		'''
 			«FOR member : clazz.members»

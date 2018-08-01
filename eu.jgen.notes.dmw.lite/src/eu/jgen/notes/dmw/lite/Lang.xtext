@@ -278,7 +278,7 @@ YAnnotAttr:
 	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] (optional='?')? annots+=YAnnot* ';'?;
 
 YAnnotRel:
-	{YAnnotRel} '@rel' name=ValidID (optional?='?')? '->' target=[YAnnotEntity|QualifiedName] (many?='*')? ('<-'
+	{YAnnotRel} '@rel' (parent?='@parent')? name=ValidID (optional?='?')? '->' target=[YAnnotEntity|QualifiedName] (many?='*')? ('<-'
 	inverse=[YAnnotRel|QualifiedName])? ';'?;
 
 YAnnotIdInner:
@@ -315,7 +315,7 @@ YAnnotAbstractColumn:
 	{YAnnotAbstractColumn} '@column' name=ValidID type=(YAnnotColumn | YAnnotColumnLike);
 
 YAnnotPrimaryKey:
-	{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';';
+	{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';'?;
 
 YAnnotForeignKey:
 	{YAnnotForeignKey} '@foreign' relationship=[YAnnotRel|QualifiedName] '{'

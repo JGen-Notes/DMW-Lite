@@ -22,6 +22,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  * The following features are implemented:
  * </p>
  * <ul>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotRelImpl#isParent <em>Parent</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotRelImpl#getName <em>Name</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotRelImpl#isOptional <em>Optional</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotRelImpl#getTarget <em>Target</em>}</li>
@@ -33,6 +34,26 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  */
 public class YAnnotRelImpl extends YAnnotEntityInnerImpl implements YAnnotRel
 {
+  /**
+   * The default value of the '{@link #isParent() <em>Parent</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isParent()
+   * @generated
+   * @ordered
+   */
+  protected static final boolean PARENT_EDEFAULT = false;
+
+  /**
+   * The cached value of the '{@link #isParent() <em>Parent</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see #isParent()
+   * @generated
+   * @ordered
+   */
+  protected boolean parent = PARENT_EDEFAULT;
+
   /**
    * The default value of the '{@link #getName() <em>Name</em>}' attribute.
    * <!-- begin-user-doc -->
@@ -132,6 +153,29 @@ public class YAnnotRelImpl extends YAnnotEntityInnerImpl implements YAnnotRel
   protected EClass eStaticClass()
   {
     return LangPackage.Literals.YANNOT_REL;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public boolean isParent()
+  {
+    return parent;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setParent(boolean newParent)
+  {
+    boolean oldParent = parent;
+    parent = newParent;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YANNOT_REL__PARENT, oldParent, parent));
   }
 
   /**
@@ -299,6 +343,8 @@ public class YAnnotRelImpl extends YAnnotEntityInnerImpl implements YAnnotRel
   {
     switch (featureID)
     {
+      case LangPackage.YANNOT_REL__PARENT:
+        return isParent();
       case LangPackage.YANNOT_REL__NAME:
         return getName();
       case LangPackage.YANNOT_REL__OPTIONAL:
@@ -325,6 +371,9 @@ public class YAnnotRelImpl extends YAnnotEntityInnerImpl implements YAnnotRel
   {
     switch (featureID)
     {
+      case LangPackage.YANNOT_REL__PARENT:
+        setParent((Boolean)newValue);
+        return;
       case LangPackage.YANNOT_REL__NAME:
         setName((String)newValue);
         return;
@@ -354,6 +403,9 @@ public class YAnnotRelImpl extends YAnnotEntityInnerImpl implements YAnnotRel
   {
     switch (featureID)
     {
+      case LangPackage.YANNOT_REL__PARENT:
+        setParent(PARENT_EDEFAULT);
+        return;
       case LangPackage.YANNOT_REL__NAME:
         setName(NAME_EDEFAULT);
         return;
@@ -383,6 +435,8 @@ public class YAnnotRelImpl extends YAnnotEntityInnerImpl implements YAnnotRel
   {
     switch (featureID)
     {
+      case LangPackage.YANNOT_REL__PARENT:
+        return parent != PARENT_EDEFAULT;
       case LangPackage.YANNOT_REL__NAME:
         return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
       case LangPackage.YANNOT_REL__OPTIONAL:
@@ -408,7 +462,9 @@ public class YAnnotRelImpl extends YAnnotEntityInnerImpl implements YAnnotRel
     if (eIsProxy()) return super.toString();
 
     StringBuffer result = new StringBuffer(super.toString());
-    result.append(" (name: ");
+    result.append(" (parent: ");
+    result.append(parent);
+    result.append(", name: ");
     result.append(name);
     result.append(", optional: ");
     result.append(optional);

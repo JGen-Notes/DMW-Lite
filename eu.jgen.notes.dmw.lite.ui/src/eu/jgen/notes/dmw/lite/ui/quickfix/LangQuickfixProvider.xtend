@@ -39,23 +39,23 @@ import eu.jgen.notes.dmw.lite.utility.LangDBUtil
 
 /**
  * Custom quickfixes.
- *
+ * 
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#quick-fixes
  */
 class LangQuickfixProvider extends DefaultQuickfixProvider {
-	
-		@Inject extension LangDBUtil
-		@Inject extension LangUtil
-		
+
+	@Inject extension LangDBUtil
+	@Inject extension LangUtil
+
 	@Fix(LangValidator.ENTITY_NO_TECH_DESIGN)
 	def createTableForEntityType(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Create missing table', 'Creates table implementing entity type.', 'table.gif') [ element, context |
 			val technicalDesign = getTechnicalDesign(element, LangPackage.Literals.YANNOT_TECHNICAL_DESIGN)
-			val entity =element as  YAnnotEntity
+			val entity = element as YAnnotEntity
 			technicalDesign.features.add(
 				converEntityIntoTable(entity)
 			)
-			technicalDesign.eContainer.eResource.save(null)
+		// technicalDesign.eContainer.eResource.save(null)
 		]
 	}
 
@@ -67,7 +67,7 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 				val table = getImplementingTable(attribute.eContainer as YAnnotEntity)
 				val abstractColumn = attribute.converAttributeIntoAbstractColumn
 				table.columns.add(abstractColumn)
-				table.eContainer.eResource.save(null)
+			// table.eContainer.eResource.save(null)
 			}
 		]
 	}
@@ -79,24 +79,15 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 			'relationship.png') [ element, context |
 			if (element instanceof YAnnotRel) {
 				val relationship = element as YAnnotRel
-				println(relationship) 
+				println(relationship)
 //					if(relationship.many ) {
 //					return;
 //				}			
-			 
-				//val a = relationship
-				
-				
-	//			val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
-				
-
-				
-				
-	//			val foreignKey = relationship.converRelationshipIntoForeignKeys
-				
-				
-	//			table.foreignkeys.add(foreignKey)
-	//			table.eContainer.eResource.save(null)
+			// val a = relationship
+			// val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
+			// val foreignKey = relationship.converRelationshipIntoForeignKeys
+			// table.foreignkeys.add(foreignKey)
+			// table.eContainer.eResource.save(null)
 			}
 		]
 	}
@@ -110,7 +101,7 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 				val table = getImplementingTable(identifier.eContainer as YAnnotEntity)
 				val primaryKey = identifier.converIdentifierIntoPrimaryKey
 				table.primarykey = primaryKey
-				table.eContainer.eResource.save(null)
+			// table.eContainer.eResource.save(null)
 			}
 		]
 	}

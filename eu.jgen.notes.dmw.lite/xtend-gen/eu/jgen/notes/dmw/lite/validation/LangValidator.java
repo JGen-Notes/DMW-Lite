@@ -74,6 +74,7 @@ import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.validation.Check;
+import org.eclipse.xtext.validation.CheckType;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
@@ -142,6 +143,20 @@ public class LangValidator extends AbstractLangValidator {
   
   public final static String UNSUPPORTED_DATABASE = (LangValidator.ISSUE_CODE_PREFIX + "UnsupportedDatabase");
   
+  public final static String MISSING_INVERSE_REALTIONSHIP = (LangValidator.ISSUE_CODE_PREFIX + "MissingInverseRelationship");
+  
+  public final static String MANY_TO_MANY_NOT_SUPPORTED = (LangValidator.ISSUE_CODE_PREFIX + "ManyToManyNotSuported");
+  
+  public final static String ONE_TO_ONE_MANDATORY_NOT_SUPPORTED = (LangValidator.ISSUE_CODE_PREFIX + "OneToOneMandatoryNotSuported");
+  
+  public final static String INVERSE_RELATIONSHIP_CANNOT_BE_ITSELF = (LangValidator.ISSUE_CODE_PREFIX + "MatchingInverseCannotMatchItself");
+  
+  public final static String INVERSE_RELATIONSHIP_DOES_NOT_EXIST_IN_TAGET = (LangValidator.ISSUE_CODE_PREFIX + "InverseDoesNotExistInTarget");
+  
+  public final static String NO_DESGNATED_PARENT = (LangValidator.ISSUE_CODE_PREFIX + "NoDesignatedParent");
+  
+  public final static String ONLY_ONE_DESGNATED_PARENT = (LangValidator.ISSUE_CODE_PREFIX + "OnlyOneDesignatedParent");
+  
   @Inject
   @Extension
   private LangUtil _langUtil;
@@ -187,7 +202,7 @@ public class LangValidator extends AbstractLangValidator {
   /**
    * Entities
    */
-  @Check
+  @Check(CheckType.FAST)
   public void checkEntityHierarchy(final YAnnotEntity entity) {
     boolean _contains = this._langUtil.entityHierarchy(entity).contains(entity);
     if (_contains) {
@@ -313,7 +328,10 @@ public class LangValidator extends AbstractLangValidator {
     EList<YAnnotEntityInner> _annots = annotEntity.getAnnots();
     for (final YAnnotEntityInner annot : _annots) {
       if ((annot instanceof YAnnotRel)) {
-        multiMap.put(((YAnnotRel) annot).getName(), ((YAnnotRel)annot));
+        String _name = ((YAnnotRel) annot).getName();
+        String _name_1 = ((YAnnotRel) annot).getTarget().getName();
+        String _plus = (_name + _name_1);
+        multiMap.put(_plus, ((YAnnotRel)annot));
       }
     }
     Set<Map.Entry<String, Collection<YAnnotRel>>> _entrySet = multiMap.asMap().entrySet();
@@ -324,10 +342,10 @@ public class LangValidator extends AbstractLangValidator {
         boolean _greaterThan = (_size > 1);
         if (_greaterThan) {
           for (final YAnnotRel duplicate : duplicates) {
-            String _name = ((YAnnotRel) duplicate).getName();
-            String _plus = ((("Duplicate " + "relationship") + " \'") + _name);
-            String _plus_1 = (_plus + "\'");
-            this.error(_plus_1, duplicate, 
+            String _name_2 = ((YAnnotRel) duplicate).getName();
+            String _plus_1 = ((("Duplicate " + "relationship") + " \'") + _name_2);
+            String _plus_2 = (_plus_1 + "\'");
+            this.error(_plus_2, duplicate, 
               LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.DUPLICATE_ELEMENT);
           }
         }
@@ -338,27 +356,45 @@ public class LangValidator extends AbstractLangValidator {
   @Check
   public void checkInverseRelationship(final YAnnotEntity annotEntity) {
     EList<YAnnotEntityInner> _annots = annotEntity.getAnnots();
-    for (final YAnnotEntityInner annot : _annots) {
-      if ((annot instanceof YAnnotRel)) {
-        YAnnotRel _inverse = ((YAnnotRel)annot).getInverse();
-        boolean _tripleNotEquals = (_inverse != null);
-        if (_tripleNotEquals) {
-        }
+    for (final YAnnotEntityInner element : _annots) {
+      if ((element instanceof YAnnotRel)) {
+        this.doCheckRelationshipCorrectness(((YAnnotRel) element));
       }
     }
   }
   
-  public void doCheckInverseRelationship(final Map<QualifiedName, IEObjectDescription> map, final YAnnotRel rel) {
-    EObject _eContainer = rel.eContainer();
-    String _name = ((YAnnotEntity) _eContainer).getName();
-    String _name_1 = rel.getInverse().getTarget().getName();
-    boolean _notEquals = (!Objects.equal(_name, _name_1));
-    if (_notEquals) {
-      String _name_2 = ((YAnnotRel) rel).getName();
-      String _plus = ((("Pointing to wrong invert " + "relationship") + " \'") + _name_2);
-      String _plus_1 = (_plus + "\'");
-      this.error(_plus_1, rel, 
-        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.WRONG_INVERT_REFERENCE);
+  public void doCheckRelationshipCorrectness(final YAnnotRel forwardRel) {
+    final YAnnotRel backwardRel = forwardRel.getInverse();
+    YAnnotRel _inverse = forwardRel.getInverse();
+    boolean _tripleEquals = (_inverse == null);
+    if (_tripleEquals) {
+      this.error("Inverse relationship for this relationship not yet defined.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.MISSING_INVERSE_REALTIONSHIP);
+      return;
+    }
+    boolean _isInverseRelationshipDefinedInTarget = this._langUtil.isInverseRelationshipDefinedInTarget(backwardRel);
+    boolean _not = (!_isInverseRelationshipDefinedInTarget);
+    if (_not) {
+      this.error("Inverse relationship does not exists in target entity.", backwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.INVERSE_RELATIONSHIP_DOES_NOT_EXIST_IN_TAGET);
+      return;
+    }
+    boolean _equals = Objects.equal(forwardRel, backwardRel);
+    if (_equals) {
+      this.error("Matching Inverse relationship cannot be the same relationship.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), 
+        LangValidator.INVERSE_RELATIONSHIP_CANNOT_BE_ITSELF);
+      return;
+    }
+    if ((forwardRel.isMany() && backwardRel.isMany())) {
+      this.error("Many-to-many relationship type not supported yet.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.MANY_TO_MANY_NOT_SUPPORTED);
+      return;
+    }
+    if (((((!forwardRel.isMany()) && (!backwardRel.isMany())) && (!forwardRel.isOptional())) && (!backwardRel.isOptional()))) {
+      this.error("A fully mandatory 1-to-1 relationship is unusual and supported.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.ONE_TO_ONE_MANDATORY_NOT_SUPPORTED);
+      return;
     }
   }
   
@@ -529,8 +565,8 @@ public class LangValidator extends AbstractLangValidator {
       String _name_1 = actualType.getName();
       String _plus_2 = (_plus_1 + _name_1);
       String _plus_3 = (_plus_2 + "\'");
-      this.error(_plus_3, null, 
-        LangValidator.INCOMPATIBLE_TYPES);
+      this.error(_plus_3, 
+        null, LangValidator.INCOMPATIBLE_TYPES);
     }
   }
   
@@ -547,8 +583,7 @@ public class LangValidator extends AbstractLangValidator {
         String _plus_1 = (_plus + " but was ");
         int _size_3 = selection.getArgs().size();
         String _plus_2 = (_plus_1 + Integer.valueOf(_size_3));
-        this.error(_plus_2, 
-          LangPackage.eINSTANCE.getYMemberSelection_Member(), LangValidator.INVALID_ARGS);
+        this.error(_plus_2, LangPackage.eINSTANCE.getYMemberSelection_Member(), LangValidator.INVALID_ARGS);
       }
     }
   }
@@ -619,8 +654,8 @@ public class LangValidator extends AbstractLangValidator {
           String _name = clazz.getName();
           String _plus = ("The type " + _name);
           String _plus_1 = (_plus + " is already defined");
-          this.error(_plus_1, clazz, LangPackage.eINSTANCE.getYNamedElement_Name(), 
-            LangValidator.DUPLICATE_CLASS);
+          this.error(_plus_1, clazz, 
+            LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.DUPLICATE_CLASS);
         }
       }
     }
@@ -840,6 +875,42 @@ public class LangValidator extends AbstractLangValidator {
             LangPackage.Literals.YANNOT_REL__NAME, LangValidator.RELATIONSSHIP_NOT_IMPLEMENTED);
         }
       }
+    }
+  }
+  
+  @Check
+  public void checkRelationshipHasParentDesignated(final YAnnotRel relationship) {
+    boolean _isParent = relationship.isParent();
+    if (_isParent) {
+      return;
+    } else {
+      if (((relationship.getInverse() != null) && relationship.getInverse().isParent())) {
+        return;
+      }
+      String _name = relationship.getName();
+      String _plus = ("Relation pair (" + _name);
+      String _plus_1 = (_plus + ",");
+      String _name_1 = relationship.getInverse().getName();
+      String _plus_2 = (_plus_1 + _name_1);
+      String _plus_3 = (_plus_2 + 
+        ") does not have designated parent.");
+      this.error(_plus_3, relationship, LangPackage.Literals.YANNOT_REL__NAME, 
+        LangValidator.NO_DESGNATED_PARENT);
+    }
+  }
+  
+  @Check
+  public void checkRelationshipHasOnlySingleParentDesignated(final YAnnotRel relationship) {
+    if ((((relationship.getInverse() != null) && relationship.isParent()) && relationship.getInverse().isParent())) {
+      String _name = relationship.getName();
+      String _plus = ("Relation pair (" + _name);
+      String _plus_1 = (_plus + ",");
+      String _name_1 = relationship.getInverse().getName();
+      String _plus_2 = (_plus_1 + _name_1);
+      String _plus_3 = (_plus_2 + 
+        ") can have  only one designated parent.");
+      this.error(_plus_3, relationship, 
+        LangPackage.Literals.YANNOT_REL__NAME, LangValidator.ONLY_ONE_DESGNATED_PARENT);
     }
   }
 }

@@ -28,6 +28,7 @@ public class LangTechicalDesignGenerator implements IGenerator {
     };
     final Procedure1<EObject> _function_1 = (EObject element) -> {
       final YAnnotTechnicalDesign technicalDesign = ((YAnnotTechnicalDesign) element);
+      this.generateDDLForDerby(fsa, technicalDesign);
       String _name = technicalDesign.getDatabase().getName();
       boolean _equals = Objects.equal(_name, "MySQL");
       if (_equals) {
@@ -48,6 +49,22 @@ public class LangTechicalDesignGenerator implements IGenerator {
       }
     }
     return _builder.toString();
+  }
+  
+  protected void generateDDLForDerby(final IFileSystemAccess fsa, final YAnnotTechnicalDesign technicalDesign) {
+    StringConcatenation _builder = new StringConcatenation();
+    {
+      EList<YAnnotTable> _features = technicalDesign.getFeatures();
+      for(final YAnnotTable table : _features) {
+        String _generateTables = this.generateTables(table);
+        _builder.append(_generateTables);
+        _builder.append("\t\t");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    fsa.generateFile(
+      (("derby/" + "createdatabase") + ".ddl"), 
+      LangOutputProvider.DDL, _builder);
   }
   
   protected void generateDDLForMySQL(final IFileSystemAccess fsa, final YAnnotTechnicalDesign technicalDesign) {

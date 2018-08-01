@@ -62,4 +62,23 @@ public class LangJavaGeneratorHelper {
       }
     }
   }
+  
+  public String nameOfReturnValue(final String typeName) {
+    if (typeName != null) {
+      switch (typeName) {
+        case "Int":
+          return "int";
+        case "Short":
+          return "short";
+        case "Long":
+          return "long";
+        case "Decimal":
+          return "double";
+        default:
+          return typeName;
+      }
+    } else {
+      return typeName;
+    }
+  }
 }

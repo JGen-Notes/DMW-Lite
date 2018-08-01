@@ -140,7 +140,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotEntityAccess().getGroup_2(), "rule__YAnnotEntity__Group_2__0");
 					put(grammarAccess.getYAnnotAttrAccess().getGroup(), "rule__YAnnotAttr__Group__0");
 					put(grammarAccess.getYAnnotRelAccess().getGroup(), "rule__YAnnotRel__Group__0");
-					put(grammarAccess.getYAnnotRelAccess().getGroup_7(), "rule__YAnnotRel__Group_7__0");
+					put(grammarAccess.getYAnnotRelAccess().getGroup_8(), "rule__YAnnotRel__Group_8__0");
 					put(grammarAccess.getYAnnotIdAccess().getGroup(), "rule__YAnnotId__Group__0");
 					put(grammarAccess.getYAnnotIdAccess().getGroup_5(), "rule__YAnnotId__Group_5__0");
 					put(grammarAccess.getYAnnotTechnicalDesignAccess().getGroup(), "rule__YAnnotTechnicalDesign__Group__0");
@@ -269,11 +269,12 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotAttrAccess().getYclassAssignment_4(), "rule__YAnnotAttr__YclassAssignment_4");
 					put(grammarAccess.getYAnnotAttrAccess().getOptionalAssignment_5(), "rule__YAnnotAttr__OptionalAssignment_5");
 					put(grammarAccess.getYAnnotAttrAccess().getAnnotsAssignment_6(), "rule__YAnnotAttr__AnnotsAssignment_6");
-					put(grammarAccess.getYAnnotRelAccess().getNameAssignment_2(), "rule__YAnnotRel__NameAssignment_2");
-					put(grammarAccess.getYAnnotRelAccess().getOptionalAssignment_3(), "rule__YAnnotRel__OptionalAssignment_3");
-					put(grammarAccess.getYAnnotRelAccess().getTargetAssignment_5(), "rule__YAnnotRel__TargetAssignment_5");
-					put(grammarAccess.getYAnnotRelAccess().getManyAssignment_6(), "rule__YAnnotRel__ManyAssignment_6");
-					put(grammarAccess.getYAnnotRelAccess().getInverseAssignment_7_1(), "rule__YAnnotRel__InverseAssignment_7_1");
+					put(grammarAccess.getYAnnotRelAccess().getParentAssignment_2(), "rule__YAnnotRel__ParentAssignment_2");
+					put(grammarAccess.getYAnnotRelAccess().getNameAssignment_3(), "rule__YAnnotRel__NameAssignment_3");
+					put(grammarAccess.getYAnnotRelAccess().getOptionalAssignment_4(), "rule__YAnnotRel__OptionalAssignment_4");
+					put(grammarAccess.getYAnnotRelAccess().getTargetAssignment_6(), "rule__YAnnotRel__TargetAssignment_6");
+					put(grammarAccess.getYAnnotRelAccess().getManyAssignment_7(), "rule__YAnnotRel__ManyAssignment_7");
+					put(grammarAccess.getYAnnotRelAccess().getInverseAssignment_8_1(), "rule__YAnnotRel__InverseAssignment_8_1");
 					put(grammarAccess.getYAnnotIdAccess().getNameAssignment_2(), "rule__YAnnotId__NameAssignment_2");
 					put(grammarAccess.getYAnnotIdAccess().getAnnotsAssignment_4(), "rule__YAnnotId__AnnotsAssignment_4");
 					put(grammarAccess.getYAnnotIdAccess().getAnnotsAssignment_5_1(), "rule__YAnnotId__AnnotsAssignment_5_1");

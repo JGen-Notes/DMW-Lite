@@ -218,6 +218,7 @@ public class LangDBUtil {
     YAnnotTable _createYAnnotTable = LangFactory.eINSTANCE.createYAnnotTable();
     final Procedure1<YAnnotTable> _function = (YAnnotTable it) -> {
       it.setName(this.convertToTechnicalDesignName(entity.getName()));
+      it.setEntityref(entity);
     };
     final YAnnotTable table = ObjectExtensions.<YAnnotTable>operator_doubleArrow(_createYAnnotTable, _function);
     return table;

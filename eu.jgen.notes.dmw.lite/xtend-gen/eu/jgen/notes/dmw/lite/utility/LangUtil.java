@@ -30,6 +30,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
+import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
+import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign;
 import eu.jgen.notes.dmw.lite.lang.YBlock;
@@ -247,5 +249,20 @@ public class LangUtil {
   
   public String getFileSystemPath(final String packname) {
     return packname.replace(".", "/");
+  }
+  
+  public boolean isInverseRelationshipDefinedInTarget(final YAnnotRel annotRel) {
+    EList<YAnnotEntityInner> _annots = annotRel.getTarget().getAnnots();
+    for (final YAnnotEntityInner element : _annots) {
+      if ((element instanceof YAnnotRel)) {
+        String _name = ((YAnnotRel) element).getName();
+        String _name_1 = annotRel.getInverse().getName();
+        boolean _equals = Objects.equal(_name, _name_1);
+        if (_equals) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 }

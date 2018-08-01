@@ -42,6 +42,7 @@ import org.eclipse.xtext.EcoreUtil2
 import org.eclipse.xtext.resource.IContainer
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
+import eu.jgen.notes.dmw.lite.lang.YAnnotRel
 
 class LangUtil {
 
@@ -182,6 +183,17 @@ class LangUtil {
 	
 	def String getFileSystemPath(String packname) {
 		packname.replace(".","/")
+	}
+	
+	def boolean isInverseRelationshipDefinedInTarget(YAnnotRel annotRel) {
+		for (element : annotRel.target.annots) {
+			if (element instanceof YAnnotRel) {
+				if ((element as YAnnotRel).name == annotRel.inverse.name) {
+					return true
+				}
+			}
+		}
+		return false
 	}
 
 }

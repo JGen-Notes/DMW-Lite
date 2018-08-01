@@ -4,10 +4,14 @@ import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.generator.LangOutputProvider;
 import eu.jgen.notes.dmw.lite.lang.YAnnotJava;
+import eu.jgen.notes.dmw.lite.lang.YBlock;
 import eu.jgen.notes.dmw.lite.lang.YClass;
+import eu.jgen.notes.dmw.lite.lang.YExpression;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
+import eu.jgen.notes.dmw.lite.lang.YReturn;
+import eu.jgen.notes.dmw.lite.lang.YStatement;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.utility.LangJavaGeneratorHelper;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
@@ -22,6 +26,7 @@ import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
@@ -43,18 +48,15 @@ public class LangJavaWidgetGenerator implements IGenerator {
       return Boolean.valueOf((element instanceof YAnnotJava));
     };
     final Procedure1<EObject> _function_1 = (EObject element) -> {
-      final YAnnotJava annotSwift = ((YAnnotJava) element);
-      String _name = annotSwift.getDatabase().getName();
+      final YAnnotJava annotJava = ((YAnnotJava) element);
+      String _name = annotJava.getDatabase().getName();
       boolean _equals = Objects.equal(_name, "MySQL");
       if (_equals) {
-        final Function1<EObject, Boolean> _function_2 = (EObject element2) -> {
-          return Boolean.valueOf((element instanceof YWidget));
+        final Function1<EObject, Boolean> _function_2 = (EObject e) -> {
+          return Boolean.valueOf((e instanceof YWidget));
         };
-        final Procedure1<EObject> _function_3 = (EObject element2) -> {
-          final YWidget widget = ((YWidget) element2);
-          this.generateWidget(fsa, widget);
-        };
-        IteratorExtensions.<EObject>forEach(IteratorExtensions.<EObject>filter(input.getAllContents(), _function_2), _function_3);
+        final EObject a = IterableExtensions.<EObject>findFirst(input.getContents(), _function_2);
+        this.generateWidget(fsa, ((YWidget) a));
       }
     };
     IteratorExtensions.<EObject>forEach(IteratorExtensions.<EObject>filter(input.getAllContents(), _function), _function_1);
@@ -194,10 +196,11 @@ public class LangJavaWidgetGenerator implements IGenerator {
       YClass _type = function.getType();
       boolean _tripleNotEquals = (_type != null);
       if (_tripleNotEquals) {
-        String _name = function.getType().getName();
-        _builder.append(_name);
+        String _nameOfReturnValue = this._langJavaGeneratorHelper.nameOfReturnValue(function.getType().getName());
+        _builder.append(_nameOfReturnValue);
       }
     }
+    _builder.append(" ");
     {
       YClass _type_1 = function.getType();
       boolean _tripleEquals = (_type_1 == null);
@@ -206,14 +209,52 @@ public class LangJavaWidgetGenerator implements IGenerator {
       }
     }
     _builder.append(" ");
-    String _name_1 = function.getName();
-    _builder.append(_name_1);
+    String _name = function.getName();
+    _builder.append(_name);
     _builder.append("() {");
     _builder.newLineIfNotEmpty();
-    _builder.newLine();
+    _builder.append("\t\t");
+    String _generateFunctionBody = this.generateFunctionBody(function);
+    _builder.append(_generateFunctionBody, "\t\t");
+    _builder.newLineIfNotEmpty();
     _builder.append("}");
     _builder.newLine();
     return _builder.toString();
+  }
+  
+  protected String generateFunctionBody(final YFunction function) {
+    String _xifexpression = null;
+    YBlock _body = function.getBody();
+    boolean _tripleNotEquals = (_body != null);
+    if (_tripleNotEquals) {
+      String _xblockexpression = null;
+      {
+        final YBlock block = function.getBody();
+        _xblockexpression = this.generatenBody(block);
+      }
+      _xifexpression = _xblockexpression;
+    }
+    return _xifexpression;
+  }
+  
+  protected String generatenBody(final YBlock block) {
+    EList<YStatement> _statements = block.getStatements();
+    for (final YStatement statement : _statements) {
+      boolean _matched = false;
+      if ((statement instanceof YReturn)) {
+        _matched=true;
+        final YReturn returnValue = ((YReturn) statement);
+        YExpression _expression = returnValue.getExpression();
+        boolean _tripleEquals = (_expression == null);
+        if (_tripleEquals) {
+          return "return null;";
+        } else {
+          return "return 0;";
+        }
+      }
+      return "";
+    }
+    return "";
   }
   
   protected String generateProperties(final YClass clazz) {

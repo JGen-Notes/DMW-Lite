@@ -26,6 +26,8 @@ import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
@@ -47,9 +49,14 @@ import eu.jgen.notes.dmw.lite.lang.YWidget;
 import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.jface.viewers.StyledString;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.xtext.ui.PluginImageHelper;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
+import org.eclipse.xtext.ui.editor.utils.TextStyle;
+import org.eclipse.xtext.ui.label.StylerFactory;
 
 /**
  * Customization of the default outline structure.
@@ -60,6 +67,9 @@ import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   @Inject
   private PluginImageHelper imageHelper;
+  
+  @Inject
+  private StylerFactory stylerFactory;
   
   public void _createChildren(final DocumentRootNode outlineNode, final YWidget widget) {
     this.createNode(outlineNode, widget);
@@ -180,7 +190,12 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
    * Technical Design
    */
   public Object _text(final YAnnotTechnicalDesign element) {
-    return element.getDatabase().getName();
+    YAnnotDatabase _database = element.getDatabase();
+    boolean _tripleNotEquals = (_database != null);
+    if (_tripleNotEquals) {
+      return element.getDatabase().getName();
+    }
+    return null;
   }
   
   public Object _image(final YAnnotTechnicalDesign element) {
@@ -191,7 +206,21 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
    * Table
    */
   public Object _text(final YAnnotTable element) {
-    return element.getName();
+    String _name = element.getName();
+    boolean _tripleNotEquals = (_name != null);
+    if (_tripleNotEquals) {
+      YAnnotEntity _entityref = element.getEntityref();
+      boolean _tripleNotEquals_1 = (_entityref != null);
+      if (_tripleNotEquals_1) {
+        String _name_1 = element.getName();
+        String _plus = (_name_1 + " -> ");
+        String _name_2 = element.getEntityref().getName();
+        return (_plus + _name_2);
+      } else {
+        return element.getName();
+      }
+    }
+    return "";
   }
   
   public Object _image(final YAnnotTable element) {
@@ -202,7 +231,30 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
    * Table Column
    */
   public Object _text(final YAnnotAbstractColumn element) {
-    return element.getName();
+    String _name = element.getName();
+    boolean _tripleNotEquals = (_name != null);
+    if (_tripleNotEquals) {
+      if (((element.getType() != null) && (element.getType() instanceof YAnnotColumn))) {
+        EObject _type = element.getType();
+        final YAnnotColumn annotColumn = ((YAnnotColumn) _type);
+        String _name_1 = element.getName();
+        String _plus = (_name_1 + " -> ");
+        String _name_2 = annotColumn.getAttrref().getName();
+        return (_plus + _name_2);
+      } else {
+        if (((element.getType() != null) && (element.getType() instanceof YAnnotColumn))) {
+          EObject _type_1 = element.getType();
+          final YAnnotColumnLike annotColumnLike = ((YAnnotColumnLike) _type_1);
+          String _name_3 = element.getName();
+          String _plus_1 = (_name_3 + " as -> ");
+          String _name_4 = annotColumnLike.getColumnref().getAttrref().getName();
+          return (_plus_1 + _name_4);
+        } else {
+          return element.getName();
+        }
+      }
+    }
+    return "";
   }
   
   public Object _image(final YAnnotAbstractColumn element) {
@@ -263,26 +315,43 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   }
   
   public Object _text(final YAnnotAttr element) {
-    String _name = element.getName();
-    String _plus = (_name + " : ");
-    String _name_1 = element.getYclass().getName();
-    return (_plus + _name_1);
+    YClass _yclass = element.getYclass();
+    boolean _tripleNotEquals = (_yclass != null);
+    if (_tripleNotEquals) {
+      String _name = element.getName();
+      String _plus = (_name + " : ");
+      String _name_1 = element.getYclass().getName();
+      return (_plus + _name_1);
+    } else {
+      return element.getName();
+    }
   }
   
   public Object _text(final YAnnotRel element) {
+    String opt = "";
+    boolean _isOptional = element.isOptional();
+    if (_isOptional) {
+      opt = "?";
+    }
+    String desc = "";
     boolean _isMany = element.isMany();
     if (_isMany) {
       String _name = element.getName();
-      String _plus = (_name + " -> ");
+      String _plus = (_name + opt);
+      String _plus_1 = (_plus + " -> ");
       String _name_1 = element.getTarget().getName();
-      String _plus_1 = (_plus + _name_1);
-      return (_plus_1 + "*");
+      String _plus_2 = (_plus_1 + _name_1);
+      String _plus_3 = (_plus_2 + "*");
+      desc = _plus_3;
     } else {
       String _name_2 = element.getName();
-      String _plus_2 = (_name_2 + " -> ");
+      String _plus_4 = (_name_2 + opt);
+      String _plus_5 = (_plus_4 + " -> ");
       String _name_3 = element.getTarget().getName();
-      return (_plus_2 + _name_3);
+      String _plus_6 = (_plus_5 + _name_3);
+      desc = _plus_6;
     }
+    return this.prepareText(element, desc);
   }
   
   public Object _text(final YProperty element) {
@@ -404,5 +473,32 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   
   public boolean _isLeaf(final YFunction element) {
     return true;
+  }
+  
+  public Object prepareText(final YAnnotRel relationship, final String description) {
+    String parent = "";
+    boolean _isParent = relationship.isParent();
+    if (_isParent) {
+      parent = "as parent ";
+    }
+    StyledString.Styler _createXtextStyleAdapterStyler = this.stylerFactory.createXtextStyleAdapterStyler(this.getTypeKeywordStyleText());
+    StyledString _styledString = new StyledString(parent, _createXtextStyleAdapterStyler);
+    StyledString.Styler _createXtextStyleAdapterStyler_1 = this.stylerFactory.createXtextStyleAdapterStyler(this.getTypeTextStyleParameter());
+    StyledString _styledString_1 = new StyledString(description, _createXtextStyleAdapterStyler_1);
+    return _styledString.append(_styledString_1);
+  }
+  
+  public TextStyle getTypeKeywordStyleText() {
+    final TextStyle textStyle = new TextStyle();
+    textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY).getRGB());
+    textStyle.setStyle(SWT.ITALIC);
+    return textStyle;
+  }
+  
+  public TextStyle getTypeTextStyleParameter() {
+    final TextStyle textStyle = new TextStyle();
+    textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_FOREGROUND).getRGB());
+    textStyle.setStyle(SWT.NORMAL);
+    return textStyle;
   }
 }

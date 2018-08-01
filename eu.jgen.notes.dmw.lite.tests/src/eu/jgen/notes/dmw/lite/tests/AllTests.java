@@ -18,7 +18,7 @@ import org.junit.runners.Suite.SuiteClasses;
 	LiteLangTypeConformanceTest.class,
 	LiteLangUtilTest.class, 
 	LiteLangValidatorTest1.class,
-	LiteLangValidatorTest2.class,
+	LiteLangValidatorDMTest.class,
 	LiteLangAccessibilityTest.class,
 	LiteLangGeneratorTest.class,
 	LiteLangIndexTest.class,

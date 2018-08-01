@@ -4471,10 +4471,24 @@ ruleYAnnotRel returns [EObject current=null]
 		}
 		(
 			(
+				lv_parent_2_0='@parent'
 				{
-					newCompositeNode(grammarAccess.getYAnnotRelAccess().getNameValidIDParserRuleCall_2_0());
+					newLeafNode(lv_parent_2_0, grammarAccess.getYAnnotRelAccess().getParentParentKeyword_2_0());
 				}
-				lv_name_2_0=ruleValidID
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getYAnnotRelRule());
+					}
+					setWithLastConsumed($current, "parent", true, "@parent");
+				}
+			)
+		)?
+		(
+			(
+				{
+					newCompositeNode(grammarAccess.getYAnnotRelAccess().getNameValidIDParserRuleCall_3_0());
+				}
+				lv_name_3_0=ruleValidID
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYAnnotRelRule());
@@ -4482,7 +4496,7 @@ ruleYAnnotRel returns [EObject current=null]
 					set(
 						$current,
 						"name",
-						lv_name_2_0,
+						lv_name_3_0,
 						"eu.jgen.notes.dmw.lite.Lang.ValidID");
 					afterParserOrEnumRuleCall();
 				}
@@ -4490,9 +4504,9 @@ ruleYAnnotRel returns [EObject current=null]
 		)
 		(
 			(
-				lv_optional_3_0='?'
+				lv_optional_4_0='?'
 				{
-					newLeafNode(lv_optional_3_0, grammarAccess.getYAnnotRelAccess().getOptionalQuestionMarkKeyword_3_0());
+					newLeafNode(lv_optional_4_0, grammarAccess.getYAnnotRelAccess().getOptionalQuestionMarkKeyword_4_0());
 				}
 				{
 					if ($current==null) {
@@ -4502,9 +4516,9 @@ ruleYAnnotRel returns [EObject current=null]
 				}
 			)
 		)?
-		otherlv_4='->'
+		otherlv_5='->'
 		{
-			newLeafNode(otherlv_4, grammarAccess.getYAnnotRelAccess().getHyphenMinusGreaterThanSignKeyword_4());
+			newLeafNode(otherlv_5, grammarAccess.getYAnnotRelAccess().getHyphenMinusGreaterThanSignKeyword_5());
 		}
 		(
 			(
@@ -4514,7 +4528,7 @@ ruleYAnnotRel returns [EObject current=null]
 					}
 				}
 				{
-					newCompositeNode(grammarAccess.getYAnnotRelAccess().getTargetYAnnotEntityCrossReference_5_0());
+					newCompositeNode(grammarAccess.getYAnnotRelAccess().getTargetYAnnotEntityCrossReference_6_0());
 				}
 				ruleQualifiedName
 				{
@@ -4524,9 +4538,9 @@ ruleYAnnotRel returns [EObject current=null]
 		)
 		(
 			(
-				lv_many_6_0='*'
+				lv_many_7_0='*'
 				{
-					newLeafNode(lv_many_6_0, grammarAccess.getYAnnotRelAccess().getManyAsteriskKeyword_6_0());
+					newLeafNode(lv_many_7_0, grammarAccess.getYAnnotRelAccess().getManyAsteriskKeyword_7_0());
 				}
 				{
 					if ($current==null) {
@@ -4537,9 +4551,9 @@ ruleYAnnotRel returns [EObject current=null]
 			)
 		)?
 		(
-			otherlv_7='<-'
+			otherlv_8='<-'
 			{
-				newLeafNode(otherlv_7, grammarAccess.getYAnnotRelAccess().getLessThanSignHyphenMinusKeyword_7_0());
+				newLeafNode(otherlv_8, grammarAccess.getYAnnotRelAccess().getLessThanSignHyphenMinusKeyword_8_0());
 			}
 			(
 				(
@@ -4549,7 +4563,7 @@ ruleYAnnotRel returns [EObject current=null]
 						}
 					}
 					{
-						newCompositeNode(grammarAccess.getYAnnotRelAccess().getInverseYAnnotRelCrossReference_7_1_0());
+						newCompositeNode(grammarAccess.getYAnnotRelAccess().getInverseYAnnotRelCrossReference_8_1_0());
 					}
 					ruleQualifiedName
 					{
@@ -4559,9 +4573,9 @@ ruleYAnnotRel returns [EObject current=null]
 			)
 		)?
 		(
-			otherlv_9=';'
+			otherlv_10=';'
 			{
-				newLeafNode(otherlv_9, grammarAccess.getYAnnotRelAccess().getSemicolonKeyword_8());
+				newLeafNode(otherlv_10, grammarAccess.getYAnnotRelAccess().getSemicolonKeyword_9());
 			}
 		)?
 	)
@@ -5297,10 +5311,12 @@ ruleYAnnotPrimaryKey returns [EObject current=null]
 		{
 			newLeafNode(otherlv_6, grammarAccess.getYAnnotPrimaryKeyAccess().getRightParenthesisKeyword_5());
 		}
-		otherlv_7=';'
-		{
-			newLeafNode(otherlv_7, grammarAccess.getYAnnotPrimaryKeyAccess().getSemicolonKeyword_6());
-		}
+		(
+			otherlv_7=';'
+			{
+				newLeafNode(otherlv_7, grammarAccess.getYAnnotPrimaryKeyAccess().getSemicolonKeyword_6());
+			}
+		)?
 	)
 ;
 

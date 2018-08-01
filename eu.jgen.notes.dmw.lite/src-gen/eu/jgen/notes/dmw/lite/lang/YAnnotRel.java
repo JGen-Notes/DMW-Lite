@@ -13,6 +13,7 @@ package eu.jgen.notes.dmw.lite.lang;
  * The following features are supported:
  * </p>
  * <ul>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.YAnnotRel#isParent <em>Parent</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YAnnotRel#getName <em>Name</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YAnnotRel#isOptional <em>Optional</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YAnnotRel#getTarget <em>Target</em>}</li>
@@ -26,6 +27,32 @@ package eu.jgen.notes.dmw.lite.lang;
  */
 public interface YAnnotRel extends YAnnotEntityInner, YAnnotIdInner
 {
+  /**
+   * Returns the value of the '<em><b>Parent</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Parent</em>' attribute isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Parent</em>' attribute.
+   * @see #setParent(boolean)
+   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYAnnotRel_Parent()
+   * @model
+   * @generated
+   */
+  boolean isParent();
+
+  /**
+   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YAnnotRel#isParent <em>Parent</em>}' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Parent</em>' attribute.
+   * @see #isParent()
+   * @generated
+   */
+  void setParent(boolean value);
+
   /**
    * Returns the value of the '<em><b>Name</b></em>' attribute.
    * <!-- begin-user-doc -->

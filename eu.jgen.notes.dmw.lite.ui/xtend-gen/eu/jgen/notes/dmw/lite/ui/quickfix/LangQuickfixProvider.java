@@ -67,7 +67,6 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
       final YAnnotEntity entity = ((YAnnotEntity) element);
       technicalDesign.getFeatures().add(
         this._langDBUtil.converEntityIntoTable(entity));
-      technicalDesign.eContainer().eResource().save(null);
     };
     acceptor.accept(issue, "Create missing table", "Creates table implementing entity type.", "table.gif", _function);
   }
@@ -81,7 +80,6 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
         final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer));
         final YAnnotAbstractColumn abstractColumn = this._langDBUtil.converAttributeIntoAbstractColumn(attribute);
         table.getColumns().add(abstractColumn);
-        table.eContainer().eResource().save(null);
       }
     };
     acceptor.accept(issue, "Create missing column", "Creates column implementing attribute type.", "column.gif", _function);
@@ -108,7 +106,6 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
         final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer));
         final YAnnotPrimaryKey primaryKey = this._langDBUtil.converIdentifierIntoPrimaryKey(identifier);
         table.setPrimarykey(primaryKey);
-        table.eContainer().eResource().save(null);
       }
     };
     acceptor.accept(issue, "Create missing primary key", "Creates primary key implementing identifier.", 

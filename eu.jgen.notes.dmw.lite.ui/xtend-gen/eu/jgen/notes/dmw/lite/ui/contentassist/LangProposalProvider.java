@@ -27,12 +27,14 @@ import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
+import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.scoping.LangIndex;
 import eu.jgen.notes.dmw.lite.ui.contentassist.AbstractLangProposalProvider;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
@@ -119,6 +121,40 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
     } else {
       super.completeYClass_Members(model, assignment, context, acceptor);
     }
+  }
+  
+  @Override
+  public void completeYAnnotRel_Inverse(final EObject object, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    final YAnnotRel annotRel = ((YAnnotRel) object);
+    final Consumer<YAnnotEntityInner> _function = (YAnnotEntityInner element) -> {
+      if ((element instanceof YAnnotRel)) {
+        final YAnnotRel targetAnnotRel = ((YAnnotRel) element);
+        YAnnotRel _inverse = targetAnnotRel.getInverse();
+        boolean _tripleNotEquals = (_inverse != null);
+        if (_tripleNotEquals) {
+          EObject _eContainer = targetAnnotRel.eContainer();
+          final String targetEnntityName = ((YAnnotEntity) _eContainer).getName();
+          String _name = annotRel.getTarget().getName();
+          boolean _equals = Objects.equal(targetEnntityName, _name);
+          if (_equals) {
+            String _name_1 = annotRel.getTarget().getName();
+            String _plus = (_name_1 + ".");
+            String _name_2 = targetAnnotRel.getName();
+            final String proposal = (_plus + _name_2);
+            acceptor.accept(this.createCompletionProposal(proposal, proposal, this.imageHelper.getImage("relationship.gif"), context));
+            return;
+          }
+        }
+        if (((targetAnnotRel.getInverse() == null) && (targetAnnotRel != annotRel))) {
+          String _name_3 = annotRel.getTarget().getName();
+          String _plus_1 = (_name_3 + ".");
+          String _name_4 = targetAnnotRel.getName();
+          final String proposal_1 = (_plus_1 + _name_4);
+          acceptor.accept(this.createCompletionProposal(proposal_1, proposal_1, this.imageHelper.getImage("relationship.gif"), context));
+        }
+      }
+    };
+    annotRel.getTarget().getAnnots().forEach(_function);
   }
   
   protected void createAttributeIncludeAll(final YClass clazz, final ICompletionProposalAcceptor acceptor, final ContentAssistContext context) {

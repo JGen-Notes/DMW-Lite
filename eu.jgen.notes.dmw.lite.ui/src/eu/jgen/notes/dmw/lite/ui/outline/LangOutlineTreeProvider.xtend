@@ -44,6 +44,14 @@ import eu.jgen.notes.dmw.lite.lang.YWidget
 import org.eclipse.xtext.ui.PluginImageHelper
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumn
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
+import org.eclipse.jface.viewers.StyledString
+import org.eclipse.xtext.ui.label.StylerFactory
+import org.eclipse.xtext.ui.editor.utils.TextStyle
+import org.eclipse.swt.widgets.Display
+import org.eclipse.swt.SWT
+import org.eclipse.swt.graphics.RGB
 
 /**
  * Customization of the default outline structure.
@@ -54,6 +62,9 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 
 	@Inject
 	private PluginImageHelper imageHelper;
+
+	@Inject
+	private StylerFactory stylerFactory;
 
 	def void _createChildren(DocumentRootNode outlineNode, YWidget widget) {
 		createNode(outlineNode, widget);
@@ -139,7 +150,9 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	 *  Technical Design
 	 */
 	def Object _text(YAnnotTechnicalDesign element) {
-		return element.database.name
+		if (element.database !== null) {
+			return element.database.name
+		}
 	}
 
 	def Object _image(YAnnotTechnicalDesign element) {
@@ -150,7 +163,14 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	 *  Table
 	 */
 	def Object _text(YAnnotTable element) {
-		return element.name
+		if (element.name !== null) {
+			if (element.entityref !== null) {
+				return element.name + " -> " + element.entityref.name
+			} else {
+				return element.name
+			}
+		}
+		return ""
 	}
 
 	def Object _image(YAnnotTable element) {
@@ -161,12 +181,24 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	 *  Table Column
 	 */
 	def Object _text(YAnnotAbstractColumn element) {
-		return element.name
+		if (element.name !== null) {
+			if (element.type !== null && element.type instanceof YAnnotColumn) {
+				val annotColumn = element.type as YAnnotColumn
+				return element.name + " -> " + annotColumn.attrref.name
+			} else if (element.type !== null && element.type instanceof YAnnotColumn) {
+				val annotColumnLike = element.type as YAnnotColumnLike
+				return element.name + " as -> " + annotColumnLike.columnref.attrref.name
+			} else {
+				return element.name
+			}
+		}
+		return ""
+
 	}
 
 	def Object _image(YAnnotAbstractColumn element) {
 		if (element.eContainer instanceof YAnnotForeignKey) {
-				return imageHelper.getImage("foreignKey.gif")
+			return imageHelper.getImage("foreignKey.gif")
 		} else if (element.eContainer instanceof YAnnotTable) {
 			val pk = (element.eContainer as YAnnotTable).primarykey
 			if (pk !== null) {
@@ -183,20 +215,20 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	def boolean _isLeaf(YAnnotAbstractColumn element) {
 		return true
 	}
-	
+
 	/*
 	 * Foreign Key
 	 */
-	 def void _createChildren(DocumentRootNode outlineNode, YAnnotForeignKey element) {
-	 	element.columns.forEach[column |
-	 		createNode(outlineNode, column)
-	 	]	 	
-	 }
-	 
-	 def Object _text(YAnnotForeignKey element) {
+	def void _createChildren(DocumentRootNode outlineNode, YAnnotForeignKey element) {
+		element.columns.forEach [ column |
+			createNode(outlineNode, column)
+		]
+	}
+
+	def Object _text(YAnnotForeignKey element) {
 		return element.relationship.name + " -> " + element.relationship.target.name
 	}
-	
+
 	def Object _image(YAnnotForeignKey element) {
 		return imageHelper.getImage("fk.gif")
 	}
@@ -209,15 +241,25 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	def Object _text(YAnnotAttr element) {
-		return element.name + " : " + element.yclass.name
+		if (element.yclass !== null) {
+			return element.name + " : " + element.yclass.name
+		} else {
+			return element.name
+		}
 	}
 
 	def Object _text(YAnnotRel element) {
-		if (element.many) {
-			return element.name + " -> " + element.target.name + "*"
-		} else {
-			return element.name + " -> " + element.target.name
+		var opt = ""
+		if (element.optional) {
+			opt = "?"
 		}
+		var desc = ""
+		if (element.many) {
+			desc = element.name + opt + " -> " + element.target.name + "*"
+		} else {
+			desc = element.name + opt + " -> " + element.target.name
+		}
+		return prepareText(element, desc)
 	}
 
 	def Object _text(YProperty element) {
@@ -226,10 +268,10 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			tuple = "<>"
 		}
 		if (element.name !== null) {
-				return element.name 
+			return element.name
 		}
 		if (element.type !== null) {
-				return element.name + " : " + element.type.name + tuple
+			return element.name + " : " + element.type.name + tuple
 		}
 		return ""
 	}
@@ -313,4 +355,28 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	def boolean _isLeaf(YFunction element) {
 		return true
 	}
+
+	def Object prepareText(YAnnotRel relationship, String description) {
+		var parent = ""
+		if (relationship.parent) {
+			parent = "as parent "
+		}
+		return new StyledString(parent, stylerFactory.createXtextStyleAdapterStyler(getTypeKeywordStyleText())).append(
+			new StyledString(description, stylerFactory.createXtextStyleAdapterStyler(getTypeTextStyleParameter())))
+	}
+
+	def TextStyle getTypeKeywordStyleText() {
+		val textStyle = new TextStyle();
+		textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY).RGB)
+		textStyle.setStyle(SWT.ITALIC );
+		return textStyle;
+	}
+	
+	def TextStyle getTypeTextStyleParameter() {
+		val textStyle = new TextStyle();
+		textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_FOREGROUND).RGB);
+		textStyle.setStyle(SWT.NORMAL);
+		return textStyle;
+	}
+	
 }

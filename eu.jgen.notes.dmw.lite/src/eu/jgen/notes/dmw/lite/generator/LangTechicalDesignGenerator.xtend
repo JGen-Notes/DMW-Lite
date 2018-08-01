@@ -15,6 +15,7 @@ class LangTechicalDesignGenerator implements IGenerator {
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		input.allContents.filter[element|element instanceof YAnnotTechnicalDesign].forEach [ element |
 			val technicalDesign = element as YAnnotTechnicalDesign
+			generateDDLForDerby(fsa, technicalDesign)
 			if (technicalDesign.database.name == "MySQL") {
 					generateDDLForMySQL(fsa, technicalDesign)
 			}	
@@ -27,6 +28,18 @@ class LangTechicalDesignGenerator implements IGenerator {
 				«generateTables(table)»
 			«ENDFOR»
 		'''
+	}
+	
+		protected def void generateDDLForDerby(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
+		fsa.generateFile(
+			"derby/" + "createdatabase" + ".ddl",
+			LangOutputProvider.DDL,
+			'''				
+				«FOR table : technicalDesign.features»
+					«generateTables(table)»		
+				«ENDFOR»
+			'''
+		)
 	}
 
 	protected def void generateDDLForMySQL(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {

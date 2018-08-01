@@ -27,7 +27,8 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_YAnnotForeignKey_SemicolonKeyword_7_q;
 	protected AbstractElementAlias match_YAnnotId_SemicolonKeyword_7_q;
 	protected AbstractElementAlias match_YAnnotJava_SemicolonKeyword_3_q;
-	protected AbstractElementAlias match_YAnnotRel_SemicolonKeyword_8_q;
+	protected AbstractElementAlias match_YAnnotPrimaryKey_SemicolonKeyword_6_q;
+	protected AbstractElementAlias match_YAnnotRel_SemicolonKeyword_9_q;
 	protected AbstractElementAlias match_YAnnotSwift_SemicolonKeyword_5_q;
 	protected AbstractElementAlias match_YTerminalExpression_LeftParenthesisKeyword_8_0_a;
 	protected AbstractElementAlias match_YTerminalExpression_LeftParenthesisKeyword_8_0_p;
@@ -43,7 +44,8 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_YAnnotForeignKey_SemicolonKeyword_7_q = new TokenAlias(false, true, grammarAccess.getYAnnotForeignKeyAccess().getSemicolonKeyword_7());
 		match_YAnnotId_SemicolonKeyword_7_q = new TokenAlias(false, true, grammarAccess.getYAnnotIdAccess().getSemicolonKeyword_7());
 		match_YAnnotJava_SemicolonKeyword_3_q = new TokenAlias(false, true, grammarAccess.getYAnnotJavaAccess().getSemicolonKeyword_3());
-		match_YAnnotRel_SemicolonKeyword_8_q = new TokenAlias(false, true, grammarAccess.getYAnnotRelAccess().getSemicolonKeyword_8());
+		match_YAnnotPrimaryKey_SemicolonKeyword_6_q = new TokenAlias(false, true, grammarAccess.getYAnnotPrimaryKeyAccess().getSemicolonKeyword_6());
+		match_YAnnotRel_SemicolonKeyword_9_q = new TokenAlias(false, true, grammarAccess.getYAnnotRelAccess().getSemicolonKeyword_9());
 		match_YAnnotSwift_SemicolonKeyword_5_q = new TokenAlias(false, true, grammarAccess.getYAnnotSwiftAccess().getSemicolonKeyword_5());
 		match_YTerminalExpression_LeftParenthesisKeyword_8_0_a = new TokenAlias(true, true, grammarAccess.getYTerminalExpressionAccess().getLeftParenthesisKeyword_8_0());
 		match_YTerminalExpression_LeftParenthesisKeyword_8_0_p = new TokenAlias(true, false, grammarAccess.getYTerminalExpressionAccess().getLeftParenthesisKeyword_8_0());
@@ -99,8 +101,10 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_YAnnotId_SemicolonKeyword_7_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_YAnnotJava_SemicolonKeyword_3_q.equals(syntax))
 				emit_YAnnotJava_SemicolonKeyword_3_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_YAnnotRel_SemicolonKeyword_8_q.equals(syntax))
-				emit_YAnnotRel_SemicolonKeyword_8_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_YAnnotPrimaryKey_SemicolonKeyword_6_q.equals(syntax))
+				emit_YAnnotPrimaryKey_SemicolonKeyword_6_q(semanticObject, getLastNavigableState(), syntaxNodes);
+			else if (match_YAnnotRel_SemicolonKeyword_9_q.equals(syntax))
+				emit_YAnnotRel_SemicolonKeyword_9_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_YAnnotSwift_SemicolonKeyword_5_q.equals(syntax))
 				emit_YAnnotSwift_SemicolonKeyword_5_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_YTerminalExpression_LeftParenthesisKeyword_8_0_a.equals(syntax))
@@ -210,11 +214,23 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     ';'?
 	 *
 	 * This ambiguous syntax occurs at:
+	 *     (rule start) '@primary' '(' ')' (ambiguity) (rule start)
+	 *     columns+=[YAnnotAbstractColumn|ID] ')' (ambiguity) (rule end)
+	 */
+	protected void emit_YAnnotPrimaryKey_SemicolonKeyword_6_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+		acceptNodes(transition, nodes);
+	}
+	
+	/**
+	 * Ambiguous syntax:
+	 *     ';'?
+	 *
+	 * This ambiguous syntax occurs at:
 	 *     inverse=[YAnnotRel|QualifiedName] (ambiguity) (rule end)
 	 *     many?='*' (ambiguity) (rule end)
 	 *     target=[YAnnotEntity|QualifiedName] (ambiguity) (rule end)
 	 */
-	protected void emit_YAnnotRel_SemicolonKeyword_8_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
+	protected void emit_YAnnotRel_SemicolonKeyword_9_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

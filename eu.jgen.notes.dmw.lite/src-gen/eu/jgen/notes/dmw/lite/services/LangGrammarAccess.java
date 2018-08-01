@@ -2733,30 +2733,33 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cYAnnotRelAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cRelKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
-		private final Assignment cOptionalAssignment_3 = (Assignment)cGroup.eContents().get(3);
-		private final Keyword cOptionalQuestionMarkKeyword_3_0 = (Keyword)cOptionalAssignment_3.eContents().get(0);
-		private final Keyword cHyphenMinusGreaterThanSignKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Assignment cTargetAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final CrossReference cTargetYAnnotEntityCrossReference_5_0 = (CrossReference)cTargetAssignment_5.eContents().get(0);
-		private final RuleCall cTargetYAnnotEntityQualifiedNameParserRuleCall_5_0_1 = (RuleCall)cTargetYAnnotEntityCrossReference_5_0.eContents().get(1);
-		private final Assignment cManyAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final Keyword cManyAsteriskKeyword_6_0 = (Keyword)cManyAssignment_6.eContents().get(0);
-		private final Group cGroup_7 = (Group)cGroup.eContents().get(7);
-		private final Keyword cLessThanSignHyphenMinusKeyword_7_0 = (Keyword)cGroup_7.eContents().get(0);
-		private final Assignment cInverseAssignment_7_1 = (Assignment)cGroup_7.eContents().get(1);
-		private final CrossReference cInverseYAnnotRelCrossReference_7_1_0 = (CrossReference)cInverseAssignment_7_1.eContents().get(0);
-		private final RuleCall cInverseYAnnotRelQualifiedNameParserRuleCall_7_1_0_1 = (RuleCall)cInverseYAnnotRelCrossReference_7_1_0.eContents().get(1);
-		private final Keyword cSemicolonKeyword_8 = (Keyword)cGroup.eContents().get(8);
+		private final Assignment cParentAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final Keyword cParentParentKeyword_2_0 = (Keyword)cParentAssignment_2.eContents().get(0);
+		private final Assignment cNameAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cNameValidIDParserRuleCall_3_0 = (RuleCall)cNameAssignment_3.eContents().get(0);
+		private final Assignment cOptionalAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final Keyword cOptionalQuestionMarkKeyword_4_0 = (Keyword)cOptionalAssignment_4.eContents().get(0);
+		private final Keyword cHyphenMinusGreaterThanSignKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cTargetAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final CrossReference cTargetYAnnotEntityCrossReference_6_0 = (CrossReference)cTargetAssignment_6.eContents().get(0);
+		private final RuleCall cTargetYAnnotEntityQualifiedNameParserRuleCall_6_0_1 = (RuleCall)cTargetYAnnotEntityCrossReference_6_0.eContents().get(1);
+		private final Assignment cManyAssignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final Keyword cManyAsteriskKeyword_7_0 = (Keyword)cManyAssignment_7.eContents().get(0);
+		private final Group cGroup_8 = (Group)cGroup.eContents().get(8);
+		private final Keyword cLessThanSignHyphenMinusKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
+		private final Assignment cInverseAssignment_8_1 = (Assignment)cGroup_8.eContents().get(1);
+		private final CrossReference cInverseYAnnotRelCrossReference_8_1_0 = (CrossReference)cInverseAssignment_8_1.eContents().get(0);
+		private final RuleCall cInverseYAnnotRelQualifiedNameParserRuleCall_8_1_0_1 = (RuleCall)cInverseYAnnotRelCrossReference_8_1_0.eContents().get(1);
+		private final Keyword cSemicolonKeyword_9 = (Keyword)cGroup.eContents().get(9);
 		
 		//YAnnotRel:
-		//	{YAnnotRel} '@rel' name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'? ('<-'
+		//	{YAnnotRel} '@rel' parent?='@parent'? name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'?
+		//	('<-'
 		//	inverse=[YAnnotRel|QualifiedName])? ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotRel} '@rel' name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'? ('<-'
-		//inverse=[YAnnotRel|QualifiedName])? ';'?
+		//{YAnnotRel} '@rel' parent?='@parent'? name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'?
+		//('<-' inverse=[YAnnotRel|QualifiedName])? ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotRel}
@@ -2765,53 +2768,59 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'@rel'
 		public Keyword getRelKeyword_1() { return cRelKeyword_1; }
 		
+		//parent?='@parent'?
+		public Assignment getParentAssignment_2() { return cParentAssignment_2; }
+		
+		//'@parent'
+		public Keyword getParentParentKeyword_2_0() { return cParentParentKeyword_2_0; }
+		
 		//name=ValidID
-		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
+		public Assignment getNameAssignment_3() { return cNameAssignment_3; }
 		
 		//ValidID
-		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
+		public RuleCall getNameValidIDParserRuleCall_3_0() { return cNameValidIDParserRuleCall_3_0; }
 		
 		//optional?='?'?
-		public Assignment getOptionalAssignment_3() { return cOptionalAssignment_3; }
+		public Assignment getOptionalAssignment_4() { return cOptionalAssignment_4; }
 		
 		//'?'
-		public Keyword getOptionalQuestionMarkKeyword_3_0() { return cOptionalQuestionMarkKeyword_3_0; }
+		public Keyword getOptionalQuestionMarkKeyword_4_0() { return cOptionalQuestionMarkKeyword_4_0; }
 		
 		//'->'
-		public Keyword getHyphenMinusGreaterThanSignKeyword_4() { return cHyphenMinusGreaterThanSignKeyword_4; }
+		public Keyword getHyphenMinusGreaterThanSignKeyword_5() { return cHyphenMinusGreaterThanSignKeyword_5; }
 		
 		//target=[YAnnotEntity|QualifiedName]
-		public Assignment getTargetAssignment_5() { return cTargetAssignment_5; }
+		public Assignment getTargetAssignment_6() { return cTargetAssignment_6; }
 		
 		//[YAnnotEntity|QualifiedName]
-		public CrossReference getTargetYAnnotEntityCrossReference_5_0() { return cTargetYAnnotEntityCrossReference_5_0; }
+		public CrossReference getTargetYAnnotEntityCrossReference_6_0() { return cTargetYAnnotEntityCrossReference_6_0; }
 		
 		//QualifiedName
-		public RuleCall getTargetYAnnotEntityQualifiedNameParserRuleCall_5_0_1() { return cTargetYAnnotEntityQualifiedNameParserRuleCall_5_0_1; }
+		public RuleCall getTargetYAnnotEntityQualifiedNameParserRuleCall_6_0_1() { return cTargetYAnnotEntityQualifiedNameParserRuleCall_6_0_1; }
 		
 		//many?='*'?
-		public Assignment getManyAssignment_6() { return cManyAssignment_6; }
+		public Assignment getManyAssignment_7() { return cManyAssignment_7; }
 		
 		//'*'
-		public Keyword getManyAsteriskKeyword_6_0() { return cManyAsteriskKeyword_6_0; }
+		public Keyword getManyAsteriskKeyword_7_0() { return cManyAsteriskKeyword_7_0; }
 		
 		//('<-' inverse=[YAnnotRel|QualifiedName])?
-		public Group getGroup_7() { return cGroup_7; }
+		public Group getGroup_8() { return cGroup_8; }
 		
 		//'<-'
-		public Keyword getLessThanSignHyphenMinusKeyword_7_0() { return cLessThanSignHyphenMinusKeyword_7_0; }
+		public Keyword getLessThanSignHyphenMinusKeyword_8_0() { return cLessThanSignHyphenMinusKeyword_8_0; }
 		
 		//inverse=[YAnnotRel|QualifiedName]
-		public Assignment getInverseAssignment_7_1() { return cInverseAssignment_7_1; }
+		public Assignment getInverseAssignment_8_1() { return cInverseAssignment_8_1; }
 		
 		//[YAnnotRel|QualifiedName]
-		public CrossReference getInverseYAnnotRelCrossReference_7_1_0() { return cInverseYAnnotRelCrossReference_7_1_0; }
+		public CrossReference getInverseYAnnotRelCrossReference_8_1_0() { return cInverseYAnnotRelCrossReference_8_1_0; }
 		
 		//QualifiedName
-		public RuleCall getInverseYAnnotRelQualifiedNameParserRuleCall_7_1_0_1() { return cInverseYAnnotRelQualifiedNameParserRuleCall_7_1_0_1; }
+		public RuleCall getInverseYAnnotRelQualifiedNameParserRuleCall_8_1_0_1() { return cInverseYAnnotRelQualifiedNameParserRuleCall_8_1_0_1; }
 		
 		//';'?
-		public Keyword getSemicolonKeyword_8() { return cSemicolonKeyword_8; }
+		public Keyword getSemicolonKeyword_9() { return cSemicolonKeyword_9; }
 	}
 	public class YAnnotIdInnerElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotIdInner");
@@ -3248,10 +3257,10 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cSemicolonKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
 		//YAnnotPrimaryKey:
-		//	{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';';
+		//	{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';'
+		//{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotPrimaryKey}
@@ -3290,7 +3299,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_5() { return cRightParenthesisKeyword_5; }
 		
-		//';'
+		//';'?
 		public Keyword getSemicolonKeyword_6() { return cSemicolonKeyword_6; }
 	}
 	public class YAnnotForeignKeyElements extends AbstractParserRuleElementFinder {
@@ -4393,7 +4402,8 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YAnnotRel:
-	//	{YAnnotRel} '@rel' name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'? ('<-'
+	//	{YAnnotRel} '@rel' parent?='@parent'? name=ValidID optional?='?'? '->' target=[YAnnotEntity|QualifiedName] many?='*'?
+	//	('<-'
 	//	inverse=[YAnnotRel|QualifiedName])? ';'?;
 	public YAnnotRelElements getYAnnotRelAccess() {
 		return pYAnnotRel;
@@ -4484,7 +4494,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YAnnotPrimaryKey:
-	//	{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';';
+	//	{YAnnotPrimaryKey} '@primary' '(' columns+=[YAnnotAbstractColumn]* (',' columns+=[YAnnotAbstractColumn])* ')' ';'?;
 	public YAnnotPrimaryKeyElements getYAnnotPrimaryKeyAccess() {
 		return pYAnnotPrimaryKey;
 	}

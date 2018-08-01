@@ -644,7 +644,14 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnotIdInner returns YAnnotRel
 	 *
 	 * Constraint:
-	 *     (name=ValidID optional?='?'? target=[YAnnotEntity|QualifiedName] many?='*'? inverse=[YAnnotRel|QualifiedName]?)
+	 *     (
+	 *         parent?='@parent'? 
+	 *         name=ValidID 
+	 *         optional?='?'? 
+	 *         target=[YAnnotEntity|QualifiedName] 
+	 *         many?='*'? 
+	 *         inverse=[YAnnotRel|QualifiedName]?
+	 *     )
 	 */
 	protected void sequence_YAnnotRel(ISerializationContext context, YAnnotRel semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
