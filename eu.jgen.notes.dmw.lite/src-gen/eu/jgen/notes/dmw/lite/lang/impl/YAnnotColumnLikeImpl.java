@@ -4,7 +4,7 @@
 package eu.jgen.notes.dmw.lite.lang.impl;
 
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
-import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
+import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -38,7 +38,7 @@ public class YAnnotColumnLikeImpl extends MinimalEObjectImpl.Container implement
    * @generated
    * @ordered
    */
-  protected YAnnotColumn columnref;
+  protected YAnnotAbstractColumn columnref;
 
   /**
    * <!-- begin-user-doc -->
@@ -66,12 +66,12 @@ public class YAnnotColumnLikeImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public YAnnotColumn getColumnref()
+  public YAnnotAbstractColumn getColumnref()
   {
     if (columnref != null && columnref.eIsProxy())
     {
       InternalEObject oldColumnref = (InternalEObject)columnref;
-      columnref = (YAnnotColumn)eResolveProxy(oldColumnref);
+      columnref = (YAnnotAbstractColumn)eResolveProxy(oldColumnref);
       if (columnref != oldColumnref)
       {
         if (eNotificationRequired())
@@ -86,7 +86,7 @@ public class YAnnotColumnLikeImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public YAnnotColumn basicGetColumnref()
+  public YAnnotAbstractColumn basicGetColumnref()
   {
     return columnref;
   }
@@ -96,9 +96,9 @@ public class YAnnotColumnLikeImpl extends MinimalEObjectImpl.Container implement
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setColumnref(YAnnotColumn newColumnref)
+  public void setColumnref(YAnnotAbstractColumn newColumnref)
   {
-    YAnnotColumn oldColumnref = columnref;
+    YAnnotAbstractColumn oldColumnref = columnref;
     columnref = newColumnref;
     if (eNotificationRequired())
       eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YANNOT_COLUMN_LIKE__COLUMNREF, oldColumnref, columnref));
@@ -132,7 +132,7 @@ public class YAnnotColumnLikeImpl extends MinimalEObjectImpl.Container implement
     switch (featureID)
     {
       case LangPackage.YANNOT_COLUMN_LIKE__COLUMNREF:
-        setColumnref((YAnnotColumn)newValue);
+        setColumnref((YAnnotAbstractColumn)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -149,7 +149,7 @@ public class YAnnotColumnLikeImpl extends MinimalEObjectImpl.Container implement
     switch (featureID)
     {
       case LangPackage.YANNOT_COLUMN_LIKE__COLUMNREF:
-        setColumnref((YAnnotColumn)null);
+        setColumnref((YAnnotAbstractColumn)null);
         return;
     }
     super.eUnset(featureID);

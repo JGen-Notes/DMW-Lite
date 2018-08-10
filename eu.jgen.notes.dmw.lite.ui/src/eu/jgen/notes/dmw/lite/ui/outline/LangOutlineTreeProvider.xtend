@@ -187,7 +187,7 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 				return element.name + " -> " + annotColumn.attrref.name
 			} else if (element.type !== null && element.type instanceof YAnnotColumn) {
 				val annotColumnLike = element.type as YAnnotColumnLike
-				return element.name + " as -> " + annotColumnLike.columnref.attrref.name
+				return element.name + " as -> " + annotColumnLike.columnref.name
 			} else {
 				return element.name
 			}

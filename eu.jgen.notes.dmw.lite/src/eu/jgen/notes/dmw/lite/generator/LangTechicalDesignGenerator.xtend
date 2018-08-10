@@ -9,6 +9,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
+import eu.jgen.notes.dmw.lite.lang.YAnnotLength
 
 class LangTechicalDesignGenerator implements IGenerator {
 
@@ -16,47 +17,40 @@ class LangTechicalDesignGenerator implements IGenerator {
 		input.allContents.filter[element|element instanceof YAnnotTechnicalDesign].forEach [ element |
 			val technicalDesign = element as YAnnotTechnicalDesign
 			generateDDLForDerby(fsa, technicalDesign)
-			if (technicalDesign.database.name == "MySQL") {
-					generateDDLForMySQL(fsa, technicalDesign)
-			}	
+//			if (technicalDesign.database.name == "MySQL") {
+//					generateDDLForMySQL(fsa, technicalDesign)
+//			}	
 		]
 	}
 
-	protected def String generateDDLString(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
-		'''			
-			«FOR table : technicalDesign.features»
-				«generateTables(table)»
-			«ENDFOR»
-		'''
-	}
-	
-		protected def void generateDDLForDerby(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
-		fsa.generateFile(
-			"derby/" + "createdatabase" + ".ddl",
-			LangOutputProvider.DDL,
-			'''				
-				«FOR table : technicalDesign.features»
-					«generateTables(table)»		
-				«ENDFOR»
-			'''
-		)
+//	protected def String generateDDLString(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
+//		'''			
+//			«FOR table : technicalDesign.features»
+//				«generateTables(table)»
+//			«ENDFOR»
+//		'''
+//	}
+
+	protected def void generateDDLForDerby(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
+		for (table : technicalDesign.features) {
+			generateTable(fsa, table)
+		}
 	}
 
-	protected def void generateDDLForMySQL(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
-		fsa.generateFile(
-			"mysql/" + "createdatabase" + ".ddl",
-			LangOutputProvider.DDL,
-			'''				
-				«FOR table : technicalDesign.features»
-					«generateTables(table)»		
-				«ENDFOR»
-			'''
-		)
-	}
-
-	def private String generateTables(YAnnotTable table) {
+//	protected def void generateDDLForMySQL(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
+//		fsa.generateFile(
+//			"mysql/" + "createdatabase" + ".ddl",
+//			LangOutputProvider.DDL,
+//			'''				
+//				«FOR table : technicalDesign.features»
+//					«generateTables(table)»		
+//				«ENDFOR»
+//			'''
+//		)
+//	}
+	def private void generateTable(IFileSystemAccess fsa, YAnnotTable table) {
 		val text = '''
-			CREATE TABLE `«table.name.toUpperCase»` (
+			CREATE TABLE "«table.name.toUpperCase»" (
 				«FOR abstractColumn : table.columns SEPARATOR ',' AFTER ','»
 					«generateColumns(abstractColumn)»
 				«ENDFOR»
@@ -64,14 +58,19 @@ class LangTechicalDesignGenerator implements IGenerator {
 					«generateForeignKeyColumns(foreignKey)»
 				«ENDFOR»
 				«IF table.primarykey !== null»«generatePrimaryKey(table)»«ENDIF»
-			);
+			)
 		'''
-		return text
+		fsa.generateFile(
+			"derby/" + table.name.toUpperCase + ".ddl",
+			LangOutputProvider.DDL,
+			text
+		)
+
 	}
 
 	def private String generateColumns(YAnnotAbstractColumn abstractColumn) {
 		val text = '''
-			`«abstractColumn.name.toUpperCase»` «generateColumnType(abstractColumn)»
+			"«abstractColumn.name.toUpperCase»" «generateColumnType(abstractColumn)»
 		'''
 		return text
 	}
@@ -79,7 +78,7 @@ class LangTechicalDesignGenerator implements IGenerator {
 	def private String generateForeignKeyColumns(YAnnotForeignKey foreignKey) {
 		val text = '''
 			«FOR abstractColumn : foreignKey.columns»
-				`«abstractColumn.name.toUpperCase»` «generateColumnType(abstractColumn)»
+				"«abstractColumn.name.toUpperCase»" «generateColumnType(abstractColumn)»
 			«ENDFOR»					
 		'''
 		return text
@@ -92,27 +91,31 @@ class LangTechicalDesignGenerator implements IGenerator {
 				«column.type»«IF column.type == "CHAR" ||  column.type == "VARCHAR"»(«column.generateLength»)«ENDIF» «column.generateNullFlag»
 			'''
 			return text
-		} else if (abstractColumn.type instanceof YAnnotColumnLike) {
-			val columnLike = abstractColumn.type as YAnnotColumnLike
-			val column = columnLike.columnref
-			// val column = abstractColumn2.type as JGColumn
-			val text = '''
-				«column.type»«IF column.type == "CHAR" ||  column.type == "VARCHAR"»(«column.generateLength»)«ENDIF»«column.generateNullFlag»
-			'''
-			return text
+		} else {
+			generateColumnType((abstractColumn.type as YAnnotColumnLike).columnref)
 		}
 	}
 
 	def private String generateLength(YAnnotColumn column) {
+		for (annot : column.annots) {
+			if (annot instanceof YAnnotLength) {
+				val a = annot as YAnnotLength
+				return a.length.toString
+			}
+		}
+		return ""
 	}
 
 	def private String generateNullFlag(YAnnotColumn column) {
+		if (column.optional != "?") {
+			return "NOT NULL"
+		}
 	}
 
 	def private String generatePrimaryKey(YAnnotTable table) {
 		val text = '''
-			CONSTRAINT `«"pk_" + table.name»`
-			PRIMARY KEY («FOR abstractColumn : table.primarykey.columns SEPARATOR ','»`«abstractColumn.name.toUpperCase»`«ENDFOR»)
+			CONSTRAINT "«"PK_" + table.name»"
+			PRIMARY KEY («FOR abstractColumn : table.primarykey.columns SEPARATOR ','»"«abstractColumn.name.toUpperCase»"«ENDFOR»)
 		'''
 		return text
 	}

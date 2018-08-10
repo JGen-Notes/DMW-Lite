@@ -441,7 +441,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnotColumnLike returns YAnnotColumnLike
 	 *
 	 * Constraint:
-	 *     columnref=[YAnnotColumn|QualifiedName]
+	 *     columnref=[YAnnotAbstractColumn|QualifiedName]
 	 */
 	protected void sequence_YAnnotColumnLike(ISerializationContext context, YAnnotColumnLike semanticObject) {
 		if (errorAcceptor != null) {
@@ -449,7 +449,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YANNOT_COLUMN_LIKE__COLUMNREF));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1(), semanticObject.eGet(LangPackage.Literals.YANNOT_COLUMN_LIKE__COLUMNREF, false));
+		feeder.accept(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1(), semanticObject.eGet(LangPackage.Literals.YANNOT_COLUMN_LIKE__COLUMNREF, false));
 		feeder.finish();
 	}
 	

@@ -27,6 +27,7 @@ import eu.jgen.notes.dmw.lite.lang.LangPackage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
+import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotId;
 import eu.jgen.notes.dmw.lite.lang.YAnnotPrimaryKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
@@ -43,7 +44,6 @@ import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 
 /**
  * Custom quickfixes.
@@ -90,7 +90,10 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
     final ISemanticModification _function = (EObject element, IModificationContext context) -> {
       if ((element instanceof YAnnotRel)) {
         final YAnnotRel relationship = ((YAnnotRel) element);
-        InputOutput.<YAnnotRel>println(relationship);
+        EObject _eContainer = relationship.eContainer();
+        final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer));
+        final YAnnotForeignKey foreignKey = this._langDBUtil.converRelationshipIntoForeignKeys(relationship);
+        table.getForeignkeys().add(foreignKey);
       }
     };
     acceptor.accept(issue, "Create missing foreign key", "Adds foreign key column implementing relationship.", 

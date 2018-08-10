@@ -5141,7 +5141,7 @@ ruleYAnnotColumnLike returns [EObject current=null]
 					}
 				}
 				{
-					newCompositeNode(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnCrossReference_2_0());
+					newCompositeNode(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnCrossReference_2_0());
 				}
 				ruleQualifiedName
 				{

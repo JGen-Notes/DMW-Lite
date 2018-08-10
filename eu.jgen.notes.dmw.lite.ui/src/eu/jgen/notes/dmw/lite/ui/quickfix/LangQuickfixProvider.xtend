@@ -79,15 +79,9 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 			'relationship.png') [ element, context |
 			if (element instanceof YAnnotRel) {
 				val relationship = element as YAnnotRel
-				println(relationship)
-//					if(relationship.many ) {
-//					return;
-//				}			
-			// val a = relationship
-			// val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
-			// val foreignKey = relationship.converRelationshipIntoForeignKeys
-			// table.foreignkeys.add(foreignKey)
-			// table.eContainer.eResource.save(null)
+				val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
+				 val foreignKey = relationship.converRelationshipIntoForeignKeys
+				 table.foreignkeys.add(foreignKey)
 			}
 		]
 	}
@@ -101,7 +95,6 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 				val table = getImplementingTable(identifier.eContainer as YAnnotEntity)
 				val primaryKey = identifier.converIdentifierIntoPrimaryKey
 				table.primarykey = primaryKey
-			// table.eContainer.eResource.save(null)
 			}
 		]
 	}

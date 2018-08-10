@@ -132,13 +132,7 @@ class LangDBUtil {
 	}
 
 	def YAnnotForeignKey converRelationshipIntoForeignKeys(YAnnotRel relationship) {
-		if (relationship.isMany) {
-			// TODO
-			val targetRelationship = relationship.inverse
-			createForeignKeyForRelationship(relationship, relationship.inverse)
-		} else {
-			createForeignKeyForRelationship(relationship, relationship.inverse)
-		}
+		createForeignKeyForRelationship(relationship, relationship.inverse)
 	}
 
 	def private YAnnotForeignKey createForeignKeyForRelationship(YAnnotRel thisrelationship,
@@ -148,10 +142,7 @@ class LangDBUtil {
 			for (abstractColumn : list) {
 				columns.add(abstractColumn)
 			}
-			relationship = LangFactory.eINSTANCE.createYAnnotRel => [
-				val rel = thisrelationship
-				val ent = thisrelationship.eContainer as YAnnotEntity
-			]
+			relationship = thisrelationship
 		]
 		return foreignKey
 	}
@@ -166,11 +157,11 @@ class LangDBUtil {
 		for (abstractColumn : parentTable.primarykey.columns) {
 			val newAbstractColumn = LangFactory.eINSTANCE.createYAnnotAbstractColumn => [
 				name = "FK_" + parentTable.name + "__" + abstractColumn.name
-				val columnLike = LangFactory.eINSTANCE.createYAnnotColumnLike => [
+				val annotColumnLike = LangFactory.eINSTANCE.createYAnnotColumnLike => [
 					// TODO need testing 
-					columnref = abstractColumn.type as YAnnotColumn
+					columnref = abstractColumn
 				]
-				type = columnLike
+				type = annotColumnLike
 			]
 			list.add(newAbstractColumn)
 		}

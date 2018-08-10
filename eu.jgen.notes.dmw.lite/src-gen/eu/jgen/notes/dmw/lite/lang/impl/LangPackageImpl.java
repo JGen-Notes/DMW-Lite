@@ -3358,7 +3358,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYAnnotColumn_Annots(), this.getYAnnot(), null, "annots", null, 0, -1, YAnnotColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotColumnLikeEClass, YAnnotColumnLike.class, "YAnnotColumnLike", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getYAnnotColumnLike_Columnref(), this.getYAnnotColumn(), null, "columnref", null, 0, 1, YAnnotColumnLike.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYAnnotColumnLike_Columnref(), this.getYAnnotAbstractColumn(), null, "columnref", null, 0, 1, YAnnotColumnLike.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotAbstractColumnEClass, YAnnotAbstractColumn.class, "YAnnotAbstractColumn", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotAbstractColumn_Name(), ecorePackage.getEString(), "name", null, 0, 1, YAnnotAbstractColumn.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

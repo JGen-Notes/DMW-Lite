@@ -15007,13 +15007,13 @@ rule__YAnnotColumnLike__ColumnrefAssignment_2
 	}
 :
 	(
-		{ before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnCrossReference_2_0()); }
+		{ before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnCrossReference_2_0()); }
 		(
-			{ before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1()); }
+			{ before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1()); }
 			ruleQualifiedName
-			{ after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1()); }
+			{ after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1()); }
 		)
-		{ after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnCrossReference_2_0()); }
+		{ after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnCrossReference_2_0()); }
 	)
 ;
 finally {

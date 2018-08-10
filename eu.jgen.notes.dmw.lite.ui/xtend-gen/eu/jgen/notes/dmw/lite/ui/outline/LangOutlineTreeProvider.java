@@ -247,7 +247,7 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
           final YAnnotColumnLike annotColumnLike = ((YAnnotColumnLike) _type_1);
           String _name_3 = element.getName();
           String _plus_1 = (_name_3 + " as -> ");
-          String _name_4 = annotColumnLike.getColumnref().getAttrref().getName();
+          String _name_4 = annotColumnLike.getColumnref().getName();
           return (_plus_1 + _name_4);
         } else {
           return element.getName();

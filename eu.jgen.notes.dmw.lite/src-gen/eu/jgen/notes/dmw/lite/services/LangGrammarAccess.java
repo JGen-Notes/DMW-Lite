@@ -3167,15 +3167,15 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cYAnnotColumnLikeAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cHyphenMinusGreaterThanSignKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Assignment cColumnrefAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final CrossReference cColumnrefYAnnotColumnCrossReference_2_0 = (CrossReference)cColumnrefAssignment_2.eContents().get(0);
-		private final RuleCall cColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cColumnrefYAnnotColumnCrossReference_2_0.eContents().get(1);
+		private final CrossReference cColumnrefYAnnotAbstractColumnCrossReference_2_0 = (CrossReference)cColumnrefAssignment_2.eContents().get(0);
+		private final RuleCall cColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1 = (RuleCall)cColumnrefYAnnotAbstractColumnCrossReference_2_0.eContents().get(1);
 		private final Keyword cSemicolonKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		
 		//YAnnotColumnLike:
-		//	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName] ';'?;
+		//	{YAnnotColumnLike} '->' columnref=[YAnnotAbstractColumn|QualifiedName] ';'?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName] ';'?
+		//{YAnnotColumnLike} '->' columnref=[YAnnotAbstractColumn|QualifiedName] ';'?
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotColumnLike}
@@ -3184,14 +3184,14 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'->'
 		public Keyword getHyphenMinusGreaterThanSignKeyword_1() { return cHyphenMinusGreaterThanSignKeyword_1; }
 		
-		//columnref=[YAnnotColumn|QualifiedName]
+		//columnref=[YAnnotAbstractColumn|QualifiedName]
 		public Assignment getColumnrefAssignment_2() { return cColumnrefAssignment_2; }
 		
-		//[YAnnotColumn|QualifiedName]
-		public CrossReference getColumnrefYAnnotColumnCrossReference_2_0() { return cColumnrefYAnnotColumnCrossReference_2_0; }
+		//[YAnnotAbstractColumn|QualifiedName]
+		public CrossReference getColumnrefYAnnotAbstractColumnCrossReference_2_0() { return cColumnrefYAnnotAbstractColumnCrossReference_2_0; }
 		
 		//QualifiedName
-		public RuleCall getColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1() { return cColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1; }
+		public RuleCall getColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1() { return cColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1; }
 		
 		//';'?
 		public Keyword getSemicolonKeyword_3() { return cSemicolonKeyword_3; }
@@ -4474,7 +4474,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YAnnotColumnLike:
-	//	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName] ';'?;
+	//	{YAnnotColumnLike} '->' columnref=[YAnnotAbstractColumn|QualifiedName] ';'?;
 	public YAnnotColumnLikeElements getYAnnotColumnLikeAccess() {
 		return pYAnnotColumnLike;
 	}

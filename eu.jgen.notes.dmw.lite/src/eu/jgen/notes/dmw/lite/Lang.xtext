@@ -309,7 +309,7 @@ YAnnotColumn:
 	(optional='?')? annots+=(YAnnotLength | YAnnotDecimal)* ';'?;
 
 YAnnotColumnLike:
-	{YAnnotColumnLike} '->' columnref=[YAnnotColumn|QualifiedName] ';'?;
+	{YAnnotColumnLike} '->' columnref=[YAnnotAbstractColumn|QualifiedName] ';'?;
 
 YAnnotAbstractColumn:
 	{YAnnotAbstractColumn} '@column' name=ValidID type=(YAnnotColumn | YAnnotColumnLike);

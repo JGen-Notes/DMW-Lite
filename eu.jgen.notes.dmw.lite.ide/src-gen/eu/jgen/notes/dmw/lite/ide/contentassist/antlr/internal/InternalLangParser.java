@@ -48152,13 +48152,13 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             // InternalLang.g:15010:3: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnCrossReference_2_0()); 
+               before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnCrossReference_2_0()); 
             }
             // InternalLang.g:15011:3: ( ruleQualifiedName )
             // InternalLang.g:15012:4: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1()); 
+               before(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1()); 
             }
             pushFollow(FOLLOW_2);
             ruleQualifiedName();
@@ -48166,13 +48166,13 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnQualifiedNameParserRuleCall_2_0_1()); 
+               after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnQualifiedNameParserRuleCall_2_0_1()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnCrossReference_2_0()); 
+               after(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnCrossReference_2_0()); 
             }
 
             }

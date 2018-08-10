@@ -32,12 +32,12 @@ public interface YAnnotColumnLike extends EObject
    * </p>
    * <!-- end-user-doc -->
    * @return the value of the '<em>Columnref</em>' reference.
-   * @see #setColumnref(YAnnotColumn)
+   * @see #setColumnref(YAnnotAbstractColumn)
    * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYAnnotColumnLike_Columnref()
    * @model
    * @generated
    */
-  YAnnotColumn getColumnref();
+  YAnnotAbstractColumn getColumnref();
 
   /**
    * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike#getColumnref <em>Columnref</em>}' reference.
@@ -47,6 +47,6 @@ public interface YAnnotColumnLike extends EObject
    * @see #getColumnref()
    * @generated
    */
-  void setColumnref(YAnnotColumn value);
+  void setColumnref(YAnnotAbstractColumn value);
 
 } // YAnnotColumnLike

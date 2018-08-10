@@ -225,19 +225,7 @@ public class LangDBUtil {
   }
   
   public YAnnotForeignKey converRelationshipIntoForeignKeys(final YAnnotRel relationship) {
-    YAnnotForeignKey _xifexpression = null;
-    boolean _isMany = relationship.isMany();
-    if (_isMany) {
-      YAnnotForeignKey _xblockexpression = null;
-      {
-        final YAnnotRel targetRelationship = relationship.getInverse();
-        _xblockexpression = this.createForeignKeyForRelationship(relationship, relationship.getInverse());
-      }
-      _xifexpression = _xblockexpression;
-    } else {
-      _xifexpression = this.createForeignKeyForRelationship(relationship, relationship.getInverse());
-    }
-    return _xifexpression;
+    return this.createForeignKeyForRelationship(relationship, relationship.getInverse());
   }
   
   private YAnnotForeignKey createForeignKeyForRelationship(final YAnnotRel thisrelationship, final YAnnotRel targetRelationship) {
@@ -247,14 +235,7 @@ public class LangDBUtil {
       for (final YAnnotAbstractColumn abstractColumn : list) {
         it.getColumns().add(abstractColumn);
       }
-      YAnnotRel _createYAnnotRel = LangFactory.eINSTANCE.createYAnnotRel();
-      final Procedure1<YAnnotRel> _function_1 = (YAnnotRel it_1) -> {
-        final YAnnotRel rel = thisrelationship;
-        EObject _eContainer = thisrelationship.eContainer();
-        final YAnnotEntity ent = ((YAnnotEntity) _eContainer);
-      };
-      YAnnotRel _doubleArrow = ObjectExtensions.<YAnnotRel>operator_doubleArrow(_createYAnnotRel, _function_1);
-      it.setRelationship(_doubleArrow);
+      it.setRelationship(thisrelationship);
     };
     final YAnnotForeignKey foreignKey = ObjectExtensions.<YAnnotForeignKey>operator_doubleArrow(_createYAnnotForeignKey, _function);
     return foreignKey;
@@ -281,11 +262,10 @@ public class LangDBUtil {
           it.setName(_plus_2);
           YAnnotColumnLike _createYAnnotColumnLike = LangFactory.eINSTANCE.createYAnnotColumnLike();
           final Procedure1<YAnnotColumnLike> _function_1 = (YAnnotColumnLike it_1) -> {
-            EObject _type = abstractColumn.getType();
-            it_1.setColumnref(((YAnnotColumn) _type));
+            it_1.setColumnref(abstractColumn);
           };
-          final YAnnotColumnLike columnLike = ObjectExtensions.<YAnnotColumnLike>operator_doubleArrow(_createYAnnotColumnLike, _function_1);
-          it.setType(columnLike);
+          final YAnnotColumnLike annotColumnLike = ObjectExtensions.<YAnnotColumnLike>operator_doubleArrow(_createYAnnotColumnLike, _function_1);
+          it.setType(annotColumnLike);
         };
         final YAnnotAbstractColumn newAbstractColumn = ObjectExtensions.<YAnnotAbstractColumn>operator_doubleArrow(_createYAnnotAbstractColumn, _function);
         list.add(newAbstractColumn);

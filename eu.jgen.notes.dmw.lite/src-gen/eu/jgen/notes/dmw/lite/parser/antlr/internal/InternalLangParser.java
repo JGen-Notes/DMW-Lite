@@ -14436,7 +14436,7 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
             }
             if ( state.backtracking==0 ) {
 
-              					newCompositeNode(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotColumnCrossReference_2_0());
+              					newCompositeNode(grammarAccess.getYAnnotColumnLikeAccess().getColumnrefYAnnotAbstractColumnCrossReference_2_0());
               				
             }
             pushFollow(FOLLOW_73);
