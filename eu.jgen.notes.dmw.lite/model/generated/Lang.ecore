@@ -326,6 +326,14 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="right" eType="#//YExpression"
         containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="YParenties" eSuperTypes="#//YExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="a" eType="#//YExpression"
+        containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="YNot" eSuperTypes="#//YExpression">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="expression" eType="#//YExpression"
+        containment="true"/>
+  </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YStringConstant" eSuperTypes="#//YExpression">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

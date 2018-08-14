@@ -47,9 +47,11 @@ import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
 import eu.jgen.notes.dmw.lite.lang.YMinus;
 import eu.jgen.notes.dmw.lite.lang.YMulOrDiv;
 import eu.jgen.notes.dmw.lite.lang.YNew;
+import eu.jgen.notes.dmw.lite.lang.YNot;
 import eu.jgen.notes.dmw.lite.lang.YNull;
 import eu.jgen.notes.dmw.lite.lang.YOrExpression;
 import eu.jgen.notes.dmw.lite.lang.YParameter;
+import eu.jgen.notes.dmw.lite.lang.YParenties;
 import eu.jgen.notes.dmw.lite.lang.YPlus;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YReadEachStatement;
@@ -235,6 +237,9 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 			case LangPackage.YNEW:
 				sequence_YTerminalExpression(context, (YNew) semanticObject); 
 				return; 
+			case LangPackage.YNOT:
+				sequence_YPrimary(context, (YNot) semanticObject); 
+				return; 
 			case LangPackage.YNULL:
 				sequence_YTerminalExpression(context, (YNull) semanticObject); 
 				return; 
@@ -243,6 +248,9 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case LangPackage.YPARAMETER:
 				sequence_YTypedDeclaration(context, (YParameter) semanticObject); 
+				return; 
+			case LangPackage.YPARENTIES:
+				sequence_YPrimary(context, (YParenties) semanticObject); 
 				return; 
 			case LangPackage.YPLUS:
 				sequence_YAdditiveExpression(context, (YPlus) semanticObject); 
@@ -744,23 +752,6 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YStatement returns YAssignment
 	 *     YExpression returns YAssignment
 	 *     YAssignment returns YAssignment
-	 *     YAssignment.YAssignment_1_0 returns YAssignment
-	 *     YSelectionExpression returns YAssignment
-	 *     YSelectionExpression.YMemberSelection_1_0 returns YAssignment
-	 *     YOrExpression returns YAssignment
-	 *     YOrExpression.YOrExpression_1_0 returns YAssignment
-	 *     YAndExpression returns YAssignment
-	 *     YAndExpression.YAndExpression_1_0 returns YAssignment
-	 *     YEqualityExpression returns YAssignment
-	 *     YEqualityExpression.YEqualityExpression_1_0 returns YAssignment
-	 *     YComparisonExpression returns YAssignment
-	 *     YComparisonExpression.YComparisonExpression_1_0 returns YAssignment
-	 *     YAdditiveExpression returns YAssignment
-	 *     YAdditiveExpression.YPlus_1_0_0_0 returns YAssignment
-	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YAssignment
-	 *     YMultiplicativeExpression returns YAssignment
-	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YAssignment
-	 *     YTerminalExpression returns YAssignment
 	 *
 	 * Constraint:
 	 *     (left=YAssignment_YAssignment_1_0 right=YOrExpression)
@@ -1048,7 +1039,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YMulOrDiv
 	 *
 	 * Constraint:
-	 *     (left=YMultiplicativeExpression_YMulOrDiv_1_0 (op='*' | op='/') right=YSelectionExpression)
+	 *     (left=YMultiplicativeExpression_YMulOrDiv_1_0 (op='*' | op='/') right=YPrimary)
 	 */
 	protected void sequence_YMultiplicativeExpression(ISerializationContext context, YMulOrDiv semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1073,6 +1064,68 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
 		feeder.accept(grammarAccess.getYOrExpressionAccess().getYOrExpressionLeftAction_1_0(), semanticObject.getLeft());
 		feeder.accept(grammarAccess.getYOrExpressionAccess().getRightYAndExpressionParserRuleCall_1_2_0(), semanticObject.getRight());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     YOrExpression returns YNot
+	 *     YOrExpression.YOrExpression_1_0 returns YNot
+	 *     YAndExpression returns YNot
+	 *     YAndExpression.YAndExpression_1_0 returns YNot
+	 *     YEqualityExpression returns YNot
+	 *     YEqualityExpression.YEqualityExpression_1_0 returns YNot
+	 *     YComparisonExpression returns YNot
+	 *     YComparisonExpression.YComparisonExpression_1_0 returns YNot
+	 *     YAdditiveExpression returns YNot
+	 *     YAdditiveExpression.YPlus_1_0_0_0 returns YNot
+	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YNot
+	 *     YMultiplicativeExpression returns YNot
+	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YNot
+	 *     YPrimary returns YNot
+	 *
+	 * Constraint:
+	 *     expression=YPrimary
+	 */
+	protected void sequence_YPrimary(ISerializationContext context, YNot semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YNOT__EXPRESSION) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YNOT__EXPRESSION));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getYPrimaryAccess().getExpressionYPrimaryParserRuleCall_1_2_0(), semanticObject.getExpression());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     YOrExpression returns YParenties
+	 *     YOrExpression.YOrExpression_1_0 returns YParenties
+	 *     YAndExpression returns YParenties
+	 *     YAndExpression.YAndExpression_1_0 returns YParenties
+	 *     YEqualityExpression returns YParenties
+	 *     YEqualityExpression.YEqualityExpression_1_0 returns YParenties
+	 *     YComparisonExpression returns YParenties
+	 *     YComparisonExpression.YComparisonExpression_1_0 returns YParenties
+	 *     YAdditiveExpression returns YParenties
+	 *     YAdditiveExpression.YPlus_1_0_0_0 returns YParenties
+	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YParenties
+	 *     YMultiplicativeExpression returns YParenties
+	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YParenties
+	 *     YPrimary returns YParenties
+	 *
+	 * Constraint:
+	 *     a=YOrExpression
+	 */
+	protected void sequence_YPrimary(ISerializationContext context, YParenties semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YPARENTIES__A) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YPARENTIES__A));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getYPrimaryAccess().getAYOrExpressionParserRuleCall_0_2_0(), semanticObject.getA());
 		feeder.finish();
 	}
 	
@@ -1195,10 +1248,10 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YMemberSelection
 	 *     YMultiplicativeExpression returns YMemberSelection
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YMemberSelection
-	 *     YTerminalExpression returns YMemberSelection
+	 *     YPrimary returns YMemberSelection
 	 *
 	 * Constraint:
-	 *     (receiver=YSelectionExpression_YMemberSelection_1_0 member=[YMember|ID] (functioninvocation?='(' (args+=YExpression args+=YExpression*)?)?)
+	 *     (receiver=YSelectionExpression_YMemberSelection_1_0 member=[YMember|ID] (functioninvocation?='(' (args+=YOrExpression args+=YOrExpression*)?)?)
 	 */
 	protected void sequence_YSelectionExpression(ISerializationContext context, YMemberSelection semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1272,6 +1325,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YBoolConstant
 	 *     YMultiplicativeExpression returns YBoolConstant
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YBoolConstant
+	 *     YPrimary returns YBoolConstant
 	 *     YTerminalExpression returns YBoolConstant
 	 *
 	 * Constraint:
@@ -1303,6 +1357,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YIntConstant
 	 *     YMultiplicativeExpression returns YIntConstant
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YIntConstant
+	 *     YPrimary returns YIntConstant
 	 *     YTerminalExpression returns YIntConstant
 	 *
 	 * Constraint:
@@ -1340,10 +1395,11 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YNew
 	 *     YMultiplicativeExpression returns YNew
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YNew
+	 *     YPrimary returns YNew
 	 *     YTerminalExpression returns YNew
 	 *
 	 * Constraint:
-	 *     (type=[YClass|QualifiedName] (arguments+=YExpression arguments+=YExpression*)?)
+	 *     (type=[YClass|QualifiedName] (arguments+=YOrExpression arguments+=YOrExpression*)?)
 	 */
 	protected void sequence_YTerminalExpression(ISerializationContext context, YNew semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1371,6 +1427,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YNull
 	 *     YMultiplicativeExpression returns YNull
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YNull
+	 *     YPrimary returns YNull
 	 *     YTerminalExpression returns YNull
 	 *
 	 * Constraint:
@@ -1402,6 +1459,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YSelf
 	 *     YMultiplicativeExpression returns YSelf
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YSelf
+	 *     YPrimary returns YSelf
 	 *     YTerminalExpression returns YSelf
 	 *
 	 * Constraint:
@@ -1433,6 +1491,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YStringConstant
 	 *     YMultiplicativeExpression returns YStringConstant
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YStringConstant
+	 *     YPrimary returns YStringConstant
 	 *     YTerminalExpression returns YStringConstant
 	 *
 	 * Constraint:
@@ -1470,6 +1529,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YSuper
 	 *     YMultiplicativeExpression returns YSuper
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YSuper
+	 *     YPrimary returns YSuper
 	 *     YTerminalExpression returns YSuper
 	 *
 	 * Constraint:
@@ -1501,6 +1561,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAdditiveExpression.YMinus_1_0_1_0 returns YSymbolRef
 	 *     YMultiplicativeExpression returns YSymbolRef
 	 *     YMultiplicativeExpression.YMulOrDiv_1_0 returns YSymbolRef
+	 *     YPrimary returns YSymbolRef
 	 *     YTerminalExpression returns YSymbolRef
 	 *
 	 * Constraint:

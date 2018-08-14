@@ -125,6 +125,8 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
       case LangPackage.YPLUS: return createYPlus();
       case LangPackage.YMINUS: return createYMinus();
       case LangPackage.YMUL_OR_DIV: return createYMulOrDiv();
+      case LangPackage.YPARENTIES: return createYParenties();
+      case LangPackage.YNOT: return createYNot();
       case LangPackage.YSTRING_CONSTANT: return createYStringConstant();
       case LangPackage.YINT_CONSTANT: return createYIntConstant();
       case LangPackage.YBOOL_CONSTANT: return createYBoolConstant();
@@ -823,6 +825,28 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
   {
     YMulOrDivImpl yMulOrDiv = new YMulOrDivImpl();
     return yMulOrDiv;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YParenties createYParenties()
+  {
+    YParentiesImpl yParenties = new YParentiesImpl();
+    return yParenties;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YNot createYNot()
+  {
+    YNotImpl yNot = new YNotImpl();
+    return yNot;
   }
 
   /**

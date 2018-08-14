@@ -2,6 +2,7 @@ package eu.jgen.notes.dmw.lite.utility;
 
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.YClass;
+import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import org.eclipse.emf.common.notify.Adapter;
@@ -63,22 +64,34 @@ public class LangJavaGeneratorHelper {
     }
   }
   
-  public String nameOfReturnValue(final String typeName) {
+  public String translateTypeName(final String typeName) {
     if (typeName != null) {
       switch (typeName) {
         case "Int":
-          return "int";
+          return "XInt";
         case "Short":
-          return "short";
+          return "XShort";
         case "Long":
-          return "long";
+          return "XLong";
         case "Decimal":
-          return "double";
+          return "XDouble";
         default:
           return typeName;
       }
     } else {
       return typeName;
     }
+  }
+  
+  public YClass whatFuntionType(final EObject eobject) {
+    YClass _xifexpression = null;
+    EObject _eContainer = eobject.eContainer();
+    if ((_eContainer instanceof YFunction)) {
+      EObject _eContainer_1 = eobject.eContainer();
+      return ((YFunction) _eContainer_1).getType();
+    } else {
+      _xifexpression = this.whatFuntionType(eobject.eContainer());
+    }
+    return _xifexpression;
   }
 }

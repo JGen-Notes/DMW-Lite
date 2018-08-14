@@ -53,9 +53,11 @@ import eu.jgen.notes.dmw.lite.lang.YMinus;
 import eu.jgen.notes.dmw.lite.lang.YMulOrDiv;
 import eu.jgen.notes.dmw.lite.lang.YNamedElement;
 import eu.jgen.notes.dmw.lite.lang.YNew;
+import eu.jgen.notes.dmw.lite.lang.YNot;
 import eu.jgen.notes.dmw.lite.lang.YNull;
 import eu.jgen.notes.dmw.lite.lang.YOrExpression;
 import eu.jgen.notes.dmw.lite.lang.YParameter;
+import eu.jgen.notes.dmw.lite.lang.YParenties;
 import eu.jgen.notes.dmw.lite.lang.YPlus;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YReadEachStatement;
@@ -506,6 +508,20 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * @generated
    */
   private EClass yMulOrDivEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass yParentiesEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass yNotEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -2546,6 +2562,46 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getYParenties()
+  {
+    return yParentiesEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getYParenties_A()
+  {
+    return (EReference)yParentiesEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getYNot()
+  {
+    return yNotEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EReference getYNot_Expression()
+  {
+    return (EReference)yNotEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getYStringConstant()
   {
     return yStringConstantEClass;
@@ -3058,6 +3114,12 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEAttribute(yMulOrDivEClass, YMUL_OR_DIV__OP);
     createEReference(yMulOrDivEClass, YMUL_OR_DIV__RIGHT);
 
+    yParentiesEClass = createEClass(YPARENTIES);
+    createEReference(yParentiesEClass, YPARENTIES__A);
+
+    yNotEClass = createEClass(YNOT);
+    createEReference(yNotEClass, YNOT__EXPRESSION);
+
     yStringConstantEClass = createEClass(YSTRING_CONSTANT);
     createEAttribute(yStringConstantEClass, YSTRING_CONSTANT__VALUE);
 
@@ -3161,6 +3223,8 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     yPlusEClass.getESuperTypes().add(this.getYExpression());
     yMinusEClass.getESuperTypes().add(this.getYExpression());
     yMulOrDivEClass.getESuperTypes().add(this.getYExpression());
+    yParentiesEClass.getESuperTypes().add(this.getYExpression());
+    yNotEClass.getESuperTypes().add(this.getYExpression());
     yStringConstantEClass.getESuperTypes().add(this.getYExpression());
     yIntConstantEClass.getESuperTypes().add(this.getYExpression());
     yBoolConstantEClass.getESuperTypes().add(this.getYExpression());
@@ -3421,6 +3485,12 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYMulOrDiv_Left(), this.getYExpression(), null, "left", null, 0, 1, YMulOrDiv.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYMulOrDiv_Op(), ecorePackage.getEString(), "op", null, 0, 1, YMulOrDiv.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYMulOrDiv_Right(), this.getYExpression(), null, "right", null, 0, 1, YMulOrDiv.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(yParentiesEClass, YParenties.class, "YParenties", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getYParenties_A(), this.getYExpression(), null, "a", null, 0, 1, YParenties.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(yNotEClass, YNot.class, "YNot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEReference(getYNot_Expression(), this.getYExpression(), null, "expression", null, 0, 1, YNot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yStringConstantEClass, YStringConstant.class, "YStringConstant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYStringConstant_Value(), ecorePackage.getEString(), "value", null, 0, 1, YStringConstant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

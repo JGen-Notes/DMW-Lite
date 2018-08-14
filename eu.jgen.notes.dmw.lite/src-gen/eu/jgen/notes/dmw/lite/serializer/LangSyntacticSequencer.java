@@ -30,8 +30,6 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 	protected AbstractElementAlias match_YAnnotPrimaryKey_SemicolonKeyword_6_q;
 	protected AbstractElementAlias match_YAnnotRel_SemicolonKeyword_9_q;
 	protected AbstractElementAlias match_YAnnotSwift_SemicolonKeyword_5_q;
-	protected AbstractElementAlias match_YTerminalExpression_LeftParenthesisKeyword_8_0_a;
-	protected AbstractElementAlias match_YTerminalExpression_LeftParenthesisKeyword_8_0_p;
 	protected AbstractElementAlias match_YWidget_SemicolonKeyword_0_2_q;
 	
 	@Inject
@@ -47,8 +45,6 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 		match_YAnnotPrimaryKey_SemicolonKeyword_6_q = new TokenAlias(false, true, grammarAccess.getYAnnotPrimaryKeyAccess().getSemicolonKeyword_6());
 		match_YAnnotRel_SemicolonKeyword_9_q = new TokenAlias(false, true, grammarAccess.getYAnnotRelAccess().getSemicolonKeyword_9());
 		match_YAnnotSwift_SemicolonKeyword_5_q = new TokenAlias(false, true, grammarAccess.getYAnnotSwiftAccess().getSemicolonKeyword_5());
-		match_YTerminalExpression_LeftParenthesisKeyword_8_0_a = new TokenAlias(true, true, grammarAccess.getYTerminalExpressionAccess().getLeftParenthesisKeyword_8_0());
-		match_YTerminalExpression_LeftParenthesisKeyword_8_0_p = new TokenAlias(true, false, grammarAccess.getYTerminalExpressionAccess().getLeftParenthesisKeyword_8_0());
 		match_YWidget_SemicolonKeyword_0_2_q = new TokenAlias(false, true, grammarAccess.getYWidgetAccess().getSemicolonKeyword_0_2());
 	}
 	
@@ -107,10 +103,6 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 				emit_YAnnotRel_SemicolonKeyword_9_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_YAnnotSwift_SemicolonKeyword_5_q.equals(syntax))
 				emit_YAnnotSwift_SemicolonKeyword_5_q(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_YTerminalExpression_LeftParenthesisKeyword_8_0_a.equals(syntax))
-				emit_YTerminalExpression_LeftParenthesisKeyword_8_0_a(semanticObject, getLastNavigableState(), syntaxNodes);
-			else if (match_YTerminalExpression_LeftParenthesisKeyword_8_0_p.equals(syntax))
-				emit_YTerminalExpression_LeftParenthesisKeyword_8_0_p(semanticObject, getLastNavigableState(), syntaxNodes);
 			else if (match_YWidget_SemicolonKeyword_0_2_q.equals(syntax))
 				emit_YWidget_SemicolonKeyword_0_2_q(semanticObject, getLastNavigableState(), syntaxNodes);
 			else acceptNodes(getLastNavigableState(), syntaxNodes);
@@ -243,42 +235,6 @@ public class LangSyntacticSequencer extends AbstractSyntacticSequencer {
 	 *     name=ValidID (ambiguity) (rule end)
 	 */
 	protected void emit_YAnnotSwift_SemicolonKeyword_5_q(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     '('*
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) 'new' type=[YClass|QualifiedName]
-	 *     (rule start) (ambiguity) 'null' ';' (rule start)
-	 *     (rule start) (ambiguity) 'null' (rule start)
-	 *     (rule start) (ambiguity) 'self' ';' (rule start)
-	 *     (rule start) (ambiguity) 'self' (rule start)
-	 *     (rule start) (ambiguity) 'super' ';' (rule start)
-	 *     (rule start) (ambiguity) 'super' (rule start)
-	 *     (rule start) (ambiguity) symbol=[YSymbol|ID]
-	 *     (rule start) (ambiguity) value='false'
-	 *     (rule start) (ambiguity) value='true'
-	 *     (rule start) (ambiguity) value=INT
-	 *     (rule start) (ambiguity) value=STRING
-	 *     (rule start) (ambiguity) {YAssignment.left=}
-	 *     (rule start) (ambiguity) {YMemberSelection.receiver=}
-	 */
-	protected void emit_YTerminalExpression_LeftParenthesisKeyword_8_0_a(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
-		acceptNodes(transition, nodes);
-	}
-	
-	/**
-	 * Ambiguous syntax:
-	 *     '('+
-	 *
-	 * This ambiguous syntax occurs at:
-	 *     (rule start) (ambiguity) {YAssignment.left=}
-	 *     (rule start) (ambiguity) {YMemberSelection.receiver=}
-	 */
-	protected void emit_YTerminalExpression_LeftParenthesisKeyword_8_0_p(EObject semanticObject, ISynNavigable transition, List<INode> nodes) {
 		acceptNodes(transition, nodes);
 	}
 	

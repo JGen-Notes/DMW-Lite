@@ -555,6 +555,24 @@ public interface LangFactory extends EFactory
   YMulOrDiv createYMulOrDiv();
 
   /**
+   * Returns a new object of class '<em>YParenties</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>YParenties</em>'.
+   * @generated
+   */
+  YParenties createYParenties();
+
+  /**
+   * Returns a new object of class '<em>YNot</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>YNot</em>'.
+   * @generated
+   */
+  YNot createYNot();
+
+  /**
    * Returns a new object of class '<em>YString Constant</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

@@ -143,8 +143,11 @@ YSelectionExpression returns YExpression:
 	({YMemberSelection.receiver=current} '.'
 	member=[YMember]
 	(functioninvocation?='('
-	(args+=YExpression (',' args+=YExpression)*)? ')')?)*;
+	(args+=YOrExpression (',' args+=YOrExpression)*)? ')')?)*;
 
+/*
+ * Expressions
+ */
 OpSingleAssign:
 	'=';
 
@@ -176,7 +179,12 @@ OpAdd:
 	'+' | '-';
 
 YMultiplicativeExpression returns YExpression:
-	YSelectionExpression ({YMulOrDiv.left=current} op=('*' | '/') right=YSelectionExpression)*;
+	YPrimary ({YMulOrDiv.left=current} op=('*' | '/') right=YPrimary)*;
+
+YPrimary returns YExpression:
+	{YParenties}'(' a=YOrExpression ')' |
+	{YNot} "!" expression=YPrimary |
+	YSelectionExpression;
 
 YTerminalExpression returns YExpression:
 	{YStringConstant} value=STRING |
@@ -187,8 +195,9 @@ YTerminalExpression returns YExpression:
 	{YNull} 'null' |
 	{YSymbolRef} symbol=[YSymbol] |
 	{YNew} 'new' type=[YClass|QualifiedName] '('
-	(arguments+=YExpression (',' arguments+=YExpression)*)? ')' |
-	'(' YExpression ')';
+	(arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')'
+	//|	'(' YOrExpression ')'
+;
 
 YReadStatement:
 	'read' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
@@ -278,7 +287,8 @@ YAnnotAttr:
 	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] (optional='?')? annots+=YAnnot* ';'?;
 
 YAnnotRel:
-	{YAnnotRel} '@rel' (parent?='@parent')? name=ValidID (optional?='?')? '->' target=[YAnnotEntity|QualifiedName] (many?='*')? ('<-'
+	{YAnnotRel} '@rel' (parent?='@parent')? name=ValidID (optional?='?')? '->' target=[YAnnotEntity|QualifiedName]
+	(many?='*')? ('<-'
 	inverse=[YAnnotRel|QualifiedName])? ';'?;
 
 YAnnotIdInner:
@@ -322,13 +332,13 @@ YAnnotForeignKey:
 	columns+=YAnnotAbstractColumn (',' columns+=YAnnotAbstractColumn)*
 	'}' ';'?;
 
-/*
+	/*
  * Swift Generation Annotations
  */
 YAnnotJava:
 	{YAnnotJava} '@java' ('uses' database=[YAnnotDatabase])? ';'?;
 
-/*
+	/*
  * Swift Generation Annotations
  */
 YAnnotSwift:

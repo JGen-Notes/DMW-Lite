@@ -1792,9 +1792,9 @@ ruleYSelectionExpression returns [EObject current=null]
 					(
 						(
 							{
-								newCompositeNode(grammarAccess.getYSelectionExpressionAccess().getArgsYExpressionParserRuleCall_1_3_1_0_0());
+								newCompositeNode(grammarAccess.getYSelectionExpressionAccess().getArgsYOrExpressionParserRuleCall_1_3_1_0_0());
 							}
-							lv_args_5_0=ruleYExpression
+							lv_args_5_0=ruleYOrExpression
 							{
 								if ($current==null) {
 									$current = createModelElementForParent(grammarAccess.getYSelectionExpressionRule());
@@ -1803,7 +1803,7 @@ ruleYSelectionExpression returns [EObject current=null]
 									$current,
 									"args",
 									lv_args_5_0,
-									"eu.jgen.notes.dmw.lite.Lang.YExpression");
+									"eu.jgen.notes.dmw.lite.Lang.YOrExpression");
 								afterParserOrEnumRuleCall();
 							}
 						)
@@ -1816,9 +1816,9 @@ ruleYSelectionExpression returns [EObject current=null]
 						(
 							(
 								{
-									newCompositeNode(grammarAccess.getYSelectionExpressionAccess().getArgsYExpressionParserRuleCall_1_3_1_1_1_0());
+									newCompositeNode(grammarAccess.getYSelectionExpressionAccess().getArgsYOrExpressionParserRuleCall_1_3_1_1_1_0());
 								}
-								lv_args_7_0=ruleYExpression
+								lv_args_7_0=ruleYOrExpression
 								{
 									if ($current==null) {
 										$current = createModelElementForParent(grammarAccess.getYSelectionExpressionRule());
@@ -1827,7 +1827,7 @@ ruleYSelectionExpression returns [EObject current=null]
 										$current,
 										"args",
 										lv_args_7_0,
-										"eu.jgen.notes.dmw.lite.Lang.YExpression");
+										"eu.jgen.notes.dmw.lite.Lang.YOrExpression");
 									afterParserOrEnumRuleCall();
 								}
 							)
@@ -2310,11 +2310,11 @@ ruleYMultiplicativeExpression returns [EObject current=null]
 }:
 	(
 		{
-			newCompositeNode(grammarAccess.getYMultiplicativeExpressionAccess().getYSelectionExpressionParserRuleCall_0());
+			newCompositeNode(grammarAccess.getYMultiplicativeExpressionAccess().getYPrimaryParserRuleCall_0());
 		}
-		this_YSelectionExpression_0=ruleYSelectionExpression
+		this_YPrimary_0=ruleYPrimary
 		{
-			$current = $this_YSelectionExpression_0.current;
+			$current = $this_YPrimary_0.current;
 			afterParserOrEnumRuleCall();
 		}
 		(
@@ -2355,9 +2355,9 @@ ruleYMultiplicativeExpression returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getYMultiplicativeExpressionAccess().getRightYSelectionExpressionParserRuleCall_1_2_0());
+						newCompositeNode(grammarAccess.getYMultiplicativeExpressionAccess().getRightYPrimaryParserRuleCall_1_2_0());
 					}
-					lv_right_3_0=ruleYSelectionExpression
+					lv_right_3_0=ruleYPrimary
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getYMultiplicativeExpressionRule());
@@ -2366,12 +2366,109 @@ ruleYMultiplicativeExpression returns [EObject current=null]
 							$current,
 							"right",
 							lv_right_3_0,
-							"eu.jgen.notes.dmw.lite.Lang.YSelectionExpression");
+							"eu.jgen.notes.dmw.lite.Lang.YPrimary");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
 		)*
+	)
+;
+
+// Entry rule entryRuleYPrimary
+entryRuleYPrimary returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getYPrimaryRule()); }
+	iv_ruleYPrimary=ruleYPrimary
+	{ $current=$iv_ruleYPrimary.current; }
+	EOF;
+
+// Rule YPrimary
+ruleYPrimary returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getYPrimaryAccess().getYParentiesAction_0_0(),
+						$current);
+				}
+			)
+			otherlv_1='('
+			{
+				newLeafNode(otherlv_1, grammarAccess.getYPrimaryAccess().getLeftParenthesisKeyword_0_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getYPrimaryAccess().getAYOrExpressionParserRuleCall_0_2_0());
+					}
+					lv_a_2_0=ruleYOrExpression
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYPrimaryRule());
+						}
+						set(
+							$current,
+							"a",
+							lv_a_2_0,
+							"eu.jgen.notes.dmw.lite.Lang.YOrExpression");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+			otherlv_3=')'
+			{
+				newLeafNode(otherlv_3, grammarAccess.getYPrimaryAccess().getRightParenthesisKeyword_0_3());
+			}
+		)
+		    |
+		(
+			(
+				{
+					$current = forceCreateModelElement(
+						grammarAccess.getYPrimaryAccess().getYNotAction_1_0(),
+						$current);
+				}
+			)
+			otherlv_5='!'
+			{
+				newLeafNode(otherlv_5, grammarAccess.getYPrimaryAccess().getExclamationMarkKeyword_1_1());
+			}
+			(
+				(
+					{
+						newCompositeNode(grammarAccess.getYPrimaryAccess().getExpressionYPrimaryParserRuleCall_1_2_0());
+					}
+					lv_expression_6_0=ruleYPrimary
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYPrimaryRule());
+						}
+						set(
+							$current,
+							"expression",
+							lv_expression_6_0,
+							"eu.jgen.notes.dmw.lite.Lang.YPrimary");
+						afterParserOrEnumRuleCall();
+					}
+				)
+			)
+		)
+		    |
+		{
+			newCompositeNode(grammarAccess.getYPrimaryAccess().getYSelectionExpressionParserRuleCall_2());
+		}
+		this_YSelectionExpression_7=ruleYSelectionExpression
+		{
+			$current = $this_YSelectionExpression_7.current;
+			afterParserOrEnumRuleCall();
+		}
 	)
 ;
 
@@ -2585,9 +2682,9 @@ ruleYTerminalExpression returns [EObject current=null]
 				(
 					(
 						{
-							newCompositeNode(grammarAccess.getYTerminalExpressionAccess().getArgumentsYExpressionParserRuleCall_7_4_0_0());
+							newCompositeNode(grammarAccess.getYTerminalExpressionAccess().getArgumentsYOrExpressionParserRuleCall_7_4_0_0());
 						}
-						lv_arguments_18_0=ruleYExpression
+						lv_arguments_18_0=ruleYOrExpression
 						{
 							if ($current==null) {
 								$current = createModelElementForParent(grammarAccess.getYTerminalExpressionRule());
@@ -2596,7 +2693,7 @@ ruleYTerminalExpression returns [EObject current=null]
 								$current,
 								"arguments",
 								lv_arguments_18_0,
-								"eu.jgen.notes.dmw.lite.Lang.YExpression");
+								"eu.jgen.notes.dmw.lite.Lang.YOrExpression");
 							afterParserOrEnumRuleCall();
 						}
 					)
@@ -2609,9 +2706,9 @@ ruleYTerminalExpression returns [EObject current=null]
 					(
 						(
 							{
-								newCompositeNode(grammarAccess.getYTerminalExpressionAccess().getArgumentsYExpressionParserRuleCall_7_4_1_1_0());
+								newCompositeNode(grammarAccess.getYTerminalExpressionAccess().getArgumentsYOrExpressionParserRuleCall_7_4_1_1_0());
 							}
-							lv_arguments_20_0=ruleYExpression
+							lv_arguments_20_0=ruleYOrExpression
 							{
 								if ($current==null) {
 									$current = createModelElementForParent(grammarAccess.getYTerminalExpressionRule());
@@ -2620,7 +2717,7 @@ ruleYTerminalExpression returns [EObject current=null]
 									$current,
 									"arguments",
 									lv_arguments_20_0,
-									"eu.jgen.notes.dmw.lite.Lang.YExpression");
+									"eu.jgen.notes.dmw.lite.Lang.YOrExpression");
 								afterParserOrEnumRuleCall();
 							}
 						)
@@ -2630,25 +2727,6 @@ ruleYTerminalExpression returns [EObject current=null]
 			otherlv_21=')'
 			{
 				newLeafNode(otherlv_21, grammarAccess.getYTerminalExpressionAccess().getRightParenthesisKeyword_7_5());
-			}
-		)
-		    |
-		(
-			otherlv_22='('
-			{
-				newLeafNode(otherlv_22, grammarAccess.getYTerminalExpressionAccess().getLeftParenthesisKeyword_8_0());
-			}
-			{
-				newCompositeNode(grammarAccess.getYTerminalExpressionAccess().getYExpressionParserRuleCall_8_1());
-			}
-			this_YExpression_23=ruleYExpression
-			{
-				$current = $this_YExpression_23.current;
-				afterParserOrEnumRuleCall();
-			}
-			otherlv_24=')'
-			{
-				newLeafNode(otherlv_24, grammarAccess.getYTerminalExpressionAccess().getRightParenthesisKeyword_8_2());
 			}
 		)
 	)

@@ -534,6 +534,24 @@ public class LangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case LangPackage.YPARENTIES:
+      {
+        YParenties yParenties = (YParenties)theEObject;
+        T result = caseYParenties(yParenties);
+        if (result == null) result = caseYExpression(yParenties);
+        if (result == null) result = caseYStatement(yParenties);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case LangPackage.YNOT:
+      {
+        YNot yNot = (YNot)theEObject;
+        T result = caseYNot(yNot);
+        if (result == null) result = caseYExpression(yNot);
+        if (result == null) result = caseYStatement(yNot);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case LangPackage.YSTRING_CONSTANT:
       {
         YStringConstant yStringConstant = (YStringConstant)theEObject;
@@ -1582,6 +1600,38 @@ public class LangSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseYMulOrDiv(YMulOrDiv object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>YParenties</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>YParenties</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseYParenties(YParenties object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>YNot</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>YNot</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseYNot(YNot object)
   {
     return null;
   }

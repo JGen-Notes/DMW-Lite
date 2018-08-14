@@ -371,6 +371,16 @@ public class LangAdapterFactory extends AdapterFactoryImpl
         return createYMulOrDivAdapter();
       }
       @Override
+      public Adapter caseYParenties(YParenties object)
+      {
+        return createYParentiesAdapter();
+      }
+      @Override
+      public Adapter caseYNot(YNot object)
+      {
+        return createYNotAdapter();
+      }
+      @Override
       public Adapter caseYStringConstant(YStringConstant object)
       {
         return createYStringConstantAdapter();
@@ -1333,6 +1343,36 @@ public class LangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createYMulOrDivAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link eu.jgen.notes.dmw.lite.lang.YParenties <em>YParenties</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see eu.jgen.notes.dmw.lite.lang.YParenties
+   * @generated
+   */
+  public Adapter createYParentiesAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link eu.jgen.notes.dmw.lite.lang.YNot <em>YNot</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see eu.jgen.notes.dmw.lite.lang.YNot
+   * @generated
+   */
+  public Adapter createYNotAdapter()
   {
     return null;
   }

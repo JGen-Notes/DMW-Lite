@@ -42,6 +42,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAdditiveExpressionAccess().getAlternatives_1_0(), "rule__YAdditiveExpression__Alternatives_1_0");
 					put(grammarAccess.getOpAddAccess().getAlternatives(), "rule__OpAdd__Alternatives");
 					put(grammarAccess.getYMultiplicativeExpressionAccess().getOpAlternatives_1_1_0(), "rule__YMultiplicativeExpression__OpAlternatives_1_1_0");
+					put(grammarAccess.getYPrimaryAccess().getAlternatives(), "rule__YPrimary__Alternatives");
 					put(grammarAccess.getYTerminalExpressionAccess().getAlternatives(), "rule__YTerminalExpression__Alternatives");
 					put(grammarAccess.getYTerminalExpressionAccess().getValueAlternatives_2_1_0(), "rule__YTerminalExpression__ValueAlternatives_2_1_0");
 					put(grammarAccess.getYAnnotAccess().getTypeAlternatives_1_0(), "rule__YAnnot__TypeAlternatives_1_0");
@@ -103,6 +104,8 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAdditiveExpressionAccess().getGroup_1_0_1(), "rule__YAdditiveExpression__Group_1_0_1__0");
 					put(grammarAccess.getYMultiplicativeExpressionAccess().getGroup(), "rule__YMultiplicativeExpression__Group__0");
 					put(grammarAccess.getYMultiplicativeExpressionAccess().getGroup_1(), "rule__YMultiplicativeExpression__Group_1__0");
+					put(grammarAccess.getYPrimaryAccess().getGroup_0(), "rule__YPrimary__Group_0__0");
+					put(grammarAccess.getYPrimaryAccess().getGroup_1(), "rule__YPrimary__Group_1__0");
 					put(grammarAccess.getYTerminalExpressionAccess().getGroup_0(), "rule__YTerminalExpression__Group_0__0");
 					put(grammarAccess.getYTerminalExpressionAccess().getGroup_1(), "rule__YTerminalExpression__Group_1__0");
 					put(grammarAccess.getYTerminalExpressionAccess().getGroup_2(), "rule__YTerminalExpression__Group_2__0");
@@ -113,7 +116,6 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYTerminalExpressionAccess().getGroup_7(), "rule__YTerminalExpression__Group_7__0");
 					put(grammarAccess.getYTerminalExpressionAccess().getGroup_7_4(), "rule__YTerminalExpression__Group_7_4__0");
 					put(grammarAccess.getYTerminalExpressionAccess().getGroup_7_4_1(), "rule__YTerminalExpression__Group_7_4_1__0");
-					put(grammarAccess.getYTerminalExpressionAccess().getGroup_8(), "rule__YTerminalExpression__Group_8__0");
 					put(grammarAccess.getYReadStatementAccess().getGroup(), "rule__YReadStatement__Group__0");
 					put(grammarAccess.getYReadStatementAccess().getGroup_2(), "rule__YReadStatement__Group_2__0");
 					put(grammarAccess.getYReadEachStatementAccess().getGroup(), "rule__YReadEachStatement__Group__0");
@@ -211,6 +213,8 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAdditiveExpressionAccess().getRightAssignment_1_1(), "rule__YAdditiveExpression__RightAssignment_1_1");
 					put(grammarAccess.getYMultiplicativeExpressionAccess().getOpAssignment_1_1(), "rule__YMultiplicativeExpression__OpAssignment_1_1");
 					put(grammarAccess.getYMultiplicativeExpressionAccess().getRightAssignment_1_2(), "rule__YMultiplicativeExpression__RightAssignment_1_2");
+					put(grammarAccess.getYPrimaryAccess().getAAssignment_0_2(), "rule__YPrimary__AAssignment_0_2");
+					put(grammarAccess.getYPrimaryAccess().getExpressionAssignment_1_2(), "rule__YPrimary__ExpressionAssignment_1_2");
 					put(grammarAccess.getYTerminalExpressionAccess().getValueAssignment_0_1(), "rule__YTerminalExpression__ValueAssignment_0_1");
 					put(grammarAccess.getYTerminalExpressionAccess().getValueAssignment_1_1(), "rule__YTerminalExpression__ValueAssignment_1_1");
 					put(grammarAccess.getYTerminalExpressionAccess().getValueAssignment_2_1(), "rule__YTerminalExpression__ValueAssignment_2_1");

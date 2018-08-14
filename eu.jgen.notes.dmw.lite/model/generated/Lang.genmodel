@@ -253,6 +253,12 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YMulOrDiv/op"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YMulOrDiv/right"/>
     </genClasses>
+    <genClasses ecoreClass="Lang.ecore#//YParenties">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YParenties/a"/>
+    </genClasses>
+    <genClasses ecoreClass="Lang.ecore#//YNot">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YNot/expression"/>
+    </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YStringConstant">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YStringConstant/value"/>
     </genClasses>

@@ -9,13 +9,15 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter
 import eu.jgen.notes.dmw.lite.lang.YProperty
 import eu.jgen.notes.dmw.lite.lang.YWidget
 import eu.jgen.notes.dmw.lite.lang.YClass
+import eu.jgen.notes.dmw.lite.lang.YReturn
+import eu.jgen.notes.dmw.lite.lang.YFunction
 
 class LangJavaGeneratorHelper {
 
-@Inject
+	@Inject
 	private IEObjectDocumentationProvider documentationProvider;
-	
-		def String getDocumentation( /* @Nullable */ EObject source) {
+
+	def String getDocumentation( /* @Nullable */ EObject source) {
 		if (source === null)
 			return null;
 		if (source instanceof JvmIdentifiableElement) {
@@ -42,41 +44,45 @@ class LangJavaGeneratorHelper {
 			return buf.toString
 		}
 	}
-	
+
 	def String findPackageName(YProperty property) {
 		val a = property.type.eContainer
-		if(a instanceof YWidget) {
+		if (a instanceof YWidget) {
 			return (a as YWidget).name
-		} else 	if(a instanceof YClass) {
-			return  ((a as YClass).eContainer as YWidget).name  + "." + (a as YClass).name
+		} else if (a instanceof YClass) {
+			return ((a as YClass).eContainer as YWidget).name + "." + (a as YClass).name
 		} else {
 			return "<do not know what to do yet>"
 		}
 
-		
 	}
-	
-	def String nameOfReturnValue(String typeName) {
-		  switch (typeName) {
-		  	case "Int": {
-		  		return "int"
-		  	}
-		  	case "Short": {
-		  		return "short"
-		  	}
-		  	case "Long": {
-		  		return "long"
-		  	}
-		   case "Decimal": {
-		  		return "double"
-		  	}
-		  	default: {
-		  		return typeName
-		  	}
-		  }
+
+	def String translateTypeName(String typeName) {
+		switch (typeName) {
+			case "Int": {
+				return "XInt"
+			}
+			case "Short": {
+				return "XShort"
+			}
+			case "Long": {
+				return "XLong"
+			}
+			case "Decimal": {
+				return "XDouble"
+			}
+			default: {
+				return typeName
+			}
+		}
 	}
-	
-	
-	
-	
+
+	def YClass whatFuntionType(EObject eobject) {
+		if (eobject.eContainer instanceof YFunction) {
+			return (eobject.eContainer as YFunction).type
+		} else {
+			whatFuntionType(eobject.eContainer)
+		}
+	}
+
 }

@@ -1074,27 +1074,27 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cFunctioninvocationLeftParenthesisKeyword_1_3_0_0 = (Keyword)cFunctioninvocationAssignment_1_3_0.eContents().get(0);
 		private final Group cGroup_1_3_1 = (Group)cGroup_1_3.eContents().get(1);
 		private final Assignment cArgsAssignment_1_3_1_0 = (Assignment)cGroup_1_3_1.eContents().get(0);
-		private final RuleCall cArgsYExpressionParserRuleCall_1_3_1_0_0 = (RuleCall)cArgsAssignment_1_3_1_0.eContents().get(0);
+		private final RuleCall cArgsYOrExpressionParserRuleCall_1_3_1_0_0 = (RuleCall)cArgsAssignment_1_3_1_0.eContents().get(0);
 		private final Group cGroup_1_3_1_1 = (Group)cGroup_1_3_1.eContents().get(1);
 		private final Keyword cCommaKeyword_1_3_1_1_0 = (Keyword)cGroup_1_3_1_1.eContents().get(0);
 		private final Assignment cArgsAssignment_1_3_1_1_1 = (Assignment)cGroup_1_3_1_1.eContents().get(1);
-		private final RuleCall cArgsYExpressionParserRuleCall_1_3_1_1_1_0 = (RuleCall)cArgsAssignment_1_3_1_1_1.eContents().get(0);
+		private final RuleCall cArgsYOrExpressionParserRuleCall_1_3_1_1_1_0 = (RuleCall)cArgsAssignment_1_3_1_1_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_1_3_2 = (Keyword)cGroup_1_3.eContents().get(2);
 		
 		//YSelectionExpression YExpression:
 		//	YTerminalExpression ({YMemberSelection.receiver=current} '.'
-		//	member=[YMember] (functioninvocation?='(' (args+=YExpression (',' args+=YExpression)*)? ')')?)*;
+		//	member=[YMember] (functioninvocation?='(' (args+=YOrExpression (',' args+=YOrExpression)*)? ')')?)*;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//YTerminalExpression ({YMemberSelection.receiver=current} '.' member=[YMember] (functioninvocation?='('
-		//(args+=YExpression (',' args+=YExpression)*)? ')')?)*
+		//(args+=YOrExpression (',' args+=YOrExpression)*)? ')')?)*
 		public Group getGroup() { return cGroup; }
 		
 		//YTerminalExpression
 		public RuleCall getYTerminalExpressionParserRuleCall_0() { return cYTerminalExpressionParserRuleCall_0; }
 		
-		//({YMemberSelection.receiver=current} '.' member=[YMember] (functioninvocation?='(' (args+=YExpression (','
-		//args+=YExpression)*)? ')')?)*
+		//({YMemberSelection.receiver=current} '.' member=[YMember] (functioninvocation?='(' (args+=YOrExpression (','
+		//args+=YOrExpression)*)? ')')?)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{YMemberSelection.receiver=current}
@@ -1112,7 +1112,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getMemberYMemberIDTerminalRuleCall_1_2_0_1() { return cMemberYMemberIDTerminalRuleCall_1_2_0_1; }
 		
-		//(functioninvocation?='(' (args+=YExpression (',' args+=YExpression)*)? ')')?
+		//(functioninvocation?='(' (args+=YOrExpression (',' args+=YOrExpression)*)? ')')?
 		public Group getGroup_1_3() { return cGroup_1_3; }
 		
 		//functioninvocation?='('
@@ -1121,26 +1121,26 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'('
 		public Keyword getFunctioninvocationLeftParenthesisKeyword_1_3_0_0() { return cFunctioninvocationLeftParenthesisKeyword_1_3_0_0; }
 		
-		//(args+=YExpression (',' args+=YExpression)*)?
+		//(args+=YOrExpression (',' args+=YOrExpression)*)?
 		public Group getGroup_1_3_1() { return cGroup_1_3_1; }
 		
-		//args+=YExpression
+		//args+=YOrExpression
 		public Assignment getArgsAssignment_1_3_1_0() { return cArgsAssignment_1_3_1_0; }
 		
-		//YExpression
-		public RuleCall getArgsYExpressionParserRuleCall_1_3_1_0_0() { return cArgsYExpressionParserRuleCall_1_3_1_0_0; }
+		//YOrExpression
+		public RuleCall getArgsYOrExpressionParserRuleCall_1_3_1_0_0() { return cArgsYOrExpressionParserRuleCall_1_3_1_0_0; }
 		
-		//(',' args+=YExpression)*
+		//(',' args+=YOrExpression)*
 		public Group getGroup_1_3_1_1() { return cGroup_1_3_1_1; }
 		
 		//','
 		public Keyword getCommaKeyword_1_3_1_1_0() { return cCommaKeyword_1_3_1_1_0; }
 		
-		//args+=YExpression
+		//args+=YOrExpression
 		public Assignment getArgsAssignment_1_3_1_1_1() { return cArgsAssignment_1_3_1_1_1; }
 		
-		//YExpression
-		public RuleCall getArgsYExpressionParserRuleCall_1_3_1_1_1_0() { return cArgsYExpressionParserRuleCall_1_3_1_1_1_0; }
+		//YOrExpression
+		public RuleCall getArgsYOrExpressionParserRuleCall_1_3_1_1_1_0() { return cArgsYOrExpressionParserRuleCall_1_3_1_1_1_0; }
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_1_3_2() { return cRightParenthesisKeyword_1_3_2; }
@@ -1149,7 +1149,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.OpSingleAssign");
 		private final Keyword cEqualsSignKeyword = (Keyword)rule.eContents().get(1);
 		
-		//OpSingleAssign:
+		///*
+		// * Expressions
+		// */ OpSingleAssign:
 		//	'=';
 		@Override public ParserRule getRule() { return rule; }
 		
@@ -1446,7 +1448,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	public class YMultiplicativeExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YMultiplicativeExpression");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final RuleCall cYSelectionExpressionParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
+		private final RuleCall cYPrimaryParserRuleCall_0 = (RuleCall)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Action cYMulOrDivLeftAction_1_0 = (Action)cGroup_1.eContents().get(0);
 		private final Assignment cOpAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
@@ -1454,19 +1456,19 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cOpAsteriskKeyword_1_1_0_0 = (Keyword)cOpAlternatives_1_1_0.eContents().get(0);
 		private final Keyword cOpSolidusKeyword_1_1_0_1 = (Keyword)cOpAlternatives_1_1_0.eContents().get(1);
 		private final Assignment cRightAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
-		private final RuleCall cRightYSelectionExpressionParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
+		private final RuleCall cRightYPrimaryParserRuleCall_1_2_0 = (RuleCall)cRightAssignment_1_2.eContents().get(0);
 		
 		//YMultiplicativeExpression YExpression:
-		//	YSelectionExpression ({YMulOrDiv.left=current} op=('*' | '/') right=YSelectionExpression)*;
+		//	YPrimary ({YMulOrDiv.left=current} op=('*' | '/') right=YPrimary)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//YSelectionExpression ({YMulOrDiv.left=current} op=('*' | '/') right=YSelectionExpression)*
+		//YPrimary ({YMulOrDiv.left=current} op=('*' | '/') right=YPrimary)*
 		public Group getGroup() { return cGroup; }
 		
-		//YSelectionExpression
-		public RuleCall getYSelectionExpressionParserRuleCall_0() { return cYSelectionExpressionParserRuleCall_0; }
+		//YPrimary
+		public RuleCall getYPrimaryParserRuleCall_0() { return cYPrimaryParserRuleCall_0; }
 		
-		//({YMulOrDiv.left=current} op=('*' | '/') right=YSelectionExpression)*
+		//({YMulOrDiv.left=current} op=('*' | '/') right=YPrimary)*
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//{YMulOrDiv.left=current}
@@ -1484,11 +1486,70 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'/'
 		public Keyword getOpSolidusKeyword_1_1_0_1() { return cOpSolidusKeyword_1_1_0_1; }
 		
-		//right=YSelectionExpression
+		//right=YPrimary
 		public Assignment getRightAssignment_1_2() { return cRightAssignment_1_2; }
 		
+		//YPrimary
+		public RuleCall getRightYPrimaryParserRuleCall_1_2_0() { return cRightYPrimaryParserRuleCall_1_2_0; }
+	}
+	public class YPrimaryElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YPrimary");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final Group cGroup_0 = (Group)cAlternatives.eContents().get(0);
+		private final Action cYParentiesAction_0_0 = (Action)cGroup_0.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_0_1 = (Keyword)cGroup_0.eContents().get(1);
+		private final Assignment cAAssignment_0_2 = (Assignment)cGroup_0.eContents().get(2);
+		private final RuleCall cAYOrExpressionParserRuleCall_0_2_0 = (RuleCall)cAAssignment_0_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_0_3 = (Keyword)cGroup_0.eContents().get(3);
+		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
+		private final Action cYNotAction_1_0 = (Action)cGroup_1.eContents().get(0);
+		private final Keyword cExclamationMarkKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Assignment cExpressionAssignment_1_2 = (Assignment)cGroup_1.eContents().get(2);
+		private final RuleCall cExpressionYPrimaryParserRuleCall_1_2_0 = (RuleCall)cExpressionAssignment_1_2.eContents().get(0);
+		private final RuleCall cYSelectionExpressionParserRuleCall_2 = (RuleCall)cAlternatives.eContents().get(2);
+		
+		//YPrimary YExpression:
+		//	{YParenties} '(' a=YOrExpression ')' | {YNot} "!" expression=YPrimary | YSelectionExpression;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{YParenties} '(' a=YOrExpression ')' | {YNot} "!" expression=YPrimary | YSelectionExpression
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//{YParenties} '(' a=YOrExpression ')'
+		public Group getGroup_0() { return cGroup_0; }
+		
+		//{YParenties}
+		public Action getYParentiesAction_0_0() { return cYParentiesAction_0_0; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_0_1() { return cLeftParenthesisKeyword_0_1; }
+		
+		//a=YOrExpression
+		public Assignment getAAssignment_0_2() { return cAAssignment_0_2; }
+		
+		//YOrExpression
+		public RuleCall getAYOrExpressionParserRuleCall_0_2_0() { return cAYOrExpressionParserRuleCall_0_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_0_3() { return cRightParenthesisKeyword_0_3; }
+		
+		//{YNot} "!" expression=YPrimary
+		public Group getGroup_1() { return cGroup_1; }
+		
+		//{YNot}
+		public Action getYNotAction_1_0() { return cYNotAction_1_0; }
+		
+		//"!"
+		public Keyword getExclamationMarkKeyword_1_1() { return cExclamationMarkKeyword_1_1; }
+		
+		//expression=YPrimary
+		public Assignment getExpressionAssignment_1_2() { return cExpressionAssignment_1_2; }
+		
+		//YPrimary
+		public RuleCall getExpressionYPrimaryParserRuleCall_1_2_0() { return cExpressionYPrimaryParserRuleCall_1_2_0; }
+		
 		//YSelectionExpression
-		public RuleCall getRightYSelectionExpressionParserRuleCall_1_2_0() { return cRightYSelectionExpressionParserRuleCall_1_2_0; }
+		public RuleCall getYSelectionExpressionParserRuleCall_2() { return cYSelectionExpressionParserRuleCall_2; }
 	}
 	public class YTerminalExpressionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YTerminalExpression");
@@ -1530,27 +1591,24 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cLeftParenthesisKeyword_7_3 = (Keyword)cGroup_7.eContents().get(3);
 		private final Group cGroup_7_4 = (Group)cGroup_7.eContents().get(4);
 		private final Assignment cArgumentsAssignment_7_4_0 = (Assignment)cGroup_7_4.eContents().get(0);
-		private final RuleCall cArgumentsYExpressionParserRuleCall_7_4_0_0 = (RuleCall)cArgumentsAssignment_7_4_0.eContents().get(0);
+		private final RuleCall cArgumentsYOrExpressionParserRuleCall_7_4_0_0 = (RuleCall)cArgumentsAssignment_7_4_0.eContents().get(0);
 		private final Group cGroup_7_4_1 = (Group)cGroup_7_4.eContents().get(1);
 		private final Keyword cCommaKeyword_7_4_1_0 = (Keyword)cGroup_7_4_1.eContents().get(0);
 		private final Assignment cArgumentsAssignment_7_4_1_1 = (Assignment)cGroup_7_4_1.eContents().get(1);
-		private final RuleCall cArgumentsYExpressionParserRuleCall_7_4_1_1_0 = (RuleCall)cArgumentsAssignment_7_4_1_1.eContents().get(0);
+		private final RuleCall cArgumentsYOrExpressionParserRuleCall_7_4_1_1_0 = (RuleCall)cArgumentsAssignment_7_4_1_1.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_7_5 = (Keyword)cGroup_7.eContents().get(5);
-		private final Group cGroup_8 = (Group)cAlternatives.eContents().get(8);
-		private final Keyword cLeftParenthesisKeyword_8_0 = (Keyword)cGroup_8.eContents().get(0);
-		private final RuleCall cYExpressionParserRuleCall_8_1 = (RuleCall)cGroup_8.eContents().get(1);
-		private final Keyword cRightParenthesisKeyword_8_2 = (Keyword)cGroup_8.eContents().get(2);
 		
 		//YTerminalExpression YExpression:
 		//	{YStringConstant} value=STRING | {YIntConstant} value=INT | {YBoolConstant} value=('true' | 'false') | {YSelf} 'self'
 		//	| {YSuper} 'super' | {YNull} 'null' | {YSymbolRef} symbol=[YSymbol] | {YNew} 'new' type=[YClass|QualifiedName] '('
-		//	(arguments+=YExpression (',' arguments+=YExpression)*)? ')' |
-		//	'(' YExpression ')';
+		//	(arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')'
+		//	//|	'(' YOrExpression ')'
+		//;
 		@Override public ParserRule getRule() { return rule; }
 		
 		//{YStringConstant} value=STRING | {YIntConstant} value=INT | {YBoolConstant} value=('true' | 'false') | {YSelf} 'self' |
 		//{YSuper} 'super' | {YNull} 'null' | {YSymbolRef} symbol=[YSymbol] | {YNew} 'new' type=[YClass|QualifiedName] '('
-		//(arguments+=YExpression (',' arguments+=YExpression)*)? ')' | '(' YExpression ')'
+		//(arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//{YStringConstant} value=STRING
@@ -1637,7 +1695,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//ID
 		public RuleCall getSymbolYSymbolIDTerminalRuleCall_6_1_0_1() { return cSymbolYSymbolIDTerminalRuleCall_6_1_0_1; }
 		
-		//{YNew} 'new' type=[YClass|QualifiedName] '(' (arguments+=YExpression (',' arguments+=YExpression)*)? ')'
+		//{YNew} 'new' type=[YClass|QualifiedName] '(' (arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')'
 		public Group getGroup_7() { return cGroup_7; }
 		
 		//{YNew}
@@ -1658,41 +1716,29 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'('
 		public Keyword getLeftParenthesisKeyword_7_3() { return cLeftParenthesisKeyword_7_3; }
 		
-		//(arguments+=YExpression (',' arguments+=YExpression)*)?
+		//(arguments+=YOrExpression (',' arguments+=YOrExpression)*)?
 		public Group getGroup_7_4() { return cGroup_7_4; }
 		
-		//arguments+=YExpression
+		//arguments+=YOrExpression
 		public Assignment getArgumentsAssignment_7_4_0() { return cArgumentsAssignment_7_4_0; }
 		
-		//YExpression
-		public RuleCall getArgumentsYExpressionParserRuleCall_7_4_0_0() { return cArgumentsYExpressionParserRuleCall_7_4_0_0; }
+		//YOrExpression
+		public RuleCall getArgumentsYOrExpressionParserRuleCall_7_4_0_0() { return cArgumentsYOrExpressionParserRuleCall_7_4_0_0; }
 		
-		//(',' arguments+=YExpression)*
+		//(',' arguments+=YOrExpression)*
 		public Group getGroup_7_4_1() { return cGroup_7_4_1; }
 		
 		//','
 		public Keyword getCommaKeyword_7_4_1_0() { return cCommaKeyword_7_4_1_0; }
 		
-		//arguments+=YExpression
+		//arguments+=YOrExpression
 		public Assignment getArgumentsAssignment_7_4_1_1() { return cArgumentsAssignment_7_4_1_1; }
 		
-		//YExpression
-		public RuleCall getArgumentsYExpressionParserRuleCall_7_4_1_1_0() { return cArgumentsYExpressionParserRuleCall_7_4_1_1_0; }
+		//YOrExpression
+		public RuleCall getArgumentsYOrExpressionParserRuleCall_7_4_1_1_0() { return cArgumentsYOrExpressionParserRuleCall_7_4_1_1_0; }
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_7_5() { return cRightParenthesisKeyword_7_5; }
-		
-		//'(' YExpression ')'
-		public Group getGroup_8() { return cGroup_8; }
-		
-		//'('
-		public Keyword getLeftParenthesisKeyword_8_0() { return cLeftParenthesisKeyword_8_0; }
-		
-		//YExpression
-		public RuleCall getYExpressionParserRuleCall_8_1() { return cYExpressionParserRuleCall_8_1; }
-		
-		//')'
-		public Keyword getRightParenthesisKeyword_8_2() { return cRightParenthesisKeyword_8_2; }
 	}
 	public class YReadStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YReadStatement");
@@ -3583,6 +3629,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	private final YAdditiveExpressionElements pYAdditiveExpression;
 	private final OpAddElements pOpAdd;
 	private final YMultiplicativeExpressionElements pYMultiplicativeExpression;
+	private final YPrimaryElements pYPrimary;
 	private final YTerminalExpressionElements pYTerminalExpression;
 	private final YReadStatementElements pYReadStatement;
 	private final YReadEachStatementElements pYReadEachStatement;
@@ -3669,6 +3716,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pYAdditiveExpression = new YAdditiveExpressionElements();
 		this.pOpAdd = new OpAddElements();
 		this.pYMultiplicativeExpression = new YMultiplicativeExpressionElements();
+		this.pYPrimary = new YPrimaryElements();
 		this.pYTerminalExpression = new YTerminalExpressionElements();
 		this.pYReadStatement = new YReadStatementElements();
 		this.pYReadEachStatement = new YReadEachStatementElements();
@@ -4024,7 +4072,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//YSelectionExpression YExpression:
 	//	YTerminalExpression ({YMemberSelection.receiver=current} '.'
-	//	member=[YMember] (functioninvocation?='(' (args+=YExpression (',' args+=YExpression)*)? ')')?)*;
+	//	member=[YMember] (functioninvocation?='(' (args+=YOrExpression (',' args+=YOrExpression)*)? ')')?)*;
 	public YSelectionExpressionElements getYSelectionExpressionAccess() {
 		return pYSelectionExpression;
 	}
@@ -4033,7 +4081,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		return getYSelectionExpressionAccess().getRule();
 	}
 	
-	//OpSingleAssign:
+	///*
+	// * Expressions
+	// */ OpSingleAssign:
 	//	'=';
 	public OpSingleAssignElements getOpSingleAssignAccess() {
 		return pOpSingleAssign;
@@ -4134,7 +4184,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YMultiplicativeExpression YExpression:
-	//	YSelectionExpression ({YMulOrDiv.left=current} op=('*' | '/') right=YSelectionExpression)*;
+	//	YPrimary ({YMulOrDiv.left=current} op=('*' | '/') right=YPrimary)*;
 	public YMultiplicativeExpressionElements getYMultiplicativeExpressionAccess() {
 		return pYMultiplicativeExpression;
 	}
@@ -4143,11 +4193,22 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		return getYMultiplicativeExpressionAccess().getRule();
 	}
 	
+	//YPrimary YExpression:
+	//	{YParenties} '(' a=YOrExpression ')' | {YNot} "!" expression=YPrimary | YSelectionExpression;
+	public YPrimaryElements getYPrimaryAccess() {
+		return pYPrimary;
+	}
+	
+	public ParserRule getYPrimaryRule() {
+		return getYPrimaryAccess().getRule();
+	}
+	
 	//YTerminalExpression YExpression:
 	//	{YStringConstant} value=STRING | {YIntConstant} value=INT | {YBoolConstant} value=('true' | 'false') | {YSelf} 'self'
 	//	| {YSuper} 'super' | {YNull} 'null' | {YSymbolRef} symbol=[YSymbol] | {YNew} 'new' type=[YClass|QualifiedName] '('
-	//	(arguments+=YExpression (',' arguments+=YExpression)*)? ')' |
-	//	'(' YExpression ')';
+	//	(arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')'
+	//	//|	'(' YOrExpression ')'
+	//;
 	public YTerminalExpressionElements getYTerminalExpressionAccess() {
 		return pYTerminalExpression;
 	}

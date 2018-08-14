@@ -2458,6 +2458,62 @@ public interface LangPackage extends EPackage
   int YMUL_OR_DIV_FEATURE_COUNT = YEXPRESSION_FEATURE_COUNT + 3;
 
   /**
+   * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YParentiesImpl <em>YParenties</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see eu.jgen.notes.dmw.lite.lang.impl.YParentiesImpl
+   * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYParenties()
+   * @generated
+   */
+  int YPARENTIES = 59;
+
+  /**
+   * The feature id for the '<em><b>A</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YPARENTIES__A = YEXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>YParenties</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YPARENTIES_FEATURE_COUNT = YEXPRESSION_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YNotImpl <em>YNot</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see eu.jgen.notes.dmw.lite.lang.impl.YNotImpl
+   * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYNot()
+   * @generated
+   */
+  int YNOT = 60;
+
+  /**
+   * The feature id for the '<em><b>Expression</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YNOT__EXPRESSION = YEXPRESSION_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>YNot</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YNOT_FEATURE_COUNT = YEXPRESSION_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YStringConstantImpl <em>YString Constant</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2465,7 +2521,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYStringConstant()
    * @generated
    */
-  int YSTRING_CONSTANT = 59;
+  int YSTRING_CONSTANT = 61;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2493,7 +2549,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYIntConstant()
    * @generated
    */
-  int YINT_CONSTANT = 60;
+  int YINT_CONSTANT = 62;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2521,7 +2577,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYBoolConstant()
    * @generated
    */
-  int YBOOL_CONSTANT = 61;
+  int YBOOL_CONSTANT = 63;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2549,7 +2605,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYSelf()
    * @generated
    */
-  int YSELF = 62;
+  int YSELF = 64;
 
   /**
    * The number of structural features of the '<em>YSelf</em>' class.
@@ -2568,7 +2624,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYSuper()
    * @generated
    */
-  int YSUPER = 63;
+  int YSUPER = 65;
 
   /**
    * The number of structural features of the '<em>YSuper</em>' class.
@@ -2587,7 +2643,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYNull()
    * @generated
    */
-  int YNULL = 64;
+  int YNULL = 66;
 
   /**
    * The number of structural features of the '<em>YNull</em>' class.
@@ -2606,7 +2662,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYSymbolRef()
    * @generated
    */
-  int YSYMBOL_REF = 65;
+  int YSYMBOL_REF = 67;
 
   /**
    * The feature id for the '<em><b>Symbol</b></em>' reference.
@@ -2634,7 +2690,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYNew()
    * @generated
    */
-  int YNEW = 66;
+  int YNEW = 68;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -2671,7 +2727,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotLength()
    * @generated
    */
-  int YANNOT_LENGTH = 67;
+  int YANNOT_LENGTH = 69;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2717,7 +2773,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDecimal()
    * @generated
    */
-  int YANNOT_DECIMAL = 68;
+  int YANNOT_DECIMAL = 70;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2772,7 +2828,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotAction()
    * @generated
    */
-  int YANNOT_ACTION = 69;
+  int YANNOT_ACTION = 71;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2818,7 +2874,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotMessage()
    * @generated
    */
-  int YANNOT_MESSAGE = 70;
+  int YANNOT_MESSAGE = 72;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2864,7 +2920,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAccessLevel()
    * @generated
    */
-  int YACCESS_LEVEL = 71;
+  int YACCESS_LEVEL = 73;
 
 
   /**
@@ -4877,6 +4933,48 @@ public interface LangPackage extends EPackage
   EReference getYMulOrDiv_Right();
 
   /**
+   * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YParenties <em>YParenties</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>YParenties</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YParenties
+   * @generated
+   */
+  EClass getYParenties();
+
+  /**
+   * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YParenties#getA <em>A</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>A</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YParenties#getA()
+   * @see #getYParenties()
+   * @generated
+   */
+  EReference getYParenties_A();
+
+  /**
+   * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YNot <em>YNot</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>YNot</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YNot
+   * @generated
+   */
+  EClass getYNot();
+
+  /**
+   * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YNot#getExpression <em>Expression</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the containment reference '<em>Expression</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YNot#getExpression()
+   * @see #getYNot()
+   * @generated
+   */
+  EReference getYNot_Expression();
+
+  /**
    * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YStringConstant <em>YString Constant</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -6771,6 +6869,42 @@ public interface LangPackage extends EPackage
      * @generated
      */
     EReference YMUL_OR_DIV__RIGHT = eINSTANCE.getYMulOrDiv_Right();
+
+    /**
+     * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YParentiesImpl <em>YParenties</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see eu.jgen.notes.dmw.lite.lang.impl.YParentiesImpl
+     * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYParenties()
+     * @generated
+     */
+    EClass YPARENTIES = eINSTANCE.getYParenties();
+
+    /**
+     * The meta object literal for the '<em><b>A</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference YPARENTIES__A = eINSTANCE.getYParenties_A();
+
+    /**
+     * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YNotImpl <em>YNot</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see eu.jgen.notes.dmw.lite.lang.impl.YNotImpl
+     * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYNot()
+     * @generated
+     */
+    EClass YNOT = eINSTANCE.getYNot();
+
+    /**
+     * The meta object literal for the '<em><b>Expression</b></em>' containment reference feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EReference YNOT__EXPRESSION = eINSTANCE.getYNot_Expression();
 
     /**
      * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YStringConstantImpl <em>YString Constant</em>}' class.
