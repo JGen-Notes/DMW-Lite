@@ -91,7 +91,7 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 	override completeYClass_Members(EObject model, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
 		val clazz = model as YClass
-		if (clazz.superclass.name == "Structure") {
+		if (clazz.superclass !== null && clazz.superclass.name == "Structure") {
 			if (clazz.entity !== null) {
 				createAttributeIncludeAll(clazz, acceptor, context)
 				createAttributeIncludeOne(clazz, acceptor, context)

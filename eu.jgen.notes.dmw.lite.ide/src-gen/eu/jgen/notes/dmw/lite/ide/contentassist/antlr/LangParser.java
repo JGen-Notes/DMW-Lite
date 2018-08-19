@@ -34,7 +34,6 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYArgumentValueAccess().getAlternatives(), "rule__YArgumentValue__Alternatives");
 					put(grammarAccess.getYMemberAccess().getAlternatives(), "rule__YMember__Alternatives");
 					put(grammarAccess.getYStatementAccess().getAlternatives(), "rule__YStatement__Alternatives");
-					put(grammarAccess.getYIfBlockAccess().getAlternatives(), "rule__YIfBlock__Alternatives");
 					put(grammarAccess.getYSymbolAccess().getAlternatives(), "rule__YSymbol__Alternatives");
 					put(grammarAccess.getYNamedElementAccess().getAlternatives(), "rule__YNamedElement__Alternatives");
 					put(grammarAccess.getYEqualityExpressionAccess().getOpAlternatives_1_1_0(), "rule__YEqualityExpression__OpAlternatives_1_1_0");
@@ -193,7 +192,6 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYIfStatementAccess().getExpressionAssignment_2(), "rule__YIfStatement__ExpressionAssignment_2");
 					put(grammarAccess.getYIfStatementAccess().getThenBlockAssignment_4(), "rule__YIfStatement__ThenBlockAssignment_4");
 					put(grammarAccess.getYIfStatementAccess().getElseBlockAssignment_5_1(), "rule__YIfStatement__ElseBlockAssignment_5_1");
-					put(grammarAccess.getYIfBlockAccess().getStatementsAssignment_0(), "rule__YIfBlock__StatementsAssignment_0");
 					put(grammarAccess.getYSwitchStatementAccess().getSwitchAssignment_2(), "rule__YSwitchStatement__SwitchAssignment_2");
 					put(grammarAccess.getYSwitchStatementAccess().getCasesAssignment_4(), "rule__YSwitchStatement__CasesAssignment_4");
 					put(grammarAccess.getYSwitchStatementAccess().getDefaultAssignment_5_2(), "rule__YSwitchStatement__DefaultAssignment_5_2");

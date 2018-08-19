@@ -177,15 +177,8 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				sequence_YAssociateStatement(context, (YAssociateStatement) semanticObject); 
 				return; 
 			case LangPackage.YBLOCK:
-				if (rule == grammarAccess.getYBlockRule()) {
-					sequence_YBlock(context, (YBlock) semanticObject); 
-					return; 
-				}
-				else if (rule == grammarAccess.getYIfBlockRule()) {
-					sequence_YBlock_YIfBlock(context, (YBlock) semanticObject); 
-					return; 
-				}
-				else break;
+				sequence_YBlock(context, (YBlock) semanticObject); 
+				return; 
 			case LangPackage.YBOOL_CONSTANT:
 				sequence_YTerminalExpression(context, (YBoolConstant) semanticObject); 
 				return; 
@@ -803,18 +796,6 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
-	 *     YIfBlock returns YBlock
-	 *
-	 * Constraint:
-	 *     (statements+=YStatement+ | statements+=YStatement)?
-	 */
-	protected void sequence_YBlock_YIfBlock(ISerializationContext context, YBlock semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
-	}
-	
-	
-	/**
-	 * Contexts:
 	 *     YClass returns YClass
 	 *     YNamedElement returns YClass
 	 *
@@ -973,7 +954,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YIfStatement returns YIfStatement
 	 *
 	 * Constraint:
-	 *     (expression=YOrExpression thenBlock=YIfBlock elseBlock=YIfBlock?)
+	 *     (expression=YOrExpression thenBlock=YBlock elseBlock=YBlock?)
 	 */
 	protected void sequence_YIfStatement(ISerializationContext context, YIfStatement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

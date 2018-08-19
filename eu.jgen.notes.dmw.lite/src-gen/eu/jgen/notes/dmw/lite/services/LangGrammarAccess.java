@@ -791,17 +791,17 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cExpressionYOrExpressionParserRuleCall_2_0 = (RuleCall)cExpressionAssignment_2.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cThenBlockAssignment_4 = (Assignment)cGroup.eContents().get(4);
-		private final RuleCall cThenBlockYIfBlockParserRuleCall_4_0 = (RuleCall)cThenBlockAssignment_4.eContents().get(0);
+		private final RuleCall cThenBlockYBlockParserRuleCall_4_0 = (RuleCall)cThenBlockAssignment_4.eContents().get(0);
 		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
 		private final Keyword cElseKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
 		private final Assignment cElseBlockAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
-		private final RuleCall cElseBlockYIfBlockParserRuleCall_5_1_0 = (RuleCall)cElseBlockAssignment_5_1.eContents().get(0);
+		private final RuleCall cElseBlockYBlockParserRuleCall_5_1_0 = (RuleCall)cElseBlockAssignment_5_1.eContents().get(0);
 		
 		//YIfStatement:
-		//	'if' '(' expression=YOrExpression ')' thenBlock=YIfBlock (=> 'else' elseBlock=YIfBlock)?;
+		//	'if' '(' expression=YOrExpression ')' thenBlock=YBlock (=> 'else' elseBlock=YBlock)?;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'if' '(' expression=YOrExpression ')' thenBlock=YIfBlock (=> 'else' elseBlock=YIfBlock)?
+		//'if' '(' expression=YOrExpression ')' thenBlock=YBlock (=> 'else' elseBlock=YBlock)?
 		public Group getGroup() { return cGroup; }
 		
 		//'if'
@@ -819,47 +819,23 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//')'
 		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
 		
-		//thenBlock=YIfBlock
+		//thenBlock=YBlock
 		public Assignment getThenBlockAssignment_4() { return cThenBlockAssignment_4; }
 		
-		//YIfBlock
-		public RuleCall getThenBlockYIfBlockParserRuleCall_4_0() { return cThenBlockYIfBlockParserRuleCall_4_0; }
+		//YBlock
+		public RuleCall getThenBlockYBlockParserRuleCall_4_0() { return cThenBlockYBlockParserRuleCall_4_0; }
 		
-		//(=> 'else' elseBlock=YIfBlock)?
+		//(=> 'else' elseBlock=YBlock)?
 		public Group getGroup_5() { return cGroup_5; }
 		
 		//=> 'else'
 		public Keyword getElseKeyword_5_0() { return cElseKeyword_5_0; }
 		
-		//elseBlock=YIfBlock
+		//elseBlock=YBlock
 		public Assignment getElseBlockAssignment_5_1() { return cElseBlockAssignment_5_1; }
 		
-		//YIfBlock
-		public RuleCall getElseBlockYIfBlockParserRuleCall_5_1_0() { return cElseBlockYIfBlockParserRuleCall_5_1_0; }
-	}
-	public class YIfBlockElements extends AbstractParserRuleElementFinder {
-		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YIfBlock");
-		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
-		private final Assignment cStatementsAssignment_0 = (Assignment)cAlternatives.eContents().get(0);
-		private final RuleCall cStatementsYStatementParserRuleCall_0_0 = (RuleCall)cStatementsAssignment_0.eContents().get(0);
-		private final RuleCall cYBlockParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
-		
-		//YIfBlock YBlock:
-		//	statements+=YStatement
-		//	| YBlock;
-		@Override public ParserRule getRule() { return rule; }
-		
-		//statements+=YStatement | YBlock
-		public Alternatives getAlternatives() { return cAlternatives; }
-		
-		//statements+=YStatement
-		public Assignment getStatementsAssignment_0() { return cStatementsAssignment_0; }
-		
-		//YStatement
-		public RuleCall getStatementsYStatementParserRuleCall_0_0() { return cStatementsYStatementParserRuleCall_0_0; }
-		
 		//YBlock
-		public RuleCall getYBlockParserRuleCall_1() { return cYBlockParserRuleCall_1; }
+		public RuleCall getElseBlockYBlockParserRuleCall_5_1_0() { return cElseBlockYBlockParserRuleCall_5_1_0; }
 	}
 	public class YSwitchStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YSwitchStatement");
@@ -878,6 +854,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cDefaultYBlockParserRuleCall_5_2_0 = (RuleCall)cDefaultAssignment_5_2.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
+		////YIfBlock returns YBlock:
+		////	statements+=YStatement
+		////	| YBlock;
 		//YSwitchStatement:
 		//	{YSwitchStatement}
 		//	'switch' switch=YExpression '{'
@@ -3610,7 +3589,6 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	private final YVariableDeclarationElements pYVariableDeclaration;
 	private final YReturnElements pYReturn;
 	private final YIfStatementElements pYIfStatement;
-	private final YIfBlockElements pYIfBlock;
 	private final YSwitchStatementElements pYSwitchStatement;
 	private final YSwitchCaseElements pYSwitchCase;
 	private final YSymbolElements pYSymbol;
@@ -3697,7 +3675,6 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pYVariableDeclaration = new YVariableDeclarationElements();
 		this.pYReturn = new YReturnElements();
 		this.pYIfStatement = new YIfStatementElements();
-		this.pYIfBlock = new YIfBlockElements();
 		this.pYSwitchStatement = new YSwitchStatementElements();
 		this.pYSwitchCase = new YSwitchCaseElements();
 		this.pYSymbol = new YSymbolElements();
@@ -3986,7 +3963,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YIfStatement:
-	//	'if' '(' expression=YOrExpression ')' thenBlock=YIfBlock (=> 'else' elseBlock=YIfBlock)?;
+	//	'if' '(' expression=YOrExpression ')' thenBlock=YBlock (=> 'else' elseBlock=YBlock)?;
 	public YIfStatementElements getYIfStatementAccess() {
 		return pYIfStatement;
 	}
@@ -3995,17 +3972,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		return getYIfStatementAccess().getRule();
 	}
 	
-	//YIfBlock YBlock:
-	//	statements+=YStatement
-	//	| YBlock;
-	public YIfBlockElements getYIfBlockAccess() {
-		return pYIfBlock;
-	}
-	
-	public ParserRule getYIfBlockRule() {
-		return getYIfBlockAccess().getRule();
-	}
-	
+	////YIfBlock returns YBlock:
+	////	statements+=YStatement
+	////	| YBlock;
 	//YSwitchStatement:
 	//	{YSwitchStatement}
 	//	'switch' switch=YExpression '{'

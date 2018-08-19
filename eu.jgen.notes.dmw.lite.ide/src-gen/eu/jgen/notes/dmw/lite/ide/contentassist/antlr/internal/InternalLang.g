@@ -492,31 +492,6 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-// Entry rule entryRuleYIfBlock
-entryRuleYIfBlock
-:
-{ before(grammarAccess.getYIfBlockRule()); }
-	 ruleYIfBlock
-{ after(grammarAccess.getYIfBlockRule()); } 
-	 EOF 
-;
-
-// Rule YIfBlock
-ruleYIfBlock 
-	@init {
-		int stackSize = keepStackSize();
-	}
-	:
-	(
-		{ before(grammarAccess.getYIfBlockAccess().getAlternatives()); }
-		(rule__YIfBlock__Alternatives)
-		{ after(grammarAccess.getYIfBlockAccess().getAlternatives()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
 // Entry rule entryRuleYSwitchStatement
 entryRuleYSwitchStatement
 :
@@ -1962,27 +1937,6 @@ rule__YStatement__Alternatives
 		{ before(grammarAccess.getYStatementAccess().getYSwitchStatementParserRuleCall_13()); }
 		ruleYSwitchStatement
 		{ after(grammarAccess.getYStatementAccess().getYSwitchStatementParserRuleCall_13()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__YIfBlock__Alternatives
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getYIfBlockAccess().getStatementsAssignment_0()); }
-		(rule__YIfBlock__StatementsAssignment_0)
-		{ after(grammarAccess.getYIfBlockAccess().getStatementsAssignment_0()); }
-	)
-	|
-	(
-		{ before(grammarAccess.getYIfBlockAccess().getYBlockParserRuleCall_1()); }
-		ruleYBlock
-		{ after(grammarAccess.getYIfBlockAccess().getYBlockParserRuleCall_1()); }
 	)
 ;
 finally {
@@ -13557,9 +13511,9 @@ rule__YIfStatement__ThenBlockAssignment_4
 	}
 :
 	(
-		{ before(grammarAccess.getYIfStatementAccess().getThenBlockYIfBlockParserRuleCall_4_0()); }
-		ruleYIfBlock
-		{ after(grammarAccess.getYIfStatementAccess().getThenBlockYIfBlockParserRuleCall_4_0()); }
+		{ before(grammarAccess.getYIfStatementAccess().getThenBlockYBlockParserRuleCall_4_0()); }
+		ruleYBlock
+		{ after(grammarAccess.getYIfStatementAccess().getThenBlockYBlockParserRuleCall_4_0()); }
 	)
 ;
 finally {
@@ -13572,24 +13526,9 @@ rule__YIfStatement__ElseBlockAssignment_5_1
 	}
 :
 	(
-		{ before(grammarAccess.getYIfStatementAccess().getElseBlockYIfBlockParserRuleCall_5_1_0()); }
-		ruleYIfBlock
-		{ after(grammarAccess.getYIfStatementAccess().getElseBlockYIfBlockParserRuleCall_5_1_0()); }
-	)
-;
-finally {
-	restoreStackSize(stackSize);
-}
-
-rule__YIfBlock__StatementsAssignment_0
-	@init {
-		int stackSize = keepStackSize();
-	}
-:
-	(
-		{ before(grammarAccess.getYIfBlockAccess().getStatementsYStatementParserRuleCall_0_0()); }
-		ruleYStatement
-		{ after(grammarAccess.getYIfBlockAccess().getStatementsYStatementParserRuleCall_0_0()); }
+		{ before(grammarAccess.getYIfStatementAccess().getElseBlockYBlockParserRuleCall_5_1_0()); }
+		ruleYBlock
+		{ after(grammarAccess.getYIfStatementAccess().getElseBlockYBlockParserRuleCall_5_1_0()); }
 	)
 ;
 finally {

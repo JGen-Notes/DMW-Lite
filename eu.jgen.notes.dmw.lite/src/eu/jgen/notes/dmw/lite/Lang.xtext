@@ -106,12 +106,8 @@ YReturn:
 	{YReturn} 'return' expression=YOrExpression? ';';
 
 YIfStatement:
-	'if' '(' expression=YOrExpression ')' thenBlock=YIfBlock
-	(=> 'else' elseBlock=YIfBlock)?;
-
-YIfBlock returns YBlock:
-	statements+=YStatement
-	| YBlock;
+	'if' '(' expression=YOrExpression ')' thenBlock=YBlock
+	(=> 'else' elseBlock=YBlock)?;
 
 YSwitchStatement:
 	{YSwitchStatement}

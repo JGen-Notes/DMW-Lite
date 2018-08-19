@@ -49,39 +49,49 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IGenerator
 import eu.jgen.notes.dmw.lite.lang.YParenties
 import eu.jgen.notes.dmw.lite.lang.YAssignment
+import eu.jgen.notes.dmw.lite.lang.YStatement
+import eu.jgen.notes.dmw.lite.lang.YIfStatement
+import eu.jgen.notes.dmw.lite.lang.YAndExpression
+import eu.jgen.notes.dmw.lite.lang.YComparisonExpression
+import eu.jgen.notes.dmw.lite.lang.YEqualityExpression
 
 class LangJavaWidgetGenerator implements IGenerator {
 
 	@Inject extension LangUtil
 
 	@Inject extension LangJavaGeneratorHelper
-	
-	@Inject extension LangTypeComputer
 
 	private List<String> imports = newArrayList()
 
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
-		input.allContents.filter[element|element instanceof YAnnotJava].forEach [ element |
-			val annotJava = element as YAnnotJava
-			if (annotJava.database.name == "MySQL") {
-				val a = input.contents.findFirst[e|e instanceof YWidget]
-				generateWidget(fsa, a as YWidget)
-			}
-		]
+		println("hello0")
+		if (input.allContents.findFirst[it instanceof YAnnotJava] !== null) {
+			println("hello")
+			val list = input.allContents.filter[it instanceof YWidget]			
+			list.forEach[
+				if(it.eIsProxy) {
+					println("Proxy: " + it)
+				}
+				generateWidget(fsa, it as YWidget)
+			]				
+		}
 	}
 
 	protected def void generateWidget(IFileSystemAccess fsa, YWidget widget) {
-		imports.clear
+	
 		widget.classes.forEach [ clazz |
 			if (clazz.superclass !== null && clazz.superclass.name == "Widget") {
+				imports.clear
 				imports.add("eu.jgen.notes.dmw.lite.runtimes.XWidget")
 				val body = '''
 					«clazz.documentation»
 					@SuppressWarnings("unused")
 					public class «clazz.name» extends XWidget {
-					   «generateInnerClasses(clazz)»
+					   «generateInnerClasses(clazz, clazz.name)»
 					   
 					   «generateProperties(clazz)»
+					   
+					   «generateArrays(clazz, clazz.name)»
 					   
 					   «generateFunctions(clazz)»
 					}
@@ -100,6 +110,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 					'''
 				)
 			} else {
+				imports.clear
 				val body = '''
 					«clazz.documentation»
 					@SuppressWarnings("unused")
@@ -123,6 +134,44 @@ class LangJavaWidgetGenerator implements IGenerator {
 			}
 		]
 	}
+	
+	protected def String generateArrays(YClass clazz, String widgetName) {
+		'''
+		«FOR property : clazz.listArrayProperties»
+		«registerImport("eu.jgen.notes.dmw.lite.runtimes.XArray")»
+		«registerImport("java.util.SortedMap")»
+		«registerImport("java.util.concurrent.ConcurrentSkipListMap")»
+		class «property.name.toFirstUpper» extends XArray {
+			
+			public «property.name.toFirstUpper»(int max) {
+				super(max);
+			}
+			
+			«FOR ref : property.tuples.includes» 
+			
+			SortedMap<Integer, «ref.type.name.toFirstUpper»> map«ref.type.name.toFirstUpper» = new ConcurrentSkipListMap<Integer, «ref.type.name.toFirstUpper»>();
+			
+			public «ref.type.name.toFirstUpper» get«ref.type.name.toFirstUpper»() {
+				if(super.getSubscript() == 0) {
+					return null;
+				}
+				if (map«ref.type.name.toFirstUpper».containsKey(super.getSubscript())) {
+					return map«ref.type.name.toFirstUpper».get(super.getSubscript());
+				} else {
+					«ref.type.name.toFirstUpper» «ref.name» = «widgetName».instance«ref.type.name.toFirstUpper»();
+					map«ref.type.name.toFirstUpper».put(super.getSubscript(), «ref.name»);
+					return «ref.name»;
+				}
+			}
+			
+			«ENDFOR»
+		}
+		
+		«property.name.toFirstUpper» «property.name» = new «property.name.toFirstUpper»(20);
+		«ENDFOR»
+		
+		'''
+	}
 
 	protected def String generateFunctions(YClass clazz) {
 		'''
@@ -137,85 +186,119 @@ class LangJavaWidgetGenerator implements IGenerator {
 	protected def String generateFunctionForWidget(YFunction function) {
 		'''
 			«function.documentation»  
-			public «IF function.type !== null»«function.type.name.translateTypeName»«ENDIF» «IF function.type === null»void «ENDIF»«function.name»«generateFunctionParameters(function)»
+			«function.access» «IF function.type !== null»«function.type.name.translateTypeName»«ENDIF» «IF function.type === null»void «ENDIF»«function.name»«generateFunctionParameters(function)»
 			   «generateFunctionBody(function)»
 			}
 		'''
 	}
-	
+
 	protected def String generateFunctionParameters(YFunction function) {
-		
+
 		'''
-		(«FOR param : function.params SEPARATOR ', '»«param.type.name.translateTypeName» «param.name»«ENDFOR») {
+			(«FOR param : function.params SEPARATOR ', '»«param.type.name.translateTypeName» «param.name»«ENDFOR») {
 		'''
-		
+
 	}
 
 	protected def String generateFunctionBody(YFunction function) {
 		if (function.body !== null) {
 			val block = function.body
-			generateBlock(block)
+			'''   «generateBlock(block)» '''
 		}
 	}
 
 	protected def String generateBlock(YBlock block) {
-		for (statement : block.statements) {
-			switch (statement) {
-				case statement instanceof YReturn: {
-					val returnStatement = statement as YReturn
-					if (returnStatement.expression === null) {
-						return "return;"
-					} else {				
-						return "return new " +  returnStatement.whatFuntionType.name.translateTypeName + "("  + generateExpression(returnStatement.expression) + ");"
-					}
+		val body = '''
+			«FOR statement : block.statements»
+			   «generateStatement(statement)»
+			«ENDFOR»
+		'''
+		return body
+	}
 
-				}
-				case statement instanceof YVariableDeclaration: {
-					val variableDeclaration = statement as YVariableDeclaration
-					return generateVariableDeclaration(variableDeclaration)
-				}
-				case statement instanceof YAssignment: {
-					val assignment = statement as YAssignment
-					return generateAssigment(assignment)
-				}
-				default: {
-					return ""
+	protected def String generateStatement(YStatement statement) {
+		switch (statement) {
+			case statement instanceof YReturn: {
+				val returnStatement = statement as YReturn
+				if (returnStatement.expression === null) {
+					return '''
+					«returnStatement.documentation»
+					return;
+					'''
+				} else {
+					return '''
+					«returnStatement.documentation»
+					return new «returnStatement.whatFuntionType.name.translateTypeName + "(" +
+						generateExpression(returnStatement.expression) + ");"»
+					'''
 				}
 			}
+			case statement instanceof YVariableDeclaration: {
+				val variableDeclaration = statement as YVariableDeclaration
+				return '''
+				«variableDeclaration.documentation»
+				«generateVariableDeclaration(variableDeclaration)»
+				'''				
+			}
+			case statement instanceof YAssignment: {
+				val assignment = statement as YAssignment
+				return '''
+				«assignment.documentation»
+				«generateAssigment(assignment)»
+				'''
+			}
+			case statement instanceof YIfStatement: {
+				val ifStatement = statement as YIfStatement
+				'''
+				«ifStatement.documentation»  
+				if («generateExpression(ifStatement.expression)») {
+					«generateBlock(ifStatement.thenBlock)» 
+				} «IF ifStatement.elseBlock !== null» else {
+					«generateBlock(ifStatement.elseBlock)»
+				}«ENDIF»
+				
+				'''				
+			}
+			default: {
+				return "//TODO - not implemented yet"
+			}
 		}
-		return ""
 	}
-	
+
 	protected def String generateAssigment(YAssignment assignment) {
-		 return  generatMemberSelection(assignment.left as YMemberSelection) + " = " + generateExpression(assignment.right)
+		return generatMemberSelection(assignment.left as YMemberSelection) + " = " +
+			generateExpression(assignment.right) + ";"
 	}
 
 	protected def String generateProperties(YClass clazz) {
 		'''
 			«FOR member : clazz.members»
 				«IF member instanceof YProperty»
-					«generatePropertyForWidget(member as YProperty)»
+					«generateProperty(member as YProperty)»
 				«ENDIF»	
 			«ENDFOR»
 		'''
 	}
 
-	protected def String generatePropertyForWidget(YProperty property) {
+	protected def String generateProperty(YProperty property) {
+		if(property.type.name == "Array") {
+		   return ""
+		}
 		registerImport(findPackageName(property) + "." + property.type.name)
 		'''
 		«property.documentation»  
-		public «property.type.name» «property.name»;'''
+		«IF property.access!== null»«property.access» «ENDIF»«property.type.name» «property.name»;'''
 	}
 
-	protected def String generateInnerClasses(YClass clazz) {
+	protected def String generateInnerClasses(YClass clazz, String widgetName) {
 		'''
-			«FOR innerclazz : clazz.inners»«generateClass(innerclazz)»«ENDFOR»
+			«FOR innerclazz : clazz.inners»«generateClass(innerclazz, widgetName)»«ENDFOR»
 		'''
 	}
 
-	protected def String generateClass(YClass innerclazz) {
+	protected def String generateClass(YClass innerclazz, String widgetName) {
 		if (innerclazz.superclass !== null && innerclazz.superclass.name == "Structure") {
-			imports.add("eu.jgen.notes.dmw.lite.runtimes.XStructure")
+			registerImport("eu.jgen.notes.dmw.lite.runtimes.XStructure")
 			'''
 				«innerclazz.documentation»  
 				public class «innerclazz.name» extends XStructure {
@@ -225,12 +308,48 @@ class LangJavaWidgetGenerator implements IGenerator {
 						«ENDIF»
 					«ENDFOR»
 				}
+				
+				public static «innerclazz.name» instance«innerclazz.name»() {
+				   «innerclazz.name» «innerclazz.name.toFirstLower» = new «widgetName»().new «innerclazz.name»();
+				   «FOR member : innerclazz.members»
+				   		«IF member instanceof YProperty»
+				   		«initializaProperty(member as YProperty, innerclazz.name.toFirstLower)»
+				   		«ENDIF»
+				   «ENDFOR»
+				   return «innerclazz.name.toFirstLower»;
+				}
+			'''
+		} else {
+			'''
+			«innerclazz.documentation» 
+				public class «innerclazz.name» «IF innerclazz.superclass !== null»extends «innerclazz.superclass.name»«ENDIF» {
+					«FOR member : innerclazz.members»
+						«IF member instanceof YProperty»
+							«generatePropertyForStructure(member as YProperty)»
+						«ENDIF»
+					«ENDFOR»
+				}
+				
+				public static «innerclazz.name» instance«innerclazz.name»() {
+				   «innerclazz.name» «innerclazz.name.toFirstLower» = new «widgetName»().new «innerclazz.name»();
+				   «FOR member : innerclazz.members»
+				   		«IF member instanceof YProperty»
+				   		«initializaProperty(member as YProperty, innerclazz.name.toFirstLower)»
+				   		«ENDIF»
+				   «ENDFOR»
+				   return «innerclazz.name.toFirstLower»;
+				}
 			'''
 		}
 	}
+	
+	protected def String initializaProperty(YProperty property,  String structureName) {
+		'''
+		«structureName».«property.name» = new «property.type.name.translateTypeName»(«property.propertyDefault»);'''		
+	}
 
 	protected def String generatePropertyForStructure(YProperty property) {
-		imports.add("eu.jgen.notes.dmw.lite.runtimes." + property.type.name.translateTypeName)
+		registerImport("eu.jgen.notes.dmw.lite.runtimes." + property.type.name.translateTypeName)
 		'''
 		«property.documentation»  
 		public «property.type.name.translateTypeName» «property.name»;'''
@@ -246,76 +365,96 @@ class LangJavaWidgetGenerator implements IGenerator {
 
 	protected def String generateVariableDeclaration(YVariableDeclaration variableDeclaration) {
 		return variableDeclaration.type.name.translateTypeName + " " + variableDeclaration.name + " = new " +
-			variableDeclaration.type.name.translateTypeName + "(" + generateExpression(variableDeclaration.expression) + ");"
+			variableDeclaration.type.name.translateTypeName + "(" + generateExpression(variableDeclaration.expression) +
+			");"
 	}
 
-	protected def String generateExpression(YExpression expression) {
-		switch (expression) {
-			case expression instanceof YPlus: {
-				val plus = expression as YPlus
-				return generateExpression(plus.left) + " + " + generateExpression(plus.right);
+			protected def String generateExpression(YExpression expression) {
+				switch (expression) {
+					case expression instanceof YPlus: {
+						val plus = expression as YPlus
+						return generateExpression(plus.left) + " + " + generateExpression(plus.right);
+					}
+					case expression instanceof YMinus: {
+						val minus = expression as YMinus
+						return generateExpression(minus.left) + " - " + generateExpression(minus.right);
+					}
+					case expression instanceof YMulOrDiv: {
+						val mulOrDiv = expression as YMulOrDiv
+
+						return generateExpression(mulOrDiv.left) + " " + mulOrDiv.op + " " +
+							generateExpression(mulOrDiv.right)
+					}
+					case expression instanceof YAndExpression: {
+						val andExpression = expression as YAndExpression
+						return generateExpression(andExpression.left) + " " + " && " + " " +
+							generateExpression(andExpression.right)
+					}
+					case expression instanceof YComparisonExpression: {
+						val comparisonExpression = expression as YComparisonExpression
+						return generateExpression(comparisonExpression.left) + " " + comparisonExpression.op + " " +
+							generateExpression(comparisonExpression.right)
+					}
+					case expression instanceof YEqualityExpression: {
+						val equalityExpression = expression as YEqualityExpression
+						return generateExpression(equalityExpression.left) + " " + equalityExpression.op + " " +
+							generateExpression(equalityExpression.right)
+					}
+					
+					case expression instanceof YMemberSelection: {
+						val memberSelection = expression as YMemberSelection
+						return generatMemberSelection(memberSelection)
+					}
+					case expression instanceof YSelf: {
+						return "this"
+					}
+					case expression instanceof YParenties: {
+						return "(" + generateExpression((expression as YParenties).a) + ")"
+					}
+					case expression instanceof YSymbolRef: {
+						val symbolRef = expression as YSymbolRef
+
+						return symbolRef.symbol.name + ".value"
+					}
+					case expression instanceof YIntConstant: {
+						val intConstant = expression as YIntConstant
+						intConstant.value.toString
+					}
+					default: {
+					}
+				}
+
 			}
-			case expression instanceof YMinus: {
-				val minus = expression as YMinus
-				return generateExpression(minus.left) + " - " + generateExpression(minus.right);
+
+			protected def String generatMemberSelection(YMemberSelection memberSelection) {
+				if (memberSelection.functioninvocation) {
+					val terminalExpression = generateTermination(memberSelection.receiver)
+					return terminalExpression + "." + (memberSelection.member as YFunction).name +
+						generateFunctionArguments(memberSelection) + ".value"
+				} else {
+					val terminalExpression = generateTermination(
+						(memberSelection.receiver as YMemberSelection).receiver)
+					val text = terminalExpression + "." + (memberSelection.receiver as YMemberSelection).member.name
+					return text + "." + memberSelection.member.name + ".value"
+				}
 			}
-			case expression instanceof YMulOrDiv: {
-				val mulOrDiv = expression as YMulOrDiv
-				
-				return generateExpression(mulOrDiv.left) + " " + mulOrDiv.op + " " +  generateExpression(mulOrDiv.right)
+
+			protected def String generateFunctionArguments(YMemberSelection memberSelection) {
+				return '''(«FOR arg : memberSelection.args SEPARATOR ", "»new XInt(«generateExpression(arg)»)«ENDFOR»)'''
 			}
-			case expression instanceof YMemberSelection: {
-				val memberSelection = expression as YMemberSelection
-				return generatMemberSelection(memberSelection)
-			}
-			case expression instanceof YSelf: {
-				return "this"
-			}
-			case expression instanceof YParenties: {
-				return "(" + generateExpression((expression as YParenties).a) + ")"
-			}
-			
-			case expression instanceof YSymbolRef: {
-				val symbolRef = expression as YSymbolRef
-				
-				return symbolRef.symbol.name + ".value"
-			}			
-			case expression instanceof YIntConstant: {
-				val intConstant = expression as YIntConstant
-				intConstant.value.toString
-			}
-			default: {
+
+			protected def String generateTermination(YExpression expression) {
+				switch (expression) {
+					case expression instanceof YSelf: {
+						return "this"
+					}
+					case expression instanceof YIntConstant: {
+						val intConstant = expression as YIntConstant
+						intConstant.value.toString
+					}
+					default: {
+					}
+				}
 			}
 		}
-
-	}
-
-	protected def String generatMemberSelection(YMemberSelection memberSelection) {
-		if (memberSelection.functioninvocation) {
-			val terminalExpression = generateTermination(memberSelection.receiver)
-			return terminalExpression +  "." + (memberSelection.member as YFunction).name + generateFunctionArguments(memberSelection) + ".value"
-		} else {
-			val terminalExpression = generateTermination((memberSelection.receiver as YMemberSelection).receiver)
-			val text = terminalExpression + "." + (memberSelection.receiver as YMemberSelection).member.name
-			return text + "." + memberSelection.member.name + ".value"
-		}
-	}
-	
-	protected def String generateFunctionArguments(YMemberSelection memberSelection) {
-		 return '''(«FOR arg : memberSelection.args SEPARATOR ", "»new XInt(«generateExpression(arg)»)«ENDFOR»)'''
-	}
-
-	protected def String generateTermination(YExpression expression) {
-		switch (expression) {
-			case expression instanceof YSelf: {
-				return "this"
-			}
-			case expression instanceof YIntConstant: {
-				val intConstant = expression as YIntConstant
-				intConstant.value.toString
-			}
-			default: {
-			}
-		}
-	}
-}
+		

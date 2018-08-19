@@ -109,9 +109,7 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   @Override
   public void completeYClass_Members(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     final YClass clazz = ((YClass) model);
-    String _name = clazz.getSuperclass().getName();
-    boolean _equals = Objects.equal(_name, "Structure");
-    if (_equals) {
+    if (((clazz.getSuperclass() != null) && Objects.equal(clazz.getSuperclass().getName(), "Structure"))) {
       YAnnotEntity _entity = clazz.getEntity();
       boolean _tripleNotEquals = (_entity != null);
       if (_tripleNotEquals) {

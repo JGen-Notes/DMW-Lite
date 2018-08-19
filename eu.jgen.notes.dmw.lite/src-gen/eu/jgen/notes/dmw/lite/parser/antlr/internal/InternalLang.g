@@ -1331,9 +1331,9 @@ ruleYIfStatement returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYIfStatementAccess().getThenBlockYIfBlockParserRuleCall_4_0());
+					newCompositeNode(grammarAccess.getYIfStatementAccess().getThenBlockYBlockParserRuleCall_4_0());
 				}
-				lv_thenBlock_4_0=ruleYIfBlock
+				lv_thenBlock_4_0=ruleYBlock
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYIfStatementRule());
@@ -1342,7 +1342,7 @@ ruleYIfStatement returns [EObject current=null]
 						$current,
 						"thenBlock",
 						lv_thenBlock_4_0,
-						"eu.jgen.notes.dmw.lite.Lang.YIfBlock");
+						"eu.jgen.notes.dmw.lite.Lang.YBlock");
 					afterParserOrEnumRuleCall();
 				}
 			)
@@ -1358,9 +1358,9 @@ ruleYIfStatement returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getYIfStatementAccess().getElseBlockYIfBlockParserRuleCall_5_1_0());
+						newCompositeNode(grammarAccess.getYIfStatementAccess().getElseBlockYBlockParserRuleCall_5_1_0());
 					}
-					lv_elseBlock_6_0=ruleYIfBlock
+					lv_elseBlock_6_0=ruleYBlock
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getYIfStatementRule());
@@ -1369,59 +1369,12 @@ ruleYIfStatement returns [EObject current=null]
 							$current,
 							"elseBlock",
 							lv_elseBlock_6_0,
-							"eu.jgen.notes.dmw.lite.Lang.YIfBlock");
+							"eu.jgen.notes.dmw.lite.Lang.YBlock");
 						afterParserOrEnumRuleCall();
 					}
 				)
 			)
 		)?
-	)
-;
-
-// Entry rule entryRuleYIfBlock
-entryRuleYIfBlock returns [EObject current=null]:
-	{ newCompositeNode(grammarAccess.getYIfBlockRule()); }
-	iv_ruleYIfBlock=ruleYIfBlock
-	{ $current=$iv_ruleYIfBlock.current; }
-	EOF;
-
-// Rule YIfBlock
-ruleYIfBlock returns [EObject current=null]
-@init {
-	enterRule();
-}
-@after {
-	leaveRule();
-}:
-	(
-		(
-			(
-				{
-					newCompositeNode(grammarAccess.getYIfBlockAccess().getStatementsYStatementParserRuleCall_0_0());
-				}
-				lv_statements_0_0=ruleYStatement
-				{
-					if ($current==null) {
-						$current = createModelElementForParent(grammarAccess.getYIfBlockRule());
-					}
-					add(
-						$current,
-						"statements",
-						lv_statements_0_0,
-						"eu.jgen.notes.dmw.lite.Lang.YStatement");
-					afterParserOrEnumRuleCall();
-				}
-			)
-		)
-		    |
-		{
-			newCompositeNode(grammarAccess.getYIfBlockAccess().getYBlockParserRuleCall_1());
-		}
-		this_YBlock_1=ruleYBlock
-		{
-			$current = $this_YBlock_1.current;
-			afterParserOrEnumRuleCall();
-		}
 	)
 ;
 

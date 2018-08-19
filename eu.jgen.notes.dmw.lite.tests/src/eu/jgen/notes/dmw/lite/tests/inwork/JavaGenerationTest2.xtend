@@ -45,7 +45,7 @@ import java.io.ByteArrayInputStream
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
-class JavaGenerationTest {
+class JavaGenerationTest2 {
 	
 
 	@Inject extension ParseHelper<YWidget>
@@ -57,53 +57,28 @@ class JavaGenerationTest {
 	@Test
 	def void testGenerateExpression1() {		
 			val body = '''
-			package log.sample.project;
+			package log.sample.project	;
 			
+			@java
 			
-			@database MySQL
-			
-			@java uses MySQL
-			
-			@entity Record {
-				@attr numbera : Int
-				@attr numberb : Int
-			}
-			
-			@td database MySQL {
-				@table RECORD -> Record {
-					@column NUMBERA -> Record.numbera as INTEGER
-					@column NUMBERB -> Record.numberb as INTEGER
-				}
-			}
-			
-			class SomeWidget : Widget {
+			class Alone : Widget {
 				
-				class SomeRecord : Structure -> Record {
-					public var numbera : Int -> Record.numbera;
-					public var numberb : Int -> Record.numberb;
+			
+				 class Job {
+					public var number : Int;  
 				}
 				
-				var some :SomeRecord;
-				var group : Array<some>;
+				public var job : Job;
 				
 				public func start() {
 					
-					if(self.some.numbera >= 1) {
+					self.job.number = 1;
+					
 					}
-					
-					//self.some.numbera = (2 + 5) /  (self.some.numbera + 1);
-				 	//abc : Int = (self.some.numbera + 1) /45; 
-					
-				}
-				private func add(a : Int, b: Int) -> Int {			
-				   return a + b;
-			    }
-			}
-
-		'''      
+			}		'''      
 		newArrayList(loadLibSource, body).compile() [
 			it.errorsAndWarnings.forEach[println(it)]
-			println(it.getGeneratedCode("log.sample.project.SomeWidget"))
+			println(it.getGeneratedCode("log.sample.project.Alone"))
 		]	 
 	}
 }

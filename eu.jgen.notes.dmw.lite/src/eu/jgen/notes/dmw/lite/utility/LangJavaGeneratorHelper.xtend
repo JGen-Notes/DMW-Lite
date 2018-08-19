@@ -1,16 +1,16 @@
 package eu.jgen.notes.dmw.lite.utility
 
 import com.google.inject.Inject
-import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
-import org.eclipse.emf.ecore.EObject
-import org.eclipse.xtext.common.types.JvmIdentifiableElement
-import org.eclipse.emf.ecore.util.EcoreUtil
-import org.eclipse.xtext.xbase.compiler.DocumentationAdapter
+import eu.jgen.notes.dmw.lite.lang.YClass
+import eu.jgen.notes.dmw.lite.lang.YFunction
 import eu.jgen.notes.dmw.lite.lang.YProperty
 import eu.jgen.notes.dmw.lite.lang.YWidget
-import eu.jgen.notes.dmw.lite.lang.YClass
-import eu.jgen.notes.dmw.lite.lang.YReturn
-import eu.jgen.notes.dmw.lite.lang.YFunction
+import org.eclipse.emf.ecore.EObject
+import org.eclipse.emf.ecore.util.EcoreUtil
+import org.eclipse.xtext.common.types.JvmIdentifiableElement
+import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
+import org.eclipse.xtext.xbase.compiler.DocumentationAdapter
+import java.util.ArrayList
 
 class LangJavaGeneratorHelper {
 
@@ -71,8 +71,12 @@ class LangJavaGeneratorHelper {
 			case "Decimal": {
 				return "XDouble"
 			}
+			case "String": {
+				return "XString"
+			}
+
 			default: {
-				return typeName
+				return "//TODO - not translkated yet"
 			}
 		}
 	}
@@ -83,6 +87,35 @@ class LangJavaGeneratorHelper {
 		} else {
 			whatFuntionType(eobject.eContainer)
 		}
+	}
+	
+	def String getPropertyDefault(YProperty property) {
+		
+		switch (property.type.name.translateTypeName) {
+			case "XInt": {
+				return "0"
+			}
+			case "XString": {
+				return "\"\""
+			}
+			default: {
+				
+			}
+		}
+		
+	}
+	
+	def ArrayList<YProperty> listArrayProperties(YClass eClass) {
+		val ArrayList<YProperty> array = newArrayList()
+		for (member : eClass.members) {
+			if(member instanceof YProperty) {
+				val property = member as YProperty
+				if(property.type.name == "Array") {
+					array.add(property)
+				}
+			}
+		}		
+		return array;		
 	}
 
 }

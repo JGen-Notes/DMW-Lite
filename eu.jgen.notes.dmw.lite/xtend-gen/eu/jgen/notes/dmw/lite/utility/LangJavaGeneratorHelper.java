@@ -1,16 +1,21 @@
 package eu.jgen.notes.dmw.lite.utility;
 
+import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
+import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
+import java.util.ArrayList;
 import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
+import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
 @SuppressWarnings("all")
 public class LangJavaGeneratorHelper {
@@ -75,11 +80,13 @@ public class LangJavaGeneratorHelper {
           return "XLong";
         case "Decimal":
           return "XDouble";
+        case "String":
+          return "XString";
         default:
-          return typeName;
+          return "//TODO - not translkated yet";
       }
     } else {
-      return typeName;
+      return "//TODO - not translkated yet";
     }
   }
   
@@ -93,5 +100,40 @@ public class LangJavaGeneratorHelper {
       _xifexpression = this.whatFuntionType(eobject.eContainer());
     }
     return _xifexpression;
+  }
+  
+  public String getPropertyDefault(final YProperty property) {
+    Object _switchResult = null;
+    String _translateTypeName = this.translateTypeName(property.getType().getName());
+    if (_translateTypeName != null) {
+      switch (_translateTypeName) {
+        case "XInt":
+          return "0";
+        case "XString":
+          return "\"\"";
+        default:
+          _switchResult = null;
+          break;
+      }
+    } else {
+      _switchResult = null;
+    }
+    return ((String)_switchResult);
+  }
+  
+  public ArrayList<YProperty> listArrayProperties(final YClass eClass) {
+    final ArrayList<YProperty> array = CollectionLiterals.<YProperty>newArrayList();
+    EList<YMember> _members = eClass.getMembers();
+    for (final YMember member : _members) {
+      if ((member instanceof YProperty)) {
+        final YProperty property = ((YProperty) member);
+        String _name = property.getType().getName();
+        boolean _equals = Objects.equal(_name, "Array");
+        if (_equals) {
+          array.add(property);
+        }
+      }
+    }
+    return array;
   }
 }
