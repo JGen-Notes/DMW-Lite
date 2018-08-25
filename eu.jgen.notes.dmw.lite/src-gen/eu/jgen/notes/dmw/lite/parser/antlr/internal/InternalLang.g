@@ -401,16 +401,23 @@ ruleYClass returns [EObject current=null]
 	leaveRule();
 }:
 	(
-		otherlv_0='class'
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getYClassAccess().getYClassAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='class'
 		{
-			newLeafNode(otherlv_0, grammarAccess.getYClassAccess().getClassKeyword_0());
+			newLeafNode(otherlv_1, grammarAccess.getYClassAccess().getClassKeyword_1());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYClassAccess().getNameValidIDParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getYClassAccess().getNameValidIDParserRuleCall_2_0());
 				}
-				lv_name_1_0=ruleValidID
+				lv_name_2_0=ruleValidID
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYClassRule());
@@ -418,16 +425,16 @@ ruleYClass returns [EObject current=null]
 					set(
 						$current,
 						"name",
-						lv_name_1_0,
+						lv_name_2_0,
 						"eu.jgen.notes.dmw.lite.Lang.ValidID");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
 		(
-			otherlv_2=':'
+			otherlv_3=':'
 			{
-				newLeafNode(otherlv_2, grammarAccess.getYClassAccess().getColonKeyword_2_0());
+				newLeafNode(otherlv_3, grammarAccess.getYClassAccess().getColonKeyword_3_0());
 			}
 			(
 				(
@@ -437,7 +444,7 @@ ruleYClass returns [EObject current=null]
 						}
 					}
 					{
-						newCompositeNode(grammarAccess.getYClassAccess().getSuperclassYClassCrossReference_2_1_0());
+						newCompositeNode(grammarAccess.getYClassAccess().getSuperclassYClassCrossReference_3_1_0());
 					}
 					ruleQualifiedName
 					{
@@ -447,9 +454,9 @@ ruleYClass returns [EObject current=null]
 			)
 		)?
 		(
-			otherlv_4='->'
+			otherlv_5='->'
 			{
-				newLeafNode(otherlv_4, grammarAccess.getYClassAccess().getHyphenMinusGreaterThanSignKeyword_3_0());
+				newLeafNode(otherlv_5, grammarAccess.getYClassAccess().getHyphenMinusGreaterThanSignKeyword_4_0());
 			}
 			(
 				(
@@ -459,7 +466,7 @@ ruleYClass returns [EObject current=null]
 						}
 					}
 					{
-						newCompositeNode(grammarAccess.getYClassAccess().getEntityYAnnotEntityCrossReference_3_1_0());
+						newCompositeNode(grammarAccess.getYClassAccess().getEntityYAnnotEntityCrossReference_4_1_0());
 					}
 					ruleQualifiedName
 					{
@@ -468,16 +475,16 @@ ruleYClass returns [EObject current=null]
 				)
 			)
 		)?
-		otherlv_6='{'
+		otherlv_7='{'
 		{
-			newLeafNode(otherlv_6, grammarAccess.getYClassAccess().getLeftCurlyBracketKeyword_4());
+			newLeafNode(otherlv_7, grammarAccess.getYClassAccess().getLeftCurlyBracketKeyword_5());
 		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYClassAccess().getInnersYClassParserRuleCall_5_0());
+					newCompositeNode(grammarAccess.getYClassAccess().getInnersYClassParserRuleCall_6_0());
 				}
-				lv_inners_7_0=ruleYClass
+				lv_inners_8_0=ruleYClass
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYClassRule());
@@ -485,7 +492,7 @@ ruleYClass returns [EObject current=null]
 					add(
 						$current,
 						"inners",
-						lv_inners_7_0,
+						lv_inners_8_0,
 						"eu.jgen.notes.dmw.lite.Lang.YClass");
 					afterParserOrEnumRuleCall();
 				}
@@ -494,9 +501,9 @@ ruleYClass returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYClassAccess().getMembersYMemberParserRuleCall_6_0());
+					newCompositeNode(grammarAccess.getYClassAccess().getMembersYMemberParserRuleCall_7_0());
 				}
-				lv_members_8_0=ruleYMember
+				lv_members_9_0=ruleYMember
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYClassRule());
@@ -504,15 +511,15 @@ ruleYClass returns [EObject current=null]
 					add(
 						$current,
 						"members",
-						lv_members_8_0,
+						lv_members_9_0,
 						"eu.jgen.notes.dmw.lite.Lang.YMember");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)*
-		otherlv_9='}'
+		otherlv_10='}'
 		{
-			newLeafNode(otherlv_9, grammarAccess.getYClassAccess().getRightCurlyBracketKeyword_7());
+			newLeafNode(otherlv_10, grammarAccess.getYClassAccess().getRightCurlyBracketKeyword_8());
 		}
 	)
 ;
@@ -2142,18 +2149,11 @@ ruleOpCompare returns [AntlrDatatypeRuleToken current=new AntlrDatatypeRuleToken
 			newLeafNode(kw, grammarAccess.getOpCompareAccess().getGreaterThanSignEqualsSignKeyword_0());
 		}
 		    |
-		(
-			kw='<'
-			{
-				$current.merge(kw);
-				newLeafNode(kw, grammarAccess.getOpCompareAccess().getLessThanSignKeyword_1_0());
-			}
-			kw='='
-			{
-				$current.merge(kw);
-				newLeafNode(kw, grammarAccess.getOpCompareAccess().getEqualsSignKeyword_1_1());
-			}
-		)
+		kw='<='
+		{
+			$current.merge(kw);
+			newLeafNode(kw, grammarAccess.getOpCompareAccess().getLessThanSignEqualsSignKeyword_1());
+		}
 		    |
 		kw='>'
 		{
@@ -3824,6 +3824,22 @@ ruleYAnnot returns [EObject current=null]
 							"eu.jgen.notes.dmw.lite.Lang.YAnnotMsgType");
 						afterParserOrEnumRuleCall();
 					}
+					    |
+					{
+						newCompositeNode(grammarAccess.getYAnnotAccess().getTypeYAnnotDefaultParserRuleCall_1_0_5());
+					}
+					lv_type_1_6=ruleYAnnotDefault
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_1_6,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotDefault");
+						afterParserOrEnumRuleCall();
+					}
 				)
 			)
 		)
@@ -4062,6 +4078,83 @@ ruleYAnnotDecimal returns [EObject current=null]
 		otherlv_6=')'
 		{
 			newLeafNode(otherlv_6, grammarAccess.getYAnnotDecimalAccess().getRightParenthesisKeyword_6());
+		}
+	)
+;
+
+// Entry rule entryRuleYAnnotDefault
+entryRuleYAnnotDefault returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getYAnnotDefaultRule()); }
+	iv_ruleYAnnotDefault=ruleYAnnotDefault
+	{ $current=$iv_ruleYAnnotDefault.current; }
+	EOF;
+
+// Rule YAnnotDefault
+ruleYAnnotDefault returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getYAnnotDefaultAccess().getYAnnotDefaultAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='@default'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getYAnnotDefaultAccess().getDefaultKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getYAnnotDefaultAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				(
+					lv_number_3_0=RULE_INT
+					{
+						newLeafNode(lv_number_3_0, grammarAccess.getYAnnotDefaultAccess().getNumberINTTerminalRuleCall_3_0_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getYAnnotDefaultRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"number",
+							lv_number_3_0,
+							"org.eclipse.xtext.common.Terminals.INT");
+					}
+				)
+			)
+			    |
+			(
+				(
+					lv_text_4_0=RULE_STRING
+					{
+						newLeafNode(lv_text_4_0, grammarAccess.getYAnnotDefaultAccess().getTextSTRINGTerminalRuleCall_3_1_0());
+					}
+					{
+						if ($current==null) {
+							$current = createModelElement(grammarAccess.getYAnnotDefaultRule());
+						}
+						setWithLastConsumed(
+							$current,
+							"text",
+							lv_text_4_0,
+							"org.eclipse.xtext.common.Terminals.STRING");
+					}
+				)
+			)
+		)
+		otherlv_5=')'
+		{
+			newLeafNode(otherlv_5, grammarAccess.getYAnnotDefaultAccess().getRightParenthesisKeyword_4());
 		}
 	)
 ;

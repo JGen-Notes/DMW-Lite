@@ -640,6 +640,14 @@ public class LangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case LangPackage.YANNOT_DEFAULT:
+      {
+        YAnnotDefault yAnnotDefault = (YAnnotDefault)theEObject;
+        T result = caseYAnnotDefault(yAnnotDefault);
+        if (result == null) result = caseYAnnot(yAnnotDefault);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case LangPackage.YANNOT_ACTION:
       {
         YAnnotAction yAnnotAction = (YAnnotAction)theEObject;
@@ -1792,6 +1800,22 @@ public class LangSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseYAnnotDecimal(YAnnotDecimal object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>YAnnot Default</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>YAnnot Default</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseYAnnotDefault(YAnnotDefault object)
   {
     return null;
   }

@@ -99,5 +99,6 @@ class LangIndex {
 	def getExportedEObjectDescriptions(EObject object) {
 		object.getResourceDescription.getExportedObjects
 	}
-
+	
+ 
 }

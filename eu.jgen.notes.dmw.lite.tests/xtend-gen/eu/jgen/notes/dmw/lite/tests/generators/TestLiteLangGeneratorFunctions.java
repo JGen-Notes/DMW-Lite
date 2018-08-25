@@ -20,20 +20,15 @@
  * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package eu.jgen.notes.dmw.lite.tests.inwork;
+package eu.jgen.notes.dmw.lite.tests.generators;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
 import eu.jgen.notes.dmw.lite.utility.LangLib;
 import java.util.function.Consumer;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
-import org.eclipse.xtext.testing.util.ParseHelper;
-import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.util.IAcceptor;
 import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
@@ -41,21 +36,14 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.testing.CompilationTestHelper;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(XtextRunner.class)
 @InjectWith(LangInjectorProvider.class)
 @SuppressWarnings("all")
-public class JavaGenerationTest {
-  @Inject
-  @Extension
-  private ParseHelper<YWidget> _parseHelper;
-  
-  @Inject
-  @Extension
-  private ValidationTestHelper _validationTestHelper;
-  
+public class TestLiteLangGeneratorFunctions {
   @Inject
   @Extension
   private CompilationTestHelper _compilationTestHelper;
@@ -64,124 +52,84 @@ public class JavaGenerationTest {
   @Extension
   private LangLib _langLib;
   
-  @Inject
-  private Provider<ResourceSet> resourceSetProvider;
-  
   @Test
-  public void testGenerateExpression1() {
+  public void testGenerateExpressionPlus() {
     try {
       StringConcatenation _builder = new StringConcatenation();
-      _builder.append("package log.sample.project;");
+      _builder.append("package sample.project;\t\t\t\t\t\t");
       _builder.newLine();
+      _builder.append("@java ");
       _builder.newLine();
-      _builder.newLine();
-      _builder.append("@database MySQL");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("@java uses MySQL");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("@entity Record {");
+      _builder.append("class B : Widget {\t");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("@attr numbera : Int");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("@attr numberb : Int");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("@td database MySQL {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("@table RECORD -> Record {");
+      _builder.append("class C : Object {");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("@column NUMBERA -> Record.numbera as INTEGER");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("@column NUMBERB -> Record.numberb as INTEGER");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class SomeWidget : Widget {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("class SomeRecord : Structure -> Record {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("public var numbera : Int -> Record.numbera;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("public var numberb : Int -> Record.numberb;");
+      _builder.append("public var x : Int;");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("}");
       _builder.newLine();
       _builder.append("\t");
+      _builder.append("var c : C;\t");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var some :SomeRecord;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var group : Array<some>;");
-      _builder.newLine();
-      _builder.append("\t");
+      _builder.append("var z :Int;\t\t");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("public func start() {");
       _builder.newLine();
       _builder.append("\t\t");
+      _builder.append("a : Int = 2;");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("if(self.some.numbera >= 1) {");
+      _builder.append("b : Int = 4;");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("}");
+      _builder.append("self.c.x = self.add(a,b);");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("//self.some.numbera = (2 + 5) /  (self.some.numbera + 1);");
-      _builder.newLine();
-      _builder.append("\t \t");
-      _builder.append("//abc : Int = (self.some.numbera + 1) /45; ");
-      _builder.newLine();
-      _builder.append("\t\t");
+      _builder.append("self.z = 1;");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("}");
       _builder.newLine();
-      _builder.append("\t");
-      _builder.append("private func add(a : Int, b: Int) -> Int {\t\t\t");
+      _builder.append("\t\t\t\t");
       _builder.newLine();
-      _builder.append("\t   ");
+      _builder.append("\t");
+      _builder.append("public func add(a : Int, b : Int) -> Int {");
+      _builder.newLine();
+      _builder.append("\t\t");
       _builder.append("return a + b;");
       _builder.newLine();
-      _builder.append("    ");
+      _builder.append("\t");
       _builder.append("}");
       _builder.newLine();
       _builder.append("}");
-      _builder.newLine();
       _builder.newLine();
       final String body = _builder.toString();
       final IAcceptor<CompilationTestHelper.Result> _function = (CompilationTestHelper.Result it) -> {
-        final Consumer<Issue> _function_1 = (Issue it_1) -> {
-          InputOutput.<Issue>println(it_1);
-        };
-        it.getErrorsAndWarnings().forEach(_function_1);
-        InputOutput.<String>println(it.getGeneratedCode("log.sample.project.SomeWidget"));
+        InputOutput.<String>println(it.getGeneratedCode("sample.project.B"));
+        Assert.assertFalse(this.checkIfIssues(it));
       };
       this._compilationTestHelper.compile(CollectionLiterals.<String>newArrayList(this._langLib.loadLibSource(), body), _function);
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
+  }
+  
+  public boolean checkIfIssues(final CompilationTestHelper.Result result) {
+    int _size = result.getErrorsAndWarnings().size();
+    boolean _greaterThan = (_size > 0);
+    if (_greaterThan) {
+      final Consumer<Issue> _function = (Issue it) -> {
+        InputOutput.<Issue>println(it);
+      };
+      result.getErrorsAndWarnings().forEach(_function);
+      return true;
+    }
+    result.getCompiledClass();
+    return false;
   }
 }

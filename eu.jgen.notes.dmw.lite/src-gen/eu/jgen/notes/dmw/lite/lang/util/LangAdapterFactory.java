@@ -431,6 +431,11 @@ public class LangAdapterFactory extends AdapterFactoryImpl
         return createYAnnotDecimalAdapter();
       }
       @Override
+      public Adapter caseYAnnotDefault(YAnnotDefault object)
+      {
+        return createYAnnotDefaultAdapter();
+      }
+      @Override
       public Adapter caseYAnnotAction(YAnnotAction object)
       {
         return createYAnnotActionAdapter();
@@ -1523,6 +1528,21 @@ public class LangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createYAnnotDecimalAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefault <em>YAnnot Default</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefault
+   * @generated
+   */
+  public Adapter createYAnnotDefaultAdapter()
   {
     return null;
   }

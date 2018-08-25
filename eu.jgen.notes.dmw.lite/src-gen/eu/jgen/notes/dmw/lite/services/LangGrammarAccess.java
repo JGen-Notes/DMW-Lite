@@ -233,94 +233,98 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	public class YClassElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YClass");
 		private final Group cGroup = (Group)rule.eContents().get(1);
-		private final Keyword cClassKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cNameAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cNameValidIDParserRuleCall_1_0 = (RuleCall)cNameAssignment_1.eContents().get(0);
-		private final Group cGroup_2 = (Group)cGroup.eContents().get(2);
-		private final Keyword cColonKeyword_2_0 = (Keyword)cGroup_2.eContents().get(0);
-		private final Assignment cSuperclassAssignment_2_1 = (Assignment)cGroup_2.eContents().get(1);
-		private final CrossReference cSuperclassYClassCrossReference_2_1_0 = (CrossReference)cSuperclassAssignment_2_1.eContents().get(0);
-		private final RuleCall cSuperclassYClassQualifiedNameParserRuleCall_2_1_0_1 = (RuleCall)cSuperclassYClassCrossReference_2_1_0.eContents().get(1);
+		private final Action cYClassAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cClassKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cNameAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cNameValidIDParserRuleCall_2_0 = (RuleCall)cNameAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
-		private final Keyword cHyphenMinusGreaterThanSignKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cEntityAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final CrossReference cEntityYAnnotEntityCrossReference_3_1_0 = (CrossReference)cEntityAssignment_3_1.eContents().get(0);
-		private final RuleCall cEntityYAnnotEntityQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cEntityYAnnotEntityCrossReference_3_1_0.eContents().get(1);
-		private final Keyword cLeftCurlyBracketKeyword_4 = (Keyword)cGroup.eContents().get(4);
-		private final Assignment cInnersAssignment_5 = (Assignment)cGroup.eContents().get(5);
-		private final RuleCall cInnersYClassParserRuleCall_5_0 = (RuleCall)cInnersAssignment_5.eContents().get(0);
-		private final Assignment cMembersAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final RuleCall cMembersYMemberParserRuleCall_6_0 = (RuleCall)cMembersAssignment_6.eContents().get(0);
-		private final Keyword cRightCurlyBracketKeyword_7 = (Keyword)cGroup.eContents().get(7);
+		private final Keyword cColonKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
+		private final Assignment cSuperclassAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final CrossReference cSuperclassYClassCrossReference_3_1_0 = (CrossReference)cSuperclassAssignment_3_1.eContents().get(0);
+		private final RuleCall cSuperclassYClassQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperclassYClassCrossReference_3_1_0.eContents().get(1);
+		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
+		private final Keyword cHyphenMinusGreaterThanSignKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
+		private final Assignment cEntityAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final CrossReference cEntityYAnnotEntityCrossReference_4_1_0 = (CrossReference)cEntityAssignment_4_1.eContents().get(0);
+		private final RuleCall cEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1 = (RuleCall)cEntityYAnnotEntityCrossReference_4_1_0.eContents().get(1);
+		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
+		private final Assignment cInnersAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cInnersYClassParserRuleCall_6_0 = (RuleCall)cInnersAssignment_6.eContents().get(0);
+		private final Assignment cMembersAssignment_7 = (Assignment)cGroup.eContents().get(7);
+		private final RuleCall cMembersYMemberParserRuleCall_7_0 = (RuleCall)cMembersAssignment_7.eContents().get(0);
+		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
 		//YClass:
-		//	'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
+		//	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
 		//	'{'
 		//	inners+=YClass*
 		//	members+=YMember*
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])? '{'
+		//{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])? '{'
 		//inners+=YClass* members+=YMember* '}'
 		public Group getGroup() { return cGroup; }
 		
+		//{YClass}
+		public Action getYClassAction_0() { return cYClassAction_0; }
+		
 		//'class'
-		public Keyword getClassKeyword_0() { return cClassKeyword_0; }
+		public Keyword getClassKeyword_1() { return cClassKeyword_1; }
 		
 		//name=ValidID
-		public Assignment getNameAssignment_1() { return cNameAssignment_1; }
+		public Assignment getNameAssignment_2() { return cNameAssignment_2; }
 		
 		//ValidID
-		public RuleCall getNameValidIDParserRuleCall_1_0() { return cNameValidIDParserRuleCall_1_0; }
+		public RuleCall getNameValidIDParserRuleCall_2_0() { return cNameValidIDParserRuleCall_2_0; }
 		
 		//(':' superclass=[YClass|QualifiedName])?
-		public Group getGroup_2() { return cGroup_2; }
-		
-		//':'
-		public Keyword getColonKeyword_2_0() { return cColonKeyword_2_0; }
-		
-		//superclass=[YClass|QualifiedName]
-		public Assignment getSuperclassAssignment_2_1() { return cSuperclassAssignment_2_1; }
-		
-		//[YClass|QualifiedName]
-		public CrossReference getSuperclassYClassCrossReference_2_1_0() { return cSuperclassYClassCrossReference_2_1_0; }
-		
-		//QualifiedName
-		public RuleCall getSuperclassYClassQualifiedNameParserRuleCall_2_1_0_1() { return cSuperclassYClassQualifiedNameParserRuleCall_2_1_0_1; }
-		
-		//('->' entity=[YAnnotEntity|QualifiedName])?
 		public Group getGroup_3() { return cGroup_3; }
 		
-		//'->'
-		public Keyword getHyphenMinusGreaterThanSignKeyword_3_0() { return cHyphenMinusGreaterThanSignKeyword_3_0; }
+		//':'
+		public Keyword getColonKeyword_3_0() { return cColonKeyword_3_0; }
 		
-		//entity=[YAnnotEntity|QualifiedName]
-		public Assignment getEntityAssignment_3_1() { return cEntityAssignment_3_1; }
+		//superclass=[YClass|QualifiedName]
+		public Assignment getSuperclassAssignment_3_1() { return cSuperclassAssignment_3_1; }
 		
-		//[YAnnotEntity|QualifiedName]
-		public CrossReference getEntityYAnnotEntityCrossReference_3_1_0() { return cEntityYAnnotEntityCrossReference_3_1_0; }
+		//[YClass|QualifiedName]
+		public CrossReference getSuperclassYClassCrossReference_3_1_0() { return cSuperclassYClassCrossReference_3_1_0; }
 		
 		//QualifiedName
-		public RuleCall getEntityYAnnotEntityQualifiedNameParserRuleCall_3_1_0_1() { return cEntityYAnnotEntityQualifiedNameParserRuleCall_3_1_0_1; }
+		public RuleCall getSuperclassYClassQualifiedNameParserRuleCall_3_1_0_1() { return cSuperclassYClassQualifiedNameParserRuleCall_3_1_0_1; }
+		
+		//('->' entity=[YAnnotEntity|QualifiedName])?
+		public Group getGroup_4() { return cGroup_4; }
+		
+		//'->'
+		public Keyword getHyphenMinusGreaterThanSignKeyword_4_0() { return cHyphenMinusGreaterThanSignKeyword_4_0; }
+		
+		//entity=[YAnnotEntity|QualifiedName]
+		public Assignment getEntityAssignment_4_1() { return cEntityAssignment_4_1; }
+		
+		//[YAnnotEntity|QualifiedName]
+		public CrossReference getEntityYAnnotEntityCrossReference_4_1_0() { return cEntityYAnnotEntityCrossReference_4_1_0; }
+		
+		//QualifiedName
+		public RuleCall getEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1() { return cEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1; }
 		
 		//'{'
-		public Keyword getLeftCurlyBracketKeyword_4() { return cLeftCurlyBracketKeyword_4; }
+		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
 		
 		//inners+=YClass*
-		public Assignment getInnersAssignment_5() { return cInnersAssignment_5; }
+		public Assignment getInnersAssignment_6() { return cInnersAssignment_6; }
 		
 		//YClass
-		public RuleCall getInnersYClassParserRuleCall_5_0() { return cInnersYClassParserRuleCall_5_0; }
+		public RuleCall getInnersYClassParserRuleCall_6_0() { return cInnersYClassParserRuleCall_6_0; }
 		
 		//members+=YMember*
-		public Assignment getMembersAssignment_6() { return cMembersAssignment_6; }
+		public Assignment getMembersAssignment_7() { return cMembersAssignment_7; }
 		
 		//YMember
-		public RuleCall getMembersYMemberParserRuleCall_6_0() { return cMembersYMemberParserRuleCall_6_0; }
+		public RuleCall getMembersYMemberParserRuleCall_7_0() { return cMembersYMemberParserRuleCall_7_0; }
 		
 		//'}'
-		public Keyword getRightCurlyBracketKeyword_7() { return cRightCurlyBracketKeyword_7; }
+		public Keyword getRightCurlyBracketKeyword_8() { return cRightCurlyBracketKeyword_8; }
 	}
 	public class YMemberElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YMember");
@@ -854,9 +858,6 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cDefaultYBlockParserRuleCall_5_2_0 = (RuleCall)cDefaultAssignment_5_2.eContents().get(0);
 		private final Keyword cRightCurlyBracketKeyword_6 = (Keyword)cGroup.eContents().get(6);
 		
-		////YIfBlock returns YBlock:
-		////	statements+=YStatement
-		////	| YBlock;
 		//YSwitchStatement:
 		//	{YSwitchStatement}
 		//	'switch' switch=YExpression '{'
@@ -1319,30 +1320,22 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.OpCompare");
 		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
 		private final Keyword cGreaterThanSignEqualsSignKeyword_0 = (Keyword)cAlternatives.eContents().get(0);
-		private final Group cGroup_1 = (Group)cAlternatives.eContents().get(1);
-		private final Keyword cLessThanSignKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
-		private final Keyword cEqualsSignKeyword_1_1 = (Keyword)cGroup_1.eContents().get(1);
+		private final Keyword cLessThanSignEqualsSignKeyword_1 = (Keyword)cAlternatives.eContents().get(1);
 		private final Keyword cGreaterThanSignKeyword_2 = (Keyword)cAlternatives.eContents().get(2);
 		private final Keyword cLessThanSignKeyword_3 = (Keyword)cAlternatives.eContents().get(3);
 		
 		//OpCompare:
-		//	'>=' | '<' '=' | '>' | '<';
+		//	'>=' | '<=' | '>' | '<';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'>=' | '<' '=' | '>' | '<'
+		//'>=' | '<=' | '>' | '<'
 		public Alternatives getAlternatives() { return cAlternatives; }
 		
 		//'>='
 		public Keyword getGreaterThanSignEqualsSignKeyword_0() { return cGreaterThanSignEqualsSignKeyword_0; }
 		
-		//'<' '='
-		public Group getGroup_1() { return cGroup_1; }
-		
-		//'<'
-		public Keyword getLessThanSignKeyword_1_0() { return cLessThanSignKeyword_1_0; }
-		
-		//'='
-		public Keyword getEqualsSignKeyword_1_1() { return cEqualsSignKeyword_1_1; }
+		//'<='
+		public Keyword getLessThanSignEqualsSignKeyword_1() { return cLessThanSignEqualsSignKeyword_1; }
 		
 		//'>'
 		public Keyword getGreaterThanSignKeyword_2() { return cGreaterThanSignKeyword_2; }
@@ -2354,23 +2347,24 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cTypeYAnnotActionParserRuleCall_1_0_2 = (RuleCall)cTypeAlternatives_1_0.eContents().get(2);
 		private final RuleCall cTypeYAnnotMessageParserRuleCall_1_0_3 = (RuleCall)cTypeAlternatives_1_0.eContents().get(3);
 		private final RuleCall cTypeYAnnotMsgTypeParserRuleCall_1_0_4 = (RuleCall)cTypeAlternatives_1_0.eContents().get(4);
+		private final RuleCall cTypeYAnnotDefaultParserRuleCall_1_0_5 = (RuleCall)cTypeAlternatives_1_0.eContents().get(5);
 		
 		///*
 		// * Predefined annotations
 		// */ YAnnot:
-		//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType);
+		//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType)
+		//{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault)
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnot}
 		public Action getYAnnotAction_0() { return cYAnnotAction_0; }
 		
-		//type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType)
+		//type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault)
 		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
-		//(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType)
+		//(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault)
 		public Alternatives getTypeAlternatives_1_0() { return cTypeAlternatives_1_0; }
 		
 		//YAnnotLength
@@ -2387,6 +2381,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//YAnnotMsgType
 		public RuleCall getTypeYAnnotMsgTypeParserRuleCall_1_0_4() { return cTypeYAnnotMsgTypeParserRuleCall_1_0_4; }
+		
+		//YAnnotDefault
+		public RuleCall getTypeYAnnotDefaultParserRuleCall_1_0_5() { return cTypeYAnnotDefaultParserRuleCall_1_0_5; }
 	}
 	public class YAnnotTopElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotTop");
@@ -2504,6 +2501,53 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_6() { return cRightParenthesisKeyword_6; }
+	}
+	public class YAnnotDefaultElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotDefault");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cYAnnotDefaultAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cDefaultKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
+		private final Assignment cNumberAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
+		private final RuleCall cNumberINTTerminalRuleCall_3_0_0 = (RuleCall)cNumberAssignment_3_0.eContents().get(0);
+		private final Assignment cTextAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
+		private final RuleCall cTextSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cTextAssignment_3_1.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//YAnnotDefault YAnnot:
+		//	{YAnnotDefault} '@default' '(' (number=INT | text=STRING) ')';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{YAnnotDefault} '@default' '(' (number=INT | text=STRING) ')'
+		public Group getGroup() { return cGroup; }
+		
+		//{YAnnotDefault}
+		public Action getYAnnotDefaultAction_0() { return cYAnnotDefaultAction_0; }
+		
+		//'@default'
+		public Keyword getDefaultKeyword_1() { return cDefaultKeyword_1; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+		
+		//number=INT | text=STRING
+		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		
+		//number=INT
+		public Assignment getNumberAssignment_3_0() { return cNumberAssignment_3_0; }
+		
+		//INT
+		public RuleCall getNumberINTTerminalRuleCall_3_0_0() { return cNumberINTTerminalRuleCall_3_0_0; }
+		
+		//text=STRING
+		public Assignment getTextAssignment_3_1() { return cTextAssignment_3_1; }
+		
+		//STRING
+		public RuleCall getTextSTRINGTerminalRuleCall_3_1_0() { return cTextSTRINGTerminalRuleCall_3_1_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
 	}
 	public class YAnnotActionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotAction");
@@ -3626,6 +3670,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	private final YAnnotTopElements pYAnnotTop;
 	private final YAnnotLengthElements pYAnnotLength;
 	private final YAnnotDecimalElements pYAnnotDecimal;
+	private final YAnnotDefaultElements pYAnnotDefault;
 	private final YAnnotActionElements pYAnnotAction;
 	private final YAnnotMessageElements pYAnnotMessage;
 	private final YAnnotMsgTypeElements pYAnnotMsgType;
@@ -3712,6 +3757,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pYAnnotTop = new YAnnotTopElements();
 		this.pYAnnotLength = new YAnnotLengthElements();
 		this.pYAnnotDecimal = new YAnnotDecimalElements();
+		this.pYAnnotDefault = new YAnnotDefaultElements();
 		this.pYAnnotAction = new YAnnotActionElements();
 		this.pYAnnotMessage = new YAnnotMessageElements();
 		this.pYAnnotMsgType = new YAnnotMsgTypeElements();
@@ -3854,7 +3900,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YClass:
-	//	'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
+	//	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
 	//	'{'
 	//	inners+=YClass*
 	//	members+=YMember*
@@ -3972,9 +4018,6 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		return getYIfStatementAccess().getRule();
 	}
 	
-	////YIfBlock returns YBlock:
-	////	statements+=YStatement
-	////	| YBlock;
 	//YSwitchStatement:
 	//	{YSwitchStatement}
 	//	'switch' switch=YExpression '{'
@@ -4123,7 +4166,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//OpCompare:
-	//	'>=' | '<' '=' | '>' | '<';
+	//	'>=' | '<=' | '>' | '<';
 	public OpCompareElements getOpCompareAccess() {
 		return pOpCompare;
 	}
@@ -4330,7 +4373,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * Predefined annotations
 	// */ YAnnot:
-	//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType);
+	//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault);
 	public YAnnotElements getYAnnotAccess() {
 		return pYAnnot;
 	}
@@ -4367,6 +4410,16 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getYAnnotDecimalRule() {
 		return getYAnnotDecimalAccess().getRule();
+	}
+	
+	//YAnnotDefault YAnnot:
+	//	{YAnnotDefault} '@default' '(' (number=INT | text=STRING) ')';
+	public YAnnotDefaultElements getYAnnotDefaultAccess() {
+		return pYAnnotDefault;
+	}
+	
+	public ParserRule getYAnnotDefaultRule() {
+		return getYAnnotDefaultAccess().getRule();
 	}
 	
 	//YAnnotAction YAnnot:

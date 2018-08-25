@@ -137,6 +137,7 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
       case LangPackage.YNEW: return createYNew();
       case LangPackage.YANNOT_LENGTH: return createYAnnotLength();
       case LangPackage.YANNOT_DECIMAL: return createYAnnotDecimal();
+      case LangPackage.YANNOT_DEFAULT: return createYAnnotDefault();
       case LangPackage.YANNOT_ACTION: return createYAnnotAction();
       case LangPackage.YANNOT_MESSAGE: return createYAnnotMessage();
       default:
@@ -957,6 +958,17 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
   {
     YAnnotDecimalImpl yAnnotDecimal = new YAnnotDecimalImpl();
     return yAnnotDecimal;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotDefault createYAnnotDefault()
+  {
+    YAnnotDefaultImpl yAnnotDefault = new YAnnotDefaultImpl();
+    return yAnnotDefault;
   }
 
   /**

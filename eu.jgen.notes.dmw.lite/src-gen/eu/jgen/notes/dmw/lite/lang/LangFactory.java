@@ -663,6 +663,15 @@ public interface LangFactory extends EFactory
   YAnnotDecimal createYAnnotDecimal();
 
   /**
+   * Returns a new object of class '<em>YAnnot Default</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>YAnnot Default</em>'.
+   * @generated
+   */
+  YAnnotDefault createYAnnotDefault();
+
+  /**
    * Returns a new object of class '<em>YAnnot Action</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

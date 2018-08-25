@@ -81,6 +81,7 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
 
 /**
  * This class contains custom validation rules.
@@ -156,6 +157,24 @@ public class LangValidator extends AbstractLangValidator {
   public final static String NO_DESGNATED_PARENT = (LangValidator.ISSUE_CODE_PREFIX + "NoDesignatedParent");
   
   public final static String ONLY_ONE_DESGNATED_PARENT = (LangValidator.ISSUE_CODE_PREFIX + "OnlyOneDesignatedParent");
+  
+  public final static String CLASS_NEED_TO_BE_EXTENDED = (LangValidator.ISSUE_CODE_PREFIX + "ClassNeedToBeExtended");
+  
+  public final static String CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL = (LangValidator.ISSUE_CODE_PREFIX + "ClassNameFirstCharacterNotCapital");
+  
+  public final static String ENTITY_NAME_FIRST_CHARACTER_NOT_CAPITAL = (LangValidator.ISSUE_CODE_PREFIX + "EntityNameFirstCharacterNotCapital");
+  
+  public final static String ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE = (LangValidator.ISSUE_CODE_PREFIX + 
+    "AttributeNameFirstCharacterNotLowercase");
+  
+  public final static String FUNCTION_NAME_FIRST_CHARACTER_NOT_LOWERCASE = (LangValidator.ISSUE_CODE_PREFIX + 
+    "FunctionNameFirstCharacterNotLowercase");
+  
+  public final static String PROPERTY_NAME_FIRST_CHARACTER_NOT_LOWERCASE = (LangValidator.ISSUE_CODE_PREFIX + 
+    "PropertyNameFirstCharacterNotLowercase");
+  
+  public final static String VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE = (LangValidator.ISSUE_CODE_PREFIX + 
+    "VariableNameFirstCharacterNotLowercase");
   
   @Inject
   @Extension
@@ -363,41 +382,6 @@ public class LangValidator extends AbstractLangValidator {
     }
   }
   
-  public void doCheckRelationshipCorrectness(final YAnnotRel forwardRel) {
-    final YAnnotRel backwardRel = forwardRel.getInverse();
-    YAnnotRel _inverse = forwardRel.getInverse();
-    boolean _tripleEquals = (_inverse == null);
-    if (_tripleEquals) {
-      this.error("Inverse relationship for this relationship not yet defined.", forwardRel, 
-        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.MISSING_INVERSE_REALTIONSHIP);
-      return;
-    }
-    boolean _isInverseRelationshipDefinedInTarget = this._langUtil.isInverseRelationshipDefinedInTarget(backwardRel);
-    boolean _not = (!_isInverseRelationshipDefinedInTarget);
-    if (_not) {
-      this.error("Inverse relationship does not exists in target entity.", backwardRel, 
-        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.INVERSE_RELATIONSHIP_DOES_NOT_EXIST_IN_TAGET);
-      return;
-    }
-    boolean _equals = Objects.equal(forwardRel, backwardRel);
-    if (_equals) {
-      this.error("Matching Inverse relationship cannot be the same relationship.", forwardRel, 
-        LangPackage.eINSTANCE.getYAnnotRel_Name(), 
-        LangValidator.INVERSE_RELATIONSHIP_CANNOT_BE_ITSELF);
-      return;
-    }
-    if ((forwardRel.isMany() && backwardRel.isMany())) {
-      this.error("Many-to-many relationship type not supported yet.", forwardRel, 
-        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.MANY_TO_MANY_NOT_SUPPORTED);
-      return;
-    }
-    if (((((!forwardRel.isMany()) && (!backwardRel.isMany())) && (!forwardRel.isOptional())) && (!backwardRel.isOptional()))) {
-      this.error("A fully mandatory 1-to-1 relationship is unusual and supported.", forwardRel, 
-        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.ONE_TO_ONE_MANDATORY_NOT_SUPPORTED);
-      return;
-    }
-  }
-  
   @Check
   public void checkFunctionInvocation(final YMemberSelection memberSelection) {
     boolean _isFunctioninvocation = memberSelection.isFunctioninvocation();
@@ -565,8 +549,8 @@ public class LangValidator extends AbstractLangValidator {
       String _name_1 = actualType.getName();
       String _plus_2 = (_plus_1 + _name_1);
       String _plus_3 = (_plus_2 + "\'");
-      this.error(_plus_3, 
-        null, LangValidator.INCOMPATIBLE_TYPES);
+      this.error(_plus_3, null, 
+        LangValidator.INCOMPATIBLE_TYPES);
     }
   }
   
@@ -583,7 +567,8 @@ public class LangValidator extends AbstractLangValidator {
         String _plus_1 = (_plus + " but was ");
         int _size_3 = selection.getArgs().size();
         String _plus_2 = (_plus_1 + Integer.valueOf(_size_3));
-        this.error(_plus_2, LangPackage.eINSTANCE.getYMemberSelection_Member(), LangValidator.INVALID_ARGS);
+        this.error(_plus_2, 
+          LangPackage.eINSTANCE.getYMemberSelection_Member(), LangValidator.INVALID_ARGS);
       }
     }
   }
@@ -654,8 +639,8 @@ public class LangValidator extends AbstractLangValidator {
           String _name = clazz.getName();
           String _plus = ("The type " + _name);
           String _plus_1 = (_plus + " is already defined");
-          this.error(_plus_1, clazz, 
-            LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.DUPLICATE_CLASS);
+          this.error(_plus_1, clazz, LangPackage.eINSTANCE.getYNamedElement_Name(), 
+            LangValidator.DUPLICATE_CLASS);
         }
       }
     }
@@ -799,6 +784,7 @@ public class LangValidator extends AbstractLangValidator {
     }
   }
   
+  @Check
   public void checkDuplicateFKColumnName(final YAnnotColumnLike column) {
     int count = 0;
     EObject _eContainer = column.eContainer().eContainer().eContainer();
@@ -900,6 +886,24 @@ public class LangValidator extends AbstractLangValidator {
   }
   
   @Check
+  public void checkIfClassHasExtention(final YClass clazz) {
+    String _name = clazz.getName();
+    boolean _equals = Objects.equal(_name, "Object");
+    if (_equals) {
+      return;
+    }
+    YClass _superclass = clazz.getSuperclass();
+    boolean _tripleEquals = (_superclass == null);
+    if (_tripleEquals) {
+      String _name_1 = clazz.getName();
+      String _plus = ("Class " + _name_1);
+      String _plus_1 = (_plus + " does need to extend Object type.");
+      this.error(_plus_1, clazz, 
+        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.CLASS_NEED_TO_BE_EXTENDED);
+    }
+  }
+  
+  @Check
   public void checkRelationshipHasOnlySingleParentDesignated(final YAnnotRel relationship) {
     if ((((relationship.getInverse() != null) && relationship.isParent()) && relationship.getInverse().isParent())) {
       String _name = relationship.getName();
@@ -909,8 +913,109 @@ public class LangValidator extends AbstractLangValidator {
       String _plus_2 = (_plus_1 + _name_1);
       String _plus_3 = (_plus_2 + 
         ") can have  only one designated parent.");
-      this.error(_plus_3, relationship, 
-        LangPackage.Literals.YANNOT_REL__NAME, LangValidator.ONLY_ONE_DESGNATED_PARENT);
+      this.error(_plus_3, relationship, LangPackage.Literals.YANNOT_REL__NAME, 
+        LangValidator.ONLY_ONE_DESGNATED_PARENT);
+    }
+  }
+  
+  @Check
+  public void checkClassNameStartsWithCapital(final YClass clazz) {
+    String _firstUpper = StringExtensions.toFirstUpper(clazz.getName());
+    String _name = clazz.getName();
+    boolean _notEquals = (!Objects.equal(_firstUpper, _name));
+    if (_notEquals) {
+      this.error("Class name should start with a capital letter", clazz, LangPackage.eINSTANCE.getYNamedElement_Name(), 
+        LangValidator.CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL);
+    }
+  }
+  
+  @Check
+  public void checkEntityNameStartsWithCapital(final YAnnotEntity annotEntity) {
+    String _firstUpper = StringExtensions.toFirstUpper(annotEntity.getName());
+    String _name = annotEntity.getName();
+    boolean _notEquals = (!Objects.equal(_firstUpper, _name));
+    if (_notEquals) {
+      this.error("Entity name should start with a capital letter", annotEntity, 
+        LangPackage.eINSTANCE.getYAnnotEntity_Name(), LangValidator.ENTITY_NAME_FIRST_CHARACTER_NOT_CAPITAL);
+    }
+  }
+  
+  @Check
+  public void checkAttributeNameStartsWithLowecase(final YAnnotAttr annotAttr) {
+    String _firstLower = StringExtensions.toFirstLower(annotAttr.getName());
+    String _name = annotAttr.getName();
+    boolean _notEquals = (!Objects.equal(_firstLower, _name));
+    if (_notEquals) {
+      this.error("Attribute name should start with a lower case letter", annotAttr, 
+        LangPackage.eINSTANCE.getYAnnotAttr_Name(), LangValidator.ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
+    }
+  }
+  
+  @Check
+  public void checkFunctionNameStartsWithLowecase(final YFunction function) {
+    String _firstLower = StringExtensions.toFirstLower(function.getName());
+    String _name = function.getName();
+    boolean _notEquals = (!Objects.equal(_firstLower, _name));
+    if (_notEquals) {
+      this.error("Function name should start with a lower case letter", function, 
+        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.FUNCTION_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
+    }
+  }
+  
+  @Check
+  public void checkPropertyNameStartsWithLowecase(final YProperty property) {
+    String _firstLower = StringExtensions.toFirstLower(property.getName());
+    String _name = property.getName();
+    boolean _notEquals = (!Objects.equal(_firstLower, _name));
+    if (_notEquals) {
+      this.error("Property name should start with a lower case letter", property, 
+        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.PROPERTY_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
+    }
+  }
+  
+  @Check
+  public void checkVariableNameStartsWithLowecase(final YVariableDeclaration variableDeclaration) {
+    String _firstLower = StringExtensions.toFirstLower(variableDeclaration.getName());
+    String _name = variableDeclaration.getName();
+    boolean _notEquals = (!Objects.equal(_firstLower, _name));
+    if (_notEquals) {
+      this.error("Variable name should start with a lower case letter", variableDeclaration, 
+        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
+    }
+  }
+  
+  public void doCheckRelationshipCorrectness(final YAnnotRel forwardRel) {
+    final YAnnotRel backwardRel = forwardRel.getInverse();
+    YAnnotRel _inverse = forwardRel.getInverse();
+    boolean _tripleEquals = (_inverse == null);
+    if (_tripleEquals) {
+      this.error("Inverse relationship for this relationship not yet defined.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.MISSING_INVERSE_REALTIONSHIP);
+      return;
+    }
+    boolean _isInverseRelationshipDefinedInTarget = this._langUtil.isInverseRelationshipDefinedInTarget(backwardRel);
+    boolean _not = (!_isInverseRelationshipDefinedInTarget);
+    if (_not) {
+      this.error("Inverse relationship does not exists in target entity.", backwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.INVERSE_RELATIONSHIP_DOES_NOT_EXIST_IN_TAGET);
+      return;
+    }
+    boolean _equals = Objects.equal(forwardRel, backwardRel);
+    if (_equals) {
+      this.error("Matching Inverse relationship cannot be the same relationship.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), 
+        LangValidator.INVERSE_RELATIONSHIP_CANNOT_BE_ITSELF);
+      return;
+    }
+    if ((forwardRel.isMany() && backwardRel.isMany())) {
+      this.error("Many-to-many relationship type not supported yet.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.MANY_TO_MANY_NOT_SUPPORTED);
+      return;
+    }
+    if (((((!forwardRel.isMany()) && (!backwardRel.isMany())) && (!forwardRel.isOptional())) && (!backwardRel.isOptional()))) {
+      this.error("A fully mandatory 1-to-1 relationship is unusual and supported.", forwardRel, 
+        LangPackage.eINSTANCE.getYAnnotRel_Name(), LangValidator.ONE_TO_ONE_MANDATORY_NOT_SUPPORTED);
+      return;
     }
   }
 }

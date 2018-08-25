@@ -2821,6 +2821,61 @@ public interface LangPackage extends EPackage
   int YANNOT_DECIMAL_FEATURE_COUNT = YANNOT_FEATURE_COUNT + 2;
 
   /**
+   * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultImpl <em>YAnnot Default</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultImpl
+   * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefault()
+   * @generated
+   */
+  int YANNOT_DEFAULT = 71;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT__TYPE = YANNOT__TYPE;
+
+  /**
+   * The feature id for the '<em><b>Msgtype</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT__MSGTYPE = YANNOT__MSGTYPE;
+
+  /**
+   * The feature id for the '<em><b>Number</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT__NUMBER = YANNOT_FEATURE_COUNT + 0;
+
+  /**
+   * The feature id for the '<em><b>Text</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT__TEXT = YANNOT_FEATURE_COUNT + 1;
+
+  /**
+   * The number of structural features of the '<em>YAnnot Default</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT_FEATURE_COUNT = YANNOT_FEATURE_COUNT + 2;
+
+  /**
    * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotActionImpl <em>YAnnot Action</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2828,7 +2883,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotAction()
    * @generated
    */
-  int YANNOT_ACTION = 71;
+  int YANNOT_ACTION = 72;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2874,7 +2929,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotMessage()
    * @generated
    */
-  int YANNOT_MESSAGE = 72;
+  int YANNOT_MESSAGE = 73;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2920,7 +2975,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAccessLevel()
    * @generated
    */
-  int YACCESS_LEVEL = 73;
+  int YACCESS_LEVEL = 74;
 
 
   /**
@@ -5174,6 +5229,38 @@ public interface LangPackage extends EPackage
   EAttribute getYAnnotDecimal_Decimal();
 
   /**
+   * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefault <em>YAnnot Default</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>YAnnot Default</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefault
+   * @generated
+   */
+  EClass getYAnnotDefault();
+
+  /**
+   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getNumber <em>Number</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Number</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getNumber()
+   * @see #getYAnnotDefault()
+   * @generated
+   */
+  EAttribute getYAnnotDefault_Number();
+
+  /**
+   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getText <em>Text</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Text</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getText()
+   * @see #getYAnnotDefault()
+   * @generated
+   */
+  EAttribute getYAnnotDefault_Text();
+
+  /**
    * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotAction <em>YAnnot Action</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -7077,6 +7164,32 @@ public interface LangPackage extends EPackage
      * @generated
      */
     EAttribute YANNOT_DECIMAL__DECIMAL = eINSTANCE.getYAnnotDecimal_Decimal();
+
+    /**
+     * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultImpl <em>YAnnot Default</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultImpl
+     * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefault()
+     * @generated
+     */
+    EClass YANNOT_DEFAULT = eINSTANCE.getYAnnotDefault();
+
+    /**
+     * The meta object literal for the '<em><b>Number</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute YANNOT_DEFAULT__NUMBER = eINSTANCE.getYAnnotDefault_Number();
+
+    /**
+     * The meta object literal for the '<em><b>Text</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute YANNOT_DEFAULT__TEXT = eINSTANCE.getYAnnotDefault_Text();
 
     /**
      * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotActionImpl <em>YAnnot Action</em>}' class.

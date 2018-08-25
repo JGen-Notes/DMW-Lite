@@ -46,6 +46,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYTerminalExpressionAccess().getValueAlternatives_2_1_0(), "rule__YTerminalExpression__ValueAlternatives_2_1_0");
 					put(grammarAccess.getYAnnotAccess().getTypeAlternatives_1_0(), "rule__YAnnot__TypeAlternatives_1_0");
 					put(grammarAccess.getYAnnotTopAccess().getTypeAlternatives_0(), "rule__YAnnotTop__TypeAlternatives_0");
+					put(grammarAccess.getYAnnotDefaultAccess().getAlternatives_3(), "rule__YAnnotDefault__Alternatives_3");
 					put(grammarAccess.getYAnnotEntityInnerAccess().getAlternatives(), "rule__YAnnotEntityInner__Alternatives");
 					put(grammarAccess.getYAnnotIdInnerAccess().getAlternatives(), "rule__YAnnotIdInner__Alternatives");
 					put(grammarAccess.getYAnnotColumnAccess().getTypeAlternatives_4_0(), "rule__YAnnotColumn__TypeAlternatives_4_0");
@@ -60,8 +61,8 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getQualifiedNameWithWildcardAccess().getGroup(), "rule__QualifiedNameWithWildcard__Group__0");
 					put(grammarAccess.getYArgumentAccess().getGroup(), "rule__YArgument__Group__0");
 					put(grammarAccess.getYClassAccess().getGroup(), "rule__YClass__Group__0");
-					put(grammarAccess.getYClassAccess().getGroup_2(), "rule__YClass__Group_2__0");
 					put(grammarAccess.getYClassAccess().getGroup_3(), "rule__YClass__Group_3__0");
+					put(grammarAccess.getYClassAccess().getGroup_4(), "rule__YClass__Group_4__0");
 					put(grammarAccess.getYTypedDeclarationAccess().getGroup(), "rule__YTypedDeclaration__Group__0");
 					put(grammarAccess.getYPropertyAccess().getGroup(), "rule__YProperty__Group__0");
 					put(grammarAccess.getYPropertyAccess().getGroup_5(), "rule__YProperty__Group_5__0");
@@ -96,7 +97,6 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYEqualityExpressionAccess().getGroup_1(), "rule__YEqualityExpression__Group_1__0");
 					put(grammarAccess.getYComparisonExpressionAccess().getGroup(), "rule__YComparisonExpression__Group__0");
 					put(grammarAccess.getYComparisonExpressionAccess().getGroup_1(), "rule__YComparisonExpression__Group_1__0");
-					put(grammarAccess.getOpCompareAccess().getGroup_1(), "rule__OpCompare__Group_1__0");
 					put(grammarAccess.getYAdditiveExpressionAccess().getGroup(), "rule__YAdditiveExpression__Group__0");
 					put(grammarAccess.getYAdditiveExpressionAccess().getGroup_1(), "rule__YAdditiveExpression__Group_1__0");
 					put(grammarAccess.getYAdditiveExpressionAccess().getGroup_1_0_0(), "rule__YAdditiveExpression__Group_1_0_0__0");
@@ -134,6 +134,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotAccess().getGroup(), "rule__YAnnot__Group__0");
 					put(grammarAccess.getYAnnotLengthAccess().getGroup(), "rule__YAnnotLength__Group__0");
 					put(grammarAccess.getYAnnotDecimalAccess().getGroup(), "rule__YAnnotDecimal__Group__0");
+					put(grammarAccess.getYAnnotDefaultAccess().getGroup(), "rule__YAnnotDefault__Group__0");
 					put(grammarAccess.getYAnnotActionAccess().getGroup(), "rule__YAnnotAction__Group__0");
 					put(grammarAccess.getYAnnotMessageAccess().getGroup(), "rule__YAnnotMessage__Group__0");
 					put(grammarAccess.getYAnnotMsgTypeAccess().getGroup(), "rule__YAnnotMsgType__Group__0");
@@ -165,11 +166,11 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYImportAccess().getImportedNamespaceAssignment_1(), "rule__YImport__ImportedNamespaceAssignment_1");
 					put(grammarAccess.getYArgumentAccess().getNameAssignment_0(), "rule__YArgument__NameAssignment_0");
 					put(grammarAccess.getYArgumentAccess().getValueAssignment_2(), "rule__YArgument__ValueAssignment_2");
-					put(grammarAccess.getYClassAccess().getNameAssignment_1(), "rule__YClass__NameAssignment_1");
-					put(grammarAccess.getYClassAccess().getSuperclassAssignment_2_1(), "rule__YClass__SuperclassAssignment_2_1");
-					put(grammarAccess.getYClassAccess().getEntityAssignment_3_1(), "rule__YClass__EntityAssignment_3_1");
-					put(grammarAccess.getYClassAccess().getInnersAssignment_5(), "rule__YClass__InnersAssignment_5");
-					put(grammarAccess.getYClassAccess().getMembersAssignment_6(), "rule__YClass__MembersAssignment_6");
+					put(grammarAccess.getYClassAccess().getNameAssignment_2(), "rule__YClass__NameAssignment_2");
+					put(grammarAccess.getYClassAccess().getSuperclassAssignment_3_1(), "rule__YClass__SuperclassAssignment_3_1");
+					put(grammarAccess.getYClassAccess().getEntityAssignment_4_1(), "rule__YClass__EntityAssignment_4_1");
+					put(grammarAccess.getYClassAccess().getInnersAssignment_6(), "rule__YClass__InnersAssignment_6");
+					put(grammarAccess.getYClassAccess().getMembersAssignment_7(), "rule__YClass__MembersAssignment_7");
 					put(grammarAccess.getYTypedDeclarationAccess().getNameAssignment_0(), "rule__YTypedDeclaration__NameAssignment_0");
 					put(grammarAccess.getYTypedDeclarationAccess().getTypeAssignment_2(), "rule__YTypedDeclaration__TypeAssignment_2");
 					put(grammarAccess.getYPropertyAccess().getAccessAssignment_0(), "rule__YProperty__AccessAssignment_0");
@@ -261,6 +262,8 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotLengthAccess().getLengthAssignment_3(), "rule__YAnnotLength__LengthAssignment_3");
 					put(grammarAccess.getYAnnotDecimalAccess().getLengthAssignment_3(), "rule__YAnnotDecimal__LengthAssignment_3");
 					put(grammarAccess.getYAnnotDecimalAccess().getDecimalAssignment_5(), "rule__YAnnotDecimal__DecimalAssignment_5");
+					put(grammarAccess.getYAnnotDefaultAccess().getNumberAssignment_3_0(), "rule__YAnnotDefault__NumberAssignment_3_0");
+					put(grammarAccess.getYAnnotDefaultAccess().getTextAssignment_3_1(), "rule__YAnnotDefault__TextAssignment_3_1");
 					put(grammarAccess.getYAnnotActionAccess().getActionAssignment_3(), "rule__YAnnotAction__ActionAssignment_3");
 					put(grammarAccess.getYAnnotMessageAccess().getMsgAssignment_3(), "rule__YAnnotMessage__MsgAssignment_3");
 					put(grammarAccess.getYAnnotMsgTypeAccess().getMsgtypeAssignment_2(), "rule__YAnnotMsgType__MsgtypeAssignment_2");

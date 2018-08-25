@@ -285,6 +285,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDecimal/length"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDecimal/decimal"/>
     </genClasses>
+    <genClasses ecoreClass="Lang.ecore#//YAnnotDefault">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDefault/number"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDefault/text"/>
+    </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YAnnotAction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotAction/action"/>
     </genClasses>

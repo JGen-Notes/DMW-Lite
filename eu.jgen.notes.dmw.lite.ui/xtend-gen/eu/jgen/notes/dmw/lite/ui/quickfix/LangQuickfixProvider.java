@@ -22,6 +22,7 @@
  */
 package eu.jgen.notes.dmw.lite.ui.quickfix;
 
+import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
@@ -33,23 +34,26 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotPrimaryKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign;
+import eu.jgen.notes.dmw.lite.lang.YClass;
+import eu.jgen.notes.dmw.lite.scoping.LangIndex;
 import eu.jgen.notes.dmw.lite.utility.LangDBUtil;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import eu.jgen.notes.dmw.lite.validation.LangValidator;
+import java.util.function.BiConsumer;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.xtext.naming.QualifiedName;
+import org.eclipse.xtext.resource.IEObjectDescription;
+import org.eclipse.xtext.ui.editor.model.IXtextDocument;
 import org.eclipse.xtext.ui.editor.model.edit.IModificationContext;
 import org.eclipse.xtext.ui.editor.model.edit.ISemanticModification;
 import org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider;
 import org.eclipse.xtext.ui.editor.quickfix.Fix;
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor;
 import org.eclipse.xtext.validation.Issue;
+import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.StringExtensions;
 
-/**
- * Custom quickfixes.
- * 
- * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#quick-fixes
- */
 @SuppressWarnings("all")
 public class LangQuickfixProvider extends DefaultQuickfixProvider {
   @Inject
@@ -59,6 +63,10 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
   @Inject
   @Extension
   private LangUtil _langUtil;
+  
+  @Inject
+  @Extension
+  private LangIndex _langIndex;
   
   @Fix(LangValidator.ENTITY_NO_TECH_DESIGN)
   public void createTableForEntityType(final Issue issue, final IssueResolutionAcceptor acceptor) {
@@ -113,5 +121,123 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
     };
     acceptor.accept(issue, "Create missing primary key", "Creates primary key implementing identifier.", 
       "identifier.gif", _function);
+  }
+  
+  @Fix(LangValidator.CLASS_NEED_TO_BE_EXTENDED)
+  public void createSuperClass(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
+        String _lastSegment = p1.getLastSegment();
+        boolean _equals = Objects.equal(_lastSegment, "Object");
+        if (_equals) {
+          EObject _eObjectOrProxy = p2.getEObjectOrProxy();
+          ((YClass) element).setSuperclass(((YClass) _eObjectOrProxy));
+        }
+      };
+      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
+    };
+    acceptor.accept(issue, "Insert missing Object class", "Insert missing Object class.", "class.gif", _function);
+  }
+  
+  @Fix(LangValidator.CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL)
+  public void capitalizeClassNameFirstLetter(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
+        try {
+          final IXtextDocument xtextDocument = context.getXtextDocument();
+          final String firstLetter = xtextDocument.get((issue.getOffset()).intValue(), 1);
+          xtextDocument.replace((issue.getOffset()).intValue(), 1, StringExtensions.toFirstUpper(firstLetter));
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
+        }
+      };
+      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
+    };
+    acceptor.accept(issue, "Capitalize first letter", "Capitalize first letter", "class.gif", _function);
+  }
+  
+  @Fix(LangValidator.ENTITY_NAME_FIRST_CHARACTER_NOT_CAPITAL)
+  public void capitalizeEntityNameFirstLetter(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
+        try {
+          final IXtextDocument xtextDocument = context.getXtextDocument();
+          final String firstLetter = xtextDocument.get((issue.getOffset()).intValue(), 1);
+          xtextDocument.replace((issue.getOffset()).intValue(), 1, StringExtensions.toFirstUpper(firstLetter));
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
+        }
+      };
+      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
+    };
+    acceptor.accept(issue, "Capitalize first letter", "Capitalize first letter", "entity.gif", _function);
+  }
+  
+  @Fix(LangValidator.ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
+  public void lowercaseAttributeNameFirstLetter(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
+        try {
+          final IXtextDocument xtextDocument = context.getXtextDocument();
+          final String firstLetter = xtextDocument.get((issue.getOffset()).intValue(), 1);
+          xtextDocument.replace((issue.getOffset()).intValue(), 1, StringExtensions.toFirstLower(firstLetter));
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
+        }
+      };
+      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
+    };
+    acceptor.accept(issue, "Change to lower case first letter", "Change to lower case first letter", "attribute.gif", _function);
+  }
+  
+  @Fix(LangValidator.FUNCTION_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
+  public void lowercaseFunctionNameFirstLetter(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
+        try {
+          final IXtextDocument xtextDocument = context.getXtextDocument();
+          final String firstLetter = xtextDocument.get((issue.getOffset()).intValue(), 1);
+          xtextDocument.replace((issue.getOffset()).intValue(), 1, StringExtensions.toFirstLower(firstLetter));
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
+        }
+      };
+      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
+    };
+    acceptor.accept(issue, "Change to lower case first letter", "Change to lower case first letter", "function.gif", _function);
+  }
+  
+  @Fix(LangValidator.PROPERTY_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
+  public void lowercasePropertyNameFirstLetter(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
+        try {
+          final IXtextDocument xtextDocument = context.getXtextDocument();
+          final String firstLetter = xtextDocument.get((issue.getOffset()).intValue(), 1);
+          xtextDocument.replace((issue.getOffset()).intValue(), 1, StringExtensions.toFirstLower(firstLetter));
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
+        }
+      };
+      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
+    };
+    acceptor.accept(issue, "Change to lower case first letter", "Change to lower case first letter", "property.gif", _function);
+  }
+  
+  @Fix(LangValidator.VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
+  public void lowercaseVariableNameFirstLetter(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
+        try {
+          final IXtextDocument xtextDocument = context.getXtextDocument();
+          final String firstLetter = xtextDocument.get((issue.getOffset()).intValue(), 1);
+          xtextDocument.replace((issue.getOffset()).intValue(), 1, StringExtensions.toFirstLower(firstLetter));
+        } catch (Throwable _e) {
+          throw Exceptions.sneakyThrow(_e);
+        }
+      };
+      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
+    };
+    acceptor.accept(issue, "Change to lower case first letter", "Change to lower case first letter", "property.gif", _function);
   }
 }

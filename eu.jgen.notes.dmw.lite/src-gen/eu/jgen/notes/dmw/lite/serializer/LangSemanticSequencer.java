@@ -14,6 +14,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDecimal;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotId;
@@ -130,6 +131,9 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case LangPackage.YANNOT_DECIMAL:
 				sequence_YAnnotDecimal(context, (YAnnotDecimal) semanticObject); 
+				return; 
+			case LangPackage.YANNOT_DEFAULT:
+				sequence_YAnnotDefault(context, (YAnnotDefault) semanticObject); 
 				return; 
 			case LangPackage.YANNOT_ENTITY:
 				sequence_YAnnotEntity(context, (YAnnotEntity) semanticObject); 
@@ -525,6 +529,18 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     YAnnotDefault returns YAnnotDefault
+	 *
+	 * Constraint:
+	 *     (number=INT | text=STRING)
+	 */
+	protected void sequence_YAnnotDefault(ISerializationContext context, YAnnotDefault semanticObject) {
+		genericSequencer.createSequence(context, semanticObject);
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     YAnnotEntity returns YAnnotEntity
 	 *
 	 * Constraint:
@@ -712,7 +728,14 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YAnnot returns YAnnot
 	 *
 	 * Constraint:
-	 *     (type=YAnnotLength | type=YAnnotDecimal | type=YAnnotAction | type=YAnnotMessage | type=YAnnotMsgType)
+	 *     (
+	 *         type=YAnnotLength | 
+	 *         type=YAnnotDecimal | 
+	 *         type=YAnnotAction | 
+	 *         type=YAnnotMessage | 
+	 *         type=YAnnotMsgType | 
+	 *         type=YAnnotDefault
+	 *     )
 	 */
 	protected void sequence_YAnnot(ISerializationContext context, YAnnot semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

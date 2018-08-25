@@ -2,6 +2,9 @@ package eu.jgen.notes.dmw.lite.utility;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
+import eu.jgen.notes.dmw.lite.lang.YAnnot;
+import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YMember;
@@ -19,6 +22,16 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 
 @SuppressWarnings("all")
 public class LangJavaGeneratorHelper {
+  private final String SYSTEM_DEFAULT_STRING = "\"\"";
+  
+  private final String SYSTEM_DEFAULT_INT = "0";
+  
+  private final String SYSTEM_DEFAULT_SHORT = "0";
+  
+  private final String SYSTEM_DEFAULT_DOUBLE = "0.0";
+  
+  private final String SYSTEM_DEFAULT_LONG = "0";
+  
   @Inject
   private IEObjectDocumentationProvider documentationProvider;
   
@@ -73,20 +86,22 @@ public class LangJavaGeneratorHelper {
     if (typeName != null) {
       switch (typeName) {
         case "Int":
-          return "XInt";
+          return "int";
         case "Short":
-          return "XShort";
+          return "short";
         case "Long":
-          return "XLong";
+          return "long";
         case "Decimal":
-          return "XDouble";
+          return "double";
         case "String":
-          return "XString";
+          return "String";
+        case "Boolean":
+          return "boolean";
         default:
-          return "//TODO - not translkated yet";
+          return typeName;
       }
     } else {
-      return "//TODO - not translkated yet";
+      return typeName;
     }
   }
   
@@ -102,23 +117,58 @@ public class LangJavaGeneratorHelper {
     return _xifexpression;
   }
   
-  public String getPropertyDefault(final YProperty property) {
-    Object _switchResult = null;
-    String _translateTypeName = this.translateTypeName(property.getType().getName());
-    if (_translateTypeName != null) {
-      switch (_translateTypeName) {
-        case "XInt":
-          return "0";
-        case "XString":
-          return "\"\"";
+  public String getPropertyDefaultValue(final YProperty property) {
+    String _xifexpression = null;
+    YAnnotAttr _attr = property.getAttr();
+    boolean _tripleEquals = (_attr == null);
+    if (_tripleEquals) {
+      _xifexpression = this.getSystemDefault(this.translateTypeName(property.getType().getName()));
+    } else {
+      _xifexpression = this.findDefaultFromAnnot(property);
+    }
+    return _xifexpression;
+  }
+  
+  public String getSystemDefault(final String type) {
+    if (type != null) {
+      switch (type) {
+        case "int":
+          return this.SYSTEM_DEFAULT_INT;
+        case "short":
+          return this.SYSTEM_DEFAULT_SHORT;
+        case "long":
+          return this.SYSTEM_DEFAULT_LONG;
+        case "double":
+          return this.SYSTEM_DEFAULT_DOUBLE;
+        case "String":
+          return this.SYSTEM_DEFAULT_STRING;
         default:
-          _switchResult = null;
-          break;
+          return "?";
       }
     } else {
-      _switchResult = null;
+      return "?";
     }
-    return ((String)_switchResult);
+  }
+  
+  public String findDefaultFromAnnot(final YProperty property) {
+    EList<YAnnot> _annots = property.getAttr().getAnnots();
+    for (final YAnnot annotation : _annots) {
+      YAnnot _type = annotation.getType();
+      if ((_type instanceof YAnnotDefault)) {
+        YAnnot _type_1 = annotation.getType();
+        final YAnnotDefault annotDefault = ((YAnnotDefault) _type_1);
+        String _text = annotDefault.getText();
+        boolean _tripleNotEquals = (_text != null);
+        if (_tripleNotEquals) {
+          String _text_1 = annotDefault.getText();
+          String _plus = ("\"" + _text_1);
+          return (_plus + "\"");
+        } else {
+          return String.valueOf(annotDefault.getNumber());
+        }
+      }
+    }
+    return this.getSystemDefault(this.translateTypeName(property.getType().getName()));
   }
   
   public ArrayList<YProperty> listArrayProperties(final YClass eClass) {

@@ -56,7 +56,7 @@ YArgumentValue:
 	INT | STRING;
 
 YClass:
-	'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
+	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
 	'{'
 	inners+=YClass*
 	members+=YMember*
@@ -166,7 +166,7 @@ YComparisonExpression returns YExpression:
 	YAdditiveExpression ({YComparisonExpression.left=current} op=OpCompare right=YAdditiveExpression)*;
 
 OpCompare:
-	'>=' | '<' '=' | '>' | '<';
+	'>=' | '<=' | '>' | '<';
 
 YAdditiveExpression returns YExpression:
 	YMultiplicativeExpression (({YPlus.left=current} '+' | {YMinus.left=current} '-') right=YMultiplicativeExpression)*;
@@ -191,7 +191,7 @@ YTerminalExpression returns YExpression:
 	{YNull} 'null' |
 	{YSymbolRef} symbol=[YSymbol] |
 	{YNew} 'new' type=[YClass|QualifiedName] '('
-	(arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')'
+	(arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')' 
 	//|	'(' YOrExpression ')'
 ;
 
@@ -247,11 +247,11 @@ YForInStatement:
 	'for' item=[YProperty] 'in' collection=[YProperty]
 	body=YBlock;
 
-	/*
+/*
  * Predefined annotations
  */
 YAnnot:
-	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType);
+	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault);
 
 YAnnotTop:
 	type=(YAnnotEntity | YAnnotTechnicalDesign | YAnnotSwift | YAnnotJava | YAnnotDatabase);
@@ -261,6 +261,9 @@ YAnnotLength returns YAnnot:
 
 YAnnotDecimal returns YAnnot:
 	{YAnnotDecimal} '@decimal' '(' length=INT ',' decimal=INT ')';
+	
+YAnnotDefault returns YAnnot:
+	{YAnnotDefault} '@default' '(' (number= INT | text=STRING)  ')';
 
 YAnnotAction returns YAnnot:
 	{YAnnotAction} '@action' '(' action=ValidID ')';

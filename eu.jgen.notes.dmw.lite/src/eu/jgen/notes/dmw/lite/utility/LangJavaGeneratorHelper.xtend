@@ -11,8 +11,16 @@ import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter
 import java.util.ArrayList
+import eu.jgen.notes.dmw.lite.lang.YAnnotAttr
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
 
 class LangJavaGeneratorHelper {
+
+	val String SYSTEM_DEFAULT_STRING = "\"\""
+	val String SYSTEM_DEFAULT_INT = "0"
+	val String SYSTEM_DEFAULT_SHORT = "0"
+	val String SYSTEM_DEFAULT_DOUBLE = "0.0"
+	val String SYSTEM_DEFAULT_LONG = "0"
 
 	@Inject
 	private IEObjectDocumentationProvider documentationProvider;
@@ -60,23 +68,25 @@ class LangJavaGeneratorHelper {
 	def String translateTypeName(String typeName) {
 		switch (typeName) {
 			case "Int": {
-				return "XInt"
+				return "int"
 			}
 			case "Short": {
-				return "XShort"
+				return "short"
 			}
 			case "Long": {
-				return "XLong"
+				return "long"
 			}
 			case "Decimal": {
-				return "XDouble"
+				return "double"
 			}
 			case "String": {
-				return "XString"
+				return "String"
 			}
-
+			case "Boolean": {
+				return "boolean"
+			}
 			default: {
-				return "//TODO - not translkated yet"
+				return typeName
 			}
 		}
 	}
@@ -88,34 +98,64 @@ class LangJavaGeneratorHelper {
 			whatFuntionType(eobject.eContainer)
 		}
 	}
-	
-	def String getPropertyDefault(YProperty property) {
-		
-		switch (property.type.name.translateTypeName) {
-			case "XInt": {
-				return "0"
+
+	def String getPropertyDefaultValue(YProperty property) {
+		if (property.attr === null) {
+			getSystemDefault(property.type.name.translateTypeName)
+		} else {
+			findDefaultFromAnnot(property)
+		}
+	}
+
+	def String getSystemDefault(String type) {
+		switch (type) {
+			case "int": {
+				return SYSTEM_DEFAULT_INT
 			}
-			case "XString": {
-				return "\"\""
+			case "short": {
+				return SYSTEM_DEFAULT_SHORT
+			}
+			case "long": {
+				return SYSTEM_DEFAULT_LONG
+			}
+			case "double": {
+				return SYSTEM_DEFAULT_DOUBLE
+			}
+			case "String": {
+				return SYSTEM_DEFAULT_STRING
 			}
 			default: {
-				
+				return "?"
 			}
 		}
-		
 	}
-	
+
+	def String findDefaultFromAnnot(YProperty property) {
+		for (annotation : property.attr.annots) {
+			if (annotation.type instanceof YAnnotDefault) {
+				val annotDefault = annotation.type as YAnnotDefault
+				// TODO - need more work to handle other types of data
+				if (annotDefault.text !== null) {
+					return "\"" + annotDefault.text + "\""
+				} else {
+					return String.valueOf(annotDefault.number)
+				}
+			}
+		}
+		return getSystemDefault(property.type.name.translateTypeName)
+	}
+
 	def ArrayList<YProperty> listArrayProperties(YClass eClass) {
 		val ArrayList<YProperty> array = newArrayList()
 		for (member : eClass.members) {
-			if(member instanceof YProperty) {
+			if (member instanceof YProperty) {
 				val property = member as YProperty
-				if(property.type.name == "Array") {
+				if (property.type.name == "Array") {
 					array.add(property)
 				}
 			}
-		}		
-		return array;		
+		}
+		return array;
 	}
 
 }

@@ -15,6 +15,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDecimal;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
@@ -592,6 +593,13 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * @generated
    */
   private EClass yAnnotDecimalEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass yAnnotDefaultEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -2792,6 +2800,36 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getYAnnotDefault()
+  {
+    return yAnnotDefaultEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getYAnnotDefault_Number()
+  {
+    return (EAttribute)yAnnotDefaultEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getYAnnotDefault_Text()
+  {
+    return (EAttribute)yAnnotDefaultEClass.getEStructuralFeatures().get(1);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getYAnnotAction()
   {
     return yAnnotActionEClass;
@@ -3149,6 +3187,10 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEAttribute(yAnnotDecimalEClass, YANNOT_DECIMAL__LENGTH);
     createEAttribute(yAnnotDecimalEClass, YANNOT_DECIMAL__DECIMAL);
 
+    yAnnotDefaultEClass = createEClass(YANNOT_DEFAULT);
+    createEAttribute(yAnnotDefaultEClass, YANNOT_DEFAULT__NUMBER);
+    createEAttribute(yAnnotDefaultEClass, YANNOT_DEFAULT__TEXT);
+
     yAnnotActionEClass = createEClass(YANNOT_ACTION);
     createEAttribute(yAnnotActionEClass, YANNOT_ACTION__ACTION);
 
@@ -3235,6 +3277,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     yNewEClass.getESuperTypes().add(this.getYExpression());
     yAnnotLengthEClass.getESuperTypes().add(this.getYAnnot());
     yAnnotDecimalEClass.getESuperTypes().add(this.getYAnnot());
+    yAnnotDefaultEClass.getESuperTypes().add(this.getYAnnot());
     yAnnotActionEClass.getESuperTypes().add(this.getYAnnot());
     yAnnotMessageEClass.getESuperTypes().add(this.getYAnnot());
 
@@ -3520,6 +3563,10 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEClass(yAnnotDecimalEClass, YAnnotDecimal.class, "YAnnotDecimal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotDecimal_Length(), ecorePackage.getEInt(), "length", null, 0, 1, YAnnotDecimal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYAnnotDecimal_Decimal(), ecorePackage.getEInt(), "decimal", null, 0, 1, YAnnotDecimal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(yAnnotDefaultEClass, YAnnotDefault.class, "YAnnotDefault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getYAnnotDefault_Number(), ecorePackage.getEInt(), "number", null, 0, 1, YAnnotDefault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEAttribute(getYAnnotDefault_Text(), ecorePackage.getEString(), "text", null, 0, 1, YAnnotDefault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotActionEClass, YAnnotAction.class, "YAnnotAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotAction_Action(), ecorePackage.getEString(), "action", null, 0, 1, YAnnotAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
