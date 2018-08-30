@@ -176,6 +176,9 @@ public class LangValidator extends AbstractLangValidator {
   public final static String VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE = (LangValidator.ISSUE_CODE_PREFIX + 
     "VariableNameFirstCharacterNotLowercase");
   
+  public final static String ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT = (LangValidator.ISSUE_CODE_PREFIX + 
+    "AttributeTypeNotCompatibleWithDefault");
+  
   @Inject
   @Extension
   private LangUtil _langUtil;
@@ -501,7 +504,6 @@ public class LangValidator extends AbstractLangValidator {
     }
   }
   
-  @Check
   public void checkMethodEndsWithReturn(final YFunction function) {
     boolean _isReturnvalue = function.isReturnvalue();
     if (_isReturnvalue) {
@@ -948,6 +950,16 @@ public class LangValidator extends AbstractLangValidator {
     if (_notEquals) {
       this.error("Attribute name should start with a lower case letter", annotAttr, 
         LangPackage.eINSTANCE.getYAnnotAttr_Name(), LangValidator.ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
+    }
+  }
+  
+  @Check
+  public void checkAttributeTypeMatchesDefaultValueIfAny(final YAnnotAttr annotAttr) {
+    boolean _isTypeCompatibleWithDefault = this._langUtil.isTypeCompatibleWithDefault(annotAttr);
+    boolean _not = (!_isTypeCompatibleWithDefault);
+    if (_not) {
+      this.error("Attribute type not compatible with default value", annotAttr, 
+        LangPackage.eINSTANCE.getYAnnotAttr_Yclass(), LangValidator.ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT);
     }
   }
   

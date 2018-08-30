@@ -36,7 +36,7 @@ import org.junit.runner.RunWith
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
-class TestLiteLangGeneratorFunctions {
+class TestLiteLangGeneratorSwitchStatement {
 
 	//@Inject extension ParseHelper<YWidget>
 	//@Inject extension ValidationTestHelper
@@ -47,26 +47,51 @@ class TestLiteLangGeneratorFunctions {
 	@Test
 	def void testGenerateExpressionPlus() {
 		val body = '''
-			package sample.project;						
-			@java 
-			class B : Widget {	
-				class C : Object {
-					public var x : Int;
-				}
-				var c : C;	
-				var z :Int;		
-				public func start() {
-					//a : Int = 2;
-					b : Int = 4;
-					//self.c.x = self.add(a,b);
-					//self.z = 1;
-					b = b + 1;
-				}
-							
-				public func add(a : Int, b : Int) -> Int {
-					return a + b;
-				}
+		package sample.project;						
+		@java 
+		class B : Widget {	
+			class C : Object {
+				
+				public var x : Int;
+				public var t : String;
+		
 			}
+			var c : C;	
+			var z : C;		
+			public func start() {
+				 switch self.c.x {
+				 	case 1 : {
+				 		// do 1    
+				 	}
+				 	case 2 : {
+				 		// do 2
+				 	}
+				 	default : {
+				 		// do 99
+				 	}
+				 }
+				  
+				 switch self.c.t {
+				 	case "Joe" : {
+				 		// do 1    
+				 	}
+				 	case "John" : {
+				 		// do 2
+				 	}
+				 	default : {
+				 		// do 99
+				 	}
+				 }
+			}
+						  
+			public func add(a : Int, b : Int) -> Int {  
+				if(true) {
+						return a + b;
+				} else {
+						return 0; 	
+				}    
+			}
+		}
 		'''
 	   
 		newArrayList(loadLibSource, body).compile() [	
@@ -74,9 +99,6 @@ class TestLiteLangGeneratorFunctions {
 			Assert.assertFalse(checkIfIssues(it))			
 		]
 	}
-
-
-
 	
 	def boolean checkIfIssues(Result result) {
 		if (result.errorsAndWarnings.size > 0) {

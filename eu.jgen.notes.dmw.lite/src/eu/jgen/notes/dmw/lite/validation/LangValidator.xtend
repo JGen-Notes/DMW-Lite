@@ -112,7 +112,9 @@ class LangValidator extends AbstractLangValidator {
 		"PropertyNameFirstCharacterNotLowercase"
 	public static val VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE = ISSUE_CODE_PREFIX +
 		"VariableNameFirstCharacterNotLowercase"
-
+	public static val ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT = ISSUE_CODE_PREFIX +
+		"AttributeTypeNotCompatibleWithDefault"
+		
 	// VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE
 	@Inject extension LangUtil
 	@Inject extension LangTypeComputer
@@ -327,7 +329,8 @@ class LangValidator extends AbstractLangValidator {
 		}
 	}
 
-	@Check
+	//@Check  - need to detect unreachable code
+	//
 	def void checkMethodEndsWithReturn(YFunction function) {
 		if (function.returnvalue) {
 			if (function.returnStatement === null) {
@@ -627,6 +630,14 @@ class LangValidator extends AbstractLangValidator {
 			if (annotAttr.name.toFirstLower != annotAttr.name) {
 				error("Attribute name should start with a lower case letter", annotAttr,
 					LangPackage.eINSTANCE.YAnnotAttr_Name, ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
+			}
+		}
+		
+		@Check
+		def void checkAttributeTypeMatchesDefaultValueIfAny(YAnnotAttr annotAttr) {
+			if (!annotAttr.isTypeCompatibleWithDefault) {
+				error("Attribute type not compatible with default value", annotAttr,
+					LangPackage.eINSTANCE.YAnnotAttr_Yclass, ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT);
 			}
 		}
 

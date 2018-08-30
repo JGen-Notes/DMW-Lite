@@ -330,6 +330,33 @@ public interface LangFactory extends EFactory
   YAnnotTop createYAnnotTop();
 
   /**
+   * Returns a new object of class '<em>YAnnot Default Type</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>YAnnot Default Type</em>'.
+   * @generated
+   */
+  YAnnotDefaultType createYAnnotDefaultType();
+
+  /**
+   * Returns a new object of class '<em>YAnnot Default Text</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>YAnnot Default Text</em>'.
+   * @generated
+   */
+  YAnnotDefaultText createYAnnotDefaultText();
+
+  /**
+   * Returns a new object of class '<em>YAnnot Default Number</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>YAnnot Default Number</em>'.
+   * @generated
+   */
+  YAnnotDefaultNumber createYAnnotDefaultNumber();
+
+  /**
    * Returns a new object of class '<em>YAnnot Entity Inner</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

@@ -65,12 +65,12 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YIfStatement/elseBlock"/>
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YSwitchStatement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YSwitchStatement/switch"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YSwitchStatement/switchExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YSwitchStatement/cases"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YSwitchStatement/default"/>
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YSwitchCase">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YSwitchCase/case"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YSwitchCase/caseExpression"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YSwitchCase/then"/>
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YSymbol">
@@ -145,6 +145,13 @@
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YAnnotTop">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YAnnotTop/type"/>
+    </genClasses>
+    <genClasses ecoreClass="Lang.ecore#//YAnnotDefaultType"/>
+    <genClasses ecoreClass="Lang.ecore#//YAnnotDefaultText">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDefaultText/value"/>
+    </genClasses>
+    <genClasses ecoreClass="Lang.ecore#//YAnnotDefaultNumber">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDefaultNumber/value"/>
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YAnnotEntityInner"/>
     <genClasses ecoreClass="Lang.ecore#//YAnnotEntity">
@@ -285,10 +292,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDecimal/length"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDecimal/decimal"/>
     </genClasses>
-    <genClasses ecoreClass="Lang.ecore#//YAnnotDefault">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDefault/number"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotDefault/text"/>
-    </genClasses>
+    <genClasses ecoreClass="Lang.ecore#//YAnnotDefault"/>
     <genClasses ecoreClass="Lang.ecore#//YAnnotAction">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YAnnotAction/action"/>
     </genClasses>

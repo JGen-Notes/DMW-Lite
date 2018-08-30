@@ -13,6 +13,9 @@ import org.eclipse.xtext.xbase.compiler.DocumentationAdapter
 import java.util.ArrayList
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
+import eu.jgen.notes.dmw.lite.lang.YExpression
 
 class LangJavaGeneratorHelper {
 
@@ -135,10 +138,14 @@ class LangJavaGeneratorHelper {
 			if (annotation.type instanceof YAnnotDefault) {
 				val annotDefault = annotation.type as YAnnotDefault
 				// TODO - need more work to handle other types of data
-				if (annotDefault.text !== null) {
-					return "\"" + annotDefault.text + "\""
+				if (annotDefault.type instanceof YAnnotDefaultText) {
+					val value = (annotDefault.type as YAnnotDefaultText).value
+					return "\"" + value + "\""
+				} else if (annotDefault.type instanceof YAnnotDefaultNumber) {
+					val value = (annotDefault.type as YAnnotDefaultNumber).value
+					return String.valueOf(value)
 				} else {
-					return String.valueOf(annotDefault.number)
+					return "?"
 				}
 			}
 		}
@@ -156,6 +163,11 @@ class LangJavaGeneratorHelper {
 			}
 		}
 		return array;
+	}
+	
+	def boolean isExpressionInt(YExpression expression) {
+		
+		return true;
 	}
 
 }

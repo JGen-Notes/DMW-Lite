@@ -846,8 +846,8 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cYSwitchStatementAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cSwitchKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cSwitchAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cSwitchYExpressionParserRuleCall_2_0 = (RuleCall)cSwitchAssignment_2.eContents().get(0);
+		private final Assignment cSwitchExpressionAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cSwitchExpressionYExpressionParserRuleCall_2_0 = (RuleCall)cSwitchExpressionAssignment_2.eContents().get(0);
 		private final Keyword cLeftCurlyBracketKeyword_3 = (Keyword)cGroup.eContents().get(3);
 		private final Assignment cCasesAssignment_4 = (Assignment)cGroup.eContents().get(4);
 		private final RuleCall cCasesYSwitchCaseParserRuleCall_4_0 = (RuleCall)cCasesAssignment_4.eContents().get(0);
@@ -860,12 +860,12 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//YSwitchStatement:
 		//	{YSwitchStatement}
-		//	'switch' switch=YExpression '{'
+		//	'switch' switchExpression=YExpression '{'
 		//	cases+=YSwitchCase* ('default' ':' default=YBlock)?
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YSwitchStatement} 'switch' switch=YExpression '{' cases+=YSwitchCase* ('default' ':' default=YBlock)? '}'
+		//{YSwitchStatement} 'switch' switchExpression=YExpression '{' cases+=YSwitchCase* ('default' ':' default=YBlock)? '}'
 		public Group getGroup() { return cGroup; }
 		
 		//{YSwitchStatement}
@@ -874,11 +874,11 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'switch'
 		public Keyword getSwitchKeyword_1() { return cSwitchKeyword_1; }
 		
-		//switch=YExpression
-		public Assignment getSwitchAssignment_2() { return cSwitchAssignment_2; }
+		//switchExpression=YExpression
+		public Assignment getSwitchExpressionAssignment_2() { return cSwitchExpressionAssignment_2; }
 		
 		//YExpression
-		public RuleCall getSwitchYExpressionParserRuleCall_2_0() { return cSwitchYExpressionParserRuleCall_2_0; }
+		public RuleCall getSwitchExpressionYExpressionParserRuleCall_2_0() { return cSwitchExpressionYExpressionParserRuleCall_2_0; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_3() { return cLeftCurlyBracketKeyword_3; }
@@ -913,34 +913,34 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cYSwitchCaseAction_0 = (Action)cGroup.eContents().get(0);
 		private final Group cGroup_1 = (Group)cGroup.eContents().get(1);
 		private final Keyword cCaseKeyword_1_0 = (Keyword)cGroup_1.eContents().get(0);
-		private final Assignment cCaseAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
-		private final RuleCall cCaseYExpressionParserRuleCall_1_1_0 = (RuleCall)cCaseAssignment_1_1.eContents().get(0);
+		private final Assignment cCaseExpressionAssignment_1_1 = (Assignment)cGroup_1.eContents().get(1);
+		private final RuleCall cCaseExpressionYExpressionParserRuleCall_1_1_0 = (RuleCall)cCaseExpressionAssignment_1_1.eContents().get(0);
 		private final Keyword cColonKeyword_2 = (Keyword)cGroup.eContents().get(2);
 		private final Assignment cThenAssignment_3 = (Assignment)cGroup.eContents().get(3);
 		private final RuleCall cThenYBlockParserRuleCall_3_0 = (RuleCall)cThenAssignment_3.eContents().get(0);
 		
 		//YSwitchCase:
-		//	{YSwitchCase} ('case' case=YExpression)?
+		//	{YSwitchCase} ('case' caseExpression=YExpression)?
 		//	':' then=YBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YSwitchCase} ('case' case=YExpression)? ':' then=YBlock
+		//{YSwitchCase} ('case' caseExpression=YExpression)? ':' then=YBlock
 		public Group getGroup() { return cGroup; }
 		
 		//{YSwitchCase}
 		public Action getYSwitchCaseAction_0() { return cYSwitchCaseAction_0; }
 		
-		//('case' case=YExpression)?
+		//('case' caseExpression=YExpression)?
 		public Group getGroup_1() { return cGroup_1; }
 		
 		//'case'
 		public Keyword getCaseKeyword_1_0() { return cCaseKeyword_1_0; }
 		
-		//case=YExpression
-		public Assignment getCaseAssignment_1_1() { return cCaseAssignment_1_1; }
+		//caseExpression=YExpression
+		public Assignment getCaseExpressionAssignment_1_1() { return cCaseExpressionAssignment_1_1; }
 		
 		//YExpression
-		public RuleCall getCaseYExpressionParserRuleCall_1_1_0() { return cCaseYExpressionParserRuleCall_1_1_0; }
+		public RuleCall getCaseExpressionYExpressionParserRuleCall_1_1_0() { return cCaseExpressionYExpressionParserRuleCall_1_1_0; }
 		
 		//':'
 		public Keyword getColonKeyword_2() { return cColonKeyword_2; }
@@ -2212,33 +2212,41 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YWhileStatement");
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Keyword cWhileKeyword_0 = (Keyword)cGroup.eContents().get(0);
-		private final Assignment cExpressionAssignment_1 = (Assignment)cGroup.eContents().get(1);
-		private final RuleCall cExpressionYOrExpressionParserRuleCall_1_0 = (RuleCall)cExpressionAssignment_1.eContents().get(0);
-		private final Assignment cBodyAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cBodyYBlockParserRuleCall_2_0 = (RuleCall)cBodyAssignment_2.eContents().get(0);
+		private final Keyword cLeftParenthesisKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Assignment cExpressionAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cExpressionYOrExpressionParserRuleCall_2_0 = (RuleCall)cExpressionAssignment_2.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_3 = (Keyword)cGroup.eContents().get(3);
+		private final Assignment cBodyAssignment_4 = (Assignment)cGroup.eContents().get(4);
+		private final RuleCall cBodyYBlockParserRuleCall_4_0 = (RuleCall)cBodyAssignment_4.eContents().get(0);
 		
 		//YWhileStatement:
-		//	'while' expression=YOrExpression
+		//	'while' '(' expression=YOrExpression ')'
 		//	body=YBlock;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//'while' expression=YOrExpression body=YBlock
+		//'while' '(' expression=YOrExpression ')' body=YBlock
 		public Group getGroup() { return cGroup; }
 		
 		//'while'
 		public Keyword getWhileKeyword_0() { return cWhileKeyword_0; }
 		
+		//'('
+		public Keyword getLeftParenthesisKeyword_1() { return cLeftParenthesisKeyword_1; }
+		
 		//expression=YOrExpression
-		public Assignment getExpressionAssignment_1() { return cExpressionAssignment_1; }
+		public Assignment getExpressionAssignment_2() { return cExpressionAssignment_2; }
 		
 		//YOrExpression
-		public RuleCall getExpressionYOrExpressionParserRuleCall_1_0() { return cExpressionYOrExpressionParserRuleCall_1_0; }
+		public RuleCall getExpressionYOrExpressionParserRuleCall_2_0() { return cExpressionYOrExpressionParserRuleCall_2_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_3() { return cRightParenthesisKeyword_3; }
 		
 		//body=YBlock
-		public Assignment getBodyAssignment_2() { return cBodyAssignment_2; }
+		public Assignment getBodyAssignment_4() { return cBodyAssignment_4; }
 		
 		//YBlock
-		public RuleCall getBodyYBlockParserRuleCall_2_0() { return cBodyYBlockParserRuleCall_2_0; }
+		public RuleCall getBodyYBlockParserRuleCall_4_0() { return cBodyYBlockParserRuleCall_4_0; }
 	}
 	public class YRepeatWhileStatementElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YRepeatWhileStatement");
@@ -2508,18 +2516,15 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Action cYAnnotDefaultAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cDefaultKeyword_1 = (Keyword)cGroup.eContents().get(1);
 		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
-		private final Alternatives cAlternatives_3 = (Alternatives)cGroup.eContents().get(3);
-		private final Assignment cNumberAssignment_3_0 = (Assignment)cAlternatives_3.eContents().get(0);
-		private final RuleCall cNumberINTTerminalRuleCall_3_0_0 = (RuleCall)cNumberAssignment_3_0.eContents().get(0);
-		private final Assignment cTextAssignment_3_1 = (Assignment)cAlternatives_3.eContents().get(1);
-		private final RuleCall cTextSTRINGTerminalRuleCall_3_1_0 = (RuleCall)cTextAssignment_3_1.eContents().get(0);
+		private final Assignment cTypeAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cTypeYAnnotDefaultTypeParserRuleCall_3_0 = (RuleCall)cTypeAssignment_3.eContents().get(0);
 		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
 		
 		//YAnnotDefault YAnnot:
-		//	{YAnnotDefault} '@default' '(' (number=INT | text=STRING) ')';
+		//	{YAnnotDefault} '@default' '(' type=YAnnotDefaultType ')';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnotDefault} '@default' '(' (number=INT | text=STRING) ')'
+		//{YAnnotDefault} '@default' '(' type=YAnnotDefaultType ')'
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnotDefault}
@@ -2531,23 +2536,63 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'('
 		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
 		
-		//number=INT | text=STRING
-		public Alternatives getAlternatives_3() { return cAlternatives_3; }
+		//type=YAnnotDefaultType
+		public Assignment getTypeAssignment_3() { return cTypeAssignment_3; }
 		
-		//number=INT
-		public Assignment getNumberAssignment_3_0() { return cNumberAssignment_3_0; }
-		
-		//INT
-		public RuleCall getNumberINTTerminalRuleCall_3_0_0() { return cNumberINTTerminalRuleCall_3_0_0; }
-		
-		//text=STRING
-		public Assignment getTextAssignment_3_1() { return cTextAssignment_3_1; }
-		
-		//STRING
-		public RuleCall getTextSTRINGTerminalRuleCall_3_1_0() { return cTextSTRINGTerminalRuleCall_3_1_0; }
+		//YAnnotDefaultType
+		public RuleCall getTypeYAnnotDefaultTypeParserRuleCall_3_0() { return cTypeYAnnotDefaultTypeParserRuleCall_3_0; }
 		
 		//')'
 		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
+	}
+	public class YAnnotDefaultTypeElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotDefaultType");
+		private final Alternatives cAlternatives = (Alternatives)rule.eContents().get(1);
+		private final RuleCall cYAnnotDefaultTextParserRuleCall_0 = (RuleCall)cAlternatives.eContents().get(0);
+		private final RuleCall cYAnnotDefaultNumberParserRuleCall_1 = (RuleCall)cAlternatives.eContents().get(1);
+		
+		//YAnnotDefaultType:
+		//	YAnnotDefaultText | YAnnotDefaultNumber;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//YAnnotDefaultText | YAnnotDefaultNumber
+		public Alternatives getAlternatives() { return cAlternatives; }
+		
+		//YAnnotDefaultText
+		public RuleCall getYAnnotDefaultTextParserRuleCall_0() { return cYAnnotDefaultTextParserRuleCall_0; }
+		
+		//YAnnotDefaultNumber
+		public RuleCall getYAnnotDefaultNumberParserRuleCall_1() { return cYAnnotDefaultNumberParserRuleCall_1; }
+	}
+	public class YAnnotDefaultTextElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotDefaultText");
+		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cValueSTRINGTerminalRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
+		
+		//YAnnotDefaultText:
+		//	value=STRING;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//value=STRING
+		public Assignment getValueAssignment() { return cValueAssignment; }
+		
+		//STRING
+		public RuleCall getValueSTRINGTerminalRuleCall_0() { return cValueSTRINGTerminalRuleCall_0; }
+	}
+	public class YAnnotDefaultNumberElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotDefaultNumber");
+		private final Assignment cValueAssignment = (Assignment)rule.eContents().get(1);
+		private final RuleCall cValueINTTerminalRuleCall_0 = (RuleCall)cValueAssignment.eContents().get(0);
+		
+		//YAnnotDefaultNumber:
+		//	value=INT;
+		@Override public ParserRule getRule() { return rule; }
+		
+		//value=INT
+		public Assignment getValueAssignment() { return cValueAssignment; }
+		
+		//INT
+		public RuleCall getValueINTTerminalRuleCall_0() { return cValueINTTerminalRuleCall_0; }
 	}
 	public class YAnnotActionElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotAction");
@@ -3671,6 +3716,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	private final YAnnotLengthElements pYAnnotLength;
 	private final YAnnotDecimalElements pYAnnotDecimal;
 	private final YAnnotDefaultElements pYAnnotDefault;
+	private final YAnnotDefaultTypeElements pYAnnotDefaultType;
+	private final YAnnotDefaultTextElements pYAnnotDefaultText;
+	private final YAnnotDefaultNumberElements pYAnnotDefaultNumber;
 	private final YAnnotActionElements pYAnnotAction;
 	private final YAnnotMessageElements pYAnnotMessage;
 	private final YAnnotMsgTypeElements pYAnnotMsgType;
@@ -3758,6 +3806,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pYAnnotLength = new YAnnotLengthElements();
 		this.pYAnnotDecimal = new YAnnotDecimalElements();
 		this.pYAnnotDefault = new YAnnotDefaultElements();
+		this.pYAnnotDefaultType = new YAnnotDefaultTypeElements();
+		this.pYAnnotDefaultText = new YAnnotDefaultTextElements();
+		this.pYAnnotDefaultNumber = new YAnnotDefaultNumberElements();
 		this.pYAnnotAction = new YAnnotActionElements();
 		this.pYAnnotMessage = new YAnnotMessageElements();
 		this.pYAnnotMsgType = new YAnnotMsgTypeElements();
@@ -4020,7 +4071,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//YSwitchStatement:
 	//	{YSwitchStatement}
-	//	'switch' switch=YExpression '{'
+	//	'switch' switchExpression=YExpression '{'
 	//	cases+=YSwitchCase* ('default' ':' default=YBlock)?
 	//	'}';
 	public YSwitchStatementElements getYSwitchStatementAccess() {
@@ -4032,7 +4083,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YSwitchCase:
-	//	{YSwitchCase} ('case' case=YExpression)?
+	//	{YSwitchCase} ('case' caseExpression=YExpression)?
 	//	':' then=YBlock;
 	public YSwitchCaseElements getYSwitchCaseAccess() {
 		return pYSwitchCase;
@@ -4338,7 +4389,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YWhileStatement:
-	//	'while' expression=YOrExpression
+	//	'while' '(' expression=YOrExpression ')'
 	//	body=YBlock;
 	public YWhileStatementElements getYWhileStatementAccess() {
 		return pYWhileStatement;
@@ -4413,13 +4464,43 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YAnnotDefault YAnnot:
-	//	{YAnnotDefault} '@default' '(' (number=INT | text=STRING) ')';
+	//	{YAnnotDefault} '@default' '(' type=YAnnotDefaultType ')';
 	public YAnnotDefaultElements getYAnnotDefaultAccess() {
 		return pYAnnotDefault;
 	}
 	
 	public ParserRule getYAnnotDefaultRule() {
 		return getYAnnotDefaultAccess().getRule();
+	}
+	
+	//YAnnotDefaultType:
+	//	YAnnotDefaultText | YAnnotDefaultNumber;
+	public YAnnotDefaultTypeElements getYAnnotDefaultTypeAccess() {
+		return pYAnnotDefaultType;
+	}
+	
+	public ParserRule getYAnnotDefaultTypeRule() {
+		return getYAnnotDefaultTypeAccess().getRule();
+	}
+	
+	//YAnnotDefaultText:
+	//	value=STRING;
+	public YAnnotDefaultTextElements getYAnnotDefaultTextAccess() {
+		return pYAnnotDefaultText;
+	}
+	
+	public ParserRule getYAnnotDefaultTextRule() {
+		return getYAnnotDefaultTextAccess().getRule();
+	}
+	
+	//YAnnotDefaultNumber:
+	//	value=INT;
+	public YAnnotDefaultNumberElements getYAnnotDefaultNumberAccess() {
+		return pYAnnotDefaultNumber;
+	}
+	
+	public ParserRule getYAnnotDefaultNumberRule() {
+		return getYAnnotDefaultNumberAccess().getRule();
 	}
 	
 	//YAnnotAction YAnnot:

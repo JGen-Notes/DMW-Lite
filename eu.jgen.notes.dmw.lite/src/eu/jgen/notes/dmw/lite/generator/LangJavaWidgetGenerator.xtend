@@ -57,12 +57,22 @@ import eu.jgen.notes.dmw.lite.lang.YEqualityExpression
 import eu.jgen.notes.dmw.lite.lang.YOrExpression
 import eu.jgen.notes.dmw.lite.lang.YBoolConstant
 import eu.jgen.notes.dmw.lite.lang.YNot
+import eu.jgen.notes.dmw.lite.lang.YForInStatement
+import eu.jgen.notes.dmw.lite.lang.YWhileStatement
+import eu.jgen.notes.dmw.lite.lang.YRepeatWhileStatement
+import eu.jgen.notes.dmw.lite.utility.LocalNameGenerator
+import eu.jgen.notes.dmw.lite.lang.YSwitchStatement
+import eu.jgen.notes.dmw.lite.lang.YStringConstant
 
 class LangJavaWidgetGenerator implements IGenerator {
 
 	@Inject extension LangUtil
 
 	@Inject extension LangJavaGeneratorHelper
+
+	@Inject extension LocalNameGenerator
+	
+	@Inject extension LangTypeComputer
 
 	private List<String> imports = newArrayList()
 
@@ -76,6 +86,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 	}
 
 	protected def void generateWidget(IFileSystemAccess fsa, YWidget widget) {
+		reset
 		widget.classes.forEach [ clazz |
 			if (clazz.superclass !== null && clazz.superclass.name == "Widget") {
 				imports.clear
@@ -212,6 +223,31 @@ class LangJavaWidgetGenerator implements IGenerator {
 
 	protected def String generateStatement(YStatement statement) {
 		switch (statement) {
+			case statement instanceof YRepeatWhileStatement: {
+				val repeatWhileStatement = statement as YRepeatWhileStatement
+				return '''
+					«repeatWhileStatement.documentation»  
+					do {
+						   «generateBlock(repeatWhileStatement.body)»
+					} while («generateExpression(repeatWhileStatement.expression)»);		
+				'''
+			}
+			case statement instanceof YSwitchStatement: {
+				val switchStatement = statement as YSwitchStatement
+				return '''
+					«switchStatement.documentation»  
+					«doSwitchStatement(switchStatement)»		
+				'''
+			}
+			case statement instanceof YWhileStatement: {
+				val whileStatement = statement as YWhileStatement
+				return '''
+					«whileStatement.documentation»  
+					while («generateExpression(whileStatement.expression)») {
+						   «generateBlock(whileStatement.body)»
+					}			
+				'''
+			}
 			case statement instanceof YReturn: {
 				val returnStatement = statement as YReturn
 				if (returnStatement.expression === null) {
@@ -247,7 +283,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 					if («generateExpression(ifStatement.expression)») {
 						«generateBlock(ifStatement.thenBlock)» 
 					} «IF ifStatement.elseBlock !== null» else {
-								«generateBlock(ifStatement.elseBlock)»
+											«generateBlock(ifStatement.elseBlock)»
 					}«ENDIF»
 					
 				'''
@@ -259,10 +295,18 @@ class LangJavaWidgetGenerator implements IGenerator {
 	}
 
 	protected def String generateAssigment(YAssignment assignment) {
-		return generatMemberSelection(assignment.left as YMemberSelection) + " = " +
-			generateExpression(assignment.right) + ";"
+		if (assignment.left instanceof YMemberSelection) {
+			return generatMemberSelection(assignment.left as YMemberSelection) + " = " +
+				generateExpression(assignment.right) + ";"
+		} else {
+			if (assignment.left instanceof YSymbolRef) {
+				val symbolRef = assignment.left as YSymbolRef
+				return symbolRef.symbol.name + " = " + generateExpression(assignment.right) + ";"
+			}
+			return "?"
+		}
 	}
- 
+
 	protected def String generateProperties(YClass clazz) {
 		'''
 			«FOR member : clazz.members»
@@ -355,116 +399,167 @@ class LangJavaWidgetGenerator implements IGenerator {
 	}
 
 	protected def String generateVariableDeclaration(YVariableDeclaration variableDeclaration) {
-		return variableDeclaration.type.name.translateTypeName + " " + variableDeclaration.name + " = " + generateExpression(variableDeclaration.expression) + ";"
+		return variableDeclaration.type.name.translateTypeName + " " + variableDeclaration.name + " = " +
+			generateExpression(variableDeclaration.expression) + ";"
 	}
 
-			protected def String generateExpression(YExpression expression) {
-				switch (expression) {
-					case expression instanceof YPlus: {
-						val plus = expression as YPlus
-						return generateExpression(plus.left) + " + " + generateExpression(plus.right);
-					}
-					case expression instanceof YMinus: {
-						val minus = expression as YMinus
-						return generateExpression(minus.left) + " - " + generateExpression(minus.right);
-					}
-					case expression instanceof YMulOrDiv: {
-						val mulOrDiv = expression as YMulOrDiv
-
-						return generateExpression(mulOrDiv.left) + " " + mulOrDiv.op + " " +
-							generateExpression(mulOrDiv.right)
-					}
-					case expression instanceof YAndExpression: {
-						val andExpression = expression as YAndExpression
-						return generateExpression(andExpression.left) + " " + " && " + " " +
-							generateExpression(andExpression.right)
-					}
-					case expression instanceof YOrExpression: {
-						val orExpression = expression as YOrExpression
-						return generateExpression(orExpression.left) + " " + " || " + " " +
-							generateExpression(orExpression.right)
-					}
-					case expression instanceof YComparisonExpression: {
-						val comparisonExpression = expression as YComparisonExpression
-						return generateExpression(comparisonExpression.left) + " " + comparisonExpression.op + " " +
-							generateExpression(comparisonExpression.right)
-					}
-					case expression instanceof YEqualityExpression: {
-						val equalityExpression = expression as YEqualityExpression
-						return generateExpression(equalityExpression.left) + " " + equalityExpression.op + " " +
-							generateExpression(equalityExpression.right)
-					}
-					case expression instanceof YMemberSelection: {
-						val memberSelection = expression as YMemberSelection
-						return generatMemberSelection(memberSelection)
-					}
-					case expression instanceof YSelf: {
-						return "this"
-					}
-					case expression instanceof YNot: {
-						val not = expression as YNot
-						return "!" + generateExpression(not.expression)
-						
-					}
-					case expression instanceof YBoolConstant: {
-						val boolConstant = expression as YBoolConstant
-						return boolConstant.value
-					}
-					case expression instanceof YParenties: {
-						return "(" + generateExpression((expression as YParenties).a) + ")"
-					}
-					case expression instanceof YSymbolRef: {
-						val symbolRef = expression as YSymbolRef
-						return symbolRef.symbol.name
-					}
-					case expression instanceof YIntConstant: {
-						val intConstant = expression as YIntConstant
-						intConstant.value.toString
-					}
-					default: {
-					}
-				}
+	protected def String generateExpression(YExpression expression) {
+		switch (expression) {
+			case expression instanceof YPlus: {
+				val plus = expression as YPlus
+				return generateExpression(plus.left) + " + " + generateExpression(plus.right);
+			}
+			case expression instanceof YMinus: {
+				val minus = expression as YMinus
+				return generateExpression(minus.left) + " - " + generateExpression(minus.right);
+			}
+			case expression instanceof YMulOrDiv: {
+				val mulOrDiv = expression as YMulOrDiv
+				return generateExpression(mulOrDiv.left) + " " + mulOrDiv.op + " " + generateExpression(mulOrDiv.right)
+			}
+			case expression instanceof YAndExpression: {
+				val andExpression = expression as YAndExpression
+				return generateExpression(andExpression.left) + " " + " && " + " " +
+					generateExpression(andExpression.right)
+			}
+			case expression instanceof YOrExpression: {
+				val orExpression = expression as YOrExpression
+				return generateExpression(orExpression.left) + " " + " || " + " " +
+					generateExpression(orExpression.right)
+			}
+			case expression instanceof YComparisonExpression: {
+				val comparisonExpression = expression as YComparisonExpression
+				return generateExpression(comparisonExpression.left) + " " + comparisonExpression.op + " " +
+					generateExpression(comparisonExpression.right)
+			}
+			case expression instanceof YEqualityExpression: {
+				val equalityExpression = expression as YEqualityExpression
+				return generateExpression(equalityExpression.left) + " " + equalityExpression.op + " " +
+					generateExpression(equalityExpression.right)
+			}
+			case expression instanceof YMemberSelection: {
+				val memberSelection = expression as YMemberSelection
+				return generatMemberSelection(memberSelection)
+			}
+			case expression instanceof YSelf: {
+				return "this"
+			}
+			case expression instanceof YNot: {
+				val not = expression as YNot
+				return "!" + generateExpression(not.expression)
 
 			}
-
-			protected def String generatMemberSelection(YMemberSelection memberSelection) {
-				if (memberSelection.functioninvocation) {
-					val terminalExpression = generateTermination(memberSelection.receiver)
-					return terminalExpression + "." + (memberSelection.member as YFunction).name +
-						generateFunctionArguments(memberSelection)
-				} else {					
-					if(memberSelection.receiver instanceof YMemberSelection) {
-						val terminalExpression = generateTermination(
-						(memberSelection.receiver as YMemberSelection).receiver)
-					val text = terminalExpression + "." + (memberSelection.receiver as YMemberSelection).member.name
-					return text + "." + memberSelection.member.name
-					} else {
-						val terminalExpression = generateTermination(memberSelection.receiver)
-						val text = terminalExpression + "." + memberSelection.member.name
-						return text
-					}
-					
-					
-					
-				}
+			case expression instanceof YBoolConstant: {
+				val boolConstant = expression as YBoolConstant
+				return boolConstant.value
 			}
-
-			protected def String generateFunctionArguments(YMemberSelection memberSelection) {
-				return '''(«FOR arg : memberSelection.args SEPARATOR ", "»«generateExpression(arg)»«ENDFOR»)'''
+			case expression instanceof YParenties: {
+				return "(" + generateExpression((expression as YParenties).a) + ")"
 			}
-
-			protected def String generateTermination(YExpression expression) {
-				switch (expression) {
-					case expression instanceof YSelf: {
-						return "this"
-					}
-					case expression instanceof YIntConstant: {
-						val intConstant = expression as YIntConstant
-						intConstant.value.toString
-					}
-					default: {
-					}
-				}
+			case expression instanceof YSymbolRef: {
+				val symbolRef = expression as YSymbolRef
+				return symbolRef.symbol.name
+			}
+			case expression instanceof YIntConstant: {
+				val intConstant = expression as YIntConstant
+				intConstant.value.toString
+			}
+			case expression instanceof YStringConstant: {
+				val stringConstant = expression as YStringConstant
+				"\"" + stringConstant.value.toString + "\""
+			}
+			default: {
 			}
 		}
-		
+
+	}
+
+	protected def String generatMemberSelection(YMemberSelection memberSelection) {
+		if (memberSelection.functioninvocation) {
+			val terminalExpression = generateTermination(memberSelection.receiver)
+			return terminalExpression + "." + (memberSelection.member as YFunction).name +
+				generateFunctionArguments(memberSelection)
+		} else {
+			if (memberSelection.receiver instanceof YMemberSelection) {
+				val terminalExpression = generateTermination((memberSelection.receiver as YMemberSelection).receiver)
+				val text = terminalExpression + "." + (memberSelection.receiver as YMemberSelection).member.name
+				return text + "." + memberSelection.member.name
+			} else {
+				val terminalExpression = generateTermination(memberSelection.receiver)
+				val text = terminalExpression + "." + memberSelection.member.name
+				return text
+			}
+
+		}
+	}
+
+	protected def String generateFunctionArguments(YMemberSelection memberSelection) {
+		return '''(«FOR arg : memberSelection.args SEPARATOR ", "»«generateExpression(arg)»«ENDFOR»)'''
+	}
+
+	protected def String generateTermination(YExpression expression) {
+		switch (expression) {
+			case expression instanceof YSelf: {
+				return "this"
+			}
+			case expression instanceof YIntConstant: {
+				val intConstant = expression as YIntConstant
+				intConstant.value.toString
+			}
+			case expression instanceof YStringConstant: {
+				val stringConstant = expression as YStringConstant
+				"\"" + stringConstant.value.toString + "\""
+			}
+			default: {
+			}
+		}
+	}
+
+	def String doSwitchStatement(YSwitchStatement switchStatement) {
+		imports.add("com.google.common.base.Objects")
+			var key = "key".generateLocalName
+			var _matched = "_matched".generateLocalName
+			val buffer = new StringBuffer()
+			buffer.append(
+		 	'''
+				final «switchStatement.switchExpression.typeFor.name.translateTypeName» «key» = «generateExpression(switchStatement.switchExpression)»;
+				boolean «_matched» = false;
+			''')
+			if (switchStatement.cases.empty) {
+				return buffer.toString
+			}
+			var firstItem = true
+			for (caseFragment : switchStatement.cases) {
+				if (firstItem) {
+					buffer.append(
+		 		'''
+				if (Objects.equal(«key», «generateExpression(caseFragment.caseExpression)»)) {
+				   «_matched»=true;
+				   «generateBlock(switchStatement.^default)»
+				}
+				''')
+				firstItem = false
+				} else {
+				buffer.append(
+					'''
+					if (!«_matched») {
+					   if (Objects.equal(«key», «generateExpression(caseFragment.caseExpression)»)) {
+					      «_matched»=true;
+					      «generateBlock(caseFragment.then)»   
+					   }
+					}
+					''')	
+				}
+			}
+			buffer.append(
+				'''
+				«IF switchStatement.^default !== null»
+				if (!«_matched») {
+				   «generateBlock(switchStatement.^default)»
+				}
+				«ENDIF»
+				'''
+			)
+			return buffer.toString
+	}
+}

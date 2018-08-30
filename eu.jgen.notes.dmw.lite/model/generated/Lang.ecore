@@ -76,7 +76,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YSwitchStatement" eSuperTypes="#//YStatement">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="switch" eType="#//YExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="switchExpression" eType="#//YExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="cases" upperBound="-1"
         eType="#//YSwitchCase" containment="true"/>
@@ -84,7 +84,7 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YSwitchCase">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="case" eType="#//YExpression"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="caseExpression" eType="#//YExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="then" eType="#//YBlock"
         containment="true"/>
@@ -182,13 +182,20 @@
         containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnot">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//YAnnot"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="msgtype" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotTop">
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"
         containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="YAnnotDefaultType"/>
+  <eClassifiers xsi:type="ecore:EClass" name="YAnnotDefaultText" eSuperTypes="#//YAnnotDefaultType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="YAnnotDefaultNumber" eSuperTypes="#//YAnnotDefaultType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotEntityInner"/>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotEntity">
@@ -361,10 +368,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="decimal" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="YAnnotDefault" eSuperTypes="#//YAnnot">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="number" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="text" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="YAnnotDefault" eSuperTypes="#//YAnnot"/>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotAction" eSuperTypes="#//YAnnot">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="action" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>

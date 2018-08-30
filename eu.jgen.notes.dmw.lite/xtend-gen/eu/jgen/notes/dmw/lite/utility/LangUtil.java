@@ -26,9 +26,13 @@ import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
+import eu.jgen.notes.dmw.lite.lang.YAnnot;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
@@ -264,5 +268,34 @@ public class LangUtil {
       }
     }
     return false;
+  }
+  
+  public boolean isTypeCompatibleWithDefault(final YAnnotAttr annotAttr) {
+    EList<YAnnot> _annots = annotAttr.getAnnots();
+    for (final YAnnot annot : _annots) {
+      EObject _type = annot.getType();
+      if ((_type instanceof YAnnotDefault)) {
+        EObject _type_1 = annot.getType();
+        final YAnnotDefault annotDefault = ((YAnnotDefault) _type_1);
+        EObject _type_2 = annotDefault.getType();
+        if ((_type_2 instanceof YAnnotDefaultText)) {
+          if ((((Objects.equal(annotAttr.getYclass().getName(), "String") || Objects.equal(annotAttr.getYclass().getName(), "Date")) || Objects.equal(annotAttr.getYclass().getName(), "Time")) || Objects.equal(annotAttr.getYclass().getName(), "Timestamp"))) {
+            return true;
+          } else {
+            return false;
+          }
+        } else {
+          EObject _type_3 = annotDefault.getType();
+          if ((_type_3 instanceof YAnnotDefaultNumber)) {
+            if ((((Objects.equal(annotAttr.getYclass().getName(), "Int") || Objects.equal(annotAttr.getYclass().getName(), "Short")) || Objects.equal(annotAttr.getYclass().getName(), "Double")) || Objects.equal(annotAttr.getYclass().getName(), "Long"))) {
+              return true;
+            } else {
+              return false;
+            }
+          }
+        }
+      }
+    }
+    return true;
   }
 }

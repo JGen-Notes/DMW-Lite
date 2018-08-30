@@ -15,6 +15,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDecimal;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotId;
@@ -134,6 +136,12 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case LangPackage.YANNOT_DEFAULT:
 				sequence_YAnnotDefault(context, (YAnnotDefault) semanticObject); 
+				return; 
+			case LangPackage.YANNOT_DEFAULT_NUMBER:
+				sequence_YAnnotDefaultNumber(context, (YAnnotDefaultNumber) semanticObject); 
+				return; 
+			case LangPackage.YANNOT_DEFAULT_TEXT:
+				sequence_YAnnotDefaultText(context, (YAnnotDefaultText) semanticObject); 
 				return; 
 			case LangPackage.YANNOT_ENTITY:
 				sequence_YAnnotEntity(context, (YAnnotEntity) semanticObject); 
@@ -529,13 +537,57 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     YAnnotDefaultType returns YAnnotDefaultNumber
+	 *     YAnnotDefaultNumber returns YAnnotDefaultNumber
+	 *
+	 * Constraint:
+	 *     value=INT
+	 */
+	protected void sequence_YAnnotDefaultNumber(ISerializationContext context, YAnnotDefaultNumber semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YANNOT_DEFAULT_NUMBER__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YANNOT_DEFAULT_NUMBER__VALUE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getYAnnotDefaultNumberAccess().getValueINTTerminalRuleCall_0(), semanticObject.getValue());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
+	 *     YAnnotDefaultType returns YAnnotDefaultText
+	 *     YAnnotDefaultText returns YAnnotDefaultText
+	 *
+	 * Constraint:
+	 *     value=STRING
+	 */
+	protected void sequence_YAnnotDefaultText(ISerializationContext context, YAnnotDefaultText semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YANNOT_DEFAULT_TEXT__VALUE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YANNOT_DEFAULT_TEXT__VALUE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getYAnnotDefaultTextAccess().getValueSTRINGTerminalRuleCall_0(), semanticObject.getValue());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     YAnnotDefault returns YAnnotDefault
 	 *
 	 * Constraint:
-	 *     (number=INT | text=STRING)
+	 *     type=YAnnotDefaultType
 	 */
 	protected void sequence_YAnnotDefault(ISerializationContext context, YAnnotDefault semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YANNOT__TYPE) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YANNOT__TYPE));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getYAnnotDefaultAccess().getTypeYAnnotDefaultTypeParserRuleCall_3_0(), semanticObject.getType());
+		feeder.finish();
 	}
 	
 	
@@ -1288,7 +1340,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YSwitchCase returns YSwitchCase
 	 *
 	 * Constraint:
-	 *     (case=YExpression? then=YBlock)
+	 *     (caseExpression=YExpression? then=YBlock)
 	 */
 	protected void sequence_YSwitchCase(ISerializationContext context, YSwitchCase semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1301,7 +1353,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YSwitchStatement returns YSwitchStatement
 	 *
 	 * Constraint:
-	 *     (switch=YExpression cases+=YSwitchCase* default=YBlock?)
+	 *     (switchExpression=YExpression cases+=YSwitchCase* default=YBlock?)
 	 */
 	protected void sequence_YSwitchStatement(ISerializationContext context, YSwitchStatement semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1703,8 +1755,8 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YWHILE_STATEMENT__BODY));
 		}
 		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
-		feeder.accept(grammarAccess.getYWhileStatementAccess().getExpressionYOrExpressionParserRuleCall_1_0(), semanticObject.getExpression());
-		feeder.accept(grammarAccess.getYWhileStatementAccess().getBodyYBlockParserRuleCall_2_0(), semanticObject.getBody());
+		feeder.accept(grammarAccess.getYWhileStatementAccess().getExpressionYOrExpressionParserRuleCall_2_0(), semanticObject.getExpression());
+		feeder.accept(grammarAccess.getYWhileStatementAccess().getBodyYBlockParserRuleCall_4_0(), semanticObject.getBody());
 		feeder.finish();
 	}
 	

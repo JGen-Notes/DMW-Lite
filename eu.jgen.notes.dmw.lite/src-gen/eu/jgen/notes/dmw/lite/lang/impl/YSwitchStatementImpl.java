@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YSwitchStatementImpl#getSwitch <em>Switch</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YSwitchStatementImpl#getSwitchExpression <em>Switch Expression</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YSwitchStatementImpl#getCases <em>Cases</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YSwitchStatementImpl#getDefault <em>Default</em>}</li>
  * </ul>
@@ -42,14 +42,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class YSwitchStatementImpl extends YStatementImpl implements YSwitchStatement
 {
   /**
-   * The cached value of the '{@link #getSwitch() <em>Switch</em>}' containment reference.
+   * The cached value of the '{@link #getSwitchExpression() <em>Switch Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getSwitch()
+   * @see #getSwitchExpression()
    * @generated
    * @ordered
    */
-  protected YExpression switch_;
+  protected YExpression switchExpression;
 
   /**
    * The cached value of the '{@link #getCases() <em>Cases</em>}' containment reference list.
@@ -97,9 +97,9 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
    * <!-- end-user-doc -->
    * @generated
    */
-  public YExpression getSwitch()
+  public YExpression getSwitchExpression()
   {
-    return switch_;
+    return switchExpression;
   }
 
   /**
@@ -107,13 +107,13 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetSwitch(YExpression newSwitch, NotificationChain msgs)
+  public NotificationChain basicSetSwitchExpression(YExpression newSwitchExpression, NotificationChain msgs)
   {
-    YExpression oldSwitch = switch_;
-    switch_ = newSwitch;
+    YExpression oldSwitchExpression = switchExpression;
+    switchExpression = newSwitchExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_STATEMENT__SWITCH, oldSwitch, newSwitch);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION, oldSwitchExpression, newSwitchExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -124,20 +124,20 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setSwitch(YExpression newSwitch)
+  public void setSwitchExpression(YExpression newSwitchExpression)
   {
-    if (newSwitch != switch_)
+    if (newSwitchExpression != switchExpression)
     {
       NotificationChain msgs = null;
-      if (switch_ != null)
-        msgs = ((InternalEObject)switch_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_STATEMENT__SWITCH, null, msgs);
-      if (newSwitch != null)
-        msgs = ((InternalEObject)newSwitch).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_STATEMENT__SWITCH, null, msgs);
-      msgs = basicSetSwitch(newSwitch, msgs);
+      if (switchExpression != null)
+        msgs = ((InternalEObject)switchExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION, null, msgs);
+      if (newSwitchExpression != null)
+        msgs = ((InternalEObject)newSwitchExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION, null, msgs);
+      msgs = basicSetSwitchExpression(newSwitchExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_STATEMENT__SWITCH, newSwitch, newSwitch));
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION, newSwitchExpression, newSwitchExpression));
   }
 
   /**
@@ -212,8 +212,8 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_STATEMENT__SWITCH:
-        return basicSetSwitch(null, msgs);
+      case LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION:
+        return basicSetSwitchExpression(null, msgs);
       case LangPackage.YSWITCH_STATEMENT__CASES:
         return ((InternalEList<?>)getCases()).basicRemove(otherEnd, msgs);
       case LangPackage.YSWITCH_STATEMENT__DEFAULT:
@@ -232,8 +232,8 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_STATEMENT__SWITCH:
-        return getSwitch();
+      case LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION:
+        return getSwitchExpression();
       case LangPackage.YSWITCH_STATEMENT__CASES:
         return getCases();
       case LangPackage.YSWITCH_STATEMENT__DEFAULT:
@@ -253,8 +253,8 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_STATEMENT__SWITCH:
-        setSwitch((YExpression)newValue);
+      case LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION:
+        setSwitchExpression((YExpression)newValue);
         return;
       case LangPackage.YSWITCH_STATEMENT__CASES:
         getCases().clear();
@@ -277,8 +277,8 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_STATEMENT__SWITCH:
-        setSwitch((YExpression)null);
+      case LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION:
+        setSwitchExpression((YExpression)null);
         return;
       case LangPackage.YSWITCH_STATEMENT__CASES:
         getCases().clear();
@@ -300,8 +300,8 @@ public class YSwitchStatementImpl extends YStatementImpl implements YSwitchState
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_STATEMENT__SWITCH:
-        return switch_ != null;
+      case LangPackage.YSWITCH_STATEMENT__SWITCH_EXPRESSION:
+        return switchExpression != null;
       case LangPackage.YSWITCH_STATEMENT__CASES:
         return cases != null && !cases.isEmpty();
       case LangPackage.YSWITCH_STATEMENT__DEFAULT:

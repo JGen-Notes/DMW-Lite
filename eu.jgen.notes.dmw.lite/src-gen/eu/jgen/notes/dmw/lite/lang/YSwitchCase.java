@@ -14,7 +14,7 @@ import org.eclipse.emf.ecore.EObject;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCase <em>Case</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCaseExpression <em>Case Expression</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getThen <em>Then</em>}</li>
  * </ul>
  *
@@ -25,30 +25,30 @@ import org.eclipse.emf.ecore.EObject;
 public interface YSwitchCase extends EObject
 {
   /**
-   * Returns the value of the '<em><b>Case</b></em>' containment reference.
+   * Returns the value of the '<em><b>Case Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Case</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Case Expression</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Case</em>' containment reference.
-   * @see #setCase(YExpression)
-   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYSwitchCase_Case()
+   * @return the value of the '<em>Case Expression</em>' containment reference.
+   * @see #setCaseExpression(YExpression)
+   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYSwitchCase_CaseExpression()
    * @model containment="true"
    * @generated
    */
-  YExpression getCase();
+  YExpression getCaseExpression();
 
   /**
-   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCase <em>Case</em>}' containment reference.
+   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCaseExpression <em>Case Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Case</em>' containment reference.
-   * @see #getCase()
+   * @param value the new value of the '<em>Case Expression</em>' containment reference.
+   * @see #getCaseExpression()
    * @generated
    */
-  void setCase(YExpression value);
+  void setCaseExpression(YExpression value);
 
   /**
    * Returns the value of the '<em><b>Then</b></em>' containment reference.

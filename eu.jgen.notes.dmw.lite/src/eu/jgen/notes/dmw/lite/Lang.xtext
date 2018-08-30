@@ -111,14 +111,14 @@ YIfStatement:
 
 YSwitchStatement:
 	{YSwitchStatement}
-	'switch' switch=YExpression '{'
+	'switch' switchExpression=YExpression '{'
 	(cases+=YSwitchCase)*
 	('default' ':' default=YBlock)?
 	'}';
 
 YSwitchCase:
 	{YSwitchCase}
-	('case' case=YExpression)?
+	('case' caseExpression=YExpression)?
 	':' then=YBlock;
 
 YSymbol:
@@ -235,7 +235,7 @@ YWhere:
 	{YWhere} 'where' expression=YOrExpression;
 
 YWhileStatement:
-	'while' expression=YOrExpression
+	'while' '('expression=YOrExpression')'
 	body=YBlock;
 
 YRepeatWhileStatement:
@@ -263,7 +263,19 @@ YAnnotDecimal returns YAnnot:
 	{YAnnotDecimal} '@decimal' '(' length=INT ',' decimal=INT ')';
 	
 YAnnotDefault returns YAnnot:
-	{YAnnotDefault} '@default' '(' (number= INT | text=STRING)  ')';
+	{YAnnotDefault} '@default' '('type=YAnnotDefaultType')';
+	
+YAnnotDefaultType:
+	 YAnnotDefaultText | YAnnotDefaultNumber
+;
+
+YAnnotDefaultText:
+	value=STRING
+;
+
+YAnnotDefaultNumber:
+	value=INT
+;
 
 YAnnotAction returns YAnnot:
 	{YAnnotAction} '@action' '(' action=ValidID ')';

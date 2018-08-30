@@ -95,8 +95,9 @@ class LangDBUtil {
 		} else if (attribute.yclass.name == "Blob") {
 			column.type = "BLOB"
 		}
+		//TODO need to check this
 		attribute.annots.forEach [ annot |
-			column.annots.add(annot.type.cloneYAnnot)
+			//column.annots.add(annot.type.cloneYAnnot)
 		]
 		if (attribute.optional !== null && attribute.optional == "?") {
 			column.optional = "?"

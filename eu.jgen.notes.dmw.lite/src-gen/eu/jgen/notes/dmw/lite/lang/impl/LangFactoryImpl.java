@@ -100,6 +100,9 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
       case LangPackage.YFOR_IN_STATEMENT: return createYForInStatement();
       case LangPackage.YANNOT: return createYAnnot();
       case LangPackage.YANNOT_TOP: return createYAnnotTop();
+      case LangPackage.YANNOT_DEFAULT_TYPE: return createYAnnotDefaultType();
+      case LangPackage.YANNOT_DEFAULT_TEXT: return createYAnnotDefaultText();
+      case LangPackage.YANNOT_DEFAULT_NUMBER: return createYAnnotDefaultNumber();
       case LangPackage.YANNOT_ENTITY_INNER: return createYAnnotEntityInner();
       case LangPackage.YANNOT_ENTITY: return createYAnnotEntity();
       case LangPackage.YANNOT_ATTR: return createYAnnotAttr();
@@ -551,6 +554,39 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
   {
     YAnnotTopImpl yAnnotTop = new YAnnotTopImpl();
     return yAnnotTop;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotDefaultType createYAnnotDefaultType()
+  {
+    YAnnotDefaultTypeImpl yAnnotDefaultType = new YAnnotDefaultTypeImpl();
+    return yAnnotDefaultType;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotDefaultText createYAnnotDefaultText()
+  {
+    YAnnotDefaultTextImpl yAnnotDefaultText = new YAnnotDefaultTextImpl();
+    return yAnnotDefaultText;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotDefaultNumber createYAnnotDefaultNumber()
+  {
+    YAnnotDefaultNumberImpl yAnnotDefaultNumber = new YAnnotDefaultNumberImpl();
+    return yAnnotDefaultNumber;
   }
 
   /**

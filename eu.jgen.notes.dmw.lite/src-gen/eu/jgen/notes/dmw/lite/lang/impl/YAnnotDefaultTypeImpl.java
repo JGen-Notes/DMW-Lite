@@ -4,25 +4,27 @@
 package eu.jgen.notes.dmw.lite.lang.impl;
 
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
-import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultType;
 
 import org.eclipse.emf.ecore.EClass;
 
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+
 /**
  * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>YAnnot Default</b></em>'.
+ * An implementation of the model object '<em><b>YAnnot Default Type</b></em>'.
  * <!-- end-user-doc -->
  *
  * @generated
  */
-public class YAnnotDefaultImpl extends YAnnotImpl implements YAnnotDefault
+public class YAnnotDefaultTypeImpl extends MinimalEObjectImpl.Container implements YAnnotDefaultType
 {
   /**
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    */
-  protected YAnnotDefaultImpl()
+  protected YAnnotDefaultTypeImpl()
   {
     super();
   }
@@ -35,7 +37,7 @@ public class YAnnotDefaultImpl extends YAnnotImpl implements YAnnotDefault
   @Override
   protected EClass eStaticClass()
   {
-    return LangPackage.Literals.YANNOT_DEFAULT;
+    return LangPackage.Literals.YANNOT_DEFAULT_TYPE;
   }
 
-} //YAnnotDefaultImpl
+} //YAnnotDefaultTypeImpl

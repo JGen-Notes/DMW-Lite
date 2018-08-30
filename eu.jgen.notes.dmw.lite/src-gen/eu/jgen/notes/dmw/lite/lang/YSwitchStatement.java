@@ -14,7 +14,7 @@ import org.eclipse.emf.common.util.EList;
  * The following features are supported:
  * </p>
  * <ul>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitch <em>Switch</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitchExpression <em>Switch Expression</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getCases <em>Cases</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getDefault <em>Default</em>}</li>
  * </ul>
@@ -26,30 +26,30 @@ import org.eclipse.emf.common.util.EList;
 public interface YSwitchStatement extends YStatement
 {
   /**
-   * Returns the value of the '<em><b>Switch</b></em>' containment reference.
+   * Returns the value of the '<em><b>Switch Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Switch</em>' containment reference isn't clear,
+   * If the meaning of the '<em>Switch Expression</em>' containment reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Switch</em>' containment reference.
-   * @see #setSwitch(YExpression)
-   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYSwitchStatement_Switch()
+   * @return the value of the '<em>Switch Expression</em>' containment reference.
+   * @see #setSwitchExpression(YExpression)
+   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYSwitchStatement_SwitchExpression()
    * @model containment="true"
    * @generated
    */
-  YExpression getSwitch();
+  YExpression getSwitchExpression();
 
   /**
-   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitch <em>Switch</em>}' containment reference.
+   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitchExpression <em>Switch Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Switch</em>' containment reference.
-   * @see #getSwitch()
+   * @param value the new value of the '<em>Switch Expression</em>' containment reference.
+   * @see #getSwitchExpression()
    * @generated
    */
-  void setSwitch(YExpression value);
+  void setSwitchExpression(YExpression value);
 
   /**
    * Returns the value of the '<em><b>Cases</b></em>' containment reference list.

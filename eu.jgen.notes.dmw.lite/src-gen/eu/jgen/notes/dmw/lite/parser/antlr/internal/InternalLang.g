@@ -1415,17 +1415,17 @@ ruleYSwitchStatement returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYSwitchStatementAccess().getSwitchYExpressionParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getYSwitchStatementAccess().getSwitchExpressionYExpressionParserRuleCall_2_0());
 				}
-				lv_switch_2_0=ruleYExpression
+				lv_switchExpression_2_0=ruleYExpression
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYSwitchStatementRule());
 					}
 					set(
 						$current,
-						"switch",
-						lv_switch_2_0,
+						"switchExpression",
+						lv_switchExpression_2_0,
 						"eu.jgen.notes.dmw.lite.Lang.YExpression");
 					afterParserOrEnumRuleCall();
 				}
@@ -1521,17 +1521,17 @@ ruleYSwitchCase returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getYSwitchCaseAccess().getCaseYExpressionParserRuleCall_1_1_0());
+						newCompositeNode(grammarAccess.getYSwitchCaseAccess().getCaseExpressionYExpressionParserRuleCall_1_1_0());
 					}
-					lv_case_2_0=ruleYExpression
+					lv_caseExpression_2_0=ruleYExpression
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getYSwitchCaseRule());
 						}
 						set(
 							$current,
-							"case",
-							lv_case_2_0,
+							"caseExpression",
+							lv_caseExpression_2_0,
 							"eu.jgen.notes.dmw.lite.Lang.YExpression");
 						afterParserOrEnumRuleCall();
 					}
@@ -3533,12 +3533,16 @@ ruleYWhileStatement returns [EObject current=null]
 		{
 			newLeafNode(otherlv_0, grammarAccess.getYWhileStatementAccess().getWhileKeyword_0());
 		}
+		otherlv_1='('
+		{
+			newLeafNode(otherlv_1, grammarAccess.getYWhileStatementAccess().getLeftParenthesisKeyword_1());
+		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYWhileStatementAccess().getExpressionYOrExpressionParserRuleCall_1_0());
+					newCompositeNode(grammarAccess.getYWhileStatementAccess().getExpressionYOrExpressionParserRuleCall_2_0());
 				}
-				lv_expression_1_0=ruleYOrExpression
+				lv_expression_2_0=ruleYOrExpression
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYWhileStatementRule());
@@ -3546,18 +3550,22 @@ ruleYWhileStatement returns [EObject current=null]
 					set(
 						$current,
 						"expression",
-						lv_expression_1_0,
+						lv_expression_2_0,
 						"eu.jgen.notes.dmw.lite.Lang.YOrExpression");
 					afterParserOrEnumRuleCall();
 				}
 			)
 		)
+		otherlv_3=')'
+		{
+			newLeafNode(otherlv_3, grammarAccess.getYWhileStatementAccess().getRightParenthesisKeyword_3());
+		}
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYWhileStatementAccess().getBodyYBlockParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getYWhileStatementAccess().getBodyYBlockParserRuleCall_4_0());
 				}
-				lv_body_2_0=ruleYBlock
+				lv_body_4_0=ruleYBlock
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYWhileStatementRule());
@@ -3565,7 +3573,7 @@ ruleYWhileStatement returns [EObject current=null]
 					set(
 						$current,
 						"body",
-						lv_body_2_0,
+						lv_body_4_0,
 						"eu.jgen.notes.dmw.lite.Lang.YBlock");
 					afterParserOrEnumRuleCall();
 				}
@@ -4115,47 +4123,133 @@ ruleYAnnotDefault returns [EObject current=null]
 		}
 		(
 			(
-				(
-					lv_number_3_0=RULE_INT
-					{
-						newLeafNode(lv_number_3_0, grammarAccess.getYAnnotDefaultAccess().getNumberINTTerminalRuleCall_3_0_0());
+				{
+					newCompositeNode(grammarAccess.getYAnnotDefaultAccess().getTypeYAnnotDefaultTypeParserRuleCall_3_0());
+				}
+				lv_type_3_0=ruleYAnnotDefaultType
+				{
+					if ($current==null) {
+						$current = createModelElementForParent(grammarAccess.getYAnnotDefaultRule());
 					}
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getYAnnotDefaultRule());
-						}
-						setWithLastConsumed(
-							$current,
-							"number",
-							lv_number_3_0,
-							"org.eclipse.xtext.common.Terminals.INT");
-					}
-				)
-			)
-			    |
-			(
-				(
-					lv_text_4_0=RULE_STRING
-					{
-						newLeafNode(lv_text_4_0, grammarAccess.getYAnnotDefaultAccess().getTextSTRINGTerminalRuleCall_3_1_0());
-					}
-					{
-						if ($current==null) {
-							$current = createModelElement(grammarAccess.getYAnnotDefaultRule());
-						}
-						setWithLastConsumed(
-							$current,
-							"text",
-							lv_text_4_0,
-							"org.eclipse.xtext.common.Terminals.STRING");
-					}
-				)
+					set(
+						$current,
+						"type",
+						lv_type_3_0,
+						"eu.jgen.notes.dmw.lite.Lang.YAnnotDefaultType");
+					afterParserOrEnumRuleCall();
+				}
 			)
 		)
-		otherlv_5=')'
+		otherlv_4=')'
 		{
-			newLeafNode(otherlv_5, grammarAccess.getYAnnotDefaultAccess().getRightParenthesisKeyword_4());
+			newLeafNode(otherlv_4, grammarAccess.getYAnnotDefaultAccess().getRightParenthesisKeyword_4());
 		}
+	)
+;
+
+// Entry rule entryRuleYAnnotDefaultType
+entryRuleYAnnotDefaultType returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getYAnnotDefaultTypeRule()); }
+	iv_ruleYAnnotDefaultType=ruleYAnnotDefaultType
+	{ $current=$iv_ruleYAnnotDefaultType.current; }
+	EOF;
+
+// Rule YAnnotDefaultType
+ruleYAnnotDefaultType returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		{
+			newCompositeNode(grammarAccess.getYAnnotDefaultTypeAccess().getYAnnotDefaultTextParserRuleCall_0());
+		}
+		this_YAnnotDefaultText_0=ruleYAnnotDefaultText
+		{
+			$current = $this_YAnnotDefaultText_0.current;
+			afterParserOrEnumRuleCall();
+		}
+		    |
+		{
+			newCompositeNode(grammarAccess.getYAnnotDefaultTypeAccess().getYAnnotDefaultNumberParserRuleCall_1());
+		}
+		this_YAnnotDefaultNumber_1=ruleYAnnotDefaultNumber
+		{
+			$current = $this_YAnnotDefaultNumber_1.current;
+			afterParserOrEnumRuleCall();
+		}
+	)
+;
+
+// Entry rule entryRuleYAnnotDefaultText
+entryRuleYAnnotDefaultText returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getYAnnotDefaultTextRule()); }
+	iv_ruleYAnnotDefaultText=ruleYAnnotDefaultText
+	{ $current=$iv_ruleYAnnotDefaultText.current; }
+	EOF;
+
+// Rule YAnnotDefaultText
+ruleYAnnotDefaultText returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			lv_value_0_0=RULE_STRING
+			{
+				newLeafNode(lv_value_0_0, grammarAccess.getYAnnotDefaultTextAccess().getValueSTRINGTerminalRuleCall_0());
+			}
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getYAnnotDefaultTextRule());
+				}
+				setWithLastConsumed(
+					$current,
+					"value",
+					lv_value_0_0,
+					"org.eclipse.xtext.common.Terminals.STRING");
+			}
+		)
+	)
+;
+
+// Entry rule entryRuleYAnnotDefaultNumber
+entryRuleYAnnotDefaultNumber returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getYAnnotDefaultNumberRule()); }
+	iv_ruleYAnnotDefaultNumber=ruleYAnnotDefaultNumber
+	{ $current=$iv_ruleYAnnotDefaultNumber.current; }
+	EOF;
+
+// Rule YAnnotDefaultNumber
+ruleYAnnotDefaultNumber returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			lv_value_0_0=RULE_INT
+			{
+				newLeafNode(lv_value_0_0, grammarAccess.getYAnnotDefaultNumberAccess().getValueINTTerminalRuleCall_0());
+			}
+			{
+				if ($current==null) {
+					$current = createModelElement(grammarAccess.getYAnnotDefaultNumberRule());
+				}
+				setWithLastConsumed(
+					$current,
+					"value",
+					lv_value_0_0,
+					"org.eclipse.xtext.common.Terminals.INT");
+			}
+		)
 	)
 ;
 

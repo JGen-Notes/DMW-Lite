@@ -26,15 +26,22 @@ import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.LangFactory;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
+import eu.jgen.notes.dmw.lite.lang.YAndExpression;
 import eu.jgen.notes.dmw.lite.lang.YAssignment;
 import eu.jgen.notes.dmw.lite.lang.YBoolConstant;
 import eu.jgen.notes.dmw.lite.lang.YClass;
+import eu.jgen.notes.dmw.lite.lang.YComparisonExpression;
+import eu.jgen.notes.dmw.lite.lang.YEqualityExpression;
 import eu.jgen.notes.dmw.lite.lang.YExpression;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YIntConstant;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
+import eu.jgen.notes.dmw.lite.lang.YMinus;
+import eu.jgen.notes.dmw.lite.lang.YMulOrDiv;
+import eu.jgen.notes.dmw.lite.lang.YNot;
 import eu.jgen.notes.dmw.lite.lang.YNull;
+import eu.jgen.notes.dmw.lite.lang.YOrExpression;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YReturn;
 import eu.jgen.notes.dmw.lite.lang.YSelf;
@@ -156,6 +163,48 @@ public class LangTypeComputer {
     }
     if (!_matched) {
       if (epression instanceof YBoolConstant) {
+        _matched=true;
+        _switchResult = LangTypeComputer.BOOLEAN_TYPE;
+      }
+    }
+    if (!_matched) {
+      if (epression instanceof YNot) {
+        _matched=true;
+        _switchResult = LangTypeComputer.BOOLEAN_TYPE;
+      }
+    }
+    if (!_matched) {
+      if (epression instanceof YMulOrDiv) {
+        _matched=true;
+        _switchResult = LangTypeComputer.INT_TYPE;
+      }
+    }
+    if (!_matched) {
+      if (epression instanceof YMinus) {
+        _matched=true;
+        _switchResult = LangTypeComputer.INT_TYPE;
+      }
+    }
+    if (!_matched) {
+      if (epression instanceof YComparisonExpression) {
+        _matched=true;
+        _switchResult = LangTypeComputer.BOOLEAN_TYPE;
+      }
+    }
+    if (!_matched) {
+      if (epression instanceof YEqualityExpression) {
+        _matched=true;
+        _switchResult = LangTypeComputer.BOOLEAN_TYPE;
+      }
+    }
+    if (!_matched) {
+      if (epression instanceof YAndExpression) {
+        _matched=true;
+        _switchResult = LangTypeComputer.BOOLEAN_TYPE;
+      }
+    }
+    if (!_matched) {
+      if (epression instanceof YOrExpression) {
         _matched=true;
         _switchResult = LangTypeComputer.BOOLEAN_TYPE;
       }

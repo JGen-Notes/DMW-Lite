@@ -246,6 +246,21 @@ public class LangAdapterFactory extends AdapterFactoryImpl
         return createYAnnotTopAdapter();
       }
       @Override
+      public Adapter caseYAnnotDefaultType(YAnnotDefaultType object)
+      {
+        return createYAnnotDefaultTypeAdapter();
+      }
+      @Override
+      public Adapter caseYAnnotDefaultText(YAnnotDefaultText object)
+      {
+        return createYAnnotDefaultTextAdapter();
+      }
+      @Override
+      public Adapter caseYAnnotDefaultNumber(YAnnotDefaultNumber object)
+      {
+        return createYAnnotDefaultNumberAdapter();
+      }
+      @Override
       public Adapter caseYAnnotEntityInner(YAnnotEntityInner object)
       {
         return createYAnnotEntityInnerAdapter();
@@ -973,6 +988,51 @@ public class LangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createYAnnotTopAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultType <em>YAnnot Default Type</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultType
+   * @generated
+   */
+  public Adapter createYAnnotDefaultTypeAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText <em>YAnnot Default Text</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
+   * @generated
+   */
+  public Adapter createYAnnotDefaultTextAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber <em>YAnnot Default Number</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
+   * @generated
+   */
+  public Adapter createYAnnotDefaultNumberAdapter()
   {
     return null;
   }

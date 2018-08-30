@@ -46,7 +46,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYTerminalExpressionAccess().getValueAlternatives_2_1_0(), "rule__YTerminalExpression__ValueAlternatives_2_1_0");
 					put(grammarAccess.getYAnnotAccess().getTypeAlternatives_1_0(), "rule__YAnnot__TypeAlternatives_1_0");
 					put(grammarAccess.getYAnnotTopAccess().getTypeAlternatives_0(), "rule__YAnnotTop__TypeAlternatives_0");
-					put(grammarAccess.getYAnnotDefaultAccess().getAlternatives_3(), "rule__YAnnotDefault__Alternatives_3");
+					put(grammarAccess.getYAnnotDefaultTypeAccess().getAlternatives(), "rule__YAnnotDefaultType__Alternatives");
 					put(grammarAccess.getYAnnotEntityInnerAccess().getAlternatives(), "rule__YAnnotEntityInner__Alternatives");
 					put(grammarAccess.getYAnnotIdInnerAccess().getAlternatives(), "rule__YAnnotIdInner__Alternatives");
 					put(grammarAccess.getYAnnotColumnAccess().getTypeAlternatives_4_0(), "rule__YAnnotColumn__TypeAlternatives_4_0");
@@ -193,10 +193,10 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYIfStatementAccess().getExpressionAssignment_2(), "rule__YIfStatement__ExpressionAssignment_2");
 					put(grammarAccess.getYIfStatementAccess().getThenBlockAssignment_4(), "rule__YIfStatement__ThenBlockAssignment_4");
 					put(grammarAccess.getYIfStatementAccess().getElseBlockAssignment_5_1(), "rule__YIfStatement__ElseBlockAssignment_5_1");
-					put(grammarAccess.getYSwitchStatementAccess().getSwitchAssignment_2(), "rule__YSwitchStatement__SwitchAssignment_2");
+					put(grammarAccess.getYSwitchStatementAccess().getSwitchExpressionAssignment_2(), "rule__YSwitchStatement__SwitchExpressionAssignment_2");
 					put(grammarAccess.getYSwitchStatementAccess().getCasesAssignment_4(), "rule__YSwitchStatement__CasesAssignment_4");
 					put(grammarAccess.getYSwitchStatementAccess().getDefaultAssignment_5_2(), "rule__YSwitchStatement__DefaultAssignment_5_2");
-					put(grammarAccess.getYSwitchCaseAccess().getCaseAssignment_1_1(), "rule__YSwitchCase__CaseAssignment_1_1");
+					put(grammarAccess.getYSwitchCaseAccess().getCaseExpressionAssignment_1_1(), "rule__YSwitchCase__CaseExpressionAssignment_1_1");
 					put(grammarAccess.getYSwitchCaseAccess().getThenAssignment_3(), "rule__YSwitchCase__ThenAssignment_3");
 					put(grammarAccess.getYAssignmentAccess().getRightAssignment_1_2(), "rule__YAssignment__RightAssignment_1_2");
 					put(grammarAccess.getYSelectionExpressionAccess().getMemberAssignment_1_2(), "rule__YSelectionExpression__MemberAssignment_1_2");
@@ -250,8 +250,8 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYJoinDefAccess().getRelRefAssignment_2(), "rule__YJoinDef__RelRefAssignment_2");
 					put(grammarAccess.getYJoinDefAccess().getToViewAssignment_4(), "rule__YJoinDef__ToViewAssignment_4");
 					put(grammarAccess.getYWhereAccess().getExpressionAssignment_2(), "rule__YWhere__ExpressionAssignment_2");
-					put(grammarAccess.getYWhileStatementAccess().getExpressionAssignment_1(), "rule__YWhileStatement__ExpressionAssignment_1");
-					put(grammarAccess.getYWhileStatementAccess().getBodyAssignment_2(), "rule__YWhileStatement__BodyAssignment_2");
+					put(grammarAccess.getYWhileStatementAccess().getExpressionAssignment_2(), "rule__YWhileStatement__ExpressionAssignment_2");
+					put(grammarAccess.getYWhileStatementAccess().getBodyAssignment_4(), "rule__YWhileStatement__BodyAssignment_4");
 					put(grammarAccess.getYRepeatWhileStatementAccess().getBodyAssignment_1(), "rule__YRepeatWhileStatement__BodyAssignment_1");
 					put(grammarAccess.getYRepeatWhileStatementAccess().getExpressionAssignment_4(), "rule__YRepeatWhileStatement__ExpressionAssignment_4");
 					put(grammarAccess.getYForInStatementAccess().getItemAssignment_1(), "rule__YForInStatement__ItemAssignment_1");
@@ -262,8 +262,9 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotLengthAccess().getLengthAssignment_3(), "rule__YAnnotLength__LengthAssignment_3");
 					put(grammarAccess.getYAnnotDecimalAccess().getLengthAssignment_3(), "rule__YAnnotDecimal__LengthAssignment_3");
 					put(grammarAccess.getYAnnotDecimalAccess().getDecimalAssignment_5(), "rule__YAnnotDecimal__DecimalAssignment_5");
-					put(grammarAccess.getYAnnotDefaultAccess().getNumberAssignment_3_0(), "rule__YAnnotDefault__NumberAssignment_3_0");
-					put(grammarAccess.getYAnnotDefaultAccess().getTextAssignment_3_1(), "rule__YAnnotDefault__TextAssignment_3_1");
+					put(grammarAccess.getYAnnotDefaultAccess().getTypeAssignment_3(), "rule__YAnnotDefault__TypeAssignment_3");
+					put(grammarAccess.getYAnnotDefaultTextAccess().getValueAssignment(), "rule__YAnnotDefaultText__ValueAssignment");
+					put(grammarAccess.getYAnnotDefaultNumberAccess().getValueAssignment(), "rule__YAnnotDefaultNumber__ValueAssignment");
 					put(grammarAccess.getYAnnotActionAccess().getActionAssignment_3(), "rule__YAnnotAction__ActionAssignment_3");
 					put(grammarAccess.getYAnnotMessageAccess().getMsgAssignment_3(), "rule__YAnnotMessage__MsgAssignment_3");
 					put(grammarAccess.getYAnnotMsgTypeAccess().getMsgtypeAssignment_2(), "rule__YAnnotMsgType__MsgtypeAssignment_2");

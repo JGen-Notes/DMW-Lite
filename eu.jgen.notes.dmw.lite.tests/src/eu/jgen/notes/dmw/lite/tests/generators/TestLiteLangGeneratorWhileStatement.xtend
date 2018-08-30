@@ -36,7 +36,7 @@ import org.junit.runner.RunWith
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
-class TestLiteLangGeneratorFunctions {
+class TestLiteLangGeneratorWhileStatement {
 
 	//@Inject extension ParseHelper<YWidget>
 	//@Inject extension ValidationTestHelper
@@ -50,22 +50,14 @@ class TestLiteLangGeneratorFunctions {
 			package sample.project;						
 			@java 
 			class B : Widget {	
-				class C : Object {
-					public var x : Int;
-				}
-				var c : C;	
-				var z :Int;		
-				public func start() {
-					//a : Int = 2;
-					b : Int = 4;
-					//self.c.x = self.add(a,b);
-					//self.z = 1;
-					b = b + 1;
-				}
-							
-				public func add(a : Int, b : Int) -> Int {
-					return a + b;
-				}
+			   public func start() {
+			   	  /*
+			   	   * Comment
+			   	   */
+				  while (2 > 1) {
+					a : Int = 0;
+				 }
+			   }
 			}
 		'''
 	   

@@ -25,7 +25,7 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YSwitchCaseImpl#getCase <em>Case</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YSwitchCaseImpl#getCaseExpression <em>Case Expression</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YSwitchCaseImpl#getThen <em>Then</em>}</li>
  * </ul>
  *
@@ -34,14 +34,14 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSwitchCase
 {
   /**
-   * The cached value of the '{@link #getCase() <em>Case</em>}' containment reference.
+   * The cached value of the '{@link #getCaseExpression() <em>Case Expression</em>}' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getCase()
+   * @see #getCaseExpression()
    * @generated
    * @ordered
    */
-  protected YExpression case_;
+  protected YExpression caseExpression;
 
   /**
    * The cached value of the '{@link #getThen() <em>Then</em>}' containment reference.
@@ -79,9 +79,9 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
    * <!-- end-user-doc -->
    * @generated
    */
-  public YExpression getCase()
+  public YExpression getCaseExpression()
   {
-    return case_;
+    return caseExpression;
   }
 
   /**
@@ -89,13 +89,13 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetCase(YExpression newCase, NotificationChain msgs)
+  public NotificationChain basicSetCaseExpression(YExpression newCaseExpression, NotificationChain msgs)
   {
-    YExpression oldCase = case_;
-    case_ = newCase;
+    YExpression oldCaseExpression = caseExpression;
+    caseExpression = newCaseExpression;
     if (eNotificationRequired())
     {
-      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_CASE__CASE, oldCase, newCase);
+      ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_CASE__CASE_EXPRESSION, oldCaseExpression, newCaseExpression);
       if (msgs == null) msgs = notification; else msgs.add(notification);
     }
     return msgs;
@@ -106,20 +106,20 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setCase(YExpression newCase)
+  public void setCaseExpression(YExpression newCaseExpression)
   {
-    if (newCase != case_)
+    if (newCaseExpression != caseExpression)
     {
       NotificationChain msgs = null;
-      if (case_ != null)
-        msgs = ((InternalEObject)case_).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_CASE__CASE, null, msgs);
-      if (newCase != null)
-        msgs = ((InternalEObject)newCase).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_CASE__CASE, null, msgs);
-      msgs = basicSetCase(newCase, msgs);
+      if (caseExpression != null)
+        msgs = ((InternalEObject)caseExpression).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_CASE__CASE_EXPRESSION, null, msgs);
+      if (newCaseExpression != null)
+        msgs = ((InternalEObject)newCaseExpression).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - LangPackage.YSWITCH_CASE__CASE_EXPRESSION, null, msgs);
+      msgs = basicSetCaseExpression(newCaseExpression, msgs);
       if (msgs != null) msgs.dispatch();
     }
     else if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_CASE__CASE, newCase, newCase));
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YSWITCH_CASE__CASE_EXPRESSION, newCaseExpression, newCaseExpression));
   }
 
   /**
@@ -180,8 +180,8 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_CASE__CASE:
-        return basicSetCase(null, msgs);
+      case LangPackage.YSWITCH_CASE__CASE_EXPRESSION:
+        return basicSetCaseExpression(null, msgs);
       case LangPackage.YSWITCH_CASE__THEN:
         return basicSetThen(null, msgs);
     }
@@ -198,8 +198,8 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_CASE__CASE:
-        return getCase();
+      case LangPackage.YSWITCH_CASE__CASE_EXPRESSION:
+        return getCaseExpression();
       case LangPackage.YSWITCH_CASE__THEN:
         return getThen();
     }
@@ -216,8 +216,8 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_CASE__CASE:
-        setCase((YExpression)newValue);
+      case LangPackage.YSWITCH_CASE__CASE_EXPRESSION:
+        setCaseExpression((YExpression)newValue);
         return;
       case LangPackage.YSWITCH_CASE__THEN:
         setThen((YBlock)newValue);
@@ -236,8 +236,8 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_CASE__CASE:
-        setCase((YExpression)null);
+      case LangPackage.YSWITCH_CASE__CASE_EXPRESSION:
+        setCaseExpression((YExpression)null);
         return;
       case LangPackage.YSWITCH_CASE__THEN:
         setThen((YBlock)null);
@@ -256,8 +256,8 @@ public class YSwitchCaseImpl extends MinimalEObjectImpl.Container implements YSw
   {
     switch (featureID)
     {
-      case LangPackage.YSWITCH_CASE__CASE:
-        return case_ != null;
+      case LangPackage.YSWITCH_CASE__CASE_EXPRESSION:
+        return caseExpression != null;
       case LangPackage.YSWITCH_CASE__THEN:
         return then != null;
     }

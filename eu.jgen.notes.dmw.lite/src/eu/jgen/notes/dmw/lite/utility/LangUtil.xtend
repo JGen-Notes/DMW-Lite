@@ -43,6 +43,9 @@ import org.eclipse.xtext.resource.IContainer
 import org.eclipse.xtext.resource.IEObjectDescription
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
 
 class LangUtil {
 
@@ -196,7 +199,26 @@ class LangUtil {
 		return false
 	}
 	
-
-	 
+	def boolean isTypeCompatibleWithDefault(YAnnotAttr annotAttr) {
+		for (annot : annotAttr.annots) {
+			if(annot.type instanceof YAnnotDefault) {
+				val annotDefault = annot.type as YAnnotDefault
+				if (annotDefault.type instanceof  YAnnotDefaultText) {
+					if(annotAttr.yclass.name == "String" || annotAttr.yclass.name == "Date" || annotAttr.yclass.name == "Time" || annotAttr.yclass.name == "Timestamp") {
+						return true
+					} else {
+						return false
+					}
+				} else if (annotDefault.type instanceof  YAnnotDefaultNumber) { 
+					if(annotAttr.yclass.name == "Int" || annotAttr.yclass.name == "Short" || annotAttr.yclass.name == "Double" || annotAttr.yclass.name == "Long") {
+						return true	
+					} else {
+						return false
+					}
+				}
+			}
+		}
+		return true
+	}	 
 
 }

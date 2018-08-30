@@ -751,13 +751,13 @@ public interface LangPackage extends EPackage
   int YSWITCH_STATEMENT = 14;
 
   /**
-   * The feature id for the '<em><b>Switch</b></em>' containment reference.
+   * The feature id for the '<em><b>Switch Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YSWITCH_STATEMENT__SWITCH = YSTATEMENT_FEATURE_COUNT + 0;
+  int YSWITCH_STATEMENT__SWITCH_EXPRESSION = YSTATEMENT_FEATURE_COUNT + 0;
 
   /**
    * The feature id for the '<em><b>Cases</b></em>' containment reference list.
@@ -797,13 +797,13 @@ public interface LangPackage extends EPackage
   int YSWITCH_CASE = 15;
 
   /**
-   * The feature id for the '<em><b>Case</b></em>' containment reference.
+   * The feature id for the '<em><b>Case Expression</b></em>' containment reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YSWITCH_CASE__CASE = 0;
+  int YSWITCH_CASE__CASE_EXPRESSION = 0;
 
   /**
    * The feature id for the '<em><b>Then</b></em>' containment reference.
@@ -1452,6 +1452,81 @@ public interface LangPackage extends EPackage
   int YANNOT_TOP_FEATURE_COUNT = 1;
 
   /**
+   * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTypeImpl <em>YAnnot Default Type</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTypeImpl
+   * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefaultType()
+   * @generated
+   */
+  int YANNOT_DEFAULT_TYPE = 34;
+
+  /**
+   * The number of structural features of the '<em>YAnnot Default Type</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT_TYPE_FEATURE_COUNT = 0;
+
+  /**
+   * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTextImpl <em>YAnnot Default Text</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTextImpl
+   * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefaultText()
+   * @generated
+   */
+  int YANNOT_DEFAULT_TEXT = 35;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT_TEXT__VALUE = YANNOT_DEFAULT_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>YAnnot Default Text</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT_TEXT_FEATURE_COUNT = YANNOT_DEFAULT_TYPE_FEATURE_COUNT + 1;
+
+  /**
+   * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultNumberImpl <em>YAnnot Default Number</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultNumberImpl
+   * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefaultNumber()
+   * @generated
+   */
+  int YANNOT_DEFAULT_NUMBER = 36;
+
+  /**
+   * The feature id for the '<em><b>Value</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT_NUMBER__VALUE = YANNOT_DEFAULT_TYPE_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>YAnnot Default Number</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_DEFAULT_NUMBER_FEATURE_COUNT = YANNOT_DEFAULT_TYPE_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotEntityInnerImpl <em>YAnnot Entity Inner</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -1459,7 +1534,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotEntityInner()
    * @generated
    */
-  int YANNOT_ENTITY_INNER = 34;
+  int YANNOT_ENTITY_INNER = 37;
 
   /**
    * The number of structural features of the '<em>YAnnot Entity Inner</em>' class.
@@ -1478,7 +1553,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotEntity()
    * @generated
    */
-  int YANNOT_ENTITY = 35;
+  int YANNOT_ENTITY = 38;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1524,7 +1599,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotAttr()
    * @generated
    */
-  int YANNOT_ATTR = 36;
+  int YANNOT_ATTR = 39;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1579,7 +1654,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotRel()
    * @generated
    */
-  int YANNOT_REL = 37;
+  int YANNOT_REL = 40;
 
   /**
    * The feature id for the '<em><b>Parent</b></em>' attribute.
@@ -1652,7 +1727,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotIdInner()
    * @generated
    */
-  int YANNOT_ID_INNER = 38;
+  int YANNOT_ID_INNER = 41;
 
   /**
    * The number of structural features of the '<em>YAnnot Id Inner</em>' class.
@@ -1671,7 +1746,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotId()
    * @generated
    */
-  int YANNOT_ID = 39;
+  int YANNOT_ID = 42;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1708,7 +1783,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotTechnicalDesign()
    * @generated
    */
-  int YANNOT_TECHNICAL_DESIGN = 40;
+  int YANNOT_TECHNICAL_DESIGN = 43;
 
   /**
    * The feature id for the '<em><b>Database</b></em>' reference.
@@ -1745,7 +1820,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotTable()
    * @generated
    */
-  int YANNOT_TABLE = 41;
+  int YANNOT_TABLE = 44;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1809,7 +1884,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotColumn()
    * @generated
    */
-  int YANNOT_COLUMN = 42;
+  int YANNOT_COLUMN = 45;
 
   /**
    * The feature id for the '<em><b>Attrref</b></em>' reference.
@@ -1864,7 +1939,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotColumnLike()
    * @generated
    */
-  int YANNOT_COLUMN_LIKE = 43;
+  int YANNOT_COLUMN_LIKE = 46;
 
   /**
    * The feature id for the '<em><b>Columnref</b></em>' reference.
@@ -1892,7 +1967,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotAbstractColumn()
    * @generated
    */
-  int YANNOT_ABSTRACT_COLUMN = 44;
+  int YANNOT_ABSTRACT_COLUMN = 47;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -1929,7 +2004,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotPrimaryKey()
    * @generated
    */
-  int YANNOT_PRIMARY_KEY = 45;
+  int YANNOT_PRIMARY_KEY = 48;
 
   /**
    * The feature id for the '<em><b>Columns</b></em>' reference list.
@@ -1957,7 +2032,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotForeignKey()
    * @generated
    */
-  int YANNOT_FOREIGN_KEY = 46;
+  int YANNOT_FOREIGN_KEY = 49;
 
   /**
    * The feature id for the '<em><b>Relationship</b></em>' reference.
@@ -1994,7 +2069,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotJava()
    * @generated
    */
-  int YANNOT_JAVA = 47;
+  int YANNOT_JAVA = 50;
 
   /**
    * The feature id for the '<em><b>Database</b></em>' reference.
@@ -2022,7 +2097,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotSwift()
    * @generated
    */
-  int YANNOT_SWIFT = 48;
+  int YANNOT_SWIFT = 51;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2059,7 +2134,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDatabase()
    * @generated
    */
-  int YANNOT_DATABASE = 49;
+  int YANNOT_DATABASE = 52;
 
   /**
    * The feature id for the '<em><b>Name</b></em>' attribute.
@@ -2087,7 +2162,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAssignment()
    * @generated
    */
-  int YASSIGNMENT = 50;
+  int YASSIGNMENT = 53;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2124,7 +2199,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYMemberSelection()
    * @generated
    */
-  int YMEMBER_SELECTION = 51;
+  int YMEMBER_SELECTION = 54;
 
   /**
    * The feature id for the '<em><b>Receiver</b></em>' containment reference.
@@ -2179,7 +2254,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYOrExpression()
    * @generated
    */
-  int YOR_EXPRESSION = 52;
+  int YOR_EXPRESSION = 55;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2216,7 +2291,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAndExpression()
    * @generated
    */
-  int YAND_EXPRESSION = 53;
+  int YAND_EXPRESSION = 56;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2253,7 +2328,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYEqualityExpression()
    * @generated
    */
-  int YEQUALITY_EXPRESSION = 54;
+  int YEQUALITY_EXPRESSION = 57;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2299,7 +2374,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYComparisonExpression()
    * @generated
    */
-  int YCOMPARISON_EXPRESSION = 55;
+  int YCOMPARISON_EXPRESSION = 58;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2345,7 +2420,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYPlus()
    * @generated
    */
-  int YPLUS = 56;
+  int YPLUS = 59;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2382,7 +2457,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYMinus()
    * @generated
    */
-  int YMINUS = 57;
+  int YMINUS = 60;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2419,7 +2494,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYMulOrDiv()
    * @generated
    */
-  int YMUL_OR_DIV = 58;
+  int YMUL_OR_DIV = 61;
 
   /**
    * The feature id for the '<em><b>Left</b></em>' containment reference.
@@ -2465,7 +2540,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYParenties()
    * @generated
    */
-  int YPARENTIES = 59;
+  int YPARENTIES = 62;
 
   /**
    * The feature id for the '<em><b>A</b></em>' containment reference.
@@ -2493,7 +2568,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYNot()
    * @generated
    */
-  int YNOT = 60;
+  int YNOT = 63;
 
   /**
    * The feature id for the '<em><b>Expression</b></em>' containment reference.
@@ -2521,7 +2596,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYStringConstant()
    * @generated
    */
-  int YSTRING_CONSTANT = 61;
+  int YSTRING_CONSTANT = 64;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2549,7 +2624,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYIntConstant()
    * @generated
    */
-  int YINT_CONSTANT = 62;
+  int YINT_CONSTANT = 65;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2577,7 +2652,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYBoolConstant()
    * @generated
    */
-  int YBOOL_CONSTANT = 63;
+  int YBOOL_CONSTANT = 66;
 
   /**
    * The feature id for the '<em><b>Value</b></em>' attribute.
@@ -2605,7 +2680,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYSelf()
    * @generated
    */
-  int YSELF = 64;
+  int YSELF = 67;
 
   /**
    * The number of structural features of the '<em>YSelf</em>' class.
@@ -2624,7 +2699,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYSuper()
    * @generated
    */
-  int YSUPER = 65;
+  int YSUPER = 68;
 
   /**
    * The number of structural features of the '<em>YSuper</em>' class.
@@ -2643,7 +2718,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYNull()
    * @generated
    */
-  int YNULL = 66;
+  int YNULL = 69;
 
   /**
    * The number of structural features of the '<em>YNull</em>' class.
@@ -2662,7 +2737,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYSymbolRef()
    * @generated
    */
-  int YSYMBOL_REF = 67;
+  int YSYMBOL_REF = 70;
 
   /**
    * The feature id for the '<em><b>Symbol</b></em>' reference.
@@ -2690,7 +2765,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYNew()
    * @generated
    */
-  int YNEW = 68;
+  int YNEW = 71;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' reference.
@@ -2727,7 +2802,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotLength()
    * @generated
    */
-  int YANNOT_LENGTH = 69;
+  int YANNOT_LENGTH = 72;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2773,7 +2848,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDecimal()
    * @generated
    */
-  int YANNOT_DECIMAL = 70;
+  int YANNOT_DECIMAL = 73;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2828,7 +2903,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefault()
    * @generated
    */
-  int YANNOT_DEFAULT = 71;
+  int YANNOT_DEFAULT = 74;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2849,31 +2924,13 @@ public interface LangPackage extends EPackage
   int YANNOT_DEFAULT__MSGTYPE = YANNOT__MSGTYPE;
 
   /**
-   * The feature id for the '<em><b>Number</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int YANNOT_DEFAULT__NUMBER = YANNOT_FEATURE_COUNT + 0;
-
-  /**
-   * The feature id for the '<em><b>Text</b></em>' attribute.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   * @ordered
-   */
-  int YANNOT_DEFAULT__TEXT = YANNOT_FEATURE_COUNT + 1;
-
-  /**
    * The number of structural features of the '<em>YAnnot Default</em>' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YANNOT_DEFAULT_FEATURE_COUNT = YANNOT_FEATURE_COUNT + 2;
+  int YANNOT_DEFAULT_FEATURE_COUNT = YANNOT_FEATURE_COUNT + 0;
 
   /**
    * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotActionImpl <em>YAnnot Action</em>}' class.
@@ -2883,7 +2940,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotAction()
    * @generated
    */
-  int YANNOT_ACTION = 72;
+  int YANNOT_ACTION = 75;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2929,7 +2986,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotMessage()
    * @generated
    */
-  int YANNOT_MESSAGE = 73;
+  int YANNOT_MESSAGE = 76;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2975,7 +3032,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAccessLevel()
    * @generated
    */
-  int YACCESS_LEVEL = 74;
+  int YACCESS_LEVEL = 77;
 
 
   /**
@@ -3426,15 +3483,15 @@ public interface LangPackage extends EPackage
   EClass getYSwitchStatement();
 
   /**
-   * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitch <em>Switch</em>}'.
+   * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitchExpression <em>Switch Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Switch</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitch()
+   * @return the meta object for the containment reference '<em>Switch Expression</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getSwitchExpression()
    * @see #getYSwitchStatement()
    * @generated
    */
-  EReference getYSwitchStatement_Switch();
+  EReference getYSwitchStatement_SwitchExpression();
 
   /**
    * Returns the meta object for the containment reference list '{@link eu.jgen.notes.dmw.lite.lang.YSwitchStatement#getCases <em>Cases</em>}'.
@@ -3469,15 +3526,15 @@ public interface LangPackage extends EPackage
   EClass getYSwitchCase();
 
   /**
-   * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCase <em>Case</em>}'.
+   * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCaseExpression <em>Case Expression</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference '<em>Case</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCase()
+   * @return the meta object for the containment reference '<em>Case Expression</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YSwitchCase#getCaseExpression()
    * @see #getYSwitchCase()
    * @generated
    */
-  EReference getYSwitchCase_Case();
+  EReference getYSwitchCase_CaseExpression();
 
   /**
    * Returns the meta object for the containment reference '{@link eu.jgen.notes.dmw.lite.lang.YSwitchCase#getThen <em>Then</em>}'.
@@ -4087,6 +4144,58 @@ public interface LangPackage extends EPackage
    * @generated
    */
   EReference getYAnnotTop_Type();
+
+  /**
+   * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultType <em>YAnnot Default Type</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>YAnnot Default Type</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultType
+   * @generated
+   */
+  EClass getYAnnotDefaultType();
+
+  /**
+   * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText <em>YAnnot Default Text</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>YAnnot Default Text</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
+   * @generated
+   */
+  EClass getYAnnotDefaultText();
+
+  /**
+   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText#getValue()
+   * @see #getYAnnotDefaultText()
+   * @generated
+   */
+  EAttribute getYAnnotDefaultText_Value();
+
+  /**
+   * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber <em>YAnnot Default Number</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>YAnnot Default Number</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
+   * @generated
+   */
+  EClass getYAnnotDefaultNumber();
+
+  /**
+   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber#getValue <em>Value</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Value</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber#getValue()
+   * @see #getYAnnotDefaultNumber()
+   * @generated
+   */
+  EAttribute getYAnnotDefaultNumber_Value();
 
   /**
    * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner <em>YAnnot Entity Inner</em>}'.
@@ -5239,28 +5348,6 @@ public interface LangPackage extends EPackage
   EClass getYAnnotDefault();
 
   /**
-   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getNumber <em>Number</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Number</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getNumber()
-   * @see #getYAnnotDefault()
-   * @generated
-   */
-  EAttribute getYAnnotDefault_Number();
-
-  /**
-   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getText <em>Text</em>}'.
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @return the meta object for the attribute '<em>Text</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YAnnotDefault#getText()
-   * @see #getYAnnotDefault()
-   * @generated
-   */
-  EAttribute getYAnnotDefault_Text();
-
-  /**
    * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotAction <em>YAnnot Action</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -5702,12 +5789,12 @@ public interface LangPackage extends EPackage
     EClass YSWITCH_STATEMENT = eINSTANCE.getYSwitchStatement();
 
     /**
-     * The meta object literal for the '<em><b>Switch</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Switch Expression</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference YSWITCH_STATEMENT__SWITCH = eINSTANCE.getYSwitchStatement_Switch();
+    EReference YSWITCH_STATEMENT__SWITCH_EXPRESSION = eINSTANCE.getYSwitchStatement_SwitchExpression();
 
     /**
      * The meta object literal for the '<em><b>Cases</b></em>' containment reference list feature.
@@ -5736,12 +5823,12 @@ public interface LangPackage extends EPackage
     EClass YSWITCH_CASE = eINSTANCE.getYSwitchCase();
 
     /**
-     * The meta object literal for the '<em><b>Case</b></em>' containment reference feature.
+     * The meta object literal for the '<em><b>Case Expression</b></em>' containment reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference YSWITCH_CASE__CASE = eINSTANCE.getYSwitchCase_Case();
+    EReference YSWITCH_CASE__CASE_EXPRESSION = eINSTANCE.getYSwitchCase_CaseExpression();
 
     /**
      * The meta object literal for the '<em><b>Then</b></em>' containment reference feature.
@@ -6234,6 +6321,52 @@ public interface LangPackage extends EPackage
      * @generated
      */
     EReference YANNOT_TOP__TYPE = eINSTANCE.getYAnnotTop_Type();
+
+    /**
+     * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTypeImpl <em>YAnnot Default Type</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTypeImpl
+     * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefaultType()
+     * @generated
+     */
+    EClass YANNOT_DEFAULT_TYPE = eINSTANCE.getYAnnotDefaultType();
+
+    /**
+     * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTextImpl <em>YAnnot Default Text</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultTextImpl
+     * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefaultText()
+     * @generated
+     */
+    EClass YANNOT_DEFAULT_TEXT = eINSTANCE.getYAnnotDefaultText();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute YANNOT_DEFAULT_TEXT__VALUE = eINSTANCE.getYAnnotDefaultText_Value();
+
+    /**
+     * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultNumberImpl <em>YAnnot Default Number</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotDefaultNumberImpl
+     * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefaultNumber()
+     * @generated
+     */
+    EClass YANNOT_DEFAULT_NUMBER = eINSTANCE.getYAnnotDefaultNumber();
+
+    /**
+     * The meta object literal for the '<em><b>Value</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute YANNOT_DEFAULT_NUMBER__VALUE = eINSTANCE.getYAnnotDefaultNumber_Value();
 
     /**
      * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotEntityInnerImpl <em>YAnnot Entity Inner</em>}' class.
@@ -7174,22 +7307,6 @@ public interface LangPackage extends EPackage
      * @generated
      */
     EClass YANNOT_DEFAULT = eINSTANCE.getYAnnotDefault();
-
-    /**
-     * The meta object literal for the '<em><b>Number</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute YANNOT_DEFAULT__NUMBER = eINSTANCE.getYAnnotDefault_Number();
-
-    /**
-     * The meta object literal for the '<em><b>Text</b></em>' attribute feature.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    EAttribute YANNOT_DEFAULT__TEXT = eINSTANCE.getYAnnotDefault_Text();
 
     /**
      * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotActionImpl <em>YAnnot Action</em>}' class.

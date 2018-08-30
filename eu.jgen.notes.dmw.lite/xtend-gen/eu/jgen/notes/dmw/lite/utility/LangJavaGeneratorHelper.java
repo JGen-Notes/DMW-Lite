@@ -5,7 +5,10 @@ import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.YAnnot;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
 import eu.jgen.notes.dmw.lite.lang.YClass;
+import eu.jgen.notes.dmw.lite.lang.YExpression;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
@@ -153,18 +156,24 @@ public class LangJavaGeneratorHelper {
   public String findDefaultFromAnnot(final YProperty property) {
     EList<YAnnot> _annots = property.getAttr().getAnnots();
     for (final YAnnot annotation : _annots) {
-      YAnnot _type = annotation.getType();
+      EObject _type = annotation.getType();
       if ((_type instanceof YAnnotDefault)) {
-        YAnnot _type_1 = annotation.getType();
+        EObject _type_1 = annotation.getType();
         final YAnnotDefault annotDefault = ((YAnnotDefault) _type_1);
-        String _text = annotDefault.getText();
-        boolean _tripleNotEquals = (_text != null);
-        if (_tripleNotEquals) {
-          String _text_1 = annotDefault.getText();
-          String _plus = ("\"" + _text_1);
-          return (_plus + "\"");
+        EObject _type_2 = annotDefault.getType();
+        if ((_type_2 instanceof YAnnotDefaultText)) {
+          EObject _type_3 = annotDefault.getType();
+          final String value = ((YAnnotDefaultText) _type_3).getValue();
+          return (("\"" + value) + "\"");
         } else {
-          return String.valueOf(annotDefault.getNumber());
+          EObject _type_4 = annotDefault.getType();
+          if ((_type_4 instanceof YAnnotDefaultNumber)) {
+            EObject _type_5 = annotDefault.getType();
+            final int value_1 = ((YAnnotDefaultNumber) _type_5).getValue();
+            return String.valueOf(value_1);
+          } else {
+            return "?";
+          }
         }
       }
     }
@@ -185,5 +194,9 @@ public class LangJavaGeneratorHelper {
       }
     }
     return array;
+  }
+  
+  public boolean isExpressionInt(final YExpression expression) {
+    return true;
   }
 }

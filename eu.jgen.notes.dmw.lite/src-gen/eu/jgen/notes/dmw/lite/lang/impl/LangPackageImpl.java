@@ -16,6 +16,9 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDecimal;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultType;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
@@ -334,6 +337,27 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * @generated
    */
   private EClass yAnnotTopEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass yAnnotDefaultTypeEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass yAnnotDefaultTextEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  private EClass yAnnotDefaultNumberEClass = null;
 
   /**
    * <!-- begin-user-doc -->
@@ -1110,7 +1134,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getYSwitchStatement_Switch()
+  public EReference getYSwitchStatement_SwitchExpression()
   {
     return (EReference)ySwitchStatementEClass.getEStructuralFeatures().get(0);
   }
@@ -1150,7 +1174,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getYSwitchCase_Case()
+  public EReference getYSwitchCase_CaseExpression()
   {
     return (EReference)ySwitchCaseEClass.getEStructuralFeatures().get(0);
   }
@@ -1723,6 +1747,56 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
   public EReference getYAnnotTop_Type()
   {
     return (EReference)yAnnotTopEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getYAnnotDefaultType()
+  {
+    return yAnnotDefaultTypeEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getYAnnotDefaultText()
+  {
+    return yAnnotDefaultTextEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getYAnnotDefaultText_Value()
+  {
+    return (EAttribute)yAnnotDefaultTextEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EClass getYAnnotDefaultNumber()
+  {
+    return yAnnotDefaultNumberEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getYAnnotDefaultNumber_Value()
+  {
+    return (EAttribute)yAnnotDefaultNumberEClass.getEStructuralFeatures().get(0);
   }
 
   /**
@@ -2810,26 +2884,6 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EAttribute getYAnnotDefault_Number()
-  {
-    return (EAttribute)yAnnotDefaultEClass.getEStructuralFeatures().get(0);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
-  public EAttribute getYAnnotDefault_Text()
-  {
-    return (EAttribute)yAnnotDefaultEClass.getEStructuralFeatures().get(1);
-  }
-
-  /**
-   * <!-- begin-user-doc -->
-   * <!-- end-user-doc -->
-   * @generated
-   */
   public EClass getYAnnotAction()
   {
     return yAnnotActionEClass;
@@ -2961,12 +3015,12 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEReference(yIfStatementEClass, YIF_STATEMENT__ELSE_BLOCK);
 
     ySwitchStatementEClass = createEClass(YSWITCH_STATEMENT);
-    createEReference(ySwitchStatementEClass, YSWITCH_STATEMENT__SWITCH);
+    createEReference(ySwitchStatementEClass, YSWITCH_STATEMENT__SWITCH_EXPRESSION);
     createEReference(ySwitchStatementEClass, YSWITCH_STATEMENT__CASES);
     createEReference(ySwitchStatementEClass, YSWITCH_STATEMENT__DEFAULT);
 
     ySwitchCaseEClass = createEClass(YSWITCH_CASE);
-    createEReference(ySwitchCaseEClass, YSWITCH_CASE__CASE);
+    createEReference(ySwitchCaseEClass, YSWITCH_CASE__CASE_EXPRESSION);
     createEReference(ySwitchCaseEClass, YSWITCH_CASE__THEN);
 
     ySymbolEClass = createEClass(YSYMBOL);
@@ -3042,6 +3096,14 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
 
     yAnnotTopEClass = createEClass(YANNOT_TOP);
     createEReference(yAnnotTopEClass, YANNOT_TOP__TYPE);
+
+    yAnnotDefaultTypeEClass = createEClass(YANNOT_DEFAULT_TYPE);
+
+    yAnnotDefaultTextEClass = createEClass(YANNOT_DEFAULT_TEXT);
+    createEAttribute(yAnnotDefaultTextEClass, YANNOT_DEFAULT_TEXT__VALUE);
+
+    yAnnotDefaultNumberEClass = createEClass(YANNOT_DEFAULT_NUMBER);
+    createEAttribute(yAnnotDefaultNumberEClass, YANNOT_DEFAULT_NUMBER__VALUE);
 
     yAnnotEntityInnerEClass = createEClass(YANNOT_ENTITY_INNER);
 
@@ -3188,8 +3250,6 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEAttribute(yAnnotDecimalEClass, YANNOT_DECIMAL__DECIMAL);
 
     yAnnotDefaultEClass = createEClass(YANNOT_DEFAULT);
-    createEAttribute(yAnnotDefaultEClass, YANNOT_DEFAULT__NUMBER);
-    createEAttribute(yAnnotDefaultEClass, YANNOT_DEFAULT__TEXT);
 
     yAnnotActionEClass = createEClass(YANNOT_ACTION);
     createEAttribute(yAnnotActionEClass, YANNOT_ACTION__ACTION);
@@ -3251,6 +3311,8 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     yWhileStatementEClass.getESuperTypes().add(this.getYStatement());
     yRepeatWhileStatementEClass.getESuperTypes().add(this.getYStatement());
     yForInStatementEClass.getESuperTypes().add(this.getYStatement());
+    yAnnotDefaultTextEClass.getESuperTypes().add(this.getYAnnotDefaultType());
+    yAnnotDefaultNumberEClass.getESuperTypes().add(this.getYAnnotDefaultType());
     yAnnotAttrEClass.getESuperTypes().add(this.getYAnnotEntityInner());
     yAnnotAttrEClass.getESuperTypes().add(this.getYAnnotIdInner());
     yAnnotRelEClass.getESuperTypes().add(this.getYAnnotEntityInner());
@@ -3338,12 +3400,12 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYIfStatement_ElseBlock(), this.getYBlock(), null, "elseBlock", null, 0, 1, YIfStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ySwitchStatementEClass, YSwitchStatement.class, "YSwitchStatement", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getYSwitchStatement_Switch(), this.getYExpression(), null, "switch", null, 0, 1, YSwitchStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYSwitchStatement_SwitchExpression(), this.getYExpression(), null, "switchExpression", null, 0, 1, YSwitchStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYSwitchStatement_Cases(), this.getYSwitchCase(), null, "cases", null, 0, -1, YSwitchStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYSwitchStatement_Default(), this.getYBlock(), null, "default", null, 0, 1, YSwitchStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ySwitchCaseEClass, YSwitchCase.class, "YSwitchCase", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getYSwitchCase_Case(), this.getYExpression(), null, "case", null, 0, 1, YSwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYSwitchCase_CaseExpression(), this.getYExpression(), null, "caseExpression", null, 0, 1, YSwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYSwitchCase_Then(), this.getYBlock(), null, "then", null, 0, 1, YSwitchCase.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(ySymbolEClass, YSymbol.class, "YSymbol", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -3414,11 +3476,19 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYForInStatement_Body(), this.getYBlock(), null, "body", null, 0, 1, YForInStatement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotEClass, YAnnot.class, "YAnnot", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getYAnnot_Type(), this.getYAnnot(), null, "type", null, 0, 1, YAnnot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYAnnot_Type(), ecorePackage.getEObject(), null, "type", null, 0, 1, YAnnot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYAnnot_Msgtype(), ecorePackage.getEString(), "msgtype", null, 0, 1, YAnnot.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotTopEClass, YAnnotTop.class, "YAnnotTop", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getYAnnotTop_Type(), ecorePackage.getEObject(), null, "type", null, 0, 1, YAnnotTop.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(yAnnotDefaultTypeEClass, YAnnotDefaultType.class, "YAnnotDefaultType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+
+    initEClass(yAnnotDefaultTextEClass, YAnnotDefaultText.class, "YAnnotDefaultText", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getYAnnotDefaultText_Value(), ecorePackage.getEString(), "value", null, 0, 1, YAnnotDefaultText.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(yAnnotDefaultNumberEClass, YAnnotDefaultNumber.class, "YAnnotDefaultNumber", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getYAnnotDefaultNumber_Value(), ecorePackage.getEInt(), "value", null, 0, 1, YAnnotDefaultNumber.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotEntityInnerEClass, YAnnotEntityInner.class, "YAnnotEntityInner", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
@@ -3565,8 +3635,6 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEAttribute(getYAnnotDecimal_Decimal(), ecorePackage.getEInt(), "decimal", null, 0, 1, YAnnotDecimal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotDefaultEClass, YAnnotDefault.class, "YAnnotDefault", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEAttribute(getYAnnotDefault_Number(), ecorePackage.getEInt(), "number", null, 0, 1, YAnnotDefault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEAttribute(getYAnnotDefault_Text(), ecorePackage.getEString(), "text", null, 0, 1, YAnnotDefault.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotActionEClass, YAnnotAction.class, "YAnnotAction", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotAction_Action(), ecorePackage.getEString(), "action", null, 0, 1, YAnnotAction.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

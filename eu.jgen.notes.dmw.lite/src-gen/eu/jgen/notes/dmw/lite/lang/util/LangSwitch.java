@@ -336,6 +336,29 @@ public class LangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case LangPackage.YANNOT_DEFAULT_TYPE:
+      {
+        YAnnotDefaultType yAnnotDefaultType = (YAnnotDefaultType)theEObject;
+        T result = caseYAnnotDefaultType(yAnnotDefaultType);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case LangPackage.YANNOT_DEFAULT_TEXT:
+      {
+        YAnnotDefaultText yAnnotDefaultText = (YAnnotDefaultText)theEObject;
+        T result = caseYAnnotDefaultText(yAnnotDefaultText);
+        if (result == null) result = caseYAnnotDefaultType(yAnnotDefaultText);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
+      case LangPackage.YANNOT_DEFAULT_NUMBER:
+      {
+        YAnnotDefaultNumber yAnnotDefaultNumber = (YAnnotDefaultNumber)theEObject;
+        T result = caseYAnnotDefaultNumber(yAnnotDefaultNumber);
+        if (result == null) result = caseYAnnotDefaultType(yAnnotDefaultNumber);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case LangPackage.YANNOT_ENTITY_INNER:
       {
         YAnnotEntityInner yAnnotEntityInner = (YAnnotEntityInner)theEObject;
@@ -1208,6 +1231,54 @@ public class LangSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseYAnnotTop(YAnnotTop object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>YAnnot Default Type</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>YAnnot Default Type</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseYAnnotDefaultType(YAnnotDefaultType object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>YAnnot Default Text</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>YAnnot Default Text</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseYAnnotDefaultText(YAnnotDefaultText object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>YAnnot Default Number</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>YAnnot Default Number</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseYAnnotDefaultNumber(YAnnotDefaultNumber object)
   {
     return null;
   }

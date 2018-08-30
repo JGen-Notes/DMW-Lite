@@ -176,7 +176,6 @@ public class LangDBUtil {
       }
     }
     final Consumer<YAnnot> _function = (YAnnot annot) -> {
-      column.getAnnots().add(this.cloneYAnnot(annot.getType()));
     };
     attribute.getAnnots().forEach(_function);
     if (((attribute.getOptional() != null) && Objects.equal(attribute.getOptional(), "?"))) {

@@ -10,6 +10,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
@@ -39,7 +40,7 @@ public class YAnnotImpl extends MinimalEObjectImpl.Container implements YAnnot
    * @generated
    * @ordered
    */
-  protected YAnnot type;
+  protected EObject type;
 
   /**
    * The default value of the '{@link #getMsgtype() <em>Msgtype</em>}' attribute.
@@ -87,7 +88,7 @@ public class YAnnotImpl extends MinimalEObjectImpl.Container implements YAnnot
    * <!-- end-user-doc -->
    * @generated
    */
-  public YAnnot getType()
+  public EObject getType()
   {
     return type;
   }
@@ -97,9 +98,9 @@ public class YAnnotImpl extends MinimalEObjectImpl.Container implements YAnnot
    * <!-- end-user-doc -->
    * @generated
    */
-  public NotificationChain basicSetType(YAnnot newType, NotificationChain msgs)
+  public NotificationChain basicSetType(EObject newType, NotificationChain msgs)
   {
-    YAnnot oldType = type;
+    EObject oldType = type;
     type = newType;
     if (eNotificationRequired())
     {
@@ -114,7 +115,7 @@ public class YAnnotImpl extends MinimalEObjectImpl.Container implements YAnnot
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setType(YAnnot newType)
+  public void setType(EObject newType)
   {
     if (newType != type)
     {
@@ -198,7 +199,7 @@ public class YAnnotImpl extends MinimalEObjectImpl.Container implements YAnnot
     switch (featureID)
     {
       case LangPackage.YANNOT__TYPE:
-        setType((YAnnot)newValue);
+        setType((EObject)newValue);
         return;
       case LangPackage.YANNOT__MSGTYPE:
         setMsgtype((String)newValue);
@@ -218,7 +219,7 @@ public class YAnnotImpl extends MinimalEObjectImpl.Container implements YAnnot
     switch (featureID)
     {
       case LangPackage.YANNOT__TYPE:
-        setType((YAnnot)null);
+        setType((EObject)null);
         return;
       case LangPackage.YANNOT__MSGTYPE:
         setMsgtype(MSGTYPE_EDEFAULT);

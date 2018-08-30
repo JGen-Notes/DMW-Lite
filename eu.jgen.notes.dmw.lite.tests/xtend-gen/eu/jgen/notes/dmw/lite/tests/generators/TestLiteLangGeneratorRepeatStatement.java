@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(LangInjectorProvider.class)
 @SuppressWarnings("all")
-public class TestLiteLangGeneratorFunctions {
+public class TestLiteLangGeneratorRepeatStatement {
   @Inject
   @Extension
   private CompilationTestHelper _compilationTestHelper;
@@ -62,51 +62,28 @@ public class TestLiteLangGeneratorFunctions {
       _builder.newLine();
       _builder.append("class B : Widget {\t");
       _builder.newLine();
-      _builder.append("\t");
-      _builder.append("class C : Object {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("public var x : Int;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var c : C;\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var z :Int;\t\t");
-      _builder.newLine();
-      _builder.append("\t");
+      _builder.append("   ");
       _builder.append("public func start() {");
       _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("//a : Int = 2;");
+      _builder.append("   \t  ");
+      _builder.append("/*");
+      _builder.newLine();
+      _builder.append("   \t   ");
+      _builder.append("* Comment");
+      _builder.newLine();
+      _builder.append("   \t   ");
+      _builder.append("*/");
+      _builder.newLine();
+      _builder.append("\t  ");
+      _builder.append("repeat {");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("b : Int = 4;");
+      _builder.append("a : Int = 0;");
       _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("//self.c.x = self.add(a,b);");
+      _builder.append("\t  ");
+      _builder.append("} while (2 > 1)");
       _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("//self.z = 1;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("b = b + 1;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public func add(a : Int, b : Int) -> Int {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return a + b;");
-      _builder.newLine();
-      _builder.append("\t");
+      _builder.append("   ");
       _builder.append("}");
       _builder.newLine();
       _builder.append("}");

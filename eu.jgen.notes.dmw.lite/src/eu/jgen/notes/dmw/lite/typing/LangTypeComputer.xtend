@@ -46,6 +46,13 @@ import eu.jgen.notes.dmw.lite.lang.YNull
 import eu.jgen.notes.dmw.lite.lang.YBoolConstant
 import eu.jgen.notes.dmw.lite.lang.YProperty
 import eu.jgen.notes.dmw.lite.lang.YSelf
+import eu.jgen.notes.dmw.lite.lang.YNot
+import eu.jgen.notes.dmw.lite.lang.YMulOrDiv
+import eu.jgen.notes.dmw.lite.lang.YMinus
+import eu.jgen.notes.dmw.lite.lang.YComparisonExpression
+import eu.jgen.notes.dmw.lite.lang.YEqualityExpression
+import eu.jgen.notes.dmw.lite.lang.YAndExpression
+import eu.jgen.notes.dmw.lite.lang.YOrExpression
 
 class LangTypeComputer {
 	
@@ -91,6 +98,21 @@ class LangTypeComputer {
 				INT_TYPE
  			YBoolConstant:
  				BOOLEAN_TYPE
+ 			YNot:
+ 				BOOLEAN_TYPE
+ 			YMulOrDiv:
+				INT_TYPE
+			YMinus:
+				INT_TYPE
+			YComparisonExpression:
+				BOOLEAN_TYPE
+			YEqualityExpression:
+				BOOLEAN_TYPE
+			YAndExpression:
+			    BOOLEAN_TYPE
+			YOrExpression:
+			    BOOLEAN_TYPE
+
 		}
 	}
 
