@@ -70,7 +70,7 @@ fragment YTypedDeclaration *:
 
 YProperty:
 	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? (optional?='?')? ('->' attr=[YAnnotAttr|QualifiedName])?
-	prop+=YAnnot* ';';
+	annotations+=YAnnot* ';';
 
 YTuples:
 	{YTuples} '<' (includes+=[YProperty] (',' includes+=[YProperty])*)? '>';
@@ -251,13 +251,16 @@ YForInStatement:
  * Predefined annotations
  */
 YAnnot:
-	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault);
+	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault | YAnnotMax);
 
 YAnnotTop:
 	type=(YAnnotEntity | YAnnotTechnicalDesign | YAnnotSwift | YAnnotJava | YAnnotDatabase);
 
 YAnnotLength returns YAnnot:
 	{YAnnotLength} '@length' '(' length=INT ')';
+	
+YAnnotMax returns YAnnot:
+	{YAnnotMax} '@max' '(' length=INT ')';
 
 YAnnotDecimal returns YAnnot:
 	{YAnnotDecimal} '@decimal' '(' length=INT ',' decimal=INT ')';

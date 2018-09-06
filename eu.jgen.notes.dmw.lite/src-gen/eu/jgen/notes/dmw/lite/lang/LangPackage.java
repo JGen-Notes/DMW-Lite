@@ -455,13 +455,13 @@ public interface LangPackage extends EPackage
   int YPROPERTY__ATTR = YMEMBER_FEATURE_COUNT + 2;
 
   /**
-   * The feature id for the '<em><b>Prop</b></em>' containment reference list.
+   * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YPROPERTY__PROP = YMEMBER_FEATURE_COUNT + 3;
+  int YPROPERTY__ANNOTATIONS = YMEMBER_FEATURE_COUNT + 3;
 
   /**
    * The number of structural features of the '<em>YProperty</em>' class.
@@ -2841,6 +2841,52 @@ public interface LangPackage extends EPackage
   int YANNOT_LENGTH_FEATURE_COUNT = YANNOT_FEATURE_COUNT + 1;
 
   /**
+   * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotMaxImpl <em>YAnnot Max</em>}' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotMaxImpl
+   * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotMax()
+   * @generated
+   */
+  int YANNOT_MAX = 73;
+
+  /**
+   * The feature id for the '<em><b>Type</b></em>' containment reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_MAX__TYPE = YANNOT__TYPE;
+
+  /**
+   * The feature id for the '<em><b>Msgtype</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_MAX__MSGTYPE = YANNOT__MSGTYPE;
+
+  /**
+   * The feature id for the '<em><b>Length</b></em>' attribute.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_MAX__LENGTH = YANNOT_FEATURE_COUNT + 0;
+
+  /**
+   * The number of structural features of the '<em>YAnnot Max</em>' class.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   * @ordered
+   */
+  int YANNOT_MAX_FEATURE_COUNT = YANNOT_FEATURE_COUNT + 1;
+
+  /**
    * The meta object id for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDecimalImpl <em>YAnnot Decimal</em>}' class.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -2848,7 +2894,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDecimal()
    * @generated
    */
-  int YANNOT_DECIMAL = 73;
+  int YANNOT_DECIMAL = 74;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2903,7 +2949,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotDefault()
    * @generated
    */
-  int YANNOT_DEFAULT = 74;
+  int YANNOT_DEFAULT = 75;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2940,7 +2986,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotAction()
    * @generated
    */
-  int YANNOT_ACTION = 75;
+  int YANNOT_ACTION = 76;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -2986,7 +3032,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotMessage()
    * @generated
    */
-  int YANNOT_MESSAGE = 76;
+  int YANNOT_MESSAGE = 77;
 
   /**
    * The feature id for the '<em><b>Type</b></em>' containment reference.
@@ -3032,7 +3078,7 @@ public interface LangPackage extends EPackage
    * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAccessLevel()
    * @generated
    */
-  int YACCESS_LEVEL = 77;
+  int YACCESS_LEVEL = 78;
 
 
   /**
@@ -3282,15 +3328,15 @@ public interface LangPackage extends EPackage
   EReference getYProperty_Attr();
 
   /**
-   * Returns the meta object for the containment reference list '{@link eu.jgen.notes.dmw.lite.lang.YProperty#getProp <em>Prop</em>}'.
+   * Returns the meta object for the containment reference list '{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAnnotations <em>Annotations</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Prop</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YProperty#getProp()
+   * @return the meta object for the containment reference list '<em>Annotations</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YProperty#getAnnotations()
    * @see #getYProperty()
    * @generated
    */
-  EReference getYProperty_Prop();
+  EReference getYProperty_Annotations();
 
   /**
    * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YTuples <em>YTuples</em>}'.
@@ -5306,6 +5352,27 @@ public interface LangPackage extends EPackage
   EAttribute getYAnnotLength_Length();
 
   /**
+   * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotMax <em>YAnnot Max</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for class '<em>YAnnot Max</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotMax
+   * @generated
+   */
+  EClass getYAnnotMax();
+
+  /**
+   * Returns the meta object for the attribute '{@link eu.jgen.notes.dmw.lite.lang.YAnnotMax#getLength <em>Length</em>}'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return the meta object for the attribute '<em>Length</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotMax#getLength()
+   * @see #getYAnnotMax()
+   * @generated
+   */
+  EAttribute getYAnnotMax_Length();
+
+  /**
    * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotDecimal <em>YAnnot Decimal</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
@@ -5621,12 +5688,12 @@ public interface LangPackage extends EPackage
     EReference YPROPERTY__ATTR = eINSTANCE.getYProperty_Attr();
 
     /**
-     * The meta object literal for the '<em><b>Prop</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Annotations</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference YPROPERTY__PROP = eINSTANCE.getYProperty_Prop();
+    EReference YPROPERTY__ANNOTATIONS = eINSTANCE.getYProperty_Annotations();
 
     /**
      * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YTuplesImpl <em>YTuples</em>}' class.
@@ -7271,6 +7338,24 @@ public interface LangPackage extends EPackage
      * @generated
      */
     EAttribute YANNOT_LENGTH__LENGTH = eINSTANCE.getYAnnotLength_Length();
+
+    /**
+     * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotMaxImpl <em>YAnnot Max</em>}' class.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see eu.jgen.notes.dmw.lite.lang.impl.YAnnotMaxImpl
+     * @see eu.jgen.notes.dmw.lite.lang.impl.LangPackageImpl#getYAnnotMax()
+     * @generated
+     */
+    EClass YANNOT_MAX = eINSTANCE.getYAnnotMax();
+
+    /**
+     * The meta object literal for the '<em><b>Length</b></em>' attribute feature.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    EAttribute YANNOT_MAX__LENGTH = eINSTANCE.getYAnnotMax_Length();
 
     /**
      * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YAnnotDecimalImpl <em>YAnnot Decimal</em>}' class.

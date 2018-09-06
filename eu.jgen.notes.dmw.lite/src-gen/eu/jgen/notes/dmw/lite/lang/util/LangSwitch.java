@@ -655,6 +655,14 @@ public class LangSwitch<T> extends Switch<T>
         if (result == null) result = defaultCase(theEObject);
         return result;
       }
+      case LangPackage.YANNOT_MAX:
+      {
+        YAnnotMax yAnnotMax = (YAnnotMax)theEObject;
+        T result = caseYAnnotMax(yAnnotMax);
+        if (result == null) result = caseYAnnot(yAnnotMax);
+        if (result == null) result = defaultCase(theEObject);
+        return result;
+      }
       case LangPackage.YANNOT_DECIMAL:
       {
         YAnnotDecimal yAnnotDecimal = (YAnnotDecimal)theEObject;
@@ -1855,6 +1863,22 @@ public class LangSwitch<T> extends Switch<T>
    * @generated
    */
   public T caseYAnnotLength(YAnnotLength object)
+  {
+    return null;
+  }
+
+  /**
+   * Returns the result of interpreting the object as an instance of '<em>YAnnot Max</em>'.
+   * <!-- begin-user-doc -->
+   * This implementation returns null;
+   * returning a non-null result will terminate the switch.
+   * <!-- end-user-doc -->
+   * @param object the target of the switch.
+   * @return the result of interpreting the object as an instance of '<em>YAnnot Max</em>'.
+   * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+   * @generated
+   */
+  public T caseYAnnotMax(YAnnotMax object)
   {
     return null;
   }

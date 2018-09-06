@@ -396,17 +396,17 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Assignment cAttrAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
 		private final CrossReference cAttrYAnnotAttrCrossReference_5_1_0 = (CrossReference)cAttrAssignment_5_1.eContents().get(0);
 		private final RuleCall cAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1 = (RuleCall)cAttrYAnnotAttrCrossReference_5_1_0.eContents().get(1);
-		private final Assignment cPropAssignment_6 = (Assignment)cGroup.eContents().get(6);
-		private final RuleCall cPropYAnnotParserRuleCall_6_0 = (RuleCall)cPropAssignment_6.eContents().get(0);
+		private final Assignment cAnnotationsAssignment_6 = (Assignment)cGroup.eContents().get(6);
+		private final RuleCall cAnnotationsYAnnotParserRuleCall_6_0 = (RuleCall)cAnnotationsAssignment_6.eContents().get(0);
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		//YProperty:
 		//	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attr=[YAnnotAttr|QualifiedName])?
-		//	prop+=YAnnot* ';';
+		//	annotations+=YAnnot* ';';
 		@Override public ParserRule getRule() { return rule; }
 		
 		//access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attr=[YAnnotAttr|QualifiedName])?
-		//prop+=YAnnot* ';'
+		//annotations+=YAnnot* ';'
 		public Group getGroup() { return cGroup; }
 		
 		//access=YAccessLevel?
@@ -448,11 +448,11 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1() { return cAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1; }
 		
-		//prop+=YAnnot*
-		public Assignment getPropAssignment_6() { return cPropAssignment_6; }
+		//annotations+=YAnnot*
+		public Assignment getAnnotationsAssignment_6() { return cAnnotationsAssignment_6; }
 		
 		//YAnnot
-		public RuleCall getPropYAnnotParserRuleCall_6_0() { return cPropYAnnotParserRuleCall_6_0; }
+		public RuleCall getAnnotationsYAnnotParserRuleCall_6_0() { return cAnnotationsYAnnotParserRuleCall_6_0; }
 		
 		//';'
 		public Keyword getSemicolonKeyword_7() { return cSemicolonKeyword_7; }
@@ -2356,23 +2356,25 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cTypeYAnnotMessageParserRuleCall_1_0_3 = (RuleCall)cTypeAlternatives_1_0.eContents().get(3);
 		private final RuleCall cTypeYAnnotMsgTypeParserRuleCall_1_0_4 = (RuleCall)cTypeAlternatives_1_0.eContents().get(4);
 		private final RuleCall cTypeYAnnotDefaultParserRuleCall_1_0_5 = (RuleCall)cTypeAlternatives_1_0.eContents().get(5);
+		private final RuleCall cTypeYAnnotMaxParserRuleCall_1_0_6 = (RuleCall)cTypeAlternatives_1_0.eContents().get(6);
 		
 		///*
 		// * Predefined annotations
 		// */ YAnnot:
-		//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault);
+		//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault |
+		//	YAnnotMax);
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault)
+		//{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault | YAnnotMax)
 		public Group getGroup() { return cGroup; }
 		
 		//{YAnnot}
 		public Action getYAnnotAction_0() { return cYAnnotAction_0; }
 		
-		//type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault)
+		//type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault | YAnnotMax)
 		public Assignment getTypeAssignment_1() { return cTypeAssignment_1; }
 		
-		//(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault)
+		//(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault | YAnnotMax)
 		public Alternatives getTypeAlternatives_1_0() { return cTypeAlternatives_1_0; }
 		
 		//YAnnotLength
@@ -2392,6 +2394,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//YAnnotDefault
 		public RuleCall getTypeYAnnotDefaultParserRuleCall_1_0_5() { return cTypeYAnnotDefaultParserRuleCall_1_0_5; }
+		
+		//YAnnotMax
+		public RuleCall getTypeYAnnotMaxParserRuleCall_1_0_6() { return cTypeYAnnotMaxParserRuleCall_1_0_6; }
 	}
 	public class YAnnotTopElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotTop");
@@ -2450,6 +2455,41 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		
 		//'@length'
 		public Keyword getLengthKeyword_1() { return cLengthKeyword_1; }
+		
+		//'('
+		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
+		
+		//length=INT
+		public Assignment getLengthAssignment_3() { return cLengthAssignment_3; }
+		
+		//INT
+		public RuleCall getLengthINTTerminalRuleCall_3_0() { return cLengthINTTerminalRuleCall_3_0; }
+		
+		//')'
+		public Keyword getRightParenthesisKeyword_4() { return cRightParenthesisKeyword_4; }
+	}
+	public class YAnnotMaxElements extends AbstractParserRuleElementFinder {
+		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YAnnotMax");
+		private final Group cGroup = (Group)rule.eContents().get(1);
+		private final Action cYAnnotMaxAction_0 = (Action)cGroup.eContents().get(0);
+		private final Keyword cMaxKeyword_1 = (Keyword)cGroup.eContents().get(1);
+		private final Keyword cLeftParenthesisKeyword_2 = (Keyword)cGroup.eContents().get(2);
+		private final Assignment cLengthAssignment_3 = (Assignment)cGroup.eContents().get(3);
+		private final RuleCall cLengthINTTerminalRuleCall_3_0 = (RuleCall)cLengthAssignment_3.eContents().get(0);
+		private final Keyword cRightParenthesisKeyword_4 = (Keyword)cGroup.eContents().get(4);
+		
+		//YAnnotMax YAnnot:
+		//	{YAnnotMax} '@max' '(' length=INT ')';
+		@Override public ParserRule getRule() { return rule; }
+		
+		//{YAnnotMax} '@max' '(' length=INT ')'
+		public Group getGroup() { return cGroup; }
+		
+		//{YAnnotMax}
+		public Action getYAnnotMaxAction_0() { return cYAnnotMaxAction_0; }
+		
+		//'@max'
+		public Keyword getMaxKeyword_1() { return cMaxKeyword_1; }
 		
 		//'('
 		public Keyword getLeftParenthesisKeyword_2() { return cLeftParenthesisKeyword_2; }
@@ -3714,6 +3754,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	private final YAnnotElements pYAnnot;
 	private final YAnnotTopElements pYAnnotTop;
 	private final YAnnotLengthElements pYAnnotLength;
+	private final YAnnotMaxElements pYAnnotMax;
 	private final YAnnotDecimalElements pYAnnotDecimal;
 	private final YAnnotDefaultElements pYAnnotDefault;
 	private final YAnnotDefaultTypeElements pYAnnotDefaultType;
@@ -3804,6 +3845,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		this.pYAnnot = new YAnnotElements();
 		this.pYAnnotTop = new YAnnotTopElements();
 		this.pYAnnotLength = new YAnnotLengthElements();
+		this.pYAnnotMax = new YAnnotMaxElements();
 		this.pYAnnotDecimal = new YAnnotDecimalElements();
 		this.pYAnnotDefault = new YAnnotDefaultElements();
 		this.pYAnnotDefaultType = new YAnnotDefaultTypeElements();
@@ -3986,7 +4028,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	//YProperty:
 	//	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attr=[YAnnotAttr|QualifiedName])?
-	//	prop+=YAnnot* ';';
+	//	annotations+=YAnnot* ';';
 	public YPropertyElements getYPropertyAccess() {
 		return pYProperty;
 	}
@@ -4424,7 +4466,8 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	///*
 	// * Predefined annotations
 	// */ YAnnot:
-	//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault);
+	//	{YAnnot} type=(YAnnotLength | YAnnotDecimal | YAnnotAction | YAnnotMessage | YAnnotMsgType | YAnnotDefault |
+	//	YAnnotMax);
 	public YAnnotElements getYAnnotAccess() {
 		return pYAnnot;
 	}
@@ -4451,6 +4494,16 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	
 	public ParserRule getYAnnotLengthRule() {
 		return getYAnnotLengthAccess().getRule();
+	}
+	
+	//YAnnotMax YAnnot:
+	//	{YAnnotMax} '@max' '(' length=INT ')';
+	public YAnnotMaxElements getYAnnotMaxAccess() {
+		return pYAnnotMax;
+	}
+	
+	public ParserRule getYAnnotMaxRule() {
+		return getYAnnotMaxAccess().getRule();
 	}
 	
 	//YAnnotDecimal YAnnot:

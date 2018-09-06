@@ -71,7 +71,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 	@Inject extension LangJavaGeneratorHelper
 
 	@Inject extension LocalNameGenerator
-	
+
 	@Inject extension LangTypeComputer
 
 	private List<String> imports = newArrayList()
@@ -97,7 +97,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 					public class «clazz.name» extends XWidget {
 					   «generateInnerClasses(clazz, clazz.name)»
 					   «generateProperties(clazz)»					   
-					   «generateArrays(clazz, clazz.name)»					   
+					   «doGenerateArrays(clazz, clazz.name)»					   
 					   «generateFunctions(clazz)»
 					}
 				'''
@@ -140,7 +140,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 		]
 	}
 
-	protected def String generateArrays(YClass clazz, String widgetName) {
+	private def String doGenerateArrays(YClass clazz, String widgetName) {
 		'''
 			«FOR property : clazz.listArrayProperties»
 				«registerImport("eu.jgen.notes.dmw.lite.runtimes.XArray")»
@@ -172,7 +172,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 					«ENDFOR»
 				}
 				
-				«property.name.toFirstUpper» «property.name» = new «property.name.toFirstUpper»(20);
+				«property.name.toFirstUpper» «property.name» = new «property.name.toFirstUpper»(«property.findArraySize»);
 			«ENDFOR»
 			
 		'''
@@ -215,7 +215,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 	protected def String generateBlock(YBlock block) {
 		val body = '''
 			«FOR statement : block.statements»
-				«generateStatement(statement)»
+			«generateStatement(statement)»
 			«ENDFOR»
 		'''
 		return body
@@ -223,6 +223,21 @@ class LangJavaWidgetGenerator implements IGenerator {
 
 	protected def String generateStatement(YStatement statement) {
 		switch (statement) {
+			case statement instanceof YForInStatement: {
+				val forInStatement = statement as YForInStatement
+				var _index = "_index".generateLocalName
+				return '''
+					«forInStatement.documentation»  
+					int «_index» = 1;
+					for («_index»=1; «_index» <= this.«forInStatement.collection.name».getLast(); «_index»++) {
+					«forInStatement.collection.name».setSubscript(«_index»);
+					«FOR include : forInStatement.collection.tuples.includes»
+					this.«include.name» = «forInStatement.collection.name».get«include.type.name»();
+					«ENDFOR» 	
+				    «generateBlock(forInStatement.body)»
+					}		
+				'''
+			}
 			case statement instanceof YRepeatWhileStatement: {
 				val repeatWhileStatement = statement as YRepeatWhileStatement
 				return '''
@@ -283,9 +298,16 @@ class LangJavaWidgetGenerator implements IGenerator {
 					if («generateExpression(ifStatement.expression)») {
 						«generateBlock(ifStatement.thenBlock)» 
 					} «IF ifStatement.elseBlock !== null» else {
-											«generateBlock(ifStatement.elseBlock)»
+												«generateBlock(ifStatement.elseBlock)»
 					}«ENDIF»
 					
+				'''
+			}
+			case statement instanceof YMemberSelection: {
+				val memberSelection = statement as YMemberSelection
+				return '''
+					«memberSelection.documentation»
+					«doGenerateSpecialFunctions(memberSelection)»
 				'''
 			}
 			default: {
@@ -476,9 +498,10 @@ class LangJavaWidgetGenerator implements IGenerator {
 
 	protected def String generatMemberSelection(YMemberSelection memberSelection) {
 		if (memberSelection.functioninvocation) {
-			val terminalExpression = generateTermination(memberSelection.receiver)
-			return terminalExpression + "." + (memberSelection.member as YFunction).name +
-				generateFunctionArguments(memberSelection)
+			val function = (memberSelection.member as YFunction)
+			val terminalExpression = generateTermination((memberSelection.receiver as YMemberSelection).receiver)
+			return terminalExpression + "." + (memberSelection.receiver as YMemberSelection).member.name + "." +
+				function.name + generateFunctionArguments(memberSelection)
 		} else {
 			if (memberSelection.receiver instanceof YMemberSelection) {
 				val terminalExpression = generateTermination((memberSelection.receiver as YMemberSelection).receiver)
@@ -515,31 +538,31 @@ class LangJavaWidgetGenerator implements IGenerator {
 		}
 	}
 
-	def String doSwitchStatement(YSwitchStatement switchStatement) {
+	private def String doSwitchStatement(YSwitchStatement switchStatement) {
 		imports.add("com.google.common.base.Objects")
-			var key = "key".generateLocalName
-			var _matched = "_matched".generateLocalName
-			val buffer = new StringBuffer()
-			buffer.append(
+		var key = "key".generateLocalName
+		var _matched = "_matched".generateLocalName
+		val buffer = new StringBuffer()
+		buffer.append(
 		 	'''
-				final «switchStatement.switchExpression.typeFor.name.translateTypeName» «key» = «generateExpression(switchStatement.switchExpression)»;
-				boolean «_matched» = false;
-			''')
-			if (switchStatement.cases.empty) {
-				return buffer.toString
-			}
-			var firstItem = true
-			for (caseFragment : switchStatement.cases) {
-				if (firstItem) {
-					buffer.append(
+			final «switchStatement.switchExpression.typeFor.name.translateTypeName» «key» = «generateExpression(switchStatement.switchExpression)»;
+			boolean «_matched» = false;
+		''')
+		if (switchStatement.cases.empty) {
+			return buffer.toString
+		}
+		var firstItem = true
+		for (caseFragment : switchStatement.cases) {
+			if (firstItem) {
+				buffer.append(
 		 		'''
-				if (Objects.equal(«key», «generateExpression(caseFragment.caseExpression)»)) {
-				   «_matched»=true;
-				   «generateBlock(switchStatement.^default)»
-				}
+					if (Objects.equal(«key», «generateExpression(caseFragment.caseExpression)»)) {
+					   «_matched»=true;
+					   «generateBlock(caseFragment.then)»
+					}
 				''')
 				firstItem = false
-				} else {
+			} else {
 				buffer.append(
 					'''
 					if (!«_matched») {
@@ -548,18 +571,53 @@ class LangJavaWidgetGenerator implements IGenerator {
 					      «generateBlock(caseFragment.then)»   
 					   }
 					}
-					''')	
-				}
+				''')
 			}
-			buffer.append(
-				'''
+		}
+		buffer.append(
+			'''
 				«IF switchStatement.^default !== null»
-				if (!«_matched») {
-				   «generateBlock(switchStatement.^default)»
-				}
+					if (!«_matched») {
+					   «generateBlock(switchStatement.^default)»
+					}
 				«ENDIF»
-				'''
-			)
-			return buffer.toString
+			'''
+		)
+		return buffer.toString
+	}
+
+	private def String doGenerateSpecialFunctions(YMemberSelection memberSelection) {
+		if (!memberSelection.functioninvocation) {
+			return ""
+		}
+		if (memberSelection.member.name == "setSubscript") {
+			return doSetSubscript(memberSelection)
+		}
+		return ""
+	}
+
+	private def String doSetSubscript(YMemberSelection memberSelection) {
+		val property = ((memberSelection.receiver as YMemberSelection).member as YProperty)
+		val arrayName = property.name
+		val tuples = property.tuples
+		val block = '''		
+			«arrayName».setSubscript(«generateExpression(memberSelection.args.get(0))»);
+			«FOR include : tuples.includes»
+				this.«include.name» = «arrayName».get«include.type.name»();
+			«ENDFOR»
+		'''
+		return block
+	}
+	
+	private def String doSetSubscript(YProperty property, int index) {
+		val arrayName = property.name
+		val tuples = property.tuples
+		val block = '''		
+			«arrayName».setSubscript(«index»);
+			«FOR include : tuples.includes»
+				this.«include.name» = «arrayName».get«include.type.name»();
+			«ENDFOR»
+		'''
+		return block
 	}
 }

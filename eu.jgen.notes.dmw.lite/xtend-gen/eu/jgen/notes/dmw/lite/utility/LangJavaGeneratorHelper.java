@@ -7,8 +7,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
+import eu.jgen.notes.dmw.lite.lang.YAnnotMax;
 import eu.jgen.notes.dmw.lite.lang.YClass;
-import eu.jgen.notes.dmw.lite.lang.YExpression;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
@@ -196,7 +196,16 @@ public class LangJavaGeneratorHelper {
     return array;
   }
   
-  public boolean isExpressionInt(final YExpression expression) {
-    return true;
+  public int findArraySize(final YProperty property) {
+    EList<YAnnot> _annotations = property.getAnnotations();
+    for (final YAnnot annotation : _annotations) {
+      EObject _type = annotation.getType();
+      if ((_type instanceof YAnnotMax)) {
+        EObject _type_1 = annotation.getType();
+        final YAnnotMax annotMax = ((YAnnotMax) _type_1);
+        return annotMax.getLength();
+      }
+    }
+    return 0;
   }
 }

@@ -17,7 +17,7 @@ import org.eclipse.emf.common.util.EList;
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getTuples <em>Tuples</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#isOptional <em>Optional</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAttr <em>Attr</em>}</li>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getProp <em>Prop</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAnnotations <em>Annotations</em>}</li>
  * </ul>
  *
  * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYProperty()
@@ -105,19 +105,19 @@ public interface YProperty extends YMember
   void setAttr(YAnnotAttr value);
 
   /**
-   * Returns the value of the '<em><b>Prop</b></em>' containment reference list.
+   * Returns the value of the '<em><b>Annotations</b></em>' containment reference list.
    * The list contents are of type {@link eu.jgen.notes.dmw.lite.lang.YAnnot}.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Prop</em>' containment reference list isn't clear,
+   * If the meaning of the '<em>Annotations</em>' containment reference list isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Prop</em>' containment reference list.
-   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYProperty_Prop()
+   * @return the value of the '<em>Annotations</em>' containment reference list.
+   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYProperty_Annotations()
    * @model containment="true"
    * @generated
    */
-  EList<YAnnot> getProp();
+  EList<YAnnot> getAnnotations();
 
 } // YProperty

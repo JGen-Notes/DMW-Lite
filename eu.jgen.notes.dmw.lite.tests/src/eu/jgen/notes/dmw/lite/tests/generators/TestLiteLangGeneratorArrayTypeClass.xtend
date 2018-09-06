@@ -36,7 +36,7 @@ import org.junit.runner.RunWith
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
-class TestLiteLangGeneratorSwitchStatement {
+class TestLiteLangGeneratorArrayTypeClass {
 
 	//@Inject extension ParseHelper<YWidget>
 	//@Inject extension ValidationTestHelper
@@ -44,97 +44,40 @@ class TestLiteLangGeneratorSwitchStatement {
 	@Inject extension LangLib
 	//@Inject Provider<ResourceSet> resourceSetProvider;
 
-	//@Test
-	def void testGenerateSwitchStatement1() {
+	@Test
+	def void testGenerateArray() {
 		val body = '''
-		package sample.project;						
-		@java 
-		class B : Widget {	
-			class C : Object {
+			package sample.project;						
+			@java 
+			class C : Widget {	
+				class E : Object {
+					public var x : Int;
+					public var t : String;
+				}
 				
-				public var x : Int;
-				public var t : String;
-		
+				var e : E;	
+				var s : Int;
+				
+				var group : Array <e> @max(200); 
+			 
+				public func start() {
+				   /*
+					* Function invocation
+					*/
+				   self.group.setSubscript(1);   
+			       i : Int = self.group.getSubscript(); 
+				}			
 			}
-			var c : C;	
-			var z : C;		
-			public func start() {
-				 switch self.c.x {
-				 	case 1 : {
-				 		// do 1    
-				 	}
-				 	case 2 : {
-				 		// do 2
-				 	}
-				 	default : {
-				 		// do 99
-				 	}
-				 }
-				  
-				 switch self.c.t {
-				 	case "Joe" : {
-				 		// do 1    
-				 	}
-				 	case "John" : {
-				 		// do 2
-				 	}
-				 	default : {
-				 		// do 99
-				 	}
-				 }
-			}
-						  
-			public func add(a : Int, b : Int) -> Int {  
-				if(true) {
-						return a + b;
-				} else {
-						return 0; 	
-				}    
-			}
-		}
 		'''
 	   
 		newArrayList(loadLibSource, body).compile() [	
-			println(it.getGeneratedCode("sample.project.B"))		
+			println(it.getGeneratedCode("sample.project.C"))		
 			Assert.assertFalse(checkIfIssues(it))			
 		]
 	}
-	
-		@Test
-	def void testGenerateSwitchStatement2() {
-		val body = '''
-		package dmw.test.statements;
-		
-		@java
-		
-		/**
-		 * This widget tests generation of the switch statement
-		 */
-		class B : Widget {
-			
-			public func getReturnOnInt(value : Int) -> String {	
-		
-				switch	value {
-					case 1 : {
-						return "case 1";
-					}
-					case 2 : {
-						return "case 2";
-					}
-					default : {
-						return "default";
-					}
-				}
-				return ""; 
-				}
-		}
-		'''
-	   
-		newArrayList(loadLibSource, body).compile() [	
-			println(it.getGeneratedCode("dmw.test.statements.B"))		
-			Assert.assertFalse(checkIfIssues(it))			
-		]
-	}
+
+
+
 	
 	def boolean checkIfIssues(Result result) {
 		if (result.errorsAndWarnings.size > 0) {

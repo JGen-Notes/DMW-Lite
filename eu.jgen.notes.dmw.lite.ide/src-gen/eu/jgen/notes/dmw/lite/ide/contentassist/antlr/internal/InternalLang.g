@@ -1317,6 +1317,31 @@ finally {
 	restoreStackSize(stackSize);
 }
 
+// Entry rule entryRuleYAnnotMax
+entryRuleYAnnotMax
+:
+{ before(grammarAccess.getYAnnotMaxRule()); }
+	 ruleYAnnotMax
+{ after(grammarAccess.getYAnnotMaxRule()); } 
+	 EOF 
+;
+
+// Rule YAnnotMax
+ruleYAnnotMax 
+	@init {
+		int stackSize = keepStackSize();
+	}
+	:
+	(
+		{ before(grammarAccess.getYAnnotMaxAccess().getGroup()); }
+		(rule__YAnnotMax__Group__0)
+		{ after(grammarAccess.getYAnnotMaxAccess().getGroup()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
 // Entry rule entryRuleYAnnotDecimal
 entryRuleYAnnotDecimal
 :
@@ -2304,6 +2329,12 @@ rule__YAnnot__TypeAlternatives_1_0
 		{ before(grammarAccess.getYAnnotAccess().getTypeYAnnotDefaultParserRuleCall_1_0_5()); }
 		ruleYAnnotDefault
 		{ after(grammarAccess.getYAnnotAccess().getTypeYAnnotDefaultParserRuleCall_1_0_5()); }
+	)
+	|
+	(
+		{ before(grammarAccess.getYAnnotAccess().getTypeYAnnotMaxParserRuleCall_1_0_6()); }
+		ruleYAnnotMax
+		{ after(grammarAccess.getYAnnotAccess().getTypeYAnnotMaxParserRuleCall_1_0_6()); }
 	)
 ;
 finally {
@@ -3579,9 +3610,9 @@ rule__YProperty__Group__6__Impl
 	}
 :
 (
-	{ before(grammarAccess.getYPropertyAccess().getPropAssignment_6()); }
-	(rule__YProperty__PropAssignment_6)*
-	{ after(grammarAccess.getYPropertyAccess().getPropAssignment_6()); }
+	{ before(grammarAccess.getYPropertyAccess().getAnnotationsAssignment_6()); }
+	(rule__YProperty__AnnotationsAssignment_6)*
+	{ after(grammarAccess.getYPropertyAccess().getAnnotationsAssignment_6()); }
 )
 ;
 finally {
@@ -9690,6 +9721,141 @@ finally {
 }
 
 
+rule__YAnnotMax__Group__0
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__YAnnotMax__Group__0__Impl
+	rule__YAnnotMax__Group__1
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__0__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getYAnnotMaxAccess().getYAnnotMaxAction_0()); }
+	()
+	{ after(grammarAccess.getYAnnotMaxAccess().getYAnnotMaxAction_0()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__1
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__YAnnotMax__Group__1__Impl
+	rule__YAnnotMax__Group__2
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__1__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getYAnnotMaxAccess().getMaxKeyword_1()); }
+	'@max'
+	{ after(grammarAccess.getYAnnotMaxAccess().getMaxKeyword_1()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__2
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__YAnnotMax__Group__2__Impl
+	rule__YAnnotMax__Group__3
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__2__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getYAnnotMaxAccess().getLeftParenthesisKeyword_2()); }
+	'('
+	{ after(grammarAccess.getYAnnotMaxAccess().getLeftParenthesisKeyword_2()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__YAnnotMax__Group__3__Impl
+	rule__YAnnotMax__Group__4
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__3__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getYAnnotMaxAccess().getLengthAssignment_3()); }
+	(rule__YAnnotMax__LengthAssignment_3)
+	{ after(grammarAccess.getYAnnotMaxAccess().getLengthAssignment_3()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__4
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	rule__YAnnotMax__Group__4__Impl
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__Group__4__Impl
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+(
+	{ before(grammarAccess.getYAnnotMaxAccess().getRightParenthesisKeyword_4()); }
+	')'
+	{ after(grammarAccess.getYAnnotMaxAccess().getRightParenthesisKeyword_4()); }
+)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+
 rule__YAnnotDecimal__Group__0
 	@init {
 		int stackSize = keepStackSize();
@@ -13568,15 +13734,15 @@ finally {
 	restoreStackSize(stackSize);
 }
 
-rule__YProperty__PropAssignment_6
+rule__YProperty__AnnotationsAssignment_6
 	@init {
 		int stackSize = keepStackSize();
 	}
 :
 	(
-		{ before(grammarAccess.getYPropertyAccess().getPropYAnnotParserRuleCall_6_0()); }
+		{ before(grammarAccess.getYPropertyAccess().getAnnotationsYAnnotParserRuleCall_6_0()); }
 		ruleYAnnot
-		{ after(grammarAccess.getYPropertyAccess().getPropYAnnotParserRuleCall_6_0()); }
+		{ after(grammarAccess.getYPropertyAccess().getAnnotationsYAnnotParserRuleCall_6_0()); }
 	)
 ;
 finally {
@@ -14871,6 +15037,21 @@ rule__YAnnotLength__LengthAssignment_3
 		{ before(grammarAccess.getYAnnotLengthAccess().getLengthINTTerminalRuleCall_3_0()); }
 		RULE_INT
 		{ after(grammarAccess.getYAnnotLengthAccess().getLengthINTTerminalRuleCall_3_0()); }
+	)
+;
+finally {
+	restoreStackSize(stackSize);
+}
+
+rule__YAnnotMax__LengthAssignment_3
+	@init {
+		int stackSize = keepStackSize();
+	}
+:
+	(
+		{ before(grammarAccess.getYAnnotMaxAccess().getLengthINTTerminalRuleCall_3_0()); }
+		RULE_INT
+		{ after(grammarAccess.getYAnnotMaxAccess().getLengthINTTerminalRuleCall_3_0()); }
 	)
 ;
 finally {

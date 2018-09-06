@@ -720,17 +720,17 @@ ruleYProperty returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYPropertyAccess().getPropYAnnotParserRuleCall_6_0());
+					newCompositeNode(grammarAccess.getYPropertyAccess().getAnnotationsYAnnotParserRuleCall_6_0());
 				}
-				lv_prop_7_0=ruleYAnnot
+				lv_annotations_7_0=ruleYAnnot
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYPropertyRule());
 					}
 					add(
 						$current,
-						"prop",
-						lv_prop_7_0,
+						"annotations",
+						lv_annotations_7_0,
 						"eu.jgen.notes.dmw.lite.Lang.YAnnot");
 					afterParserOrEnumRuleCall();
 				}
@@ -3848,6 +3848,22 @@ ruleYAnnot returns [EObject current=null]
 							"eu.jgen.notes.dmw.lite.Lang.YAnnotDefault");
 						afterParserOrEnumRuleCall();
 					}
+					    |
+					{
+						newCompositeNode(grammarAccess.getYAnnotAccess().getTypeYAnnotMaxParserRuleCall_1_0_6());
+					}
+					lv_type_1_7=ruleYAnnotMax
+					{
+						if ($current==null) {
+							$current = createModelElementForParent(grammarAccess.getYAnnotRule());
+						}
+						set(
+							$current,
+							"type",
+							lv_type_1_7,
+							"eu.jgen.notes.dmw.lite.Lang.YAnnotMax");
+						afterParserOrEnumRuleCall();
+					}
 				)
 			)
 		)
@@ -4008,6 +4024,62 @@ ruleYAnnotLength returns [EObject current=null]
 		otherlv_4=')'
 		{
 			newLeafNode(otherlv_4, grammarAccess.getYAnnotLengthAccess().getRightParenthesisKeyword_4());
+		}
+	)
+;
+
+// Entry rule entryRuleYAnnotMax
+entryRuleYAnnotMax returns [EObject current=null]:
+	{ newCompositeNode(grammarAccess.getYAnnotMaxRule()); }
+	iv_ruleYAnnotMax=ruleYAnnotMax
+	{ $current=$iv_ruleYAnnotMax.current; }
+	EOF;
+
+// Rule YAnnotMax
+ruleYAnnotMax returns [EObject current=null]
+@init {
+	enterRule();
+}
+@after {
+	leaveRule();
+}:
+	(
+		(
+			{
+				$current = forceCreateModelElement(
+					grammarAccess.getYAnnotMaxAccess().getYAnnotMaxAction_0(),
+					$current);
+			}
+		)
+		otherlv_1='@max'
+		{
+			newLeafNode(otherlv_1, grammarAccess.getYAnnotMaxAccess().getMaxKeyword_1());
+		}
+		otherlv_2='('
+		{
+			newLeafNode(otherlv_2, grammarAccess.getYAnnotMaxAccess().getLeftParenthesisKeyword_2());
+		}
+		(
+			(
+				lv_length_3_0=RULE_INT
+				{
+					newLeafNode(lv_length_3_0, grammarAccess.getYAnnotMaxAccess().getLengthINTTerminalRuleCall_3_0());
+				}
+				{
+					if ($current==null) {
+						$current = createModelElement(grammarAccess.getYAnnotMaxRule());
+					}
+					setWithLastConsumed(
+						$current,
+						"length",
+						lv_length_3_0,
+						"org.eclipse.xtext.common.Terminals.INT");
+				}
+			)
+		)
+		otherlv_4=')'
+		{
+			newLeafNode(otherlv_4, grammarAccess.getYAnnotMaxAccess().getRightParenthesisKeyword_4());
 		}
 	)
 ;

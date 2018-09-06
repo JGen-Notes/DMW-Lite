@@ -139,6 +139,7 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
       case LangPackage.YSYMBOL_REF: return createYSymbolRef();
       case LangPackage.YNEW: return createYNew();
       case LangPackage.YANNOT_LENGTH: return createYAnnotLength();
+      case LangPackage.YANNOT_MAX: return createYAnnotMax();
       case LangPackage.YANNOT_DECIMAL: return createYAnnotDecimal();
       case LangPackage.YANNOT_DEFAULT: return createYAnnotDefault();
       case LangPackage.YANNOT_ACTION: return createYAnnotAction();
@@ -983,6 +984,17 @@ public class LangFactoryImpl extends EFactoryImpl implements LangFactory
   {
     YAnnotLengthImpl yAnnotLength = new YAnnotLengthImpl();
     return yAnnotLength;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotMax createYAnnotMax()
+  {
+    YAnnotMaxImpl yAnnotMax = new YAnnotMaxImpl();
+    return yAnnotMax;
   }
 
   /**

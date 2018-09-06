@@ -26,6 +26,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotId;
 import eu.jgen.notes.dmw.lite.lang.YAnnotIdInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotJava;
 import eu.jgen.notes.dmw.lite.lang.YAnnotLength;
+import eu.jgen.notes.dmw.lite.lang.YAnnotMax;
 import eu.jgen.notes.dmw.lite.lang.YAnnotMessage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotPrimaryKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
@@ -616,6 +617,13 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  private EClass yAnnotMaxEClass = null;
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   private EClass yAnnotDecimalEClass = null;
 
   /**
@@ -944,7 +952,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getYProperty_Prop()
+  public EReference getYProperty_Annotations()
   {
     return (EReference)yPropertyEClass.getEStructuralFeatures().get(3);
   }
@@ -2844,6 +2852,26 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
+  public EClass getYAnnotMax()
+  {
+    return yAnnotMaxEClass;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public EAttribute getYAnnotMax_Length()
+  {
+    return (EAttribute)yAnnotMaxEClass.getEStructuralFeatures().get(0);
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
   public EClass getYAnnotDecimal()
   {
     return yAnnotDecimalEClass;
@@ -2988,7 +3016,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEReference(yPropertyEClass, YPROPERTY__TUPLES);
     createEAttribute(yPropertyEClass, YPROPERTY__OPTIONAL);
     createEReference(yPropertyEClass, YPROPERTY__ATTR);
-    createEReference(yPropertyEClass, YPROPERTY__PROP);
+    createEReference(yPropertyEClass, YPROPERTY__ANNOTATIONS);
 
     yTuplesEClass = createEClass(YTUPLES);
     createEReference(yTuplesEClass, YTUPLES__INCLUDES);
@@ -3245,6 +3273,9 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     yAnnotLengthEClass = createEClass(YANNOT_LENGTH);
     createEAttribute(yAnnotLengthEClass, YANNOT_LENGTH__LENGTH);
 
+    yAnnotMaxEClass = createEClass(YANNOT_MAX);
+    createEAttribute(yAnnotMaxEClass, YANNOT_MAX__LENGTH);
+
     yAnnotDecimalEClass = createEClass(YANNOT_DECIMAL);
     createEAttribute(yAnnotDecimalEClass, YANNOT_DECIMAL__LENGTH);
     createEAttribute(yAnnotDecimalEClass, YANNOT_DECIMAL__DECIMAL);
@@ -3338,6 +3369,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     ySymbolRefEClass.getESuperTypes().add(this.getYExpression());
     yNewEClass.getESuperTypes().add(this.getYExpression());
     yAnnotLengthEClass.getESuperTypes().add(this.getYAnnot());
+    yAnnotMaxEClass.getESuperTypes().add(this.getYAnnot());
     yAnnotDecimalEClass.getESuperTypes().add(this.getYAnnot());
     yAnnotDefaultEClass.getESuperTypes().add(this.getYAnnot());
     yAnnotActionEClass.getESuperTypes().add(this.getYAnnot());
@@ -3373,7 +3405,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYProperty_Tuples(), this.getYTuples(), null, "tuples", null, 0, 1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYProperty_Optional(), ecorePackage.getEBoolean(), "optional", null, 0, 1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYProperty_Attr(), this.getYAnnotAttr(), null, "attr", null, 0, 1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getYProperty_Prop(), this.getYAnnot(), null, "prop", null, 0, -1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYProperty_Annotations(), this.getYAnnot(), null, "annotations", null, 0, -1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yTuplesEClass, YTuples.class, "YTuples", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getYTuples_Includes(), this.getYProperty(), null, "includes", null, 0, -1, YTuples.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -3629,6 +3661,9 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
 
     initEClass(yAnnotLengthEClass, YAnnotLength.class, "YAnnotLength", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotLength_Length(), ecorePackage.getEInt(), "length", null, 0, 1, YAnnotLength.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+    initEClass(yAnnotMaxEClass, YAnnotMax.class, "YAnnotMax", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+    initEAttribute(getYAnnotMax_Length(), ecorePackage.getEInt(), "length", null, 0, 1, YAnnotMax.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yAnnotDecimalEClass, YAnnotDecimal.class, "YAnnotDecimal", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEAttribute(getYAnnotDecimal_Length(), ecorePackage.getEInt(), "length", null, 0, 1, YAnnotDecimal.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

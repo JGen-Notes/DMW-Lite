@@ -441,6 +441,11 @@ public class LangAdapterFactory extends AdapterFactoryImpl
         return createYAnnotLengthAdapter();
       }
       @Override
+      public Adapter caseYAnnotMax(YAnnotMax object)
+      {
+        return createYAnnotMaxAdapter();
+      }
+      @Override
       public Adapter caseYAnnotDecimal(YAnnotDecimal object)
       {
         return createYAnnotDecimalAdapter();
@@ -1573,6 +1578,21 @@ public class LangAdapterFactory extends AdapterFactoryImpl
    * @generated
    */
   public Adapter createYAnnotLengthAdapter()
+  {
+    return null;
+  }
+
+  /**
+   * Creates a new adapter for an object of class '{@link eu.jgen.notes.dmw.lite.lang.YAnnotMax <em>YAnnot Max</em>}'.
+   * <!-- begin-user-doc -->
+   * This default implementation returns null so that we can easily ignore cases;
+   * it's useful to ignore a case when inheritance will catch all the cases anyway.
+   * <!-- end-user-doc -->
+   * @return the new adapter.
+   * @see eu.jgen.notes.dmw.lite.lang.YAnnotMax
+   * @generated
+   */
+  public Adapter createYAnnotMaxAdapter()
   {
     return null;
   }

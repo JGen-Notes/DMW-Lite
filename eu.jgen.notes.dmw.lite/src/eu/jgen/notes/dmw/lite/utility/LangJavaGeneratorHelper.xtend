@@ -16,6 +16,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
 import eu.jgen.notes.dmw.lite.lang.YExpression
+import eu.jgen.notes.dmw.lite.lang.YAnnotMax
 
 class LangJavaGeneratorHelper {
 
@@ -165,9 +166,14 @@ class LangJavaGeneratorHelper {
 		return array;
 	}
 	
-	def boolean isExpressionInt(YExpression expression) {
-		
-		return true;
+	def int findArraySize(YProperty property) {
+		for (annotation : property.annotations) {
+			if (annotation.type instanceof YAnnotMax) {
+				val annotMax = annotation.type as YAnnotMax
+				return annotMax.length				
+			}
+		}		
+		return 0;
 	}
 
 }

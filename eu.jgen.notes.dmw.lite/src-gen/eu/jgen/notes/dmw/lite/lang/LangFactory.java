@@ -681,6 +681,15 @@ public interface LangFactory extends EFactory
   YAnnotLength createYAnnotLength();
 
   /**
+   * Returns a new object of class '<em>YAnnot Max</em>'.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @return a new object of class '<em>YAnnot Max</em>'.
+   * @generated
+   */
+  YAnnotMax createYAnnotMax();
+
+  /**
    * Returns a new object of class '<em>YAnnot Decimal</em>'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->

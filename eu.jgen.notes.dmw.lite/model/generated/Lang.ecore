@@ -40,8 +40,8 @@
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="optional" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attr" eType="#//YAnnotAttr"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="prop" upperBound="-1" eType="#//YAnnot"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1"
+        eType="#//YAnnot" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YTuples">
     <eStructuralFeatures xsi:type="ecore:EReference" name="includes" unique="false"
@@ -362,6 +362,9 @@
         eType="#//YExpression" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotLength" eSuperTypes="#//YAnnot">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="YAnnotMax" eSuperTypes="#//YAnnot">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="length" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YAnnotDecimal" eSuperTypes="#//YAnnot">

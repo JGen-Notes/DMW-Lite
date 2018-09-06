@@ -22,6 +22,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotId;
 import eu.jgen.notes.dmw.lite.lang.YAnnotJava;
 import eu.jgen.notes.dmw.lite.lang.YAnnotLength;
+import eu.jgen.notes.dmw.lite.lang.YAnnotMax;
 import eu.jgen.notes.dmw.lite.lang.YAnnotMessage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotPrimaryKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
@@ -157,6 +158,9 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 				return; 
 			case LangPackage.YANNOT_LENGTH:
 				sequence_YAnnotLength(context, (YAnnotLength) semanticObject); 
+				return; 
+			case LangPackage.YANNOT_MAX:
+				sequence_YAnnotMax(context, (YAnnotMax) semanticObject); 
 				return; 
 			case LangPackage.YANNOT_MESSAGE:
 				sequence_YAnnotMessage(context, (YAnnotMessage) semanticObject); 
@@ -660,6 +664,24 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	
 	/**
 	 * Contexts:
+	 *     YAnnotMax returns YAnnotMax
+	 *
+	 * Constraint:
+	 *     length=INT
+	 */
+	protected void sequence_YAnnotMax(ISerializationContext context, YAnnotMax semanticObject) {
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YANNOT_MAX__LENGTH) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YANNOT_MAX__LENGTH));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getYAnnotMaxAccess().getLengthINTTerminalRuleCall_3_0(), semanticObject.getLength());
+		feeder.finish();
+	}
+	
+	
+	/**
+	 * Contexts:
 	 *     YAnnotMessage returns YAnnotMessage
 	 *
 	 * Constraint:
@@ -786,7 +808,8 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *         type=YAnnotAction | 
 	 *         type=YAnnotMessage | 
 	 *         type=YAnnotMsgType | 
-	 *         type=YAnnotDefault
+	 *         type=YAnnotDefault | 
+	 *         type=YAnnotMax
 	 *     )
 	 */
 	protected void sequence_YAnnot(ISerializationContext context, YAnnot semanticObject) {
@@ -1200,7 +1223,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *         tuples=YTuples? 
 	 *         optional?='?'? 
 	 *         attr=[YAnnotAttr|QualifiedName]? 
-	 *         prop+=YAnnot*
+	 *         annotations+=YAnnot*
 	 *     )
 	 */
 	protected void sequence_YProperty_YTypedDeclaration(ISerializationContext context, YProperty semanticObject) {

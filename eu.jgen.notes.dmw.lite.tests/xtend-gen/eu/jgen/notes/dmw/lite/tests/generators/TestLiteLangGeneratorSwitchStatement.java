@@ -52,8 +52,7 @@ public class TestLiteLangGeneratorSwitchStatement {
   @Extension
   private LangLib _langLib;
   
-  @Test
-  public void testGenerateExpressionPlus() {
+  public void testGenerateSwitchStatement1() {
     try {
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("package sample.project;\t\t\t\t\t\t");
@@ -185,6 +184,84 @@ public class TestLiteLangGeneratorSwitchStatement {
       final String body = _builder.toString();
       final IAcceptor<CompilationTestHelper.Result> _function = (CompilationTestHelper.Result it) -> {
         InputOutput.<String>println(it.getGeneratedCode("sample.project.B"));
+        Assert.assertFalse(this.checkIfIssues(it));
+      };
+      this._compilationTestHelper.compile(CollectionLiterals.<String>newArrayList(this._langLib.loadLibSource(), body), _function);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testGenerateSwitchStatement2() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("package dmw.test.statements;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("@java");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("/**");
+      _builder.newLine();
+      _builder.append(" ");
+      _builder.append("* This widget tests generation of the switch statement");
+      _builder.newLine();
+      _builder.append(" ");
+      _builder.append("*/");
+      _builder.newLine();
+      _builder.append("class B : Widget {");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("public func getReturnOnInt(value : Int) -> String {\t");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("switch\tvalue {");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("case 1 : {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("return \"case 1\";");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("case 2 : {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("return \"case 2\";");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("default : {");
+      _builder.newLine();
+      _builder.append("\t\t\t\t");
+      _builder.append("return \"default\";");
+      _builder.newLine();
+      _builder.append("\t\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("return \"\"; ");
+      _builder.newLine();
+      _builder.append("\t\t");
+      _builder.append("}");
+      _builder.newLine();
+      _builder.append("}");
+      _builder.newLine();
+      final String body = _builder.toString();
+      final IAcceptor<CompilationTestHelper.Result> _function = (CompilationTestHelper.Result it) -> {
+        InputOutput.<String>println(it.getGeneratedCode("dmw.test.statements.B"));
         Assert.assertFalse(this.checkIfIssues(it));
       };
       this._compilationTestHelper.compile(CollectionLiterals.<String>newArrayList(this._langLib.loadLibSource(), body), _function);

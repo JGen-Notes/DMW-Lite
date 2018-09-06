@@ -3,8 +3,8 @@ package eu.jgen.notes.dmw.lite.runtimes;
 public class XArray {
 
 	int subscript = 0;
-	int max = -1;
-	int last = -1;
+	int max = 9999;
+	int last = 0;
 
 	public XArray(int max) {
 		super();
@@ -16,7 +16,9 @@ public class XArray {
 	 */
 	public void setSubscript(int value) {
 		if (value <= max) {
-			this.last = value;
+			if (this.last <= value ) {
+				this.last = value;
+			}
 			this.subscript = value;
 		}
 	}

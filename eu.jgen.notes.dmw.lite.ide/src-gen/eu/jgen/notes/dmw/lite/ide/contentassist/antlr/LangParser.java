@@ -133,6 +133,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYForInStatementAccess().getGroup(), "rule__YForInStatement__Group__0");
 					put(grammarAccess.getYAnnotAccess().getGroup(), "rule__YAnnot__Group__0");
 					put(grammarAccess.getYAnnotLengthAccess().getGroup(), "rule__YAnnotLength__Group__0");
+					put(grammarAccess.getYAnnotMaxAccess().getGroup(), "rule__YAnnotMax__Group__0");
 					put(grammarAccess.getYAnnotDecimalAccess().getGroup(), "rule__YAnnotDecimal__Group__0");
 					put(grammarAccess.getYAnnotDefaultAccess().getGroup(), "rule__YAnnotDefault__Group__0");
 					put(grammarAccess.getYAnnotActionAccess().getGroup(), "rule__YAnnotAction__Group__0");
@@ -177,7 +178,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYPropertyAccess().getTuplesAssignment_3(), "rule__YProperty__TuplesAssignment_3");
 					put(grammarAccess.getYPropertyAccess().getOptionalAssignment_4(), "rule__YProperty__OptionalAssignment_4");
 					put(grammarAccess.getYPropertyAccess().getAttrAssignment_5_1(), "rule__YProperty__AttrAssignment_5_1");
-					put(grammarAccess.getYPropertyAccess().getPropAssignment_6(), "rule__YProperty__PropAssignment_6");
+					put(grammarAccess.getYPropertyAccess().getAnnotationsAssignment_6(), "rule__YProperty__AnnotationsAssignment_6");
 					put(grammarAccess.getYTuplesAccess().getIncludesAssignment_2_0(), "rule__YTuples__IncludesAssignment_2_0");
 					put(grammarAccess.getYTuplesAccess().getIncludesAssignment_2_1_1(), "rule__YTuples__IncludesAssignment_2_1_1");
 					put(grammarAccess.getYFunctionAccess().getAccessAssignment_0(), "rule__YFunction__AccessAssignment_0");
@@ -260,6 +261,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAnnotAccess().getTypeAssignment_1(), "rule__YAnnot__TypeAssignment_1");
 					put(grammarAccess.getYAnnotTopAccess().getTypeAssignment(), "rule__YAnnotTop__TypeAssignment");
 					put(grammarAccess.getYAnnotLengthAccess().getLengthAssignment_3(), "rule__YAnnotLength__LengthAssignment_3");
+					put(grammarAccess.getYAnnotMaxAccess().getLengthAssignment_3(), "rule__YAnnotMax__LengthAssignment_3");
 					put(grammarAccess.getYAnnotDecimalAccess().getLengthAssignment_3(), "rule__YAnnotDecimal__LengthAssignment_3");
 					put(grammarAccess.getYAnnotDecimalAccess().getDecimalAssignment_5(), "rule__YAnnotDecimal__DecimalAssignment_5");
 					put(grammarAccess.getYAnnotDefaultAccess().getTypeAssignment_3(), "rule__YAnnotDefault__TypeAssignment_3");

@@ -35,7 +35,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getTuples <em>Tuples</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#isOptional <em>Optional</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getAttr <em>Attr</em>}</li>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getProp <em>Prop</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getAnnotations <em>Annotations</em>}</li>
  * </ul>
  *
  * @generated
@@ -83,14 +83,14 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
   protected YAnnotAttr attr;
 
   /**
-   * The cached value of the '{@link #getProp() <em>Prop</em>}' containment reference list.
+   * The cached value of the '{@link #getAnnotations() <em>Annotations</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getProp()
+   * @see #getAnnotations()
    * @generated
    * @ordered
    */
-  protected EList<YAnnot> prop;
+  protected EList<YAnnot> annotations;
 
   /**
    * <!-- begin-user-doc -->
@@ -232,13 +232,13 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<YAnnot> getProp()
+  public EList<YAnnot> getAnnotations()
   {
-    if (prop == null)
+    if (annotations == null)
     {
-      prop = new EObjectContainmentEList<YAnnot>(YAnnot.class, this, LangPackage.YPROPERTY__PROP);
+      annotations = new EObjectContainmentEList<YAnnot>(YAnnot.class, this, LangPackage.YPROPERTY__ANNOTATIONS);
     }
-    return prop;
+    return annotations;
   }
 
   /**
@@ -253,8 +253,8 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
     {
       case LangPackage.YPROPERTY__TUPLES:
         return basicSetTuples(null, msgs);
-      case LangPackage.YPROPERTY__PROP:
-        return ((InternalEList<?>)getProp()).basicRemove(otherEnd, msgs);
+      case LangPackage.YPROPERTY__ANNOTATIONS:
+        return ((InternalEList<?>)getAnnotations()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -276,8 +276,8 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
       case LangPackage.YPROPERTY__ATTR:
         if (resolve) return getAttr();
         return basicGetAttr();
-      case LangPackage.YPROPERTY__PROP:
-        return getProp();
+      case LangPackage.YPROPERTY__ANNOTATIONS:
+        return getAnnotations();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -302,9 +302,9 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
       case LangPackage.YPROPERTY__ATTR:
         setAttr((YAnnotAttr)newValue);
         return;
-      case LangPackage.YPROPERTY__PROP:
-        getProp().clear();
-        getProp().addAll((Collection<? extends YAnnot>)newValue);
+      case LangPackage.YPROPERTY__ANNOTATIONS:
+        getAnnotations().clear();
+        getAnnotations().addAll((Collection<? extends YAnnot>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -329,8 +329,8 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
       case LangPackage.YPROPERTY__ATTR:
         setAttr((YAnnotAttr)null);
         return;
-      case LangPackage.YPROPERTY__PROP:
-        getProp().clear();
+      case LangPackage.YPROPERTY__ANNOTATIONS:
+        getAnnotations().clear();
         return;
     }
     super.eUnset(featureID);
@@ -352,8 +352,8 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
         return optional != OPTIONAL_EDEFAULT;
       case LangPackage.YPROPERTY__ATTR:
         return attr != null;
-      case LangPackage.YPROPERTY__PROP:
-        return prop != null && !prop.isEmpty();
+      case LangPackage.YPROPERTY__ANNOTATIONS:
+        return annotations != null && !annotations.isEmpty();
     }
     return super.eIsSet(featureID);
   }
