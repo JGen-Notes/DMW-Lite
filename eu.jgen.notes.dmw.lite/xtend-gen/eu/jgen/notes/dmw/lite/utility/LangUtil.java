@@ -185,6 +185,23 @@ public class LangUtil {
     return _xblockexpression;
   }
   
+  public String getImplementingColumnName(final YAnnotTable table, final YMember member) {
+    EList<YAnnotAbstractColumn> _columns = table.getColumns();
+    for (final YAnnotAbstractColumn annotAbstractColumn : _columns) {
+      EObject _type = annotAbstractColumn.getType();
+      if ((_type instanceof YAnnotColumn)) {
+        EObject _type_1 = annotAbstractColumn.getType();
+        String _name = ((YAnnotColumn) _type_1).getAttrref().getName();
+        String _name_1 = member.getName();
+        boolean _equals = Objects.equal(_name, _name_1);
+        if (_equals) {
+          return annotAbstractColumn.getName();
+        }
+      }
+    }
+    return "";
+  }
+  
   public YAnnotTable getImplementingTable(final YAnnotEntity entity) {
     final String entityName = entity.getName();
     IResourceDescriptions resourceDescriptions = this.resourceDescriptionsProvider.getResourceDescriptions(entity.eResource());

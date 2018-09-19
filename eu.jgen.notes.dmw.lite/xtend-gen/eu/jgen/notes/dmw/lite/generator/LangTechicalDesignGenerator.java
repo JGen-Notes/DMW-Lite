@@ -38,11 +38,11 @@ public class LangTechicalDesignGenerator implements IGenerator {
   protected void generateDDLForDerby(final IFileSystemAccess fsa, final YAnnotTechnicalDesign technicalDesign) {
     EList<YAnnotTable> _features = technicalDesign.getFeatures();
     for (final YAnnotTable table : _features) {
-      this.generateTable(fsa, table);
+      this.generateTableForDerby(fsa, table);
     }
   }
   
-  private void generateTable(final IFileSystemAccess fsa, final YAnnotTable table) {
+  private void generateTableForDerby(final IFileSystemAccess fsa, final YAnnotTable table) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("CREATE TABLE \"");
     String _upperCase = table.getName().toUpperCase();
@@ -59,8 +59,8 @@ public class LangTechicalDesignGenerator implements IGenerator {
           _builder.appendImmediate(",", "\t");
         }
         _builder.append("\t");
-        String _generateColumns = this.generateColumns(abstractColumn);
-        _builder.append(_generateColumns, "\t");
+        String _generateColumnForDerby = this.generateColumnForDerby(abstractColumn);
+        _builder.append(_generateColumnForDerby, "\t");
         _builder.newLineIfNotEmpty();
       }
       if (_hasElements) {
@@ -105,14 +105,14 @@ public class LangTechicalDesignGenerator implements IGenerator {
       LangOutputProvider.DDL, text);
   }
   
-  private String generateColumns(final YAnnotAbstractColumn abstractColumn) {
+  private String generateColumnForDerby(final YAnnotAbstractColumn abstractColumn) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("\"");
     String _upperCase = abstractColumn.getName().toUpperCase();
     _builder.append(_upperCase);
     _builder.append("\" ");
-    String _generateColumnType = this.generateColumnType(abstractColumn);
-    _builder.append(_generateColumnType);
+    String _generateColumnTypeForDerby = this.generateColumnTypeForDerby(abstractColumn);
+    _builder.append(_generateColumnTypeForDerby);
     _builder.newLineIfNotEmpty();
     final String text = _builder.toString();
     return text;
@@ -127,8 +127,8 @@ public class LangTechicalDesignGenerator implements IGenerator {
         String _upperCase = abstractColumn.getName().toUpperCase();
         _builder.append(_upperCase);
         _builder.append("\" ");
-        String _generateColumnType = this.generateColumnType(abstractColumn);
-        _builder.append(_generateColumnType);
+        String _generateColumnTypeForDerby = this.generateColumnTypeForDerby(abstractColumn);
+        _builder.append(_generateColumnTypeForDerby);
         _builder.newLineIfNotEmpty();
       }
     }
@@ -136,7 +136,7 @@ public class LangTechicalDesignGenerator implements IGenerator {
     return text;
   }
   
-  private String generateColumnType(final YAnnotAbstractColumn abstractColumn) {
+  private String generateColumnTypeForDerby(final YAnnotAbstractColumn abstractColumn) {
     String _xifexpression = null;
     EObject _type = abstractColumn.getType();
     if ((_type instanceof YAnnotColumn)) {
@@ -148,8 +148,8 @@ public class LangTechicalDesignGenerator implements IGenerator {
       {
         if ((Objects.equal(column.getType(), "CHAR") || Objects.equal(column.getType(), "VARCHAR"))) {
           _builder.append("(");
-          String _generateLength = this.generateLength(column);
-          _builder.append(_generateLength);
+          String _generateLengthForDerby = this.generateLengthForDerby(column);
+          _builder.append(_generateLengthForDerby);
           _builder.append(")");
         }
       }
@@ -161,12 +161,12 @@ public class LangTechicalDesignGenerator implements IGenerator {
       return text;
     } else {
       EObject _type_3 = abstractColumn.getType();
-      _xifexpression = this.generateColumnType(((YAnnotColumnLike) _type_3).getColumnref());
+      _xifexpression = this.generateColumnTypeForDerby(((YAnnotColumnLike) _type_3).getColumnref());
     }
     return _xifexpression;
   }
   
-  private String generateLength(final YAnnotColumn column) {
+  private String generateLengthForDerby(final YAnnotColumn column) {
     EList<YAnnot> _annots = column.getAnnots();
     for (final YAnnot annot : _annots) {
       if ((annot instanceof YAnnotLength)) {

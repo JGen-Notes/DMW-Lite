@@ -69,12 +69,12 @@ class LangDBUtil {
 				attrref = attribute
 			]
 			type = column
-			selectColumnProperties(column, attribute)
+			doSelectColumnProperties(column, attribute)
 		]
 		return abstractColumn
 	}
 
-	def private void selectColumnProperties(YAnnotColumn column, YAnnotAttr attribute) {
+	def private void doSelectColumnProperties(YAnnotColumn column, YAnnotAttr attribute) {
 		// Set default values in case annotation does not exist.
 		if (attribute.yclass.name == "String") {
 			column.type = "CHAR"
@@ -97,7 +97,11 @@ class LangDBUtil {
 		}
 		//TODO need to check this
 		attribute.annots.forEach [ annot |
-			//column.annots.add(annot.type.cloneYAnnot)
+			val annotClone = annot.cloneYAnnot
+			if(annotClone !== null) {
+				column.annots.add(annotClone)	
+			}
+					
 		]
 		if (attribute.optional !== null && attribute.optional == "?") {
 			column.optional = "?"
@@ -106,16 +110,16 @@ class LangDBUtil {
 
 	def YAnnot cloneYAnnot(YAnnot annot) {
 		switch (annot) {
-			case annot instanceof YAnnotLength: {
+			case annot.type instanceof YAnnotLength: {
 				val clone = LangFactory.eINSTANCE.createYAnnotLength => [
-					length = (annot as YAnnotLength).length
+					length = (annot.type as YAnnotLength).length
 				]
 				return clone;
 			}
-			case annot instanceof YAnnotDecimal: {
+			case annot.type instanceof YAnnotDecimal: {
 				val clone = LangFactory.eINSTANCE.createYAnnotDecimal => [
-					length = (annot as YAnnotDecimal).length
-					decimal = (annot as YAnnotDecimal).decimal
+					length = (annot.type as YAnnotDecimal).length
+					decimal = (annot.type as YAnnotDecimal).decimal
 				]
 				return clone;
 			}
@@ -133,13 +137,13 @@ class LangDBUtil {
 	}
 
 	def YAnnotForeignKey converRelationshipIntoForeignKeys(YAnnotRel relationship) {
-		createForeignKeyForRelationship(relationship, relationship.inverse)
+		doCreateForeignKeyForRelationship(relationship, relationship.inverse)
 	}
 
-	def private YAnnotForeignKey createForeignKeyForRelationship(YAnnotRel thisrelationship,
+	def private YAnnotForeignKey doCreateForeignKeyForRelationship(YAnnotRel thisrelationship,
 		YAnnotRel targetRelationship) {
 		val foreignKey = LangFactory.eINSTANCE.createYAnnotForeignKey => [
-			val list = convertRetaionshipIntoFKColumns(targetRelationship)
+			val list = doConvertRelationshipIntoFKColumns(targetRelationship)
 			for (abstractColumn : list) {
 				columns.add(abstractColumn)
 			}
@@ -148,7 +152,7 @@ class LangDBUtil {
 		return foreignKey
 	}
 
-	def private List<YAnnotAbstractColumn> convertRetaionshipIntoFKColumns(YAnnotRel relationship) {
+	def private List<YAnnotAbstractColumn> doConvertRelationshipIntoFKColumns(YAnnotRel relationship) {
 		val list = newArrayList()
 		val parentEntity = relationship.eContainer as YAnnotEntity
 		val parentTable = parentEntity.getImplementingTable
@@ -171,7 +175,7 @@ class LangDBUtil {
 
 	def YAnnotPrimaryKey converIdentifierIntoPrimaryKey(YAnnotId identifier) {
 		val primaryKey = LangFactory.eINSTANCE.createYAnnotPrimaryKey => [
-			val list = convertIdentifierIntoColumns(identifier)
+			val list = doConvertIdentifierIntoColumns(identifier)
 			for (abstarctColumn : list) {
 				columns.add(abstarctColumn)
 			}
@@ -180,7 +184,7 @@ class LangDBUtil {
 		return primaryKey
 	}
 
-	def private List<YAnnotAbstractColumn> convertIdentifierIntoColumns(YAnnotId identifier) {
+	def private List<YAnnotAbstractColumn> doConvertIdentifierIntoColumns(YAnnotId identifier) {
 		val List<YAnnotAbstractColumn> list = newArrayList()
 		for (identifierPart : identifier.annots) {
 			if (identifierPart instanceof YAnnotAttr) {

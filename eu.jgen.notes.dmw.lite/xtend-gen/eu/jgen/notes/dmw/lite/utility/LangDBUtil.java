@@ -115,13 +115,13 @@ public class LangDBUtil {
       };
       final YAnnotColumn column = ObjectExtensions.<YAnnotColumn>operator_doubleArrow(_createYAnnotColumn, _function_1);
       it.setType(column);
-      this.selectColumnProperties(column, attribute);
+      this.doSelectColumnProperties(column, attribute);
     };
     final YAnnotAbstractColumn abstractColumn = ObjectExtensions.<YAnnotAbstractColumn>operator_doubleArrow(_createYAnnotAbstractColumn, _function);
     return abstractColumn;
   }
   
-  private void selectColumnProperties(final YAnnotColumn column, final YAnnotAttr attribute) {
+  private void doSelectColumnProperties(final YAnnotColumn column, final YAnnotAttr attribute) {
     String _name = attribute.getYclass().getName();
     boolean _equals = Objects.equal(_name, "String");
     if (_equals) {
@@ -176,6 +176,10 @@ public class LangDBUtil {
       }
     }
     final Consumer<YAnnot> _function = (YAnnot annot) -> {
+      final YAnnot annotClone = this.cloneYAnnot(annot);
+      if ((annotClone != null)) {
+        column.getAnnots().add(annotClone);
+      }
     };
     attribute.getAnnots().forEach(_function);
     if (((attribute.getOptional() != null) && Objects.equal(attribute.getOptional(), "?"))) {
@@ -186,22 +190,27 @@ public class LangDBUtil {
   public YAnnot cloneYAnnot(final YAnnot annot) {
     Object _switchResult = null;
     boolean _matched = false;
-    if ((annot instanceof YAnnotLength)) {
+    EObject _type = annot.getType();
+    if ((_type instanceof YAnnotLength)) {
       _matched=true;
       YAnnotLength _createYAnnotLength = LangFactory.eINSTANCE.createYAnnotLength();
       final Procedure1<YAnnotLength> _function = (YAnnotLength it) -> {
-        it.setLength(((YAnnotLength) annot).getLength());
+        EObject _type_1 = annot.getType();
+        it.setLength(((YAnnotLength) _type_1).getLength());
       };
       final YAnnotLength clone = ObjectExtensions.<YAnnotLength>operator_doubleArrow(_createYAnnotLength, _function);
       return clone;
     }
     if (!_matched) {
-      if ((annot instanceof YAnnotDecimal)) {
+      EObject _type_1 = annot.getType();
+      if ((_type_1 instanceof YAnnotDecimal)) {
         _matched=true;
         YAnnotDecimal _createYAnnotDecimal = LangFactory.eINSTANCE.createYAnnotDecimal();
         final Procedure1<YAnnotDecimal> _function_1 = (YAnnotDecimal it) -> {
-          it.setLength(((YAnnotDecimal) annot).getLength());
-          it.setDecimal(((YAnnotDecimal) annot).getDecimal());
+          EObject _type_2 = annot.getType();
+          it.setLength(((YAnnotDecimal) _type_2).getLength());
+          EObject _type_3 = annot.getType();
+          it.setDecimal(((YAnnotDecimal) _type_3).getDecimal());
         };
         final YAnnotDecimal clone_1 = ObjectExtensions.<YAnnotDecimal>operator_doubleArrow(_createYAnnotDecimal, _function_1);
         return clone_1;
@@ -224,13 +233,13 @@ public class LangDBUtil {
   }
   
   public YAnnotForeignKey converRelationshipIntoForeignKeys(final YAnnotRel relationship) {
-    return this.createForeignKeyForRelationship(relationship, relationship.getInverse());
+    return this.doCreateForeignKeyForRelationship(relationship, relationship.getInverse());
   }
   
-  private YAnnotForeignKey createForeignKeyForRelationship(final YAnnotRel thisrelationship, final YAnnotRel targetRelationship) {
+  private YAnnotForeignKey doCreateForeignKeyForRelationship(final YAnnotRel thisrelationship, final YAnnotRel targetRelationship) {
     YAnnotForeignKey _createYAnnotForeignKey = LangFactory.eINSTANCE.createYAnnotForeignKey();
     final Procedure1<YAnnotForeignKey> _function = (YAnnotForeignKey it) -> {
-      final List<YAnnotAbstractColumn> list = this.convertRetaionshipIntoFKColumns(targetRelationship);
+      final List<YAnnotAbstractColumn> list = this.doConvertRelationshipIntoFKColumns(targetRelationship);
       for (final YAnnotAbstractColumn abstractColumn : list) {
         it.getColumns().add(abstractColumn);
       }
@@ -240,7 +249,7 @@ public class LangDBUtil {
     return foreignKey;
   }
   
-  private List<YAnnotAbstractColumn> convertRetaionshipIntoFKColumns(final YAnnotRel relationship) {
+  private List<YAnnotAbstractColumn> doConvertRelationshipIntoFKColumns(final YAnnotRel relationship) {
     final ArrayList<YAnnotAbstractColumn> list = CollectionLiterals.<YAnnotAbstractColumn>newArrayList();
     EObject _eContainer = relationship.eContainer();
     final YAnnotEntity parentEntity = ((YAnnotEntity) _eContainer);
@@ -276,7 +285,7 @@ public class LangDBUtil {
   public YAnnotPrimaryKey converIdentifierIntoPrimaryKey(final YAnnotId identifier) {
     YAnnotPrimaryKey _createYAnnotPrimaryKey = LangFactory.eINSTANCE.createYAnnotPrimaryKey();
     final Procedure1<YAnnotPrimaryKey> _function = (YAnnotPrimaryKey it) -> {
-      final List<YAnnotAbstractColumn> list = this.convertIdentifierIntoColumns(identifier);
+      final List<YAnnotAbstractColumn> list = this.doConvertIdentifierIntoColumns(identifier);
       for (final YAnnotAbstractColumn abstarctColumn : list) {
         it.getColumns().add(abstarctColumn);
       }
@@ -285,7 +294,7 @@ public class LangDBUtil {
     return primaryKey;
   }
   
-  private List<YAnnotAbstractColumn> convertIdentifierIntoColumns(final YAnnotId identifier) {
+  private List<YAnnotAbstractColumn> doConvertIdentifierIntoColumns(final YAnnotId identifier) {
     final List<YAnnotAbstractColumn> list = CollectionLiterals.<YAnnotAbstractColumn>newArrayList();
     EList<YAnnotEntityInner> _annots = identifier.getAnnots();
     for (final YAnnotEntityInner identifierPart : _annots) {

@@ -40,7 +40,7 @@ class LocalNameGenerator {
 			usedNames.put(corename, new Integer(number + 1))
 			return corename + "_" + number
 		} else {
-			usedNames.put(corename, new Integer(0))
+			usedNames.put(corename, new Integer(1))
 			return corename
 		}
 	}

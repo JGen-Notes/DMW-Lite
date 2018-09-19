@@ -41,7 +41,7 @@ public class LocalNameGenerator {
       this.usedNames.put(corename, _integer);
       return ((corename + "_") + Integer.valueOf(number));
     } else {
-      Integer _integer_1 = new Integer(0);
+      Integer _integer_1 = new Integer(1);
       this.usedNames.put(corename, _integer_1);
       return corename;
     }

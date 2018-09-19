@@ -17,6 +17,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
 import eu.jgen.notes.dmw.lite.lang.YExpression
 import eu.jgen.notes.dmw.lite.lang.YAnnotMax
+import eu.jgen.notes.dmw.lite.lang.YStatement
+import eu.jgen.notes.dmw.lite.lang.YReadStatement
 
 class LangJavaGeneratorHelper {
 
@@ -25,8 +27,10 @@ class LangJavaGeneratorHelper {
 	val String SYSTEM_DEFAULT_SHORT = "0"
 	val String SYSTEM_DEFAULT_DOUBLE = "0.0"
 	val String SYSTEM_DEFAULT_LONG = "0"
+	
+	@Inject extension LangUtil
 
-	@Inject
+	@Inject 
 	private IEObjectDocumentationProvider documentationProvider;
 
 	def String getDocumentation( /* @Nullable */ EObject source) {
@@ -174,6 +178,22 @@ class LangJavaGeneratorHelper {
 			}
 		}		
 		return 0;
+	}
+	
+	 def ArrayList<String> createQualifiedColumnNamesList(YStatement statement) {
+		val list = newArrayList()
+		var index = 1;
+		if (statement instanceof YReadStatement) {
+			val readStatement = statement as YReadStatement
+			for (struct : readStatement.structs) {
+				val implementingTable = readStatement.structs.get(0).structclass.implementingTable
+				for (member : struct.structproperty.type.members) {
+					list.add('''T«index».\"«getImplementingColumnName(implementingTable,member)»\"''')
+				}
+				index++;
+			}
+		}
+		return list
 	}
 
 }

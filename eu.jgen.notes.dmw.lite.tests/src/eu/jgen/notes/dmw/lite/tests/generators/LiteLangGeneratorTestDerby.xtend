@@ -62,7 +62,7 @@ class LiteLangGeneratorTestDerby {
 	@Before
 	def void setUp() throws Exception {		
 		val properties = System.getProperties();
-        properties.setProperty("derby.system.home", "D:\\temp");
+        properties.setProperty("derby.system.home", "/Users/Marek/temp");
         Class.forName(driver);
 	   connection = DriverManager.getConnection(connectionURL,properties);
 	   statement = connection.createStatement();		
@@ -82,7 +82,7 @@ class LiteLangGeneratorTestDerby {
 		val body = '''
 		package log.sample.project
 		
-		@entity server {
+		@entity Server {
 			@attr name : String @length(8)
 			@attr desc : String @length(40)
 			@id myid(name)
@@ -94,15 +94,15 @@ class LiteLangGeneratorTestDerby {
 			@attr message : String @length(128);
 			@attr timeCreated : Time;
 			@id logid(timeCreated);
-			@rel isFor -> server <- server.produces  
+			@rel isFor -> Server <- Server.produces  
 		}
 		
 		@database MySQL;
 		
 		@td database MySQL {
-			@table SERVER -> server {
-				@column NAME -> server.name as CHAR @length ( 8 )
-				@column DESC -> server.desc as CHAR @length ( 40 )
+			@table SERVER -> Server {
+				@column NAME -> Server.name as CHAR @length ( 8 )
+				@column DESC -> Server.desc as CHAR @length ( 40 )
 				@primary (NAME)
 			}
 			@table LOG -> Log {

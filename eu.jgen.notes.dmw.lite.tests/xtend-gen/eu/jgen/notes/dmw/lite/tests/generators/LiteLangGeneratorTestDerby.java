@@ -87,7 +87,7 @@ public class LiteLangGeneratorTestDerby {
   @Before
   public void setUp() throws Exception {
     final Properties properties = System.getProperties();
-    properties.setProperty("derby.system.home", "D:\\temp");
+    properties.setProperty("derby.system.home", "/Users/Marek/temp");
     Class.forName(this.driver);
     this.connection = DriverManager.getConnection(this.connectionURL, properties);
     this.statement = this.connection.createStatement();
@@ -107,7 +107,7 @@ public class LiteLangGeneratorTestDerby {
       _builder.append("package log.sample.project");
       _builder.newLine();
       _builder.newLine();
-      _builder.append("@entity server {");
+      _builder.append("@entity Server {");
       _builder.newLine();
       _builder.append("\t");
       _builder.append("@attr name : String @length(8)");
@@ -139,7 +139,7 @@ public class LiteLangGeneratorTestDerby {
       _builder.append("@id logid(timeCreated);");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("@rel isFor -> server <- server.produces  ");
+      _builder.append("@rel isFor -> Server <- Server.produces  ");
       _builder.newLine();
       _builder.append("}");
       _builder.newLine();
@@ -150,13 +150,13 @@ public class LiteLangGeneratorTestDerby {
       _builder.append("@td database MySQL {");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("@table SERVER -> server {");
+      _builder.append("@table SERVER -> Server {");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("@column NAME -> server.name as CHAR @length ( 8 )");
+      _builder.append("@column NAME -> Server.name as CHAR @length ( 8 )");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("@column DESC -> server.desc as CHAR @length ( 40 )");
+      _builder.append("@column DESC -> Server.desc as CHAR @length ( 40 )");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("@primary (NAME)");

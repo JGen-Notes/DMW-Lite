@@ -8,20 +8,27 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
 import eu.jgen.notes.dmw.lite.lang.YAnnotMax;
+import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
+import eu.jgen.notes.dmw.lite.lang.YReadStatement;
+import eu.jgen.notes.dmw.lite.lang.YStatement;
+import eu.jgen.notes.dmw.lite.lang.YStructRefPair;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
+import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.ArrayList;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
+import org.eclipse.xtext.xbase.lib.Extension;
 
 @SuppressWarnings("all")
 public class LangJavaGeneratorHelper {
@@ -34,6 +41,10 @@ public class LangJavaGeneratorHelper {
   private final String SYSTEM_DEFAULT_DOUBLE = "0.0";
   
   private final String SYSTEM_DEFAULT_LONG = "0";
+  
+  @Inject
+  @Extension
+  private LangUtil _langUtil;
   
   @Inject
   private IEObjectDocumentationProvider documentationProvider;
@@ -207,5 +218,32 @@ public class LangJavaGeneratorHelper {
       }
     }
     return 0;
+  }
+  
+  public ArrayList<String> createQualifiedColumnNamesList(final YStatement statement) {
+    final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
+    int index = 1;
+    if ((statement instanceof YReadStatement)) {
+      final YReadStatement readStatement = ((YReadStatement) statement);
+      EList<YStructRefPair> _structs = readStatement.getStructs();
+      for (final YStructRefPair struct : _structs) {
+        {
+          final YAnnotTable implementingTable = this._langUtil.getImplementingTable(readStatement.getStructs().get(0).getStructclass());
+          EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+          for (final YMember member : _members) {
+            StringConcatenation _builder = new StringConcatenation();
+            _builder.append("T");
+            _builder.append(index);
+            _builder.append(".\\\"");
+            String _implementingColumnName = this._langUtil.getImplementingColumnName(implementingTable, member);
+            _builder.append(_implementingColumnName);
+            _builder.append("\\\"");
+            list.add(_builder.toString());
+          }
+          index++;
+        }
+      }
+    }
+    return list;
   }
 }

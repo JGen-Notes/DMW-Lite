@@ -33,7 +33,7 @@ class LangTechicalDesignGenerator implements IGenerator {
 
 	protected def void generateDDLForDerby(IFileSystemAccess fsa, YAnnotTechnicalDesign technicalDesign) {
 		for (table : technicalDesign.features) {
-			generateTable(fsa, table)
+			generateTableForDerby(fsa, table)
 		}
 	}
 
@@ -48,11 +48,11 @@ class LangTechicalDesignGenerator implements IGenerator {
 //			'''
 //		)
 //	}
-	def private void generateTable(IFileSystemAccess fsa, YAnnotTable table) {
+	def private void generateTableForDerby(IFileSystemAccess fsa, YAnnotTable table) {
 		val text = '''
 			CREATE TABLE "«table.name.toUpperCase»" (
 				«FOR abstractColumn : table.columns SEPARATOR ',' AFTER ','»
-					«generateColumns(abstractColumn)»
+					«generateColumnForDerby(abstractColumn)»
 				«ENDFOR»
 				«FOR foreignKey : table.foreignkeys SEPARATOR ',' AFTER ','»
 					«generateForeignKeyColumns(foreignKey)»
@@ -68,9 +68,9 @@ class LangTechicalDesignGenerator implements IGenerator {
 
 	}
 
-	def private String generateColumns(YAnnotAbstractColumn abstractColumn) {
+	def private String generateColumnForDerby(YAnnotAbstractColumn abstractColumn) {
 		val text = '''
-			"«abstractColumn.name.toUpperCase»" «generateColumnType(abstractColumn)»
+			"«abstractColumn.name.toUpperCase»" «generateColumnTypeForDerby(abstractColumn)»
 		'''
 		return text
 	}
@@ -78,25 +78,25 @@ class LangTechicalDesignGenerator implements IGenerator {
 	def private String generateForeignKeyColumns(YAnnotForeignKey foreignKey) {
 		val text = '''
 			«FOR abstractColumn : foreignKey.columns»
-				"«abstractColumn.name.toUpperCase»" «generateColumnType(abstractColumn)»
+				"«abstractColumn.name.toUpperCase»" «generateColumnTypeForDerby(abstractColumn)»
 			«ENDFOR»					
 		'''
 		return text
 	}
 
-	def private String generateColumnType(YAnnotAbstractColumn abstractColumn) {
+	def private String generateColumnTypeForDerby(YAnnotAbstractColumn abstractColumn) {
 		if (abstractColumn.type instanceof YAnnotColumn) {
 			val column = abstractColumn.type as YAnnotColumn
 			val text = '''
-				«column.type»«IF column.type == "CHAR" ||  column.type == "VARCHAR"»(«column.generateLength»)«ENDIF» «column.generateNullFlag»
+				«column.type»«IF column.type == "CHAR" ||  column.type == "VARCHAR"»(«column.generateLengthForDerby»)«ENDIF» «column.generateNullFlag»
 			'''
 			return text
 		} else {
-			generateColumnType((abstractColumn.type as YAnnotColumnLike).columnref)
+			generateColumnTypeForDerby((abstractColumn.type as YAnnotColumnLike).columnref)
 		}
 	}
 
-	def private String generateLength(YAnnotColumn column) {
+	def private String generateLengthForDerby(YAnnotColumn column) {
 		for (annot : column.annots) {
 			if (annot instanceof YAnnotLength) {
 				val a = annot as YAnnotLength

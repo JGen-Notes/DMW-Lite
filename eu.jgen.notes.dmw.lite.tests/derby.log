@@ -1,13 +1,13 @@
 ----------------------------------------------------------------
-Thu Aug 09 16:36:06 CEST 2018:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0165-1f1d-b867-0000009daf80 
-on database directory D:\workspace\DMW-Lite\eu.jgen.notes.dmw.lite.tests\DBUnitTest with class loader sun.misc.Launcher$AppClassLoader@1c7353a 
-Loaded from file:/D:/db-derby-10.14.2.0-bin/lib/derby.jar
+Tue Sep 18 14:54:18 CEST 2018:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-0165-ecbe-e600-00000f7e19f8 
+on database directory /Users/Marek/git/DMW-Lite/eu.jgen.notes.dmw.lite.tests/jdbcDemoDB with class loader sun.misc.Launcher$AppClassLoader@681a9515 
+Loaded from file:/Users/Marek/db-derby-10.14.2.0-bin/lib/derby.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_161-b12
-user.dir=D:\workspace\DMW-Lite\eu.jgen.notes.dmw.lite.tests
-os.name=Windows 10
-os.arch=x86
-os.version=10.0
-derby.system.home=D:\temp
+java.runtime.version=1.8.0_05-b13
+user.dir=/Users/Marek/git/DMW-Lite/eu.jgen.notes.dmw.lite.tests
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.13.6
+derby.system.home=D:	emp
 Database Class Loader started - derby.database.classpath=''

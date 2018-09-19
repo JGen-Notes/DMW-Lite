@@ -3,7 +3,6 @@ package eu.jgen.notes.dmw.lite.tests;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
-import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
@@ -23,6 +22,7 @@ import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.InputOutput;
+import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Assert;
@@ -55,16 +55,19 @@ public class CreateFKColumnUsingRelationshipAsTemplateTests {
   @Test
   public void testEntityDefault() {
     StringConcatenation _builder = new StringConcatenation();
+    _builder.append("@database MySQL");
+    _builder.newLine();
+    _builder.newLine();
     _builder.append("@entity Log {");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@attr entryType : Short @length (2);");
+    _builder.append("@attr entryType : Short @length(2);");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@rel has -> Description* <- Description.isFor;");
+    _builder.append("@rel @parent has -> Description * <- Description.isFor;");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@id logid (timeCreated);");
+    _builder.append("@id logid(entryType);");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
@@ -72,21 +75,21 @@ public class CreateFKColumnUsingRelationshipAsTemplateTests {
     _builder.append("@entity Description {");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@attr number : Short @length (2);");
+    _builder.append("@attr number : Short @length(2);");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@attr message : String @length (128);");
+    _builder.append("@attr message : String @length(128);");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@rel isFor -> Log <- Log.has;");
     _builder.newLine();
     _builder.append("\t");
-    _builder.append("@id logid (number);");
+    _builder.append("@id logid(number);");
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
     _builder.newLine();
-    _builder.append("@td {");
+    _builder.append("@td database MySQL {");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("@table LOG -> Log {");
@@ -95,12 +98,34 @@ public class CreateFKColumnUsingRelationshipAsTemplateTests {
     _builder.append("@column ENTRY_TYPE -> Log.entryType as CHAR @length(2);");
     _builder.newLine();
     _builder.append("\t\t");
-    _builder.append("@primary (ENTRY_TYPE)");
-    _builder.newLine();
-    _builder.append("\t\t");
+    _builder.append("@primary (ENTRY_TYPE);");
     _builder.newLine();
     _builder.append("\t");
     _builder.append("}");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("@table DESCRIPTION -> Description {");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("@column NUMBER -> Description.number as SMALLINT @length (2)");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("@column MESSAGE -> Description.message as CHAR @length (128)");
+    _builder.newLine();
+    _builder.append("\t\t");
+    _builder.append("@primary (NUMBER)");
+    _builder.newLine();
+    _builder.append("\t\t   ");
+    _builder.append("@foreign Description.isFor { ");
+    _builder.newLine();
+    _builder.append("\t\t   \t");
+    _builder.append("@column FK_LOG__ENTRY_TYPE -> LOG.ENTRY_TYPE");
+    _builder.newLine();
+    _builder.append("\t\t   ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
     _builder.newLine();
     _builder.append("}");
     _builder.newLine();
@@ -113,16 +138,19 @@ public class CreateFKColumnUsingRelationshipAsTemplateTests {
       return Boolean.valueOf((it instanceof YAnnotRel));
     };
     final Procedure1<EObject> _function_2 = (EObject it) -> {
-      final YAnnotForeignKey fk = this._langDBUtil.converRelationshipIntoForeignKeys(((YAnnotRel) it));
-      if ((fk != null)) {
-        final Consumer<YAnnotAbstractColumn> _function_3 = (YAnnotAbstractColumn it_1) -> {
-          Assert.assertEquals("FK_LOG__ENTRY_TYPE", it_1.getName());
-          EObject _type = it_1.getType();
-          EObject _eContainer = ((YAnnotColumnLike) _type).getColumnref().eContainer();
-          Assert.assertEquals("ENTRY_TYPE", 
-            ((YAnnotAbstractColumn) _eContainer).getName());
-        };
-        fk.getColumns().forEach(_function_3);
+      final YAnnotRel relationship = ((YAnnotRel) it);
+      boolean _isParent = relationship.isParent();
+      boolean _not = (!_isParent);
+      if (_not) {
+        final YAnnotForeignKey foreignKeys = this._langDBUtil.converRelationshipIntoForeignKeys(relationship);
+        if ((foreignKeys != null)) {
+          final Function1<YAnnotAbstractColumn, Boolean> _function_3 = (YAnnotAbstractColumn it_1) -> {
+            return Boolean.valueOf(true);
+          };
+          final YAnnotAbstractColumn foreignKey = IterableExtensions.<YAnnotAbstractColumn>findFirst(foreignKeys.getColumns(), _function_3);
+          InputOutput.<String>println(foreignKey.getName());
+          Assert.assertEquals("FK_LOG__ENTRY_TYPE", foreignKey.getName());
+        }
       }
     };
     IteratorExtensions.<EObject>forEach(IteratorExtensions.<EObject>filter(model.eAllContents(), _function_1), _function_2);

@@ -131,6 +131,17 @@ class LangUtil {
 			visited.add(object)
 		visited
 	}
+	
+	def String getImplementingColumnName(YAnnotTable table, YMember member) {
+		for (annotAbstractColumn : table.columns) {
+			if(annotAbstractColumn.type instanceof YAnnotColumn) {
+				if((annotAbstractColumn.type as YAnnotColumn).attrref.name == member.name) {
+					return annotAbstractColumn.name
+				}
+			}			
+		}
+		return ""	
+	}
 
 	def YAnnotTable getImplementingTable(YAnnotEntity entity) {
 		val entityName = entity.name
