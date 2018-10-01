@@ -29,7 +29,7 @@ import java.util.Map;
 public class LocalNameGenerator {
   private Map<String, Integer> usedNames = new HashMap<String, Integer>();
   
-  public void reset() {
+  public void resetLocalNames() {
     this.usedNames.clear();
   }
   

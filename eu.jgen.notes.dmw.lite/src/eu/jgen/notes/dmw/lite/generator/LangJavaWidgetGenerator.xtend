@@ -69,14 +69,20 @@ import eu.jgen.notes.dmw.lite.lang.YReadStatement
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable
 import java.util.ArrayList
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn
+import eu.jgen.notes.dmw.lite.lang.YJoinDef
+import eu.jgen.notes.dmw.lite.lang.YStructRefPair
+import org.eclipse.emf.common.util.EList
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
+import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
+import eu.jgen.notes.dmw.lite.lang.YDeleteStatement
+import eu.jgen.notes.dmw.lite.lang.YUpdateStatement
+import eu.jgen.notes.dmw.lite.lang.YReadEachStatement
 
 class LangJavaWidgetGenerator implements IGenerator {
 
 	@Inject extension LangUtil
 
 	@Inject extension LangJavaGeneratorHelper
-
-	@Inject extension LocalNameGenerator
 
 	@Inject extension LangTypeComputer
 
@@ -93,28 +99,31 @@ class LangJavaWidgetGenerator implements IGenerator {
 		}
 	}
 
-	private
-	 def void generateWidget(IFileSystemAccess fsa, YWidget widget) {
+	private def void generateWidget(IFileSystemAccess fsa, YWidget widget) {
 
 		widget.classes.forEach [ clazz |
 			if (clazz.superclass !== null && clazz.superclass.name == "Widget") {
-				reset
+				resetLocalNames
+				innerFunctions.clear
 				imports.clear
 				imports.add("eu.jgen.notes.dmw.lite.runtimes.XWidget")
 				val body = '''
 					«clazz.documentation»
 					@SuppressWarnings("all")
 					public class «clazz.name» extends XWidget {
-					   «generateInnerClasses(clazz, clazz.name)»
-					   «generateProperties(clazz)»					   
-					   «generateArrays(clazz, clazz.name)»
-					   «generateGetInstance(clazz, clazz.name)»	
-					   «generateConstructor(clazz, clazz.name)»			   
-					   «generateFunctions(clazz)»
-					   «FOR innerFunction : innerFunctions»
-					   	
-					   	«innerFunction»
-					   «ENDFOR»
+						
+						  public «clazz.name»() {
+						  }
+						  «generateInnerClasses(clazz, clazz.name)»
+						  «generateProperties(clazz)»					   
+						  «generateArrays(clazz, clazz.name)»
+						  «generateGetInstance(clazz, clazz.name)»	
+						  «generateConstructor(clazz, clazz.name)»			   
+						  «generateFunctions(clazz)»
+						  «FOR innerFunction : innerFunctions»
+						  	
+						  	«innerFunction»
+						  «ENDFOR»
 					}
 				'''
 				fsa.generateFile(
@@ -164,10 +173,14 @@ class LangJavaWidgetGenerator implements IGenerator {
 		'''
 	}
 
+	/*
+	 * Generate constructor for the widget class.
+	 */
 	private def String generateConstructor(YClass clazz, String name) {
 		registerImport("java.sql.Connection")
 		registerImport("java.sql.SQLException")
 		registerImport("java.sql.PreparedStatement")
+		registerImport("java.sql.ResultSet")
 		registerImport("eu.jgen.notes.dmw.lite.runtimes.DMWRuntimeException")
 		'''
 			//
@@ -175,15 +188,20 @@ class LangJavaWidgetGenerator implements IGenerator {
 			   this._connection = connection;
 			   «FOR member : clazz.members»
 			   	«IF member instanceof YProperty»
-			   		«generateInitializeClassProperty(clazz, member as YProperty)»
+			   		«generateInitializeStructure(clazz, member as YProperty)»
 			   	«ENDIF»	
 			   «ENDFOR»
 			}
 		'''
 	}
 
-	private def String generateInitializeClassProperty(YClass clazz, YProperty property) {
-		if (property.type.name == "Array") {
+	/*
+	 * Generate content of the constructor for the widget class. It is a sequence
+	 * of methods initialising structures and setting default values for each property.
+	 */
+	private def String generateInitializeStructure(YClass clazz, YProperty property) {
+		if (property.type.name == "Array" || property.type.name == "Int" || property.type.name == "Short" ||
+			property.type.name == "Decimal" || property.type.name == "Long" || property.type.name == "Boolean") {
 			return ""
 		}
 		var _initStructure = "_initStructure".generateLocalName
@@ -192,13 +210,16 @@ class LangJavaWidgetGenerator implements IGenerator {
 		«_initStructure»();'''
 	}
 
+	/*
+	 * Generate body of initialisation  method for for structure
+	 */
 	private def void generateInitStructureMethod(YClass clazz, YProperty property, String methodName) {
-
 		innerFunctions.add('''
 			private void «methodName»() {
+			   «property.name» = new «property.type.name»();
 			   «FOR member : property.type.members»
 			   	«IF member instanceof YProperty»
-			   		«generateInitializeProperty(member as YProperty, property.type.name.toFirstLower)»
+			   		«generateInitializeProperty(member as YProperty, property.name)»
 			   	«ENDIF»
 			   «ENDFOR»
 			}	
@@ -206,7 +227,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 
 	}
 
-	private def String generateCreateStatement(YCreateStatement createStatement, String _create) {
+	private def String generateStatementCreateInnerFunction(YCreateStatement createStatement, String _create) {
 		createStatement.struct.structproperty.type.members
 		val implementingTable = createStatement.struct.structclass.implementingTable
 		return '''
@@ -221,7 +242,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 			   System.out.println(buffer.toString());		
 			   try {
 			   	  PreparedStatement _statement = _connection.prepareStatement(buffer.toString());
-			   	  «generateSetMethods(createStatement)»
+			   	  «generateSetMethodsForCreateStatement(createStatement)»
 			   	  _statement.execute();
 			   	  _statement.close();
 			   } catch (SQLException e) {
@@ -235,7 +256,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 		'''
 	}
 
-	private def String generateSetMethods(YCreateStatement createStatement) {
+	private def String generateSetMethodsForCreateStatement(YCreateStatement createStatement) {
 		val buffer = new StringBuffer()
 		var index = 1;
 		for (member : createStatement.struct.structproperty.type.members) {
@@ -248,6 +269,42 @@ class LangJavaWidgetGenerator implements IGenerator {
 			index++
 		}
 		return buffer.toString
+	}
+
+	private def String generateSetMethodsForUpdateStatement(YUpdateStatement updateStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		for (member : updateStatement.struct.structproperty.type.members) {
+			buffer.append("_rs." + generaterUpdateMethodName(member))
+			buffer.append("(")
+			buffer.append(index)
+			buffer.append(", ")
+			buffer.append(updateStatement.struct.structproperty.name + "." + member.name)
+			buffer.append(");\n")
+			index++
+		}
+		return buffer.toString
+	}
+
+	private def String generaterUpdateMethodName(YMember member) {
+		switch (member.type.name) {
+			case "Int": {
+				return "updateInt"
+			}
+			case "Short": {
+				return "updateShort"
+			}
+			case "String": {
+				return "updateString"
+			}
+			case "Double": {
+				return "updateDouble"
+			}
+			default: {
+				return "not yet done"
+
+			}
+		}
 	}
 
 	private def String generaterSetMethodName(YMember member) {
@@ -266,13 +323,14 @@ class LangJavaWidgetGenerator implements IGenerator {
 			}
 			default: {
 				return "not yet done"
+
 			}
 		}
 	}
 
 	private def String generateArrays(YClass clazz, String widgetName) {
 		'''
-			«FOR property : clazz.listArrayProperties»
+			«FOR property : clazz.findPropertiesOfTypeArray»
 				«registerImport("eu.jgen.notes.dmw.lite.runtimes.XArray")»
 				«registerImport("java.util.SortedMap")»
 				«registerImport("java.util.concurrent.ConcurrentSkipListMap")»
@@ -293,7 +351,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 							if (map«ref.type.name.toFirstUpper».containsKey(super.getSubscript())) {
 								return map«ref.type.name.toFirstUpper».get(super.getSubscript());
 							} else {
-								«ref.type.name.toFirstUpper» «ref.name» = «widgetName».instance«ref.type.name.toFirstUpper»();
+								«ref.type.name.toFirstUpper» «ref.name» = new «ref.type.name.toFirstUpper»();
 								map«ref.type.name.toFirstUpper».put(super.getSubscript(), «ref.name»);
 								return «ref.name»;
 							}
@@ -302,7 +360,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 					«ENDFOR»
 				}
 				
-				«property.name.toFirstUpper» «property.name» = new «property.name.toFirstUpper»(«property.findArraySize»);
+				«property.name.toFirstUpper» «property.name» = new «property.name.toFirstUpper»(«property.arraySize»);
 			«ENDFOR»
 			
 		'''
@@ -343,159 +401,260 @@ class LangJavaWidgetGenerator implements IGenerator {
 		}
 	}
 
+	/*
+	 * Generate block of statements
+	 */
 	private def String generateBlock(YBlock block) {
 		val body = '''
 			«FOR statement : block.statements»
-				«generateStatement(statement)»
+				«selectStatementGeneration(statement)»
 			«ENDFOR»
 		'''
 		return body
 	}
 
-	private def String generateStatement(YStatement statement) {
+	/*
+	 * Select type of the statement and generate code.
+	 */
+	private def String selectStatementGeneration(YStatement statement) {
 		switch (statement) {
+			case statement instanceof YDeleteStatement: {
+				return generateStatementDelete(statement as YDeleteStatement);
+			}
+			case statement instanceof YUpdateStatement: {
+				return generateStatementUpdate(statement as YUpdateStatement)
+			}
+			case statement instanceof YReadEachStatement: {
+				return generateStatementReadEach(statement as YReadEachStatement)
+			}
 			case statement instanceof YForInStatement: {
-				val forInStatement = statement as YForInStatement
-				var _index = "_index".generateLocalName
-				return '''
-					«forInStatement.documentation»  
-					int «_index» = 1;
-					for («_index»=1; «_index» <= this.«forInStatement.collection.name».getLast(); «_index»++) {
-					«forInStatement.collection.name».setSubscript(«_index»);
-					«FOR include : forInStatement.collection.tuples.includes»
-						this.«include.name» = «forInStatement.collection.name».get«include.type.name»();
-					«ENDFOR» 	
-					   «generateBlock(forInStatement.body)»
-					}		
-				'''
+				return generateStatementForIn(statement as YForInStatement)
 			}
 			case statement instanceof YCreateStatement: {
-				val createStatement = statement as YCreateStatement
-				var _create = "_create".generateLocalName
-				innerFunctions.add(generateCreateStatement(createStatement, _create))
-				return '''
-					«createStatement.documentation»
-					«generateBlock(createStatement.setBlock)»
-					if(_create()) {
-						// execution of create statement completed successfully
-						«generateBlock(createStatement.success)»
-					} else {
-						// duplicate entity type detected during when executing create statement
-						«generateBlock(createStatement.alreadyExist)»
-					}				  
-				'''
-			}
-			case statement instanceof YReadStatement: {
-				val readStatement = statement as YReadStatement
-				var _read = "_read".generateLocalName
-				innerFunctions.add(generateReadStatement(readStatement, _read))
-				return '''
-					«readStatement.documentation»
-					if(_Read()) {
-						// execution of read statement completed successfully
-						«generateBlock(readStatement.success)»
-					} else {
-						// entity type not found when executing create statement
-						«generateBlock(readStatement.notfound)»
-					}				  
-				'''
-			}
-			case statement instanceof YRepeatWhileStatement: {
-				val repeatWhileStatement = statement as YRepeatWhileStatement
-				return '''
-					«repeatWhileStatement.documentation»  
-					do {
-						   «generateBlock(repeatWhileStatement.body)»
-					} while («generateExpression(repeatWhileStatement.expression)»);		
-				'''
-			}
-			case statement instanceof YSwitchStatement: {
-				val switchStatement = statement as YSwitchStatement
-				return '''
-					«switchStatement.documentation»  
-					«generateSwitchStatement(switchStatement)»		
-				'''
-			}
-			case statement instanceof YWhileStatement: {
-				val whileStatement = statement as YWhileStatement
-				return '''
-					«whileStatement.documentation»  
-					while («generateExpression(whileStatement.expression)») {
-						   «generateBlock(whileStatement.body)»
-					}			
-				'''
-			}
-			case statement instanceof YReturn: {
-				val returnStatement = statement as YReturn
-				if (returnStatement.expression === null) {
-					return '''
-						«returnStatement.documentation»
-						return;
-					'''
-				} else {
-					return '''
-						«returnStatement.documentation»
-						return «generateExpression(returnStatement.expression)»;
-					'''
-				}
-			}
-			case statement instanceof YVariableDeclaration: {
-				val variableDeclaration = statement as YVariableDeclaration
-				return '''
-					«variableDeclaration.documentation»
-					«generateVariableDeclaration(variableDeclaration)»
-				'''
-			}
-			case statement instanceof YAssignment: {
-				val assignment = statement as YAssignment
-				return '''
-					«assignment.documentation»
-					«generateAssigment(assignment)»
-				'''
+				return generateStatementCreate(statement as YCreateStatement)
 			}
 			case statement instanceof YIfStatement: {
-				val ifStatement = statement as YIfStatement
-				'''
-					«ifStatement.documentation»  
-					if («generateExpression(ifStatement.expression)») {
-						«generateBlock(ifStatement.thenBlock)» 
-					} «IF ifStatement.elseBlock !== null» else {
-															«generateBlock(ifStatement.elseBlock)»
-					}«ENDIF»
-					
-				'''
+				return generateStatementIf(statement as YIfStatement);
+			}
+			case statement instanceof YReturn: {
+				return generateStatementReturn(statement as YReturn);
+			}
+			case statement instanceof YWhileStatement: {
+				return generateStatementWhile(statement as YWhileStatement)
+			}
+			case statement instanceof YSwitchStatement: {
+				return generateStatementSwitch(statement as YSwitchStatement);
+			}
+			case statement instanceof YReadStatement: {
+				return generateStatementRead(statement as YReadStatement)
+			}
+			case statement instanceof YRepeatWhileStatement: {
+				return generateStatementRead(statement as YRepeatWhileStatement)
+			}
+			case statement instanceof YVariableDeclaration: {
+				return generateStatementVariableDeclaration(statement as YVariableDeclaration)
+			}
+			case statement instanceof YAssignment: {
+				return generateStatementYAssignment(statement as YAssignment)
 			}
 			case statement instanceof YMemberSelection: {
-				val memberSelection = statement as YMemberSelection
-				return '''
-					«memberSelection.documentation»
-					«generateSpecialFunctions(memberSelection)»
-				'''
+				return generateStatementYAssignment(statement as YMemberSelection)
 			}
 			default: {
-				return "//TODO - not implemented yet"
+				return "//TODO - This statement is not implemented yet: " + statement;
 			}
 		}
 	}
 
-	private def String generateReadStatement(YReadStatement readStatement, String _read) {
+	private def String generateStatementYAssignment(YMemberSelection memberSelection) {
+		return '''
+			«memberSelection.documentation»
+			«generateSpecialFunctions(memberSelection)»
+		'''
+	}
+
+	private def String generateStatementYAssignment(YAssignment assignment) {
+		return '''
+			«assignment.documentation»
+			«generateAssigment(assignment)»
+		'''
+	}
+
+	private def String generateStatementVariableDeclaration(YVariableDeclaration variableDeclaration) {
+		return '''
+			«variableDeclaration.documentation»
+			«generateVariableDeclaration(variableDeclaration)»
+		'''
+	}
+
+	private def String generateStatementRead(YRepeatWhileStatement repeatWhileStatement) {
+		return '''
+			«repeatWhileStatement.documentation»  
+			do {
+				   «generateBlock(repeatWhileStatement.body)»
+			} while («generateExpression(repeatWhileStatement.expression)»);		
+		'''
+	}
+
+	private def String generateStatementRead(YReadStatement readStatement) {
+		var _read = "_read".generateLocalName
+		innerFunctions.add(generateStatementReadInnerFunction(readStatement, _read))
+		return '''
+			«readStatement.documentation»
+			if(!«_read»()) {
+				// entity type not found when executing create statement
+				«generateBlock(readStatement.notfound)»
+			}				  
+		'''
+	}
+
+	private def String generateStatementWhile(YWhileStatement whileStatement) {
+		return '''
+			«whileStatement.documentation»  
+			while («generateExpression(whileStatement.expression)») {
+				   «generateBlock(whileStatement.body)»
+			}			
+		'''
+	}
+
+	private def String generateStatementReturn(YReturn returnStatement) {
+		if (returnStatement.expression === null) {
+			return '''
+				«returnStatement.documentation»
+				return;
+			'''
+		} else {
+			return '''
+				«returnStatement.documentation»
+				return «generateExpression(returnStatement.expression)»;
+			'''
+		}
+	}
+
+	private def String generateStatementIf(YIfStatement ifStatement) {
+		return '''
+			«ifStatement.documentation»  
+			if («generateExpression(ifStatement.expression)») {
+				«generateBlock(ifStatement.thenBlock)» 
+			} «IF ifStatement.elseBlock !== null» else {
+																								«generateBlock(ifStatement.elseBlock)»
+			}«ENDIF»
+			
+		'''
+	}
+
+	private def String generateStatementDelete(YDeleteStatement deleteStatement) {
+		var _delete = "_delete".generateLocalName
+		innerFunctions.add(generateStatementDelete(deleteStatement, _delete))
+		return '''
+			«deleteStatement.documentation»
+			               «_delete»(_rs);
+		'''
+	}
+
+	private def String generateStatementUpdate(YUpdateStatement updateStatement) {
+		var _update = "_update".generateLocalName
+		innerFunctions.add(generateStatementUpdateInnerFunction(updateStatement, _update))
+		return '''
+			   «generateBlock(updateStatement.setBlock)»
+			«updateStatement.documentation»
+			               «_update»(_rs);
+		'''
+	}
+
+	private def String generateStatementReadEach(YReadEachStatement readEachStatement) {
+		var _readEach = "_read".generateLocalName
+		innerFunctions.add(generateStatementReadEachInnerFunction(readEachStatement, _readEach))
+		return '''
+			«readEachStatement.documentation»
+			«_readEach»();				  
+		'''
+	}
+
+	private def String generateStatementCreate(YCreateStatement createStatement) {
+		var _create = "_create".generateLocalName
+		innerFunctions.add(generateStatementCreateInnerFunction(createStatement, _create))
+		return '''
+			«createStatement.documentation»
+			«generateBlock(createStatement.setBlock)»
+			if(_create()) {
+				// execution of create statement completed successfully
+				«generateBlock(createStatement.success)»
+			} else {
+				// duplicate entity type detected during when executing create statement
+				«generateBlock(createStatement.alreadyExist)»
+			}				  
+		'''
+	}
+
+	private def String generateStatementForIn(YForInStatement forInStatement) {
+		var _index = "_index".generateLocalName
+		return '''
+			«forInStatement.documentation»  
+			int «_index» = 1;
+			for («_index»=1; «_index» <= this.«forInStatement.collection.name».getLast(); «_index»++) {
+			«forInStatement.collection.name».setSubscript(«_index»);
+			«FOR include : forInStatement.collection.tuples.includes»
+				this.«include.name» = «forInStatement.collection.name».get«include.type.name»();
+			«ENDFOR» 	
+			   «generateBlock(forInStatement.body)»
+			}		
+		'''
+	}
+
+	private def generateStatementUpdateInnerFunction(YUpdateStatement updateStatement, String _update) {
+		return '''
+			private void «_update»(ResultSet _rs) {
+			   try {
+			   	«generateSetMethodsForUpdateStatement(updateStatement)»
+			   _rs.updateRow();
+			   } catch (SQLException e) {
+			   throw new DMWRuntimeException(e);
+			   }
+			}
+		'''
+	}
+
+	private def String generateStatementDelete(YDeleteStatement deleteStatement, String _delete) {
+		return '''
+			private void «_delete»(ResultSet _rs) {
+			   try {
+			   _rs.deleteRow();
+			   } catch (SQLException e) {
+			   throw new DMWRuntimeException(e);
+			   }
+			}
+		'''
+	}
+
+	private def String generateStatementReadInnerFunction(YReadStatement readStatement, String _read) {
 		readStatement.structs
-		val implementingTable = readStatement.structs.get(0).structclass.implementingTable
 		return '''			
 			private boolean «_read»() {
 			   StringBuffer buffer = new StringBuffer();
-			   buffer.append("SELECT");
-			   buffer.append("«FOR qualifiedName : readStatement.createQualifiedColumnNamesList SEPARATOR ","»«qualifiedName»«ENDFOR»");		   
-			   buffer.append("FROM");
+			   buffer.append("SELECT ");
+			   buffer.append("«FOR qualifiedName : readStatement.createQualifiedColumnNamesListForRead SEPARATOR ","»«qualifiedName»«ENDFOR»");		   
+			   buffer.append(" FROM ");
 			   buffer.append("«FOR qualifiedName : generateFROMClause(readStatement) SEPARATOR ","»«qualifiedName»«ENDFOR»");		   
-			   buffer.append("WHERE");
-			   buffer.append("   «generateJDBCExpression(readStatement, readStatement.whereclause.expression)»");
+			   buffer.append(" WHERE ");
+			   buffer.append("«generateJoinExpressionForRead(readStatement)»");
+			   buffer.append("«generateJDBCExpression(readStatement, readStatement.whereclause.expression)»");
+			   buffer.append(" FOR UPDATE ");
 			   System.out.println(buffer.toString());		
 			   try {
-			   	  PreparedStatement _statement = _connection.prepareStatement(buffer.toString());
-			
-			      _statement.execute();
-			      _statement.close();
+			   	  PreparedStatement _statement = _connection.prepareStatement(buffer.toString(), ResultSet.CONCUR_UPDATABLE,
+			   	  					ResultSet.CLOSE_CURSORS_AT_COMMIT);
+			   	  _statement.setCursorName("viewF");
+			   	  «generateSetMethodsForRead(readStatement)»
+			   	  _statement.execute();
+			   	  ResultSet _rs = _statement.getResultSet();
+			   	  _rs.next();
+			   	  «generateGetMethodsForRead(readStatement)»
+			   	  // when sucessfull
+			   	  «generateBlock(readStatement.success)» 
+			   	  _rs.close();
+			   	  _statement.close();
+			   	  
 			   } catch (SQLException e) {
 			     if(e.getSQLState() == "23000") {
 			        return false;
@@ -507,6 +666,245 @@ class LangJavaWidgetGenerator implements IGenerator {
 		'''
 	}
 
+	private def String generateStatementReadEachInnerFunction(YReadEachStatement readEachStatement, String readEach) {
+		readEachStatement.structs
+		return '''			
+			private boolean «readEach»() {
+			   StringBuffer buffer = new StringBuffer();
+			   buffer.append("SELECT ");
+			   buffer.append("«FOR qualifiedName : readEachStatement.createQualifiedColumnNamesListForReadEach SEPARATOR ","»«qualifiedName»«ENDFOR»");		   
+			   buffer.append(" FROM ");
+			   buffer.append("«FOR qualifiedName : generateFROMClause(readEachStatement) SEPARATOR ","»«qualifiedName»«ENDFOR»");		   
+			   buffer.append(" WHERE ");
+			   buffer.append("«generateJoinExpressionForReadEach(readEachStatement)»");
+			   buffer.append("«generateJDBCExpression(readEachStatement, readEachStatement.whereclause.expression)»");
+			   buffer.append(" FOR UPDATE ");
+			   System.out.println(buffer.toString());		
+			   try {
+			   	  PreparedStatement _statement = _connection.prepareStatement(buffer.toString(), ResultSet.CONCUR_UPDATABLE,
+			   	  					ResultSet.CLOSE_CURSORS_AT_COMMIT);
+			   	  _statement.setCursorName("viewF");
+			   	  «generateSetMethodsForReadEach(readEachStatement)»
+			   	  _statement.execute();
+			   	  ResultSet _rs = _statement.getResultSet();
+			   	  while (_rs.next()) {
+			   	  	  «generateGetMethodsForReadEach(readEachStatement)»
+			   	  	  «generateBlock(readEachStatement.success)» 
+			   	  }
+			   	  _rs.close();
+			   	  _statement.close();
+			   	  
+			   } catch (SQLException e) {
+			     if(e.getSQLState() == "23000") {
+			        return false;
+			     }
+			     throw new DMWRuntimeException(e);
+			   }
+			   return true;
+			}
+		'''
+	}
+
+	private def String generateGetMethodsForRead(YReadStatement readStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		for (struct : readStatement.structs) {
+			for (member : struct.structproperty.type.members) {
+				var setMethodName = ""
+				switch (member.type.name) {
+					case "Int": {
+						setMethodName = "getInt"
+					}
+					case "Short": {
+						setMethodName = "getShort"
+					}
+					case "String": {
+						setMethodName = "getString"
+					}
+					default: {
+						setMethodName = "unknown"
+					}
+				}
+				buffer.append(
+					struct.structproperty.name + "." + member.name + " = _rs." + setMethodName + "(" +
+						Integer.toString(index) + ");\n")
+				index++
+			}
+		}
+		return buffer.toString
+	}
+
+	private def String generateGetMethodsForReadEach(YReadEachStatement readEachStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		for (struct : readEachStatement.structs) {
+			for (member : struct.structproperty.type.members) {
+				var setMethodName = ""
+				switch (member.type.name) {
+					case "Int": {
+						setMethodName = "getInt"
+					}
+					case "Short": {
+						setMethodName = "getShort"
+					}
+					case "String": {
+						setMethodName = "getString"
+					}
+					default: {
+						setMethodName = "unknown"
+					}
+				}
+				buffer.append(
+					struct.structproperty.name + "." + member.name + " = _rs." + setMethodName + "(" +
+						Integer.toString(index) + ");\n")
+				index++
+			}
+		}
+		return buffer.toString
+	}
+
+	private def String generateSetMethodsForRead(YReadStatement readStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		val list = newArrayList()
+		val proplist = newArrayList()
+		getListOfPropertiesForRead(readStatement, proplist)
+		proplist.add("viewF")
+		val newlist = createReadStatementSetMethodList(list, readStatement.whereclause.expression, proplist)
+		for (setMethod : newlist) {
+			buffer.append("_statement." + setMethod.replace("&index&", Integer.toString(index)) + "\n")
+			index++
+		}
+		return buffer.toString
+	}
+
+	private def String generateSetMethodsForReadEach(YReadEachStatement readEachStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		val list = newArrayList()
+		val proplist = newArrayList()
+		getListOfPropertiesForReadEach(readEachStatement, proplist)
+		proplist.add("viewF")
+		val newlist = createReadStatementSetMethodList(list, readEachStatement.whereclause.expression, proplist)
+		for (setMethod : newlist) {
+			buffer.append("_statement." + setMethod.replace("&index&", Integer.toString(index)) + "\n")
+			index++
+		}
+		return buffer.toString
+	}
+
+	private def getListOfPropertiesForRead(YReadStatement readStatement, ArrayList<String> readProperties) {
+		for (struct : readStatement.structs) {
+			readProperties.add(struct.structproperty.name)
+		}
+	}
+
+	private def getListOfPropertiesForReadEach(YReadEachStatement readEachStatement, ArrayList<String> readProperties) {
+		for (struct : readEachStatement.structs) {
+			readProperties.add(struct.structproperty.name)
+		}
+	}
+
+	private def String generateJoinExpressionForRead(YReadStatement statement) {
+		if (statement.joinclause === null) {
+			return ""
+		}
+		for (joinDef : statement.joinclause.joindefs) {
+			return generateJoinExpressionFragment(statement, joinDef)
+		}
+		return "something wrong"
+	}
+
+	private def String generateJoinExpressionForReadEach(YReadEachStatement readEachStatement) {
+		if (readEachStatement.joinclause === null) {
+			return ""
+		}
+		for (joinDef : readEachStatement.joinclause.joindefs) {
+			return generateJoinExpressionFragmentForReadEach(readEachStatement, joinDef)
+		}
+		return "something wrong"
+	}
+
+	private def String generateJoinExpressionFragment(YReadStatement readStatement, YJoinDef joinDef) {
+		val fromTable = joinDef.fromView.type.entity.implementingTable
+		val fromPrefix = findTablePrefix(readStatement.structs, joinDef.fromView)
+		val toTable = joinDef.toView.type.entity.implementingTable
+		val toPrefix = findTablePrefix(readStatement.structs, joinDef.toView)
+		val parent = joinDef.relRef.parent
+		if (parent) {
+			var buffer = new StringBuffer()
+			var String columnName = ""
+			var String cadidateColumnName = null
+			for (abstractElement : fromTable.primarykey.columns) {
+				columnName = getAttributeNameForAbstractColumn(abstractElement)
+				for (foreignKey : toTable.foreignkeys) {
+					if (joinDef.relRef.inverse.name == foreignKey.relationship.name) {
+						for (cadidateElement : foreignKey.columns) {
+							cadidateColumnName = getAttributeNameForAbstractColumn(cadidateElement)
+							if (columnName == cadidateColumnName) {
+								buffer.append(
+									fromPrefix + "." + abstractElement.name + " = " + toPrefix + "." +
+										cadidateElement.name + " AND")
+							}
+						}
+					}
+				}
+			}
+			return buffer.toString()
+		}
+		return ""
+	}
+
+	private def String generateJoinExpressionFragmentForReadEach(YReadEachStatement readEachStatement,
+		YJoinDef joinDef) {
+		val fromTable = joinDef.fromView.type.entity.implementingTable
+		val fromPrefix = findTablePrefix(readEachStatement.structs, joinDef.fromView)
+		val toTable = joinDef.toView.type.entity.implementingTable
+		val toPrefix = findTablePrefix(readEachStatement.structs, joinDef.toView)
+		val parent = joinDef.relRef.parent
+		if (parent) {
+			var buffer = new StringBuffer()
+			var String columnName = ""
+			var String cadidateColumnName = null
+			for (abstractElement : fromTable.primarykey.columns) {
+				columnName = getAttributeNameForAbstractColumn(abstractElement)
+				for (foreignKey : toTable.foreignkeys) {
+					if (joinDef.relRef.inverse.name == foreignKey.relationship.name) {
+						for (cadidateElement : foreignKey.columns) {
+							cadidateColumnName = getAttributeNameForAbstractColumn(cadidateElement)
+							if (columnName == cadidateColumnName) {
+								buffer.append(
+									fromPrefix + "." + abstractElement.name + " = " + toPrefix + "." +
+										cadidateElement.name + " AND")
+							}
+						}
+					}
+				}
+			}
+			return buffer.toString()
+		}
+		return ""
+	}
+
+	private def String findTablePrefix(EList<YStructRefPair> list, YProperty property) {
+		var index = 1;
+		for (pair : list) {
+			if (pair.structproperty == property) {
+				return "T" + index
+			}
+			index++;
+		}
+		""
+	}
+
+	private def String getAttributeNameForAbstractColumn(YAnnotAbstractColumn annotAbstractColumn) {
+		if (annotAbstractColumn.type instanceof YAnnotColumnLike) {
+			return ((annotAbstractColumn.type as YAnnotColumnLike).columnref.type as YAnnotColumn).attrref.name
+		} else {
+			return (annotAbstractColumn.type as YAnnotColumn).attrref.name
+		}
+	}
+
 	private def ArrayList<String> generateFROMClause(YStatement statement) {
 		val list = newArrayList()
 		var index = 1;
@@ -514,28 +912,12 @@ class LangJavaWidgetGenerator implements IGenerator {
 			val readStatement = statement as YReadStatement
 			for (struct : readStatement.structs) {
 				val implementingTable = readStatement.structs.get(0).structclass.implementingTable
-				list.add('''T«index» \"«implementingTable.name»\"''')
+				list.add('''\"«implementingTable.name»\" T«index»''')
 				index++
 			}
 		}
 		return list
 	}
-
-//	private def ArrayList<String> createQualifiedColumnNamesList(YStatement statement) {
-//		val list = newArrayList()
-//		var index = 1;
-//		if (statement instanceof YReadStatement) {
-//			val readStatement = statement as YReadStatement
-//			for (struct : readStatement.structs) {
-//				val implementingTable = readStatement.structs.get(0).structclass.implementingTable
-//				for (member : struct.structproperty.type.members) {
-//					list.add('''T«index».\"«getImplementingColumnName(implementingTable,member)»\"''')
-//				}
-//				index++;
-//			}
-//		}
-//		return list
-//	}
 
 	private def String generateAssigment(YAssignment assignment) {
 		if (assignment.left instanceof YMemberSelection) {
@@ -739,8 +1121,18 @@ class LangJavaWidgetGenerator implements IGenerator {
 			}
 			case expression instanceof YComparisonExpression: {
 				val comparisonExpression = expression as YComparisonExpression
-				return generateJDBCExpression(statement, comparisonExpression.left) + " " + comparisonExpression.op +
-					" " + generateJDBCExpression(statement, comparisonExpression.right)
+				var operator = "?"
+				if (comparisonExpression.op == ">=") {
+					operator = ">="
+				} else if (comparisonExpression.op == "<=") {
+					operator = "<="
+				} else if (comparisonExpression.op == ">") {
+					operator = ">"
+				} else if (comparisonExpression.op == "<") {
+					operator = "<"
+				}
+				return generateJDBCExpression(statement, comparisonExpression.left) + " " + operator + " " +
+					generateJDBCExpression(statement, comparisonExpression.right)
 			}
 			case expression instanceof YEqualityExpression: {
 				val equalityExpression = expression as YEqualityExpression
@@ -749,9 +1141,9 @@ class LangJavaWidgetGenerator implements IGenerator {
 					operator = "="
 				} else if (equalityExpression.op == "!=") {
 					operator = "<>"
-				} 
-				return generateJDBCExpression(statement, equalityExpression.left) + " " + operator +
-					" " + generateJDBCExpression(statement, equalityExpression.right)
+				}
+				return generateJDBCExpression(statement, equalityExpression.left) + " " + operator + " " +
+					generateJDBCExpression(statement, equalityExpression.right)
 			}
 			case expression instanceof YMemberSelection: {
 				val memberSelection = expression as YMemberSelection
@@ -782,7 +1174,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 			}
 			case expression instanceof YStringConstant: {
 				val stringConstant = expression as YStringConstant
-				"\"" + stringConstant.value.toString + "\""
+				"\'" + stringConstant.value.toString + "\'"
 			}
 			default: {
 				"not done yet"
@@ -803,16 +1195,18 @@ class LangJavaWidgetGenerator implements IGenerator {
 					if (propertyName == name &&
 						(annotAbstractColumn.type as YAnnotColumn).attrref.name == memberSelection.member.name) {
 						val qualName = "T" + index + "." + annotAbstractColumn.name
-						println(qualName)
+						// println(qualName)
 						return qualName
-					}					
+					}
 				}
 				index++
 			}
-		}
-		"?????"
-	}
 
+			// This is not reference to column. It is rather reference to to some other. Use question mark.			
+			return "?"
+		}
+		"something went wrong"
+	}
 
 	private def String generateMemberSelection(YMemberSelection memberSelection) {
 		if (memberSelection.functioninvocation) {
@@ -855,7 +1249,7 @@ class LangJavaWidgetGenerator implements IGenerator {
 		}
 	}
 
-	private def String generateSwitchStatement(YSwitchStatement switchStatement) {
+	private def String generateStatementSwitch(YSwitchStatement switchStatement) {
 		imports.add("com.google.common.base.Objects")
 		var key = "key".generateLocalName
 		var _matched = "_matched".generateLocalName

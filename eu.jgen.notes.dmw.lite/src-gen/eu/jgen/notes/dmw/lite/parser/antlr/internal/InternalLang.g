@@ -3351,17 +3351,17 @@ ruleYJoin returns [EObject current=null]
 		(
 			(
 				{
-					newCompositeNode(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_2_0());
+					newCompositeNode(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_2_0());
 				}
-				lv_joindef_2_0=ruleYJoinDef
+				lv_joindefs_2_0=ruleYJoinDef
 				{
 					if ($current==null) {
 						$current = createModelElementForParent(grammarAccess.getYJoinRule());
 					}
 					add(
 						$current,
-						"joindef",
-						lv_joindef_2_0,
+						"joindefs",
+						lv_joindefs_2_0,
 						"eu.jgen.notes.dmw.lite.Lang.YJoinDef");
 					afterParserOrEnumRuleCall();
 				}
@@ -3375,17 +3375,17 @@ ruleYJoin returns [EObject current=null]
 			(
 				(
 					{
-						newCompositeNode(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_3_1_0());
+						newCompositeNode(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_3_1_0());
 					}
-					lv_joindef_4_0=ruleYJoinDef
+					lv_joindefs_4_0=ruleYJoinDef
 					{
 						if ($current==null) {
 							$current = createModelElementForParent(grammarAccess.getYJoinRule());
 						}
 						add(
 							$current,
-							"joindef",
-							lv_joindef_4_0,
+							"joindefs",
+							lv_joindefs_4_0,
 							"eu.jgen.notes.dmw.lite.Lang.YJoinDef");
 						afterParserOrEnumRuleCall();
 					}

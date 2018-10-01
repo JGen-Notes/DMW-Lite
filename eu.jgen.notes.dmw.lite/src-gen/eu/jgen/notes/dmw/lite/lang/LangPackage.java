@@ -1175,13 +1175,13 @@ public interface LangPackage extends EPackage
   int YJOIN = 26;
 
   /**
-   * The feature id for the '<em><b>Joindef</b></em>' containment reference list.
+   * The feature id for the '<em><b>Joindefs</b></em>' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YJOIN__JOINDEF = 0;
+  int YJOIN__JOINDEFS = 0;
 
   /**
    * The number of structural features of the '<em>YJoin</em>' class.
@@ -1212,7 +1212,7 @@ public interface LangPackage extends EPackage
   int YJOIN_DEF__FROM_VIEW = 0;
 
   /**
-   * The feature id for the '<em><b>Rel Ref</b></em>' reference list.
+   * The feature id for the '<em><b>Rel Ref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
@@ -3957,15 +3957,15 @@ public interface LangPackage extends EPackage
   EClass getYJoin();
 
   /**
-   * Returns the meta object for the containment reference list '{@link eu.jgen.notes.dmw.lite.lang.YJoin#getJoindef <em>Joindef</em>}'.
+   * Returns the meta object for the containment reference list '{@link eu.jgen.notes.dmw.lite.lang.YJoin#getJoindefs <em>Joindefs</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the containment reference list '<em>Joindef</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YJoin#getJoindef()
+   * @return the meta object for the containment reference list '<em>Joindefs</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YJoin#getJoindefs()
    * @see #getYJoin()
    * @generated
    */
-  EReference getYJoin_Joindef();
+  EReference getYJoin_Joindefs();
 
   /**
    * Returns the meta object for class '{@link eu.jgen.notes.dmw.lite.lang.YJoinDef <em>YJoin Def</em>}'.
@@ -3989,10 +3989,10 @@ public interface LangPackage extends EPackage
   EReference getYJoinDef_FromView();
 
   /**
-   * Returns the meta object for the reference list '{@link eu.jgen.notes.dmw.lite.lang.YJoinDef#getRelRef <em>Rel Ref</em>}'.
+   * Returns the meta object for the reference '{@link eu.jgen.notes.dmw.lite.lang.YJoinDef#getRelRef <em>Rel Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference list '<em>Rel Ref</em>'.
+   * @return the meta object for the reference '<em>Rel Ref</em>'.
    * @see eu.jgen.notes.dmw.lite.lang.YJoinDef#getRelRef()
    * @see #getYJoinDef()
    * @generated
@@ -6200,12 +6200,12 @@ public interface LangPackage extends EPackage
     EClass YJOIN = eINSTANCE.getYJoin();
 
     /**
-     * The meta object literal for the '<em><b>Joindef</b></em>' containment reference list feature.
+     * The meta object literal for the '<em><b>Joindefs</b></em>' containment reference list feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference YJOIN__JOINDEF = eINSTANCE.getYJoin_Joindef();
+    EReference YJOIN__JOINDEFS = eINSTANCE.getYJoin_Joindefs();
 
     /**
      * The meta object literal for the '{@link eu.jgen.notes.dmw.lite.lang.impl.YJoinDefImpl <em>YJoin Def</em>}' class.
@@ -6226,7 +6226,7 @@ public interface LangPackage extends EPackage
     EReference YJOIN_DEF__FROM_VIEW = eINSTANCE.getYJoinDef_FromView();
 
     /**
-     * The meta object literal for the '<em><b>Rel Ref</b></em>' reference list feature.
+     * The meta object literal for the '<em><b>Rel Ref</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated

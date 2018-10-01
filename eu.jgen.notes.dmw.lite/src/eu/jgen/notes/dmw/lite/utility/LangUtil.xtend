@@ -46,6 +46,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotRel
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
+import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
 
 class LangUtil {
 
@@ -138,6 +140,13 @@ class LangUtil {
 				if((annotAbstractColumn.type as YAnnotColumn).attrref.name == member.name) {
 					return annotAbstractColumn.name
 				}
+			} else {
+				
+				// need to review
+				if((((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).name == member.name) {
+					return (((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).name
+				}
+				return (((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).name
 			}			
 		}
 		return ""	

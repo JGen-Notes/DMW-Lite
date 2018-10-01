@@ -116,7 +116,7 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Lang.ecore#//YStructRefPair/structclass"/>
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YJoin">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YJoin/joindef"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YJoin/joindefs"/>
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YJoinDef">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Lang.ecore#//YJoinDef/fromView"/>

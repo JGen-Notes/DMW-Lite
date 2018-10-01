@@ -8,19 +8,13 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YJoinDef;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 
-import java.util.Collection;
-
 import org.eclipse.emf.common.notify.Notification;
-
-import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
-import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -50,14 +44,14 @@ public class YJoinDefImpl extends MinimalEObjectImpl.Container implements YJoinD
   protected YProperty fromView;
 
   /**
-   * The cached value of the '{@link #getRelRef() <em>Rel Ref</em>}' reference list.
+   * The cached value of the '{@link #getRelRef() <em>Rel Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @see #getRelRef()
    * @generated
    * @ordered
    */
-  protected EList<YAnnotRel> relRef;
+  protected YAnnotRel relRef;
 
   /**
    * The cached value of the '{@link #getToView() <em>To View</em>}' reference.
@@ -138,13 +132,42 @@ public class YJoinDefImpl extends MinimalEObjectImpl.Container implements YJoinD
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<YAnnotRel> getRelRef()
+  public YAnnotRel getRelRef()
   {
-    if (relRef == null)
+    if (relRef != null && relRef.eIsProxy())
     {
-      relRef = new EObjectResolvingEList<YAnnotRel>(YAnnotRel.class, this, LangPackage.YJOIN_DEF__REL_REF);
+      InternalEObject oldRelRef = (InternalEObject)relRef;
+      relRef = (YAnnotRel)eResolveProxy(oldRelRef);
+      if (relRef != oldRelRef)
+      {
+        if (eNotificationRequired())
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, LangPackage.YJOIN_DEF__REL_REF, oldRelRef, relRef));
+      }
     }
     return relRef;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public YAnnotRel basicGetRelRef()
+  {
+    return relRef;
+  }
+
+  /**
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @generated
+   */
+  public void setRelRef(YAnnotRel newRelRef)
+  {
+    YAnnotRel oldRelRef = relRef;
+    relRef = newRelRef;
+    if (eNotificationRequired())
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YJOIN_DEF__REL_REF, oldRelRef, relRef));
   }
 
   /**
@@ -204,7 +227,8 @@ public class YJoinDefImpl extends MinimalEObjectImpl.Container implements YJoinD
         if (resolve) return getFromView();
         return basicGetFromView();
       case LangPackage.YJOIN_DEF__REL_REF:
-        return getRelRef();
+        if (resolve) return getRelRef();
+        return basicGetRelRef();
       case LangPackage.YJOIN_DEF__TO_VIEW:
         if (resolve) return getToView();
         return basicGetToView();
@@ -217,7 +241,6 @@ public class YJoinDefImpl extends MinimalEObjectImpl.Container implements YJoinD
    * <!-- end-user-doc -->
    * @generated
    */
-  @SuppressWarnings("unchecked")
   @Override
   public void eSet(int featureID, Object newValue)
   {
@@ -227,8 +250,7 @@ public class YJoinDefImpl extends MinimalEObjectImpl.Container implements YJoinD
         setFromView((YProperty)newValue);
         return;
       case LangPackage.YJOIN_DEF__REL_REF:
-        getRelRef().clear();
-        getRelRef().addAll((Collection<? extends YAnnotRel>)newValue);
+        setRelRef((YAnnotRel)newValue);
         return;
       case LangPackage.YJOIN_DEF__TO_VIEW:
         setToView((YProperty)newValue);
@@ -251,7 +273,7 @@ public class YJoinDefImpl extends MinimalEObjectImpl.Container implements YJoinD
         setFromView((YProperty)null);
         return;
       case LangPackage.YJOIN_DEF__REL_REF:
-        getRelRef().clear();
+        setRelRef((YAnnotRel)null);
         return;
       case LangPackage.YJOIN_DEF__TO_VIEW:
         setToView((YProperty)null);
@@ -273,7 +295,7 @@ public class YJoinDefImpl extends MinimalEObjectImpl.Container implements YJoinD
       case LangPackage.YJOIN_DEF__FROM_VIEW:
         return fromView != null;
       case LangPackage.YJOIN_DEF__REL_REF:
-        return relRef != null && !relRef.isEmpty();
+        return relRef != null;
       case LangPackage.YJOIN_DEF__TO_VIEW:
         return toView != null;
     }

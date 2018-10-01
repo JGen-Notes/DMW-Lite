@@ -29,6 +29,8 @@ import eu.jgen.notes.dmw.lite.lang.YAccessLevel;
 import eu.jgen.notes.dmw.lite.lang.YAndExpression;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
+import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotJava;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YAssignment;
@@ -37,12 +39,15 @@ import eu.jgen.notes.dmw.lite.lang.YBoolConstant;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YComparisonExpression;
 import eu.jgen.notes.dmw.lite.lang.YCreateStatement;
+import eu.jgen.notes.dmw.lite.lang.YDeleteStatement;
 import eu.jgen.notes.dmw.lite.lang.YEqualityExpression;
 import eu.jgen.notes.dmw.lite.lang.YExpression;
 import eu.jgen.notes.dmw.lite.lang.YForInStatement;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YIfStatement;
 import eu.jgen.notes.dmw.lite.lang.YIntConstant;
+import eu.jgen.notes.dmw.lite.lang.YJoin;
+import eu.jgen.notes.dmw.lite.lang.YJoinDef;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
 import eu.jgen.notes.dmw.lite.lang.YMinus;
@@ -53,6 +58,7 @@ import eu.jgen.notes.dmw.lite.lang.YParameter;
 import eu.jgen.notes.dmw.lite.lang.YParenties;
 import eu.jgen.notes.dmw.lite.lang.YPlus;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
+import eu.jgen.notes.dmw.lite.lang.YReadEachStatement;
 import eu.jgen.notes.dmw.lite.lang.YReadStatement;
 import eu.jgen.notes.dmw.lite.lang.YRepeatWhileStatement;
 import eu.jgen.notes.dmw.lite.lang.YReturn;
@@ -64,13 +70,13 @@ import eu.jgen.notes.dmw.lite.lang.YSwitchCase;
 import eu.jgen.notes.dmw.lite.lang.YSwitchStatement;
 import eu.jgen.notes.dmw.lite.lang.YSymbolRef;
 import eu.jgen.notes.dmw.lite.lang.YTuples;
+import eu.jgen.notes.dmw.lite.lang.YUpdateStatement;
 import eu.jgen.notes.dmw.lite.lang.YVariableDeclaration;
 import eu.jgen.notes.dmw.lite.lang.YWhileStatement;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.typing.LangTypeComputer;
 import eu.jgen.notes.dmw.lite.utility.LangJavaGeneratorHelper;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
-import eu.jgen.notes.dmw.lite.utility.LocalNameGenerator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -84,7 +90,6 @@ import org.eclipse.xtext.generator.IGenerator;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
@@ -98,10 +103,6 @@ public class LangJavaWidgetGenerator implements IGenerator {
   @Inject
   @Extension
   private LangJavaGeneratorHelper _langJavaGeneratorHelper;
-  
-  @Inject
-  @Extension
-  private LocalNameGenerator _localNameGenerator;
   
   @Inject
   @Extension
@@ -133,7 +134,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
   private void generateWidget(final IFileSystemAccess fsa, final YWidget widget) {
     final Consumer<YClass> _function = (YClass clazz) -> {
       if (((clazz.getSuperclass() != null) && Objects.equal(clazz.getSuperclass().getName(), "Widget"))) {
-        this._localNameGenerator.reset();
+        this._langJavaGeneratorHelper.resetLocalNames();
+        this.innerFunctions.clear();
         this.imports.clear();
         this.imports.add("eu.jgen.notes.dmw.lite.runtimes.XWidget");
         StringConcatenation _builder = new StringConcatenation();
@@ -147,39 +149,50 @@ public class LangJavaWidgetGenerator implements IGenerator {
         _builder.append(_name);
         _builder.append(" extends XWidget {");
         _builder.newLineIfNotEmpty();
-        _builder.append("   ");
-        String _generateInnerClasses = this.generateInnerClasses(clazz, clazz.getName());
-        _builder.append(_generateInnerClasses, "   ");
+        _builder.append("\t");
+        _builder.newLine();
+        _builder.append("\t  ");
+        _builder.append("public ");
+        String _name_1 = clazz.getName();
+        _builder.append(_name_1, "\t  ");
+        _builder.append("() {");
         _builder.newLineIfNotEmpty();
-        _builder.append("   ");
+        _builder.append("\t  ");
+        _builder.append("}");
+        _builder.newLine();
+        _builder.append("\t  ");
+        String _generateInnerClasses = this.generateInnerClasses(clazz, clazz.getName());
+        _builder.append(_generateInnerClasses, "\t  ");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t  ");
         String _generateProperties = this.generateProperties(clazz);
-        _builder.append(_generateProperties, "   ");
+        _builder.append(_generateProperties, "\t  ");
         _builder.append("\t\t\t\t\t   ");
         _builder.newLineIfNotEmpty();
-        _builder.append("   ");
+        _builder.append("\t  ");
         String _generateArrays = this.generateArrays(clazz, clazz.getName());
-        _builder.append(_generateArrays, "   ");
+        _builder.append(_generateArrays, "\t  ");
         _builder.newLineIfNotEmpty();
-        _builder.append("   ");
+        _builder.append("\t  ");
         String _generateGetInstance = this.generateGetInstance(clazz, clazz.getName());
-        _builder.append(_generateGetInstance, "   ");
+        _builder.append(_generateGetInstance, "\t  ");
         _builder.append("\t");
         _builder.newLineIfNotEmpty();
-        _builder.append("   ");
+        _builder.append("\t  ");
         String _generateConstructor = this.generateConstructor(clazz, clazz.getName());
-        _builder.append(_generateConstructor, "   ");
+        _builder.append(_generateConstructor, "\t  ");
         _builder.append("\t\t\t   ");
         _builder.newLineIfNotEmpty();
-        _builder.append("   ");
+        _builder.append("\t  ");
         String _generateFunctions = this.generateFunctions(clazz);
-        _builder.append(_generateFunctions, "   ");
+        _builder.append(_generateFunctions, "\t  ");
         _builder.newLineIfNotEmpty();
         {
           for(final String innerFunction : this.innerFunctions) {
-            _builder.append("   ");
+            _builder.append("\t  ");
             _builder.newLine();
-            _builder.append("   ");
-            _builder.append(innerFunction, "   ");
+            _builder.append("\t  ");
+            _builder.append(innerFunction, "\t  ");
             _builder.newLineIfNotEmpty();
           }
         }
@@ -188,13 +201,13 @@ public class LangJavaWidgetGenerator implements IGenerator {
         final String body = _builder.toString();
         String _fileSystemPath = this._langUtil.getFileSystemPath(widget.getName());
         String _plus = (_fileSystemPath + "/");
-        String _name_1 = clazz.getName();
-        String _plus_1 = (_plus + _name_1);
+        String _name_2 = clazz.getName();
+        String _plus_1 = (_plus + _name_2);
         String _plus_2 = (_plus_1 + ".java");
         StringConcatenation _builder_1 = new StringConcatenation();
         _builder_1.append("package ");
-        String _name_2 = widget.getName();
-        _builder_1.append(_name_2);
+        String _name_3 = widget.getName();
+        _builder_1.append(_name_3);
         _builder_1.append(";");
         _builder_1.newLineIfNotEmpty();
         _builder_1.newLine();
@@ -220,8 +233,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
         _builder_2.append("@SuppressWarnings(\"unused\")");
         _builder_2.newLine();
         _builder_2.append("public class ");
-        String _name_3 = clazz.getName();
-        _builder_2.append(_name_3);
+        String _name_4 = clazz.getName();
+        _builder_2.append(_name_4);
         _builder_2.append(" {");
         _builder_2.newLineIfNotEmpty();
         _builder_2.newLine();
@@ -230,13 +243,13 @@ public class LangJavaWidgetGenerator implements IGenerator {
         final String body_1 = _builder_2.toString();
         String _fileSystemPath_1 = this._langUtil.getFileSystemPath(widget.getName());
         String _plus_3 = (_fileSystemPath_1 + "/");
-        String _name_4 = clazz.getName();
-        String _plus_4 = (_plus_3 + _name_4);
+        String _name_5 = clazz.getName();
+        String _plus_4 = (_plus_3 + _name_5);
         String _plus_5 = (_plus_4 + ".java");
         StringConcatenation _builder_3 = new StringConcatenation();
         _builder_3.append("package ");
-        String _name_5 = widget.getName();
-        _builder_3.append(_name_5);
+        String _name_6 = widget.getName();
+        _builder_3.append(_name_6);
         _builder_3.append(";");
         _builder_3.newLineIfNotEmpty();
         _builder_3.newLine();
@@ -276,12 +289,16 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return _builder.toString();
   }
   
+  /**
+   * Generate constructor for the widget class.
+   */
   private String generateConstructor(final YClass clazz, final String name) {
     String _xblockexpression = null;
     {
       this.registerImport("java.sql.Connection");
       this.registerImport("java.sql.SQLException");
       this.registerImport("java.sql.PreparedStatement");
+      this.registerImport("java.sql.ResultSet");
       this.registerImport("eu.jgen.notes.dmw.lite.runtimes.DMWRuntimeException");
       StringConcatenation _builder = new StringConcatenation();
       _builder.append("//");
@@ -300,8 +317,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
           {
             if ((member instanceof YProperty)) {
               _builder.append("   ");
-              String _generateInitializeClassProperty = this.generateInitializeClassProperty(clazz, ((YProperty) member));
-              _builder.append(_generateInitializeClassProperty, "   ");
+              String _generateInitializeStructure = this.generateInitializeStructure(clazz, ((YProperty) member));
+              _builder.append(_generateInitializeStructure, "   ");
               _builder.newLineIfNotEmpty();
             }
           }
@@ -314,15 +331,18 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return _xblockexpression;
   }
   
-  private String generateInitializeClassProperty(final YClass clazz, final YProperty property) {
+  /**
+   * Generate content of the constructor for the widget class. It is a sequence
+   * of methods initialising structures and setting default values for each property.
+   */
+  private String generateInitializeStructure(final YClass clazz, final YProperty property) {
     String _xblockexpression = null;
     {
-      String _name = property.getType().getName();
-      boolean _equals = Objects.equal(_name, "Array");
-      if (_equals) {
+      if ((((((Objects.equal(property.getType().getName(), "Array") || Objects.equal(property.getType().getName(), "Int")) || Objects.equal(property.getType().getName(), "Short")) || 
+        Objects.equal(property.getType().getName(), "Decimal")) || Objects.equal(property.getType().getName(), "Long")) || Objects.equal(property.getType().getName(), "Boolean"))) {
         return "";
       }
-      String _initStructure = this._localNameGenerator.generateLocalName("_initStructure");
+      String _initStructure = this._langJavaGeneratorHelper.generateLocalName("_initStructure");
       this.generateInitStructureMethod(clazz, property, _initStructure);
       StringConcatenation _builder = new StringConcatenation();
       _builder.append(_initStructure);
@@ -332,11 +352,22 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return _xblockexpression;
   }
   
+  /**
+   * Generate body of initialisation  method for for structure
+   */
   private void generateInitStructureMethod(final YClass clazz, final YProperty property, final String methodName) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("private void ");
     _builder.append(methodName);
     _builder.append("() {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    String _name = property.getName();
+    _builder.append(_name, "   ");
+    _builder.append(" = new ");
+    String _name_1 = property.getType().getName();
+    _builder.append(_name_1, "   ");
+    _builder.append("();");
     _builder.newLineIfNotEmpty();
     {
       EList<YMember> _members = property.getType().getMembers();
@@ -344,7 +375,7 @@ public class LangJavaWidgetGenerator implements IGenerator {
         {
           if ((member instanceof YProperty)) {
             _builder.append("   ");
-            String _generateInitializeProperty = this.generateInitializeProperty(((YProperty) member), StringExtensions.toFirstLower(property.getType().getName()));
+            String _generateInitializeProperty = this.generateInitializeProperty(((YProperty) member), property.getName());
             _builder.append(_generateInitializeProperty, "   ");
             _builder.newLineIfNotEmpty();
           }
@@ -356,7 +387,7 @@ public class LangJavaWidgetGenerator implements IGenerator {
     this.innerFunctions.add(_builder.toString());
   }
   
-  private String generateCreateStatement(final YCreateStatement createStatement, final String _create) {
+  private String generateStatementCreateInnerFunction(final YCreateStatement createStatement, final String _create) {
     createStatement.getStruct().getStructproperty().getType().getMembers();
     final YAnnotTable implementingTable = this._langUtil.getImplementingTable(createStatement.getStruct().getStructclass());
     StringConcatenation _builder = new StringConcatenation();
@@ -425,8 +456,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
     _builder.append("PreparedStatement _statement = _connection.prepareStatement(buffer.toString());");
     _builder.newLine();
     _builder.append("   \t  ");
-    String _generateSetMethods = this.generateSetMethods(createStatement);
-    _builder.append(_generateSetMethods, "   \t  ");
+    String _generateSetMethodsForCreateStatement = this.generateSetMethodsForCreateStatement(createStatement);
+    _builder.append(_generateSetMethodsForCreateStatement, "   \t  ");
     _builder.newLineIfNotEmpty();
     _builder.append("   \t  ");
     _builder.append("_statement.execute();");
@@ -460,7 +491,7 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return _builder.toString();
   }
   
-  private String generateSetMethods(final YCreateStatement createStatement) {
+  private String generateSetMethodsForCreateStatement(final YCreateStatement createStatement) {
     final StringBuffer buffer = new StringBuffer();
     int index = 1;
     EList<YMember> _members = createStatement.getStruct().getStructproperty().getType().getMembers();
@@ -482,6 +513,50 @@ public class LangJavaWidgetGenerator implements IGenerator {
       }
     }
     return buffer.toString();
+  }
+  
+  private String generateSetMethodsForUpdateStatement(final YUpdateStatement updateStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    EList<YMember> _members = updateStatement.getStruct().getStructproperty().getType().getMembers();
+    for (final YMember member : _members) {
+      {
+        String _generaterUpdateMethodName = this.generaterUpdateMethodName(member);
+        String _plus = ("_rs." + _generaterUpdateMethodName);
+        buffer.append(_plus);
+        buffer.append("(");
+        buffer.append(index);
+        buffer.append(", ");
+        String _name = updateStatement.getStruct().getStructproperty().getName();
+        String _plus_1 = (_name + ".");
+        String _name_1 = member.getName();
+        String _plus_2 = (_plus_1 + _name_1);
+        buffer.append(_plus_2);
+        buffer.append(");\n");
+        index++;
+      }
+    }
+    return buffer.toString();
+  }
+  
+  private String generaterUpdateMethodName(final YMember member) {
+    String _name = member.getType().getName();
+    if (_name != null) {
+      switch (_name) {
+        case "Int":
+          return "updateInt";
+        case "Short":
+          return "updateShort";
+        case "String":
+          return "updateString";
+        case "Double":
+          return "updateDouble";
+        default:
+          return "not yet done";
+      }
+    } else {
+      return "not yet done";
+    }
   }
   
   private String generaterSetMethodName(final YMember member) {
@@ -507,8 +582,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
   private String generateArrays(final YClass clazz, final String widgetName) {
     StringConcatenation _builder = new StringConcatenation();
     {
-      ArrayList<YProperty> _listArrayProperties = this._langJavaGeneratorHelper.listArrayProperties(clazz);
-      for(final YProperty property : _listArrayProperties) {
+      ArrayList<YProperty> _findPropertiesOfTypeArray = this._langJavaGeneratorHelper.findPropertiesOfTypeArray(clazz);
+      for(final YProperty property : _findPropertiesOfTypeArray) {
         String _registerImport = this.registerImport("eu.jgen.notes.dmw.lite.runtimes.XArray");
         _builder.append(_registerImport);
         _builder.newLineIfNotEmpty();
@@ -604,9 +679,7 @@ public class LangJavaWidgetGenerator implements IGenerator {
             _builder.append(" ");
             String _name = ref.getName();
             _builder.append(_name, "\t\t\t");
-            _builder.append(" = ");
-            _builder.append(widgetName, "\t\t\t");
-            _builder.append(".instance");
+            _builder.append(" = new ");
             String _firstUpper_10 = StringExtensions.toFirstUpper(ref.getType().getName());
             _builder.append(_firstUpper_10, "\t\t\t");
             _builder.append("();");
@@ -651,8 +724,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
         String _firstUpper_13 = StringExtensions.toFirstUpper(property.getName());
         _builder.append(_firstUpper_13);
         _builder.append("(");
-        int _findArraySize = this._langJavaGeneratorHelper.findArraySize(property);
-        _builder.append(_findArraySize);
+        int _arraySize = this._langJavaGeneratorHelper.getArraySize(property);
+        _builder.append(_arraySize);
         _builder.append(");");
         _builder.newLineIfNotEmpty();
       }
@@ -762,13 +835,16 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return _xifexpression;
   }
   
+  /**
+   * Generate block of statements
+   */
   private String generateBlock(final YBlock block) {
     StringConcatenation _builder = new StringConcatenation();
     {
       EList<YStatement> _statements = block.getStatements();
       for(final YStatement statement : _statements) {
-        String _generateStatement = this.generateStatement(statement);
-        _builder.append(_generateStatement);
+        String _selectStatementGeneration = this.selectStatementGeneration(statement);
+        _builder.append(_selectStatementGeneration);
         _builder.newLineIfNotEmpty();
       }
     }
@@ -776,315 +852,441 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return body;
   }
   
-  private String generateStatement(final YStatement statement) {
-    String _switchResult = null;
+  /**
+   * Select type of the statement and generate code.
+   */
+  private String selectStatementGeneration(final YStatement statement) {
     boolean _matched = false;
-    if ((statement instanceof YForInStatement)) {
+    if ((statement instanceof YDeleteStatement)) {
       _matched=true;
-      final YForInStatement forInStatement = ((YForInStatement) statement);
-      String _index = this._localNameGenerator.generateLocalName("_index");
-      StringConcatenation _builder = new StringConcatenation();
-      String _documentation = this._langJavaGeneratorHelper.getDocumentation(forInStatement);
-      _builder.append(_documentation);
-      _builder.append("  ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("int ");
-      _builder.append(_index);
-      _builder.append(" = 1;");
-      _builder.newLineIfNotEmpty();
-      _builder.append("for (");
-      _builder.append(_index);
-      _builder.append("=1; ");
-      _builder.append(_index);
-      _builder.append(" <= this.");
-      String _name = forInStatement.getCollection().getName();
-      _builder.append(_name);
-      _builder.append(".getLast(); ");
-      _builder.append(_index);
-      _builder.append("++) {");
-      _builder.newLineIfNotEmpty();
-      String _name_1 = forInStatement.getCollection().getName();
-      _builder.append(_name_1);
-      _builder.append(".setSubscript(");
-      _builder.append(_index);
-      _builder.append(");");
-      _builder.newLineIfNotEmpty();
-      {
-        EList<YProperty> _includes = forInStatement.getCollection().getTuples().getIncludes();
-        for(final YProperty include : _includes) {
-          _builder.append("this.");
-          String _name_2 = include.getName();
-          _builder.append(_name_2);
-          _builder.append(" = ");
-          String _name_3 = forInStatement.getCollection().getName();
-          _builder.append(_name_3);
-          _builder.append(".get");
-          String _name_4 = include.getType().getName();
-          _builder.append(_name_4);
-          _builder.append("();");
-          _builder.newLineIfNotEmpty();
-        }
+      return this.generateStatementDelete(((YDeleteStatement) statement));
+    }
+    if (!_matched) {
+      if ((statement instanceof YUpdateStatement)) {
+        _matched=true;
+        return this.generateStatementUpdate(((YUpdateStatement) statement));
       }
-      _builder.append("   ");
-      String _generateBlock = this.generateBlock(forInStatement.getBody());
-      _builder.append(_generateBlock, "   ");
-      _builder.newLineIfNotEmpty();
-      _builder.append("}\t\t");
-      _builder.newLine();
-      return _builder.toString();
+    }
+    if (!_matched) {
+      if ((statement instanceof YReadEachStatement)) {
+        _matched=true;
+        return this.generateStatementReadEach(((YReadEachStatement) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YForInStatement)) {
+        _matched=true;
+        return this.generateStatementForIn(((YForInStatement) statement));
+      }
     }
     if (!_matched) {
       if ((statement instanceof YCreateStatement)) {
         _matched=true;
-        final YCreateStatement createStatement = ((YCreateStatement) statement);
-        String _create = this._localNameGenerator.generateLocalName("_create");
-        this.innerFunctions.add(this.generateCreateStatement(createStatement, _create));
-        StringConcatenation _builder_1 = new StringConcatenation();
-        String _documentation_1 = this._langJavaGeneratorHelper.getDocumentation(createStatement);
-        _builder_1.append(_documentation_1);
-        _builder_1.newLineIfNotEmpty();
-        String _generateBlock_1 = this.generateBlock(createStatement.getSetBlock());
-        _builder_1.append(_generateBlock_1);
-        _builder_1.newLineIfNotEmpty();
-        _builder_1.append("if(_create()) {");
-        _builder_1.newLine();
-        _builder_1.append("\t");
-        _builder_1.append("// execution of create statement completed successfully");
-        _builder_1.newLine();
-        _builder_1.append("\t");
-        String _generateBlock_2 = this.generateBlock(createStatement.getSuccess());
-        _builder_1.append(_generateBlock_2, "\t");
-        _builder_1.newLineIfNotEmpty();
-        _builder_1.append("} else {");
-        _builder_1.newLine();
-        _builder_1.append("\t");
-        _builder_1.append("// duplicate entity type detected during when executing create statement");
-        _builder_1.newLine();
-        _builder_1.append("\t");
-        String _generateBlock_3 = this.generateBlock(createStatement.getAlreadyExist());
-        _builder_1.append(_generateBlock_3, "\t");
-        _builder_1.newLineIfNotEmpty();
-        _builder_1.append("}\t\t\t\t  ");
-        _builder_1.newLine();
-        return _builder_1.toString();
-      }
-    }
-    if (!_matched) {
-      if ((statement instanceof YReadStatement)) {
-        _matched=true;
-        final YReadStatement readStatement = ((YReadStatement) statement);
-        String _read = this._localNameGenerator.generateLocalName("_read");
-        this.innerFunctions.add(this.generateReadStatement(readStatement, _read));
-        StringConcatenation _builder_2 = new StringConcatenation();
-        String _documentation_2 = this._langJavaGeneratorHelper.getDocumentation(readStatement);
-        _builder_2.append(_documentation_2);
-        _builder_2.newLineIfNotEmpty();
-        _builder_2.append("if(_Read()) {");
-        _builder_2.newLine();
-        _builder_2.append("\t");
-        _builder_2.append("// execution of read statement completed successfully");
-        _builder_2.newLine();
-        _builder_2.append("\t");
-        String _generateBlock_4 = this.generateBlock(readStatement.getSuccess());
-        _builder_2.append(_generateBlock_4, "\t");
-        _builder_2.newLineIfNotEmpty();
-        _builder_2.append("} else {");
-        _builder_2.newLine();
-        _builder_2.append("\t");
-        _builder_2.append("// entity type not found when executing create statement");
-        _builder_2.newLine();
-        _builder_2.append("\t");
-        String _generateBlock_5 = this.generateBlock(readStatement.getNotfound());
-        _builder_2.append(_generateBlock_5, "\t");
-        _builder_2.newLineIfNotEmpty();
-        _builder_2.append("}\t\t\t\t  ");
-        _builder_2.newLine();
-        return _builder_2.toString();
-      }
-    }
-    if (!_matched) {
-      if ((statement instanceof YRepeatWhileStatement)) {
-        _matched=true;
-        final YRepeatWhileStatement repeatWhileStatement = ((YRepeatWhileStatement) statement);
-        StringConcatenation _builder_3 = new StringConcatenation();
-        String _documentation_3 = this._langJavaGeneratorHelper.getDocumentation(repeatWhileStatement);
-        _builder_3.append(_documentation_3);
-        _builder_3.append("  ");
-        _builder_3.newLineIfNotEmpty();
-        _builder_3.append("do {");
-        _builder_3.newLine();
-        _builder_3.append("\t   ");
-        String _generateBlock_6 = this.generateBlock(repeatWhileStatement.getBody());
-        _builder_3.append(_generateBlock_6, "\t   ");
-        _builder_3.newLineIfNotEmpty();
-        _builder_3.append("} while (");
-        String _generateExpression = this.generateExpression(repeatWhileStatement.getExpression());
-        _builder_3.append(_generateExpression);
-        _builder_3.append(");\t\t");
-        _builder_3.newLineIfNotEmpty();
-        return _builder_3.toString();
-      }
-    }
-    if (!_matched) {
-      if ((statement instanceof YSwitchStatement)) {
-        _matched=true;
-        final YSwitchStatement switchStatement = ((YSwitchStatement) statement);
-        StringConcatenation _builder_4 = new StringConcatenation();
-        String _documentation_4 = this._langJavaGeneratorHelper.getDocumentation(switchStatement);
-        _builder_4.append(_documentation_4);
-        _builder_4.append("  ");
-        _builder_4.newLineIfNotEmpty();
-        String _generateSwitchStatement = this.generateSwitchStatement(switchStatement);
-        _builder_4.append(_generateSwitchStatement);
-        _builder_4.append("\t\t");
-        _builder_4.newLineIfNotEmpty();
-        return _builder_4.toString();
-      }
-    }
-    if (!_matched) {
-      if ((statement instanceof YWhileStatement)) {
-        _matched=true;
-        final YWhileStatement whileStatement = ((YWhileStatement) statement);
-        StringConcatenation _builder_5 = new StringConcatenation();
-        String _documentation_5 = this._langJavaGeneratorHelper.getDocumentation(whileStatement);
-        _builder_5.append(_documentation_5);
-        _builder_5.append("  ");
-        _builder_5.newLineIfNotEmpty();
-        _builder_5.append("while (");
-        String _generateExpression_1 = this.generateExpression(whileStatement.getExpression());
-        _builder_5.append(_generateExpression_1);
-        _builder_5.append(") {");
-        _builder_5.newLineIfNotEmpty();
-        _builder_5.append("\t   ");
-        String _generateBlock_7 = this.generateBlock(whileStatement.getBody());
-        _builder_5.append(_generateBlock_7, "\t   ");
-        _builder_5.newLineIfNotEmpty();
-        _builder_5.append("}\t\t\t");
-        _builder_5.newLine();
-        return _builder_5.toString();
-      }
-    }
-    if (!_matched) {
-      if ((statement instanceof YReturn)) {
-        _matched=true;
-        final YReturn returnStatement = ((YReturn) statement);
-        YExpression _expression = returnStatement.getExpression();
-        boolean _tripleEquals = (_expression == null);
-        if (_tripleEquals) {
-          StringConcatenation _builder_6 = new StringConcatenation();
-          String _documentation_6 = this._langJavaGeneratorHelper.getDocumentation(returnStatement);
-          _builder_6.append(_documentation_6);
-          _builder_6.newLineIfNotEmpty();
-          _builder_6.append("return;");
-          _builder_6.newLine();
-          return _builder_6.toString();
-        } else {
-          StringConcatenation _builder_7 = new StringConcatenation();
-          String _documentation_7 = this._langJavaGeneratorHelper.getDocumentation(returnStatement);
-          _builder_7.append(_documentation_7);
-          _builder_7.newLineIfNotEmpty();
-          _builder_7.append("return ");
-          String _generateExpression_2 = this.generateExpression(returnStatement.getExpression());
-          _builder_7.append(_generateExpression_2);
-          _builder_7.append(";");
-          _builder_7.newLineIfNotEmpty();
-          return _builder_7.toString();
-        }
-      }
-    }
-    if (!_matched) {
-      if ((statement instanceof YVariableDeclaration)) {
-        _matched=true;
-        final YVariableDeclaration variableDeclaration = ((YVariableDeclaration) statement);
-        StringConcatenation _builder_8 = new StringConcatenation();
-        String _documentation_8 = this._langJavaGeneratorHelper.getDocumentation(variableDeclaration);
-        _builder_8.append(_documentation_8);
-        _builder_8.newLineIfNotEmpty();
-        String _generateVariableDeclaration = this.generateVariableDeclaration(variableDeclaration);
-        _builder_8.append(_generateVariableDeclaration);
-        _builder_8.newLineIfNotEmpty();
-        return _builder_8.toString();
-      }
-    }
-    if (!_matched) {
-      if ((statement instanceof YAssignment)) {
-        _matched=true;
-        final YAssignment assignment = ((YAssignment) statement);
-        StringConcatenation _builder_9 = new StringConcatenation();
-        String _documentation_9 = this._langJavaGeneratorHelper.getDocumentation(assignment);
-        _builder_9.append(_documentation_9);
-        _builder_9.newLineIfNotEmpty();
-        String _generateAssigment = this.generateAssigment(assignment);
-        _builder_9.append(_generateAssigment);
-        _builder_9.newLineIfNotEmpty();
-        return _builder_9.toString();
+        return this.generateStatementCreate(((YCreateStatement) statement));
       }
     }
     if (!_matched) {
       if ((statement instanceof YIfStatement)) {
         _matched=true;
-        String _xblockexpression = null;
-        {
-          final YIfStatement ifStatement = ((YIfStatement) statement);
-          StringConcatenation _builder_10 = new StringConcatenation();
-          String _documentation_10 = this._langJavaGeneratorHelper.getDocumentation(ifStatement);
-          _builder_10.append(_documentation_10);
-          _builder_10.append("  ");
-          _builder_10.newLineIfNotEmpty();
-          _builder_10.append("if (");
-          String _generateExpression_3 = this.generateExpression(ifStatement.getExpression());
-          _builder_10.append(_generateExpression_3);
-          _builder_10.append(") {");
-          _builder_10.newLineIfNotEmpty();
-          _builder_10.append("\t");
-          String _generateBlock_8 = this.generateBlock(ifStatement.getThenBlock());
-          _builder_10.append(_generateBlock_8, "\t");
-          _builder_10.append(" ");
-          _builder_10.newLineIfNotEmpty();
-          _builder_10.append("} ");
-          {
-            YBlock _elseBlock = ifStatement.getElseBlock();
-            boolean _tripleNotEquals = (_elseBlock != null);
-            if (_tripleNotEquals) {
-              _builder_10.append(" else {");
-              _builder_10.newLineIfNotEmpty();
-              _builder_10.append("\t\t\t\t\t\t\t\t\t\t");
-              String _generateBlock_9 = this.generateBlock(ifStatement.getElseBlock());
-              _builder_10.append(_generateBlock_9, "\t\t\t\t\t\t\t\t\t\t");
-              _builder_10.newLineIfNotEmpty();
-              _builder_10.append("}");
-            }
-          }
-          _builder_10.newLineIfNotEmpty();
-          _builder_10.newLine();
-          _xblockexpression = _builder_10.toString();
-        }
-        _switchResult = _xblockexpression;
+        return this.generateStatementIf(((YIfStatement) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YReturn)) {
+        _matched=true;
+        return this.generateStatementReturn(((YReturn) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YWhileStatement)) {
+        _matched=true;
+        return this.generateStatementWhile(((YWhileStatement) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YSwitchStatement)) {
+        _matched=true;
+        return this.generateStatementSwitch(((YSwitchStatement) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YReadStatement)) {
+        _matched=true;
+        return this.generateStatementRead(((YReadStatement) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YRepeatWhileStatement)) {
+        _matched=true;
+        return this.generateStatementRead(((YRepeatWhileStatement) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YVariableDeclaration)) {
+        _matched=true;
+        return this.generateStatementVariableDeclaration(((YVariableDeclaration) statement));
+      }
+    }
+    if (!_matched) {
+      if ((statement instanceof YAssignment)) {
+        _matched=true;
+        return this.generateStatementYAssignment(((YAssignment) statement));
       }
     }
     if (!_matched) {
       if ((statement instanceof YMemberSelection)) {
         _matched=true;
-        final YMemberSelection memberSelection = ((YMemberSelection) statement);
-        StringConcatenation _builder_10 = new StringConcatenation();
-        String _documentation_10 = this._langJavaGeneratorHelper.getDocumentation(memberSelection);
-        _builder_10.append(_documentation_10);
-        _builder_10.newLineIfNotEmpty();
-        String _generateSpecialFunctions = this.generateSpecialFunctions(memberSelection);
-        _builder_10.append(_generateSpecialFunctions);
-        _builder_10.newLineIfNotEmpty();
-        return _builder_10.toString();
+        return this.generateStatementYAssignment(((YMemberSelection) statement));
       }
     }
-    if (!_matched) {
-      return "//TODO - not implemented yet";
-    }
-    return _switchResult;
+    return ("//TODO - This statement is not implemented yet: " + statement);
   }
   
-  private String generateReadStatement(final YReadStatement readStatement, final String _read) {
+  private String generateStatementYAssignment(final YMemberSelection memberSelection) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(memberSelection);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    String _generateSpecialFunctions = this.generateSpecialFunctions(memberSelection);
+    _builder.append(_generateSpecialFunctions);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  private String generateStatementYAssignment(final YAssignment assignment) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(assignment);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    String _generateAssigment = this.generateAssigment(assignment);
+    _builder.append(_generateAssigment);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  private String generateStatementVariableDeclaration(final YVariableDeclaration variableDeclaration) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(variableDeclaration);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    String _generateVariableDeclaration = this.generateVariableDeclaration(variableDeclaration);
+    _builder.append(_generateVariableDeclaration);
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  private String generateStatementRead(final YRepeatWhileStatement repeatWhileStatement) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(repeatWhileStatement);
+    _builder.append(_documentation);
+    _builder.append("  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("do {");
+    _builder.newLine();
+    _builder.append("\t   ");
+    String _generateBlock = this.generateBlock(repeatWhileStatement.getBody());
+    _builder.append(_generateBlock, "\t   ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("} while (");
+    String _generateExpression = this.generateExpression(repeatWhileStatement.getExpression());
+    _builder.append(_generateExpression);
+    _builder.append(");\t\t");
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  private String generateStatementRead(final YReadStatement readStatement) {
+    String _read = this._langJavaGeneratorHelper.generateLocalName("_read");
+    this.innerFunctions.add(this.generateStatementReadInnerFunction(readStatement, _read));
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(readStatement);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    _builder.append("if(!");
+    _builder.append(_read);
+    _builder.append("()) {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    _builder.append("// entity type not found when executing create statement");
+    _builder.newLine();
+    _builder.append("\t");
+    String _generateBlock = this.generateBlock(readStatement.getNotfound());
+    _builder.append(_generateBlock, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}\t\t\t\t  ");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateStatementWhile(final YWhileStatement whileStatement) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(whileStatement);
+    _builder.append(_documentation);
+    _builder.append("  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("while (");
+    String _generateExpression = this.generateExpression(whileStatement.getExpression());
+    _builder.append(_generateExpression);
+    _builder.append(") {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t   ");
+    String _generateBlock = this.generateBlock(whileStatement.getBody());
+    _builder.append(_generateBlock, "\t   ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}\t\t\t");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateStatementReturn(final YReturn returnStatement) {
+    YExpression _expression = returnStatement.getExpression();
+    boolean _tripleEquals = (_expression == null);
+    if (_tripleEquals) {
+      StringConcatenation _builder = new StringConcatenation();
+      String _documentation = this._langJavaGeneratorHelper.getDocumentation(returnStatement);
+      _builder.append(_documentation);
+      _builder.newLineIfNotEmpty();
+      _builder.append("return;");
+      _builder.newLine();
+      return _builder.toString();
+    } else {
+      StringConcatenation _builder_1 = new StringConcatenation();
+      String _documentation_1 = this._langJavaGeneratorHelper.getDocumentation(returnStatement);
+      _builder_1.append(_documentation_1);
+      _builder_1.newLineIfNotEmpty();
+      _builder_1.append("return ");
+      String _generateExpression = this.generateExpression(returnStatement.getExpression());
+      _builder_1.append(_generateExpression);
+      _builder_1.append(";");
+      _builder_1.newLineIfNotEmpty();
+      return _builder_1.toString();
+    }
+  }
+  
+  private String generateStatementIf(final YIfStatement ifStatement) {
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(ifStatement);
+    _builder.append(_documentation);
+    _builder.append("  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("if (");
+    String _generateExpression = this.generateExpression(ifStatement.getExpression());
+    _builder.append(_generateExpression);
+    _builder.append(") {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("\t");
+    String _generateBlock = this.generateBlock(ifStatement.getThenBlock());
+    _builder.append(_generateBlock, "\t");
+    _builder.append(" ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("} ");
+    {
+      YBlock _elseBlock = ifStatement.getElseBlock();
+      boolean _tripleNotEquals = (_elseBlock != null);
+      if (_tripleNotEquals) {
+        _builder.append(" else {");
+        _builder.newLineIfNotEmpty();
+        _builder.append("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+        String _generateBlock_1 = this.generateBlock(ifStatement.getElseBlock());
+        _builder.append(_generateBlock_1, "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t");
+        _builder.newLineIfNotEmpty();
+        _builder.append("}");
+      }
+    }
+    _builder.newLineIfNotEmpty();
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateStatementDelete(final YDeleteStatement deleteStatement) {
+    String _delete = this._langJavaGeneratorHelper.generateLocalName("_delete");
+    this.innerFunctions.add(this.generateStatementDelete(deleteStatement, _delete));
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(deleteStatement);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    _builder.append("               ");
+    _builder.append(_delete, "               ");
+    _builder.append("(_rs);");
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  private String generateStatementUpdate(final YUpdateStatement updateStatement) {
+    String _update = this._langJavaGeneratorHelper.generateLocalName("_update");
+    this.innerFunctions.add(this.generateStatementUpdateInnerFunction(updateStatement, _update));
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("   ");
+    String _generateBlock = this.generateBlock(updateStatement.getSetBlock());
+    _builder.append(_generateBlock, "   ");
+    _builder.newLineIfNotEmpty();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(updateStatement);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    _builder.append("               ");
+    _builder.append(_update, "               ");
+    _builder.append("(_rs);");
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  private String generateStatementReadEach(final YReadEachStatement readEachStatement) {
+    String _readEach = this._langJavaGeneratorHelper.generateLocalName("_read");
+    this.innerFunctions.add(this.generateStatementReadEachInnerFunction(readEachStatement, _readEach));
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(readEachStatement);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    _builder.append(_readEach);
+    _builder.append("();\t\t\t\t  ");
+    _builder.newLineIfNotEmpty();
+    return _builder.toString();
+  }
+  
+  private String generateStatementCreate(final YCreateStatement createStatement) {
+    String _create = this._langJavaGeneratorHelper.generateLocalName("_create");
+    this.innerFunctions.add(this.generateStatementCreateInnerFunction(createStatement, _create));
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(createStatement);
+    _builder.append(_documentation);
+    _builder.newLineIfNotEmpty();
+    String _generateBlock = this.generateBlock(createStatement.getSetBlock());
+    _builder.append(_generateBlock);
+    _builder.newLineIfNotEmpty();
+    _builder.append("if(_create()) {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("// execution of create statement completed successfully");
+    _builder.newLine();
+    _builder.append("\t");
+    String _generateBlock_1 = this.generateBlock(createStatement.getSuccess());
+    _builder.append(_generateBlock_1, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("} else {");
+    _builder.newLine();
+    _builder.append("\t");
+    _builder.append("// duplicate entity type detected during when executing create statement");
+    _builder.newLine();
+    _builder.append("\t");
+    String _generateBlock_2 = this.generateBlock(createStatement.getAlreadyExist());
+    _builder.append(_generateBlock_2, "\t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}\t\t\t\t  ");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateStatementForIn(final YForInStatement forInStatement) {
+    String _index = this._langJavaGeneratorHelper.generateLocalName("_index");
+    StringConcatenation _builder = new StringConcatenation();
+    String _documentation = this._langJavaGeneratorHelper.getDocumentation(forInStatement);
+    _builder.append(_documentation);
+    _builder.append("  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("int ");
+    _builder.append(_index);
+    _builder.append(" = 1;");
+    _builder.newLineIfNotEmpty();
+    _builder.append("for (");
+    _builder.append(_index);
+    _builder.append("=1; ");
+    _builder.append(_index);
+    _builder.append(" <= this.");
+    String _name = forInStatement.getCollection().getName();
+    _builder.append(_name);
+    _builder.append(".getLast(); ");
+    _builder.append(_index);
+    _builder.append("++) {");
+    _builder.newLineIfNotEmpty();
+    String _name_1 = forInStatement.getCollection().getName();
+    _builder.append(_name_1);
+    _builder.append(".setSubscript(");
+    _builder.append(_index);
+    _builder.append(");");
+    _builder.newLineIfNotEmpty();
+    {
+      EList<YProperty> _includes = forInStatement.getCollection().getTuples().getIncludes();
+      for(final YProperty include : _includes) {
+        _builder.append("this.");
+        String _name_2 = include.getName();
+        _builder.append(_name_2);
+        _builder.append(" = ");
+        String _name_3 = forInStatement.getCollection().getName();
+        _builder.append(_name_3);
+        _builder.append(".get");
+        String _name_4 = include.getType().getName();
+        _builder.append(_name_4);
+        _builder.append("();");
+        _builder.newLineIfNotEmpty();
+      }
+    }
+    _builder.append("   ");
+    String _generateBlock = this.generateBlock(forInStatement.getBody());
+    _builder.append(_generateBlock, "   ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("}\t\t");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateStatementUpdateInnerFunction(final YUpdateStatement updateStatement, final String _update) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("private void ");
+    _builder.append(_update);
+    _builder.append("(ResultSet _rs) {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("try {");
+    _builder.newLine();
+    _builder.append("   \t");
+    String _generateSetMethodsForUpdateStatement = this.generateSetMethodsForUpdateStatement(updateStatement);
+    _builder.append(_generateSetMethodsForUpdateStatement, "   \t");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("_rs.updateRow();");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("} catch (SQLException e) {");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("throw new DMWRuntimeException(e);");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateStatementDelete(final YDeleteStatement deleteStatement, final String _delete) {
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("private void ");
+    _builder.append(_delete);
+    _builder.append("(ResultSet _rs) {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("try {");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("_rs.deleteRow();");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("} catch (SQLException e) {");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("throw new DMWRuntimeException(e);");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateStatementReadInnerFunction(final YReadStatement readStatement, final String _read) {
     readStatement.getStructs();
-    final YAnnotTable implementingTable = this._langUtil.getImplementingTable(readStatement.getStructs().get(0).getStructclass());
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("private boolean ");
     _builder.append(_read);
@@ -1094,14 +1296,14 @@ public class LangJavaWidgetGenerator implements IGenerator {
     _builder.append("StringBuffer buffer = new StringBuffer();");
     _builder.newLine();
     _builder.append("   ");
-    _builder.append("buffer.append(\"SELECT\");");
+    _builder.append("buffer.append(\"SELECT \");");
     _builder.newLine();
     _builder.append("   ");
     _builder.append("buffer.append(\"");
     {
-      ArrayList<String> _createQualifiedColumnNamesList = this._langJavaGeneratorHelper.createQualifiedColumnNamesList(readStatement);
+      ArrayList<String> _createQualifiedColumnNamesListForRead = this._langJavaGeneratorHelper.createQualifiedColumnNamesListForRead(readStatement);
       boolean _hasElements = false;
-      for(final String qualifiedName : _createQualifiedColumnNamesList) {
+      for(final String qualifiedName : _createQualifiedColumnNamesListForRead) {
         if (!_hasElements) {
           _hasElements = true;
         } else {
@@ -1113,7 +1315,7 @@ public class LangJavaWidgetGenerator implements IGenerator {
     _builder.append("\");\t\t   ");
     _builder.newLineIfNotEmpty();
     _builder.append("   ");
-    _builder.append("buffer.append(\"FROM\");");
+    _builder.append("buffer.append(\" FROM \");");
     _builder.newLine();
     _builder.append("   ");
     _builder.append("buffer.append(\"");
@@ -1132,14 +1334,23 @@ public class LangJavaWidgetGenerator implements IGenerator {
     _builder.append("\");\t\t   ");
     _builder.newLineIfNotEmpty();
     _builder.append("   ");
-    _builder.append("buffer.append(\"WHERE\");");
+    _builder.append("buffer.append(\" WHERE \");");
     _builder.newLine();
     _builder.append("   ");
-    _builder.append("buffer.append(\"   ");
+    _builder.append("buffer.append(\"");
+    String _generateJoinExpressionForRead = this.generateJoinExpressionForRead(readStatement);
+    _builder.append(_generateJoinExpressionForRead, "   ");
+    _builder.append("\");");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("buffer.append(\"");
     String _generateJDBCExpression = this.generateJDBCExpression(readStatement, readStatement.getWhereclause().getExpression());
     _builder.append(_generateJDBCExpression, "   ");
     _builder.append("\");");
     _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("buffer.append(\" FOR UPDATE \");");
+    _builder.newLine();
     _builder.append("   ");
     _builder.append("System.out.println(buffer.toString());\t\t");
     _builder.newLine();
@@ -1147,14 +1358,46 @@ public class LangJavaWidgetGenerator implements IGenerator {
     _builder.append("try {");
     _builder.newLine();
     _builder.append("   \t  ");
-    _builder.append("PreparedStatement _statement = _connection.prepareStatement(buffer.toString());");
+    _builder.append("PreparedStatement _statement = _connection.prepareStatement(buffer.toString(), ResultSet.CONCUR_UPDATABLE,");
     _builder.newLine();
+    _builder.append("   \t  \t\t\t\t\t");
+    _builder.append("ResultSet.CLOSE_CURSORS_AT_COMMIT);");
     _builder.newLine();
-    _builder.append("      ");
+    _builder.append("   \t  ");
+    _builder.append("_statement.setCursorName(\"viewF\");");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    String _generateSetMethodsForRead = this.generateSetMethodsForRead(readStatement);
+    _builder.append(_generateSetMethodsForRead, "   \t  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   \t  ");
     _builder.append("_statement.execute();");
     _builder.newLine();
-    _builder.append("      ");
+    _builder.append("   \t  ");
+    _builder.append("ResultSet _rs = _statement.getResultSet();");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.append("_rs.next();");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    String _generateGetMethodsForRead = this.generateGetMethodsForRead(readStatement);
+    _builder.append(_generateGetMethodsForRead, "   \t  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   \t  ");
+    _builder.append("// when sucessfull");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    String _generateBlock = this.generateBlock(readStatement.getSuccess());
+    _builder.append(_generateBlock, "   \t  ");
+    _builder.append(" ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   \t  ");
+    _builder.append("_rs.close();");
+    _builder.newLine();
+    _builder.append("   \t  ");
     _builder.append("_statement.close();");
+    _builder.newLine();
+    _builder.append("   \t  ");
     _builder.newLine();
     _builder.append("   ");
     _builder.append("} catch (SQLException e) {");
@@ -1182,6 +1425,443 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return _builder.toString();
   }
   
+  private String generateStatementReadEachInnerFunction(final YReadEachStatement readEachStatement, final String readEach) {
+    readEachStatement.getStructs();
+    StringConcatenation _builder = new StringConcatenation();
+    _builder.append("private boolean ");
+    _builder.append(readEach);
+    _builder.append("() {");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("StringBuffer buffer = new StringBuffer();");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("buffer.append(\"SELECT \");");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("buffer.append(\"");
+    {
+      ArrayList<String> _createQualifiedColumnNamesListForReadEach = this._langJavaGeneratorHelper.createQualifiedColumnNamesListForReadEach(readEachStatement);
+      boolean _hasElements = false;
+      for(final String qualifiedName : _createQualifiedColumnNamesListForReadEach) {
+        if (!_hasElements) {
+          _hasElements = true;
+        } else {
+          _builder.appendImmediate(",", "   ");
+        }
+        _builder.append(qualifiedName, "   ");
+      }
+    }
+    _builder.append("\");\t\t   ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("buffer.append(\" FROM \");");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("buffer.append(\"");
+    {
+      ArrayList<String> _generateFROMClause = this.generateFROMClause(readEachStatement);
+      boolean _hasElements_1 = false;
+      for(final String qualifiedName_1 : _generateFROMClause) {
+        if (!_hasElements_1) {
+          _hasElements_1 = true;
+        } else {
+          _builder.appendImmediate(",", "   ");
+        }
+        _builder.append(qualifiedName_1, "   ");
+      }
+    }
+    _builder.append("\");\t\t   ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("buffer.append(\" WHERE \");");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("buffer.append(\"");
+    String _generateJoinExpressionForReadEach = this.generateJoinExpressionForReadEach(readEachStatement);
+    _builder.append(_generateJoinExpressionForReadEach, "   ");
+    _builder.append("\");");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("buffer.append(\"");
+    String _generateJDBCExpression = this.generateJDBCExpression(readEachStatement, readEachStatement.getWhereclause().getExpression());
+    _builder.append(_generateJDBCExpression, "   ");
+    _builder.append("\");");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   ");
+    _builder.append("buffer.append(\" FOR UPDATE \");");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("System.out.println(buffer.toString());\t\t");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("try {");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.append("PreparedStatement _statement = _connection.prepareStatement(buffer.toString(), ResultSet.CONCUR_UPDATABLE,");
+    _builder.newLine();
+    _builder.append("   \t  \t\t\t\t\t");
+    _builder.append("ResultSet.CLOSE_CURSORS_AT_COMMIT);");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.append("_statement.setCursorName(\"viewF\");");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    String _generateSetMethodsForReadEach = this.generateSetMethodsForReadEach(readEachStatement);
+    _builder.append(_generateSetMethodsForReadEach, "   \t  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   \t  ");
+    _builder.append("_statement.execute();");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.append("ResultSet _rs = _statement.getResultSet();");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.append("while (_rs.next()) {");
+    _builder.newLine();
+    _builder.append("   \t  \t  ");
+    String _generateGetMethodsForReadEach = this.generateGetMethodsForReadEach(readEachStatement);
+    _builder.append(_generateGetMethodsForReadEach, "   \t  \t  ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   \t  \t  ");
+    String _generateBlock = this.generateBlock(readEachStatement.getSuccess());
+    _builder.append(_generateBlock, "   \t  \t  ");
+    _builder.append(" ");
+    _builder.newLineIfNotEmpty();
+    _builder.append("   \t  ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.append("_rs.close();");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.append("_statement.close();");
+    _builder.newLine();
+    _builder.append("   \t  ");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("} catch (SQLException e) {");
+    _builder.newLine();
+    _builder.append("     ");
+    _builder.append("if(e.getSQLState() == \"23000\") {");
+    _builder.newLine();
+    _builder.append("        ");
+    _builder.append("return false;");
+    _builder.newLine();
+    _builder.append("     ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("     ");
+    _builder.append("throw new DMWRuntimeException(e);");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("}");
+    _builder.newLine();
+    _builder.append("   ");
+    _builder.append("return true;");
+    _builder.newLine();
+    _builder.append("}");
+    _builder.newLine();
+    return _builder.toString();
+  }
+  
+  private String generateGetMethodsForRead(final YReadStatement readStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    EList<YStructRefPair> _structs = readStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+      for (final YMember member : _members) {
+        {
+          String setMethodName = "";
+          String _name = member.getType().getName();
+          if (_name != null) {
+            switch (_name) {
+              case "Int":
+                setMethodName = "getInt";
+                break;
+              case "Short":
+                setMethodName = "getShort";
+                break;
+              case "String":
+                setMethodName = "getString";
+                break;
+              default:
+                setMethodName = "unknown";
+                break;
+            }
+          } else {
+            setMethodName = "unknown";
+          }
+          String _name_1 = struct.getStructproperty().getName();
+          String _plus = (_name_1 + ".");
+          String _name_2 = member.getName();
+          String _plus_1 = (_plus + _name_2);
+          String _plus_2 = (_plus_1 + " = _rs.");
+          String _plus_3 = (_plus_2 + setMethodName);
+          String _plus_4 = (_plus_3 + "(");
+          String _string = Integer.toString(index);
+          String _plus_5 = (_plus_4 + _string);
+          String _plus_6 = (_plus_5 + ");\n");
+          buffer.append(_plus_6);
+          index++;
+        }
+      }
+    }
+    return buffer.toString();
+  }
+  
+  private String generateGetMethodsForReadEach(final YReadEachStatement readEachStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    EList<YStructRefPair> _structs = readEachStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+      for (final YMember member : _members) {
+        {
+          String setMethodName = "";
+          String _name = member.getType().getName();
+          if (_name != null) {
+            switch (_name) {
+              case "Int":
+                setMethodName = "getInt";
+                break;
+              case "Short":
+                setMethodName = "getShort";
+                break;
+              case "String":
+                setMethodName = "getString";
+                break;
+              default:
+                setMethodName = "unknown";
+                break;
+            }
+          } else {
+            setMethodName = "unknown";
+          }
+          String _name_1 = struct.getStructproperty().getName();
+          String _plus = (_name_1 + ".");
+          String _name_2 = member.getName();
+          String _plus_1 = (_plus + _name_2);
+          String _plus_2 = (_plus_1 + " = _rs.");
+          String _plus_3 = (_plus_2 + setMethodName);
+          String _plus_4 = (_plus_3 + "(");
+          String _string = Integer.toString(index);
+          String _plus_5 = (_plus_4 + _string);
+          String _plus_6 = (_plus_5 + ");\n");
+          buffer.append(_plus_6);
+          index++;
+        }
+      }
+    }
+    return buffer.toString();
+  }
+  
+  private String generateSetMethodsForRead(final YReadStatement readStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
+    final ArrayList<String> proplist = CollectionLiterals.<String>newArrayList();
+    this.getListOfPropertiesForRead(readStatement, proplist);
+    proplist.add("viewF");
+    final ArrayList<String> newlist = this._langJavaGeneratorHelper.createReadStatementSetMethodList(list, readStatement.getWhereclause().getExpression(), proplist);
+    for (final String setMethod : newlist) {
+      {
+        String _replace = setMethod.replace("&index&", Integer.toString(index));
+        String _plus = ("_statement." + _replace);
+        String _plus_1 = (_plus + "\n");
+        buffer.append(_plus_1);
+        index++;
+      }
+    }
+    return buffer.toString();
+  }
+  
+  private String generateSetMethodsForReadEach(final YReadEachStatement readEachStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
+    final ArrayList<String> proplist = CollectionLiterals.<String>newArrayList();
+    this.getListOfPropertiesForReadEach(readEachStatement, proplist);
+    proplist.add("viewF");
+    final ArrayList<String> newlist = this._langJavaGeneratorHelper.createReadStatementSetMethodList(list, readEachStatement.getWhereclause().getExpression(), proplist);
+    for (final String setMethod : newlist) {
+      {
+        String _replace = setMethod.replace("&index&", Integer.toString(index));
+        String _plus = ("_statement." + _replace);
+        String _plus_1 = (_plus + "\n");
+        buffer.append(_plus_1);
+        index++;
+      }
+    }
+    return buffer.toString();
+  }
+  
+  private void getListOfPropertiesForRead(final YReadStatement readStatement, final ArrayList<String> readProperties) {
+    EList<YStructRefPair> _structs = readStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      readProperties.add(struct.getStructproperty().getName());
+    }
+  }
+  
+  private void getListOfPropertiesForReadEach(final YReadEachStatement readEachStatement, final ArrayList<String> readProperties) {
+    EList<YStructRefPair> _structs = readEachStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      readProperties.add(struct.getStructproperty().getName());
+    }
+  }
+  
+  private String generateJoinExpressionForRead(final YReadStatement statement) {
+    YJoin _joinclause = statement.getJoinclause();
+    boolean _tripleEquals = (_joinclause == null);
+    if (_tripleEquals) {
+      return "";
+    }
+    EList<YJoinDef> _joindefs = statement.getJoinclause().getJoindefs();
+    for (final YJoinDef joinDef : _joindefs) {
+      return this.generateJoinExpressionFragment(statement, joinDef);
+    }
+    return "something wrong";
+  }
+  
+  private String generateJoinExpressionForReadEach(final YReadEachStatement readEachStatement) {
+    YJoin _joinclause = readEachStatement.getJoinclause();
+    boolean _tripleEquals = (_joinclause == null);
+    if (_tripleEquals) {
+      return "";
+    }
+    EList<YJoinDef> _joindefs = readEachStatement.getJoinclause().getJoindefs();
+    for (final YJoinDef joinDef : _joindefs) {
+      return this.generateJoinExpressionFragmentForReadEach(readEachStatement, joinDef);
+    }
+    return "something wrong";
+  }
+  
+  private String generateJoinExpressionFragment(final YReadStatement readStatement, final YJoinDef joinDef) {
+    final YAnnotTable fromTable = this._langUtil.getImplementingTable(joinDef.getFromView().getType().getEntity());
+    final String fromPrefix = this.findTablePrefix(readStatement.getStructs(), joinDef.getFromView());
+    final YAnnotTable toTable = this._langUtil.getImplementingTable(joinDef.getToView().getType().getEntity());
+    final String toPrefix = this.findTablePrefix(readStatement.getStructs(), joinDef.getToView());
+    final boolean parent = joinDef.getRelRef().isParent();
+    if (parent) {
+      StringBuffer buffer = new StringBuffer();
+      String columnName = "";
+      String cadidateColumnName = null;
+      EList<YAnnotAbstractColumn> _columns = fromTable.getPrimarykey().getColumns();
+      for (final YAnnotAbstractColumn abstractElement : _columns) {
+        {
+          columnName = this.getAttributeNameForAbstractColumn(abstractElement);
+          EList<YAnnotForeignKey> _foreignkeys = toTable.getForeignkeys();
+          for (final YAnnotForeignKey foreignKey : _foreignkeys) {
+            String _name = joinDef.getRelRef().getInverse().getName();
+            String _name_1 = foreignKey.getRelationship().getName();
+            boolean _equals = Objects.equal(_name, _name_1);
+            if (_equals) {
+              EList<YAnnotAbstractColumn> _columns_1 = foreignKey.getColumns();
+              for (final YAnnotAbstractColumn cadidateElement : _columns_1) {
+                {
+                  cadidateColumnName = this.getAttributeNameForAbstractColumn(cadidateElement);
+                  boolean _equals_1 = Objects.equal(columnName, cadidateColumnName);
+                  if (_equals_1) {
+                    String _name_2 = abstractElement.getName();
+                    String _plus = ((fromPrefix + ".") + _name_2);
+                    String _plus_1 = (_plus + " = ");
+                    String _plus_2 = (_plus_1 + toPrefix);
+                    String _plus_3 = (_plus_2 + ".");
+                    String _name_3 = cadidateElement.getName();
+                    String _plus_4 = (_plus_3 + _name_3);
+                    String _plus_5 = (_plus_4 + " AND");
+                    buffer.append(_plus_5);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      return buffer.toString();
+    }
+    return "";
+  }
+  
+  private String generateJoinExpressionFragmentForReadEach(final YReadEachStatement readEachStatement, final YJoinDef joinDef) {
+    final YAnnotTable fromTable = this._langUtil.getImplementingTable(joinDef.getFromView().getType().getEntity());
+    final String fromPrefix = this.findTablePrefix(readEachStatement.getStructs(), joinDef.getFromView());
+    final YAnnotTable toTable = this._langUtil.getImplementingTable(joinDef.getToView().getType().getEntity());
+    final String toPrefix = this.findTablePrefix(readEachStatement.getStructs(), joinDef.getToView());
+    final boolean parent = joinDef.getRelRef().isParent();
+    if (parent) {
+      StringBuffer buffer = new StringBuffer();
+      String columnName = "";
+      String cadidateColumnName = null;
+      EList<YAnnotAbstractColumn> _columns = fromTable.getPrimarykey().getColumns();
+      for (final YAnnotAbstractColumn abstractElement : _columns) {
+        {
+          columnName = this.getAttributeNameForAbstractColumn(abstractElement);
+          EList<YAnnotForeignKey> _foreignkeys = toTable.getForeignkeys();
+          for (final YAnnotForeignKey foreignKey : _foreignkeys) {
+            String _name = joinDef.getRelRef().getInverse().getName();
+            String _name_1 = foreignKey.getRelationship().getName();
+            boolean _equals = Objects.equal(_name, _name_1);
+            if (_equals) {
+              EList<YAnnotAbstractColumn> _columns_1 = foreignKey.getColumns();
+              for (final YAnnotAbstractColumn cadidateElement : _columns_1) {
+                {
+                  cadidateColumnName = this.getAttributeNameForAbstractColumn(cadidateElement);
+                  boolean _equals_1 = Objects.equal(columnName, cadidateColumnName);
+                  if (_equals_1) {
+                    String _name_2 = abstractElement.getName();
+                    String _plus = ((fromPrefix + ".") + _name_2);
+                    String _plus_1 = (_plus + " = ");
+                    String _plus_2 = (_plus_1 + toPrefix);
+                    String _plus_3 = (_plus_2 + ".");
+                    String _name_3 = cadidateElement.getName();
+                    String _plus_4 = (_plus_3 + _name_3);
+                    String _plus_5 = (_plus_4 + " AND");
+                    buffer.append(_plus_5);
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      return buffer.toString();
+    }
+    return "";
+  }
+  
+  private String findTablePrefix(final EList<YStructRefPair> list, final YProperty property) {
+    String _xblockexpression = null;
+    {
+      int index = 1;
+      for (final YStructRefPair pair : list) {
+        {
+          YProperty _structproperty = pair.getStructproperty();
+          boolean _equals = Objects.equal(_structproperty, property);
+          if (_equals) {
+            return ("T" + Integer.valueOf(index));
+          }
+          index++;
+        }
+      }
+      _xblockexpression = "";
+    }
+    return _xblockexpression;
+  }
+  
+  private String getAttributeNameForAbstractColumn(final YAnnotAbstractColumn annotAbstractColumn) {
+    EObject _type = annotAbstractColumn.getType();
+    if ((_type instanceof YAnnotColumnLike)) {
+      EObject _type_1 = annotAbstractColumn.getType();
+      EObject _type_2 = ((YAnnotColumnLike) _type_1).getColumnref().getType();
+      return ((YAnnotColumn) _type_2).getAttrref().getName();
+    } else {
+      EObject _type_3 = annotAbstractColumn.getType();
+      return ((YAnnotColumn) _type_3).getAttrref().getName();
+    }
+  }
+  
   private ArrayList<String> generateFROMClause(final YStatement statement) {
     final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
     int index = 1;
@@ -1192,12 +1872,11 @@ public class LangJavaWidgetGenerator implements IGenerator {
         {
           final YAnnotTable implementingTable = this._langUtil.getImplementingTable(readStatement.getStructs().get(0).getStructclass());
           StringConcatenation _builder = new StringConcatenation();
-          _builder.append("T");
-          _builder.append(index);
-          _builder.append(" \\\"");
+          _builder.append("\\\"");
           String _name = implementingTable.getName();
           _builder.append(_name);
-          _builder.append("\\\"");
+          _builder.append("\\\" T");
+          _builder.append(index);
           list.add(_builder.toString());
           index++;
         }
@@ -1688,12 +2367,34 @@ public class LangJavaWidgetGenerator implements IGenerator {
       if ((expression instanceof YComparisonExpression)) {
         _matched=true;
         final YComparisonExpression comparisonExpression = ((YComparisonExpression) expression);
+        String operator = "?";
+        String _op_1 = comparisonExpression.getOp();
+        boolean _equals = Objects.equal(_op_1, ">=");
+        if (_equals) {
+          operator = ">=";
+        } else {
+          String _op_2 = comparisonExpression.getOp();
+          boolean _equals_1 = Objects.equal(_op_2, "<=");
+          if (_equals_1) {
+            operator = "<=";
+          } else {
+            String _op_3 = comparisonExpression.getOp();
+            boolean _equals_2 = Objects.equal(_op_3, ">");
+            if (_equals_2) {
+              operator = ">";
+            } else {
+              String _op_4 = comparisonExpression.getOp();
+              boolean _equals_3 = Objects.equal(_op_4, "<");
+              if (_equals_3) {
+                operator = "<";
+              }
+            }
+          }
+        }
         String _generateJDBCExpression_10 = this.generateJDBCExpression(statement, comparisonExpression.getLeft());
         String _plus_11 = (_generateJDBCExpression_10 + " ");
-        String _op_1 = comparisonExpression.getOp();
-        String _plus_12 = (_plus_11 + _op_1);
-        String _plus_13 = (_plus_12 + 
-          " ");
+        String _plus_12 = (_plus_11 + operator);
+        String _plus_13 = (_plus_12 + " ");
         String _generateJDBCExpression_11 = this.generateJDBCExpression(statement, comparisonExpression.getRight());
         return (_plus_13 + _generateJDBCExpression_11);
       }
@@ -1702,23 +2403,22 @@ public class LangJavaWidgetGenerator implements IGenerator {
       if ((expression instanceof YEqualityExpression)) {
         _matched=true;
         final YEqualityExpression equalityExpression = ((YEqualityExpression) expression);
-        String operator = "?";
-        String _op_2 = equalityExpression.getOp();
-        boolean _equals = Objects.equal(_op_2, "==");
-        if (_equals) {
-          operator = "=";
+        String operator_1 = "?";
+        String _op_5 = equalityExpression.getOp();
+        boolean _equals_4 = Objects.equal(_op_5, "==");
+        if (_equals_4) {
+          operator_1 = "=";
         } else {
-          String _op_3 = equalityExpression.getOp();
-          boolean _equals_1 = Objects.equal(_op_3, "!=");
-          if (_equals_1) {
-            operator = "<>";
+          String _op_6 = equalityExpression.getOp();
+          boolean _equals_5 = Objects.equal(_op_6, "!=");
+          if (_equals_5) {
+            operator_1 = "<>";
           }
         }
         String _generateJDBCExpression_12 = this.generateJDBCExpression(statement, equalityExpression.getLeft());
         String _plus_14 = (_generateJDBCExpression_12 + " ");
-        String _plus_15 = (_plus_14 + operator);
-        String _plus_16 = (_plus_15 + 
-          " ");
+        String _plus_15 = (_plus_14 + operator_1);
+        String _plus_16 = (_plus_15 + " ");
         String _generateJDBCExpression_13 = this.generateJDBCExpression(statement, equalityExpression.getRight());
         return (_plus_16 + _generateJDBCExpression_13);
       }
@@ -1784,8 +2484,8 @@ public class LangJavaWidgetGenerator implements IGenerator {
         {
           final YStringConstant stringConstant = ((YStringConstant) expression);
           String _string = stringConstant.getValue().toString();
-          String _plus_18 = ("\"" + _string);
-          _xblockexpression_1 = (_plus_18 + "\"");
+          String _plus_18 = ("\'" + _string);
+          _xblockexpression_1 = (_plus_18 + "\'");
         }
         _switchResult = _xblockexpression_1;
       }
@@ -1815,15 +2515,15 @@ public class LangJavaWidgetGenerator implements IGenerator {
                 Objects.equal(((YAnnotColumn) annotAbstractColumn.getType()).getAttrref().getName(), memberSelection.getMember().getName()))) {
                 String _name = annotAbstractColumn.getName();
                 final String qualName = ((("T" + Integer.valueOf(index)) + ".") + _name);
-                InputOutput.<String>println(qualName);
                 return qualName;
               }
             }
             index++;
           }
         }
+        return "?";
       }
-      _xblockexpression = "?????";
+      _xblockexpression = "something went wrong";
     }
     return _xblockexpression;
   }
@@ -1919,10 +2619,10 @@ public class LangJavaWidgetGenerator implements IGenerator {
     return _switchResult;
   }
   
-  private String generateSwitchStatement(final YSwitchStatement switchStatement) {
+  private String generateStatementSwitch(final YSwitchStatement switchStatement) {
     this.imports.add("com.google.common.base.Objects");
-    String key = this._localNameGenerator.generateLocalName("key");
-    String _matched = this._localNameGenerator.generateLocalName("_matched");
+    String key = this._langJavaGeneratorHelper.generateLocalName("key");
+    String _matched = this._langJavaGeneratorHelper.generateLocalName("_matched");
     final StringBuffer buffer = new StringBuffer();
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("final ");

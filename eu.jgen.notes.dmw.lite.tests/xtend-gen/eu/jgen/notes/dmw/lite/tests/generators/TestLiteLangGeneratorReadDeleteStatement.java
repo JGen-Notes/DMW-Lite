@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(LangInjectorProvider.class)
 @SuppressWarnings("all")
-public class TestLiteLangGeneratorReadStatement {
+public class TestLiteLangGeneratorReadDeleteStatement {
   @Inject
   @Extension
   private CompilationTestHelper _compilationTestHelper;
@@ -158,6 +158,8 @@ public class TestLiteLangGeneratorReadStatement {
       _builder.append("\t\t");
       _builder.append("success {");
       _builder.newLine();
+      _builder.append("\t\t   ");
+      _builder.append("delete viewF -> F;");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("} not found {");

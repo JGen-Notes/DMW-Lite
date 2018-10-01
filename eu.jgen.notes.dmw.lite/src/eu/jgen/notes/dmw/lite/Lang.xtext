@@ -226,10 +226,10 @@ YStructRefPair:
 	structproperty=[YProperty] '->' structclass=[YAnnotEntity];
 
 YJoin:
-	{YJoin} 'join' joindef+=YJoinDef ("," joindef+=YJoinDef)*;
+	{YJoin} 'join' joindefs+=YJoinDef ("," joindefs+=YJoinDef)*;
 
 YJoinDef:
-	fromView=[YProperty] '->' relRef+=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
+	fromView=[YProperty] '->' relRef=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
 
 YWhere:
 	{YWhere} 'where' expression=YOrExpression;

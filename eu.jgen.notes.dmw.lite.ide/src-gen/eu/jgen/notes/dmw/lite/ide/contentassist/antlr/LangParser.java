@@ -245,8 +245,8 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYAssociateStatementAccess().getJoinrefAssignment_1(), "rule__YAssociateStatement__JoinrefAssignment_1");
 					put(grammarAccess.getYStructRefPairAccess().getStructpropertyAssignment_0(), "rule__YStructRefPair__StructpropertyAssignment_0");
 					put(grammarAccess.getYStructRefPairAccess().getStructclassAssignment_2(), "rule__YStructRefPair__StructclassAssignment_2");
-					put(grammarAccess.getYJoinAccess().getJoindefAssignment_2(), "rule__YJoin__JoindefAssignment_2");
-					put(grammarAccess.getYJoinAccess().getJoindefAssignment_3_1(), "rule__YJoin__JoindefAssignment_3_1");
+					put(grammarAccess.getYJoinAccess().getJoindefsAssignment_2(), "rule__YJoin__JoindefsAssignment_2");
+					put(grammarAccess.getYJoinAccess().getJoindefsAssignment_3_1(), "rule__YJoin__JoindefsAssignment_3_1");
 					put(grammarAccess.getYJoinDefAccess().getFromViewAssignment_0(), "rule__YJoinDef__FromViewAssignment_0");
 					put(grammarAccess.getYJoinDefAccess().getRelRefAssignment_2(), "rule__YJoinDef__RelRefAssignment_2");
 					put(grammarAccess.getYJoinDefAccess().getToViewAssignment_4(), "rule__YJoinDef__ToViewAssignment_4");

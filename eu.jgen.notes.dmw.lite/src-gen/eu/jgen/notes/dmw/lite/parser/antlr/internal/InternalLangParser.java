@@ -9546,26 +9546,26 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
 
 
     // $ANTLR start "ruleYJoin"
-    // InternalLang.g:3332:1: ruleYJoin returns [EObject current=null] : ( () otherlv_1= 'join' ( (lv_joindef_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindef_4_0= ruleYJoinDef ) ) )* ) ;
+    // InternalLang.g:3332:1: ruleYJoin returns [EObject current=null] : ( () otherlv_1= 'join' ( (lv_joindefs_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindefs_4_0= ruleYJoinDef ) ) )* ) ;
     public final EObject ruleYJoin() throws RecognitionException {
         EObject current = null;
 
         Token otherlv_1=null;
         Token otherlv_3=null;
-        EObject lv_joindef_2_0 = null;
+        EObject lv_joindefs_2_0 = null;
 
-        EObject lv_joindef_4_0 = null;
+        EObject lv_joindefs_4_0 = null;
 
 
 
         	enterRule();
 
         try {
-            // InternalLang.g:3338:2: ( ( () otherlv_1= 'join' ( (lv_joindef_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindef_4_0= ruleYJoinDef ) ) )* ) )
-            // InternalLang.g:3339:2: ( () otherlv_1= 'join' ( (lv_joindef_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindef_4_0= ruleYJoinDef ) ) )* )
+            // InternalLang.g:3338:2: ( ( () otherlv_1= 'join' ( (lv_joindefs_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindefs_4_0= ruleYJoinDef ) ) )* ) )
+            // InternalLang.g:3339:2: ( () otherlv_1= 'join' ( (lv_joindefs_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindefs_4_0= ruleYJoinDef ) ) )* )
             {
-            // InternalLang.g:3339:2: ( () otherlv_1= 'join' ( (lv_joindef_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindef_4_0= ruleYJoinDef ) ) )* )
-            // InternalLang.g:3340:3: () otherlv_1= 'join' ( (lv_joindef_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindef_4_0= ruleYJoinDef ) ) )*
+            // InternalLang.g:3339:2: ( () otherlv_1= 'join' ( (lv_joindefs_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindefs_4_0= ruleYJoinDef ) ) )* )
+            // InternalLang.g:3340:3: () otherlv_1= 'join' ( (lv_joindefs_2_0= ruleYJoinDef ) ) (otherlv_3= ',' ( (lv_joindefs_4_0= ruleYJoinDef ) ) )*
             {
             // InternalLang.g:3340:3: ()
             // InternalLang.g:3341:4: 
@@ -9586,19 +9586,19 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
               			newLeafNode(otherlv_1, grammarAccess.getYJoinAccess().getJoinKeyword_1());
               		
             }
-            // InternalLang.g:3351:3: ( (lv_joindef_2_0= ruleYJoinDef ) )
-            // InternalLang.g:3352:4: (lv_joindef_2_0= ruleYJoinDef )
+            // InternalLang.g:3351:3: ( (lv_joindefs_2_0= ruleYJoinDef ) )
+            // InternalLang.g:3352:4: (lv_joindefs_2_0= ruleYJoinDef )
             {
-            // InternalLang.g:3352:4: (lv_joindef_2_0= ruleYJoinDef )
-            // InternalLang.g:3353:5: lv_joindef_2_0= ruleYJoinDef
+            // InternalLang.g:3352:4: (lv_joindefs_2_0= ruleYJoinDef )
+            // InternalLang.g:3353:5: lv_joindefs_2_0= ruleYJoinDef
             {
             if ( state.backtracking==0 ) {
 
-              					newCompositeNode(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_2_0());
+              					newCompositeNode(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_2_0());
               				
             }
             pushFollow(FOLLOW_59);
-            lv_joindef_2_0=ruleYJoinDef();
+            lv_joindefs_2_0=ruleYJoinDef();
 
             state._fsp--;
             if (state.failed) return current;
@@ -9609,8 +9609,8 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
               					}
               					add(
               						current,
-              						"joindef",
-              						lv_joindef_2_0,
+              						"joindefs",
+              						lv_joindefs_2_0,
               						"eu.jgen.notes.dmw.lite.Lang.YJoinDef");
               					afterParserOrEnumRuleCall();
               				
@@ -9621,7 +9621,7 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
 
             }
 
-            // InternalLang.g:3370:3: (otherlv_3= ',' ( (lv_joindef_4_0= ruleYJoinDef ) ) )*
+            // InternalLang.g:3370:3: (otherlv_3= ',' ( (lv_joindefs_4_0= ruleYJoinDef ) ) )*
             loop60:
             do {
                 int alt60=2;
@@ -9634,7 +9634,7 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
 
                 switch (alt60) {
             	case 1 :
-            	    // InternalLang.g:3371:4: otherlv_3= ',' ( (lv_joindef_4_0= ruleYJoinDef ) )
+            	    // InternalLang.g:3371:4: otherlv_3= ',' ( (lv_joindefs_4_0= ruleYJoinDef ) )
             	    {
             	    otherlv_3=(Token)match(input,24,FOLLOW_3); if (state.failed) return current;
             	    if ( state.backtracking==0 ) {
@@ -9642,19 +9642,19 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
             	      				newLeafNode(otherlv_3, grammarAccess.getYJoinAccess().getCommaKeyword_3_0());
             	      			
             	    }
-            	    // InternalLang.g:3375:4: ( (lv_joindef_4_0= ruleYJoinDef ) )
-            	    // InternalLang.g:3376:5: (lv_joindef_4_0= ruleYJoinDef )
+            	    // InternalLang.g:3375:4: ( (lv_joindefs_4_0= ruleYJoinDef ) )
+            	    // InternalLang.g:3376:5: (lv_joindefs_4_0= ruleYJoinDef )
             	    {
-            	    // InternalLang.g:3376:5: (lv_joindef_4_0= ruleYJoinDef )
-            	    // InternalLang.g:3377:6: lv_joindef_4_0= ruleYJoinDef
+            	    // InternalLang.g:3376:5: (lv_joindefs_4_0= ruleYJoinDef )
+            	    // InternalLang.g:3377:6: lv_joindefs_4_0= ruleYJoinDef
             	    {
             	    if ( state.backtracking==0 ) {
 
-            	      						newCompositeNode(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_3_1_0());
+            	      						newCompositeNode(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_3_1_0());
             	      					
             	    }
             	    pushFollow(FOLLOW_59);
-            	    lv_joindef_4_0=ruleYJoinDef();
+            	    lv_joindefs_4_0=ruleYJoinDef();
 
             	    state._fsp--;
             	    if (state.failed) return current;
@@ -9665,8 +9665,8 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
             	      						}
             	      						add(
             	      							current,
-            	      							"joindef",
-            	      							lv_joindef_4_0,
+            	      							"joindefs",
+            	      							lv_joindefs_4_0,
             	      							"eu.jgen.notes.dmw.lite.Lang.YJoinDef");
             	      						afterParserOrEnumRuleCall();
             	      					

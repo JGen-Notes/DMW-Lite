@@ -36,7 +36,7 @@ import org.junit.runner.RunWith
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
-class TestLiteLangGeneratorReadStatement {
+class TestLiteLangGeneratorReadUpdateStatement {
 
 	//@Inject extension ParseHelper<YWidget>
 	//@Inject extension ValidationTestHelper
@@ -88,7 +88,11 @@ class TestLiteLangGeneratorReadStatement {
 					read viewF -> F  
 					   where self.viewF.number == 0 
 					success {
-
+					   update viewF -> F {
+					   	
+					   	} success {
+					   	
+					   	}
 					} not found {
 					// not found
 					}

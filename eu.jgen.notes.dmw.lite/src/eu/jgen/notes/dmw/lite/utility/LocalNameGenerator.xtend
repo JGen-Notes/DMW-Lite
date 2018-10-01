@@ -30,7 +30,7 @@ class LocalNameGenerator {
 
 	var Map<String, Integer> usedNames = new HashMap<String, Integer>()
 
-	def void reset() {
+	def void resetLocalNames() {
 		usedNames.clear
 	}
 

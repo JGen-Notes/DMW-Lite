@@ -1,24 +1,41 @@
 package eu.jgen.notes.dmw.lite.utility
 
 import com.google.inject.Inject
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
+import eu.jgen.notes.dmw.lite.lang.YAnnotMax
 import eu.jgen.notes.dmw.lite.lang.YClass
 import eu.jgen.notes.dmw.lite.lang.YFunction
 import eu.jgen.notes.dmw.lite.lang.YProperty
+import eu.jgen.notes.dmw.lite.lang.YReadStatement
+import eu.jgen.notes.dmw.lite.lang.YStatement
 import eu.jgen.notes.dmw.lite.lang.YWidget
+import java.util.ArrayList
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter
-import java.util.ArrayList
-import eu.jgen.notes.dmw.lite.lang.YAnnotAttr
-import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
-import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
-import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
+import java.util.Map
+import java.util.HashMap
 import eu.jgen.notes.dmw.lite.lang.YExpression
-import eu.jgen.notes.dmw.lite.lang.YAnnotMax
-import eu.jgen.notes.dmw.lite.lang.YStatement
-import eu.jgen.notes.dmw.lite.lang.YReadStatement
+import eu.jgen.notes.dmw.lite.lang.YMemberSelection
+import eu.jgen.notes.dmw.lite.lang.YPlus
+import eu.jgen.notes.dmw.lite.lang.YMinus
+import eu.jgen.notes.dmw.lite.lang.YAndExpression
+import eu.jgen.notes.dmw.lite.lang.YOrExpression
+import eu.jgen.notes.dmw.lite.lang.YComparisonExpression
+import eu.jgen.notes.dmw.lite.lang.YEqualityExpression
+import eu.jgen.notes.dmw.lite.lang.YNot
+import eu.jgen.notes.dmw.lite.lang.YSelf
+import eu.jgen.notes.dmw.lite.lang.YBoolConstant
+import eu.jgen.notes.dmw.lite.lang.YParenties
+import eu.jgen.notes.dmw.lite.lang.YSymbolRef
+import eu.jgen.notes.dmw.lite.lang.YIntConstant
+import eu.jgen.notes.dmw.lite.lang.YStringConstant
+import eu.jgen.notes.dmw.lite.lang.YMulOrDiv
+import eu.jgen.notes.dmw.lite.lang.YReadEachStatement
 
 class LangJavaGeneratorHelper {
 
@@ -27,10 +44,12 @@ class LangJavaGeneratorHelper {
 	val String SYSTEM_DEFAULT_SHORT = "0"
 	val String SYSTEM_DEFAULT_DOUBLE = "0.0"
 	val String SYSTEM_DEFAULT_LONG = "0"
-	
+
+	var Map<String, Integer> usedNames = new HashMap<String, Integer>()
+
 	@Inject extension LangUtil
 
-	@Inject 
+	@Inject
 	private IEObjectDocumentationProvider documentationProvider;
 
 	def String getDocumentation( /* @Nullable */ EObject source) {
@@ -157,7 +176,10 @@ class LangJavaGeneratorHelper {
 		return getSystemDefault(property.type.name.translateTypeName)
 	}
 
-	def ArrayList<YProperty> listArrayProperties(YClass eClass) {
+	/*
+	 * Find all properties of type Array
+	 */
+	def ArrayList<YProperty> findPropertiesOfTypeArray(YClass eClass) {
 		val ArrayList<YProperty> array = newArrayList()
 		for (member : eClass.members) {
 			if (member instanceof YProperty) {
@@ -169,31 +191,156 @@ class LangJavaGeneratorHelper {
 		}
 		return array;
 	}
-	
-	def int findArraySize(YProperty property) {
+
+	/*
+	 * Get size of the array.
+	 */
+	def int getArraySize(YProperty property) {
 		for (annotation : property.annotations) {
 			if (annotation.type instanceof YAnnotMax) {
 				val annotMax = annotation.type as YAnnotMax
-				return annotMax.length				
-			}
-		}		
-		return 0;
-	}
-	
-	 def ArrayList<String> createQualifiedColumnNamesList(YStatement statement) {
-		val list = newArrayList()
-		var index = 1;
-		if (statement instanceof YReadStatement) {
-			val readStatement = statement as YReadStatement
-			for (struct : readStatement.structs) {
-				val implementingTable = readStatement.structs.get(0).structclass.implementingTable
-				for (member : struct.structproperty.type.members) {
-					list.add('''T«index».\"«getImplementingColumnName(implementingTable,member)»\"''')
-				}
-				index++;
+				return annotMax.length
 			}
 		}
+		return 0;
+	}
+
+	def ArrayList<String> createQualifiedColumnNamesListForRead(YReadStatement readStatement) {
+		val list = newArrayList()
+		var index = 1;
+		for (struct : readStatement.structs) {
+			val implementingTable = struct.structclass.implementingTable
+			for (member : struct.structproperty.type.members) {
+				list.add('''T«index».\"«getImplementingColumnName(implementingTable,member)»\"''')
+			}
+			index++;
+		}
 		return list
+	}
+
+	def ArrayList<String> createQualifiedColumnNamesListForReadEach(YReadEachStatement readEachStatement) {
+		val list = newArrayList()
+		var index = 1;
+		for (struct : readEachStatement.structs) {
+			val implementingTable = struct.structclass.implementingTable
+			for (member : struct.structproperty.type.members) {
+				list.add('''T«index».\"«getImplementingColumnName(implementingTable,member)»\"''')
+			}
+			index++;
+		}
+		return list
+	}
+
+	def ArrayList<String> createReadStatementSetMethodList(ArrayList<String> list, YExpression expression,
+		ArrayList<String> readProperties) {
+
+		switch (expression) {
+			case expression instanceof YPlus: {
+				val plus = expression as YPlus
+				(createReadStatementSetMethodList(list, plus.left, readProperties))
+				(createReadStatementSetMethodList(list, plus.right, readProperties))
+			}
+			case expression instanceof YMinus: {
+				val minus = expression as YMinus
+				(createReadStatementSetMethodList(list, minus.left, readProperties))
+				(createReadStatementSetMethodList(list, minus.right, readProperties) )
+			}
+			case expression instanceof YMulOrDiv: {
+				val mulOrDiv = expression as YMulOrDiv
+				(createReadStatementSetMethodList(list, mulOrDiv.left, readProperties))
+				(createReadStatementSetMethodList(list, mulOrDiv.right, readProperties))
+			}
+			case expression instanceof YAndExpression: {
+				val andExpression = expression as YAndExpression
+				(createReadStatementSetMethodList(list, andExpression.left, readProperties))
+				(createReadStatementSetMethodList(list, andExpression.right, readProperties))
+			}
+			case expression instanceof YOrExpression: {
+				val orExpression = expression as YOrExpression
+				(createReadStatementSetMethodList(list, orExpression.left, readProperties))
+				(createReadStatementSetMethodList(list, orExpression.right, readProperties))
+			}
+			case expression instanceof YComparisonExpression: {
+				val comparisonExpression = expression as YComparisonExpression
+				(createReadStatementSetMethodList(list, comparisonExpression.left, readProperties))
+				(createReadStatementSetMethodList(list, comparisonExpression.right, readProperties))
+			}
+			case expression instanceof YEqualityExpression: {
+				val equalityExpression = expression as YEqualityExpression
+				(createReadStatementSetMethodList(list, equalityExpression.left, readProperties))
+				(createReadStatementSetMethodList(list, equalityExpression.right, readProperties))
+			}
+			case expression instanceof YMemberSelection: {
+				val memberSelection = expression as YMemberSelection
+				if (!isVaraibleProperty(readProperties, (memberSelection.receiver as YMemberSelection).member.name)) {
+					val variableName = (memberSelection.receiver as YMemberSelection).member.name + "." +
+						memberSelection.member.name
+					var setMethodName = ""
+					switch (memberSelection.member.type.name) {
+						case "Int": {
+							setMethodName = "setInt"
+						}
+						case "Short": {
+							setMethodName = "setShort"
+						}
+						case "String": {
+							setMethodName = "setString"
+						}
+						default: {
+							setMethodName = "unknown"
+						}
+					}
+					list.add(setMethodName + "(&index&," + variableName + ");")
+				}
+			}
+			case expression instanceof YSelf: {
+				println(expression)
+			}
+			case expression instanceof YNot: {
+				val not = expression as YNot
+				(createReadStatementSetMethodList(list, not.expression, readProperties))
+			}
+			case expression instanceof YBoolConstant: {
+			}
+			case expression instanceof YParenties: {
+			}
+			case expression instanceof YSymbolRef: {
+			}
+			case expression instanceof YIntConstant: {
+			}
+			case expression instanceof YStringConstant: {
+			}
+			default: {
+
+				println(expression)
+			}
+		}
+		return list;
+	}
+
+	def boolean isVaraibleProperty(ArrayList<String> readProperties, String name) {
+		for (property : readProperties) {
+			if (property == name) {
+				return true
+			}
+		}
+
+		return false
+	}
+
+	def void resetLocalNames() {
+		usedNames.clear
+	}
+
+	def String generateLocalName(String corename) {
+		if (usedNames.containsKey(corename)) {
+			val number = usedNames.get(corename).intValue
+			usedNames.put(corename, new Integer(number + 1))
+			return corename + "_" + number
+		} else {
+			usedNames.put(corename, new Integer(1))
+			return corename
+		}
 	}
 
 }

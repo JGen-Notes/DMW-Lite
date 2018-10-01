@@ -2088,18 +2088,18 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Group cGroup = (Group)rule.eContents().get(1);
 		private final Action cYJoinAction_0 = (Action)cGroup.eContents().get(0);
 		private final Keyword cJoinKeyword_1 = (Keyword)cGroup.eContents().get(1);
-		private final Assignment cJoindefAssignment_2 = (Assignment)cGroup.eContents().get(2);
-		private final RuleCall cJoindefYJoinDefParserRuleCall_2_0 = (RuleCall)cJoindefAssignment_2.eContents().get(0);
+		private final Assignment cJoindefsAssignment_2 = (Assignment)cGroup.eContents().get(2);
+		private final RuleCall cJoindefsYJoinDefParserRuleCall_2_0 = (RuleCall)cJoindefsAssignment_2.eContents().get(0);
 		private final Group cGroup_3 = (Group)cGroup.eContents().get(3);
 		private final Keyword cCommaKeyword_3_0 = (Keyword)cGroup_3.eContents().get(0);
-		private final Assignment cJoindefAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
-		private final RuleCall cJoindefYJoinDefParserRuleCall_3_1_0 = (RuleCall)cJoindefAssignment_3_1.eContents().get(0);
+		private final Assignment cJoindefsAssignment_3_1 = (Assignment)cGroup_3.eContents().get(1);
+		private final RuleCall cJoindefsYJoinDefParserRuleCall_3_1_0 = (RuleCall)cJoindefsAssignment_3_1.eContents().get(0);
 		
 		//YJoin:
-		//	{YJoin} 'join' joindef+=YJoinDef ("," joindef+=YJoinDef)*;
+		//	{YJoin} 'join' joindefs+=YJoinDef ("," joindefs+=YJoinDef)*;
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YJoin} 'join' joindef+=YJoinDef ("," joindef+=YJoinDef)*
+		//{YJoin} 'join' joindefs+=YJoinDef ("," joindefs+=YJoinDef)*
 		public Group getGroup() { return cGroup; }
 		
 		//{YJoin}
@@ -2108,23 +2108,23 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'join'
 		public Keyword getJoinKeyword_1() { return cJoinKeyword_1; }
 		
-		//joindef+=YJoinDef
-		public Assignment getJoindefAssignment_2() { return cJoindefAssignment_2; }
+		//joindefs+=YJoinDef
+		public Assignment getJoindefsAssignment_2() { return cJoindefsAssignment_2; }
 		
 		//YJoinDef
-		public RuleCall getJoindefYJoinDefParserRuleCall_2_0() { return cJoindefYJoinDefParserRuleCall_2_0; }
+		public RuleCall getJoindefsYJoinDefParserRuleCall_2_0() { return cJoindefsYJoinDefParserRuleCall_2_0; }
 		
-		//("," joindef+=YJoinDef)*
+		//("," joindefs+=YJoinDef)*
 		public Group getGroup_3() { return cGroup_3; }
 		
 		//","
 		public Keyword getCommaKeyword_3_0() { return cCommaKeyword_3_0; }
 		
-		//joindef+=YJoinDef
-		public Assignment getJoindefAssignment_3_1() { return cJoindefAssignment_3_1; }
+		//joindefs+=YJoinDef
+		public Assignment getJoindefsAssignment_3_1() { return cJoindefsAssignment_3_1; }
 		
 		//YJoinDef
-		public RuleCall getJoindefYJoinDefParserRuleCall_3_1_0() { return cJoindefYJoinDefParserRuleCall_3_1_0; }
+		public RuleCall getJoindefsYJoinDefParserRuleCall_3_1_0() { return cJoindefsYJoinDefParserRuleCall_3_1_0; }
 	}
 	public class YJoinDefElements extends AbstractParserRuleElementFinder {
 		private final ParserRule rule = (ParserRule) GrammarUtil.findRuleForName(getGrammar(), "eu.jgen.notes.dmw.lite.Lang.YJoinDef");
@@ -2142,10 +2142,10 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cToViewYPropertyIDTerminalRuleCall_4_0_1 = (RuleCall)cToViewYPropertyCrossReference_4_0.eContents().get(1);
 		
 		//YJoinDef:
-		//	fromView=[YProperty] '->' relRef+=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
+		//	fromView=[YProperty] '->' relRef=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
 		@Override public ParserRule getRule() { return rule; }
 		
-		//fromView=[YProperty] '->' relRef+=[YAnnotRel|QualifiedName] '->' toView=[YProperty]
+		//fromView=[YProperty] '->' relRef=[YAnnotRel|QualifiedName] '->' toView=[YProperty]
 		public Group getGroup() { return cGroup; }
 		
 		//fromView=[YProperty]
@@ -2160,7 +2160,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'->'
 		public Keyword getHyphenMinusGreaterThanSignKeyword_1() { return cHyphenMinusGreaterThanSignKeyword_1; }
 		
-		//relRef+=[YAnnotRel|QualifiedName]
+		//relRef=[YAnnotRel|QualifiedName]
 		public Assignment getRelRefAssignment_2() { return cRelRefAssignment_2; }
 		
 		//[YAnnotRel|QualifiedName]
@@ -4401,7 +4401,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YJoin:
-	//	{YJoin} 'join' joindef+=YJoinDef ("," joindef+=YJoinDef)*;
+	//	{YJoin} 'join' joindefs+=YJoinDef ("," joindefs+=YJoinDef)*;
 	public YJoinElements getYJoinAccess() {
 		return pYJoin;
 	}
@@ -4411,7 +4411,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YJoinDef:
-	//	fromView=[YProperty] '->' relRef+=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
+	//	fromView=[YProperty] '->' relRef=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
 	public YJoinDefElements getYJoinDefAccess() {
 		return pYJoinDef;
 	}

@@ -150,13 +150,12 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="structclass" eType="#//YAnnotEntity"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YJoin">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joindef" upperBound="-1"
+    <eStructuralFeatures xsi:type="ecore:EReference" name="joindefs" upperBound="-1"
         eType="#//YJoinDef" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YJoinDef">
     <eStructuralFeatures xsi:type="ecore:EReference" name="fromView" eType="#//YProperty"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="relRef" unique="false"
-        upperBound="-1" eType="#//YAnnotRel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="relRef" eType="#//YAnnotRel"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="toView" eType="#//YProperty"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="YWhere">

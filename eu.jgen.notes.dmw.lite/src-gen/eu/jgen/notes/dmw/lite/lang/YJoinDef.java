@@ -3,8 +3,6 @@
  */
 package eu.jgen.notes.dmw.lite.lang;
 
-import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -54,20 +52,30 @@ public interface YJoinDef extends EObject
   void setFromView(YProperty value);
 
   /**
-   * Returns the value of the '<em><b>Rel Ref</b></em>' reference list.
-   * The list contents are of type {@link eu.jgen.notes.dmw.lite.lang.YAnnotRel}.
+   * Returns the value of the '<em><b>Rel Ref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Rel Ref</em>' reference list isn't clear,
+   * If the meaning of the '<em>Rel Ref</em>' reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Rel Ref</em>' reference list.
+   * @return the value of the '<em>Rel Ref</em>' reference.
+   * @see #setRelRef(YAnnotRel)
    * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYJoinDef_RelRef()
    * @model
    * @generated
    */
-  EList<YAnnotRel> getRelRef();
+  YAnnotRel getRelRef();
+
+  /**
+   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YJoinDef#getRelRef <em>Rel Ref</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>Rel Ref</em>' reference.
+   * @see #getRelRef()
+   * @generated
+   */
+  void setRelRef(YAnnotRel value);
 
   /**
    * Returns the value of the '<em><b>To View</b></em>' reference.

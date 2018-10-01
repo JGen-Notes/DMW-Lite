@@ -29016,26 +29016,26 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__YJoin__Group__2__Impl"
-    // InternalLang.g:8791:1: rule__YJoin__Group__2__Impl : ( ( rule__YJoin__JoindefAssignment_2 ) ) ;
+    // InternalLang.g:8791:1: rule__YJoin__Group__2__Impl : ( ( rule__YJoin__JoindefsAssignment_2 ) ) ;
     public final void rule__YJoin__Group__2__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalLang.g:8795:1: ( ( ( rule__YJoin__JoindefAssignment_2 ) ) )
-            // InternalLang.g:8796:1: ( ( rule__YJoin__JoindefAssignment_2 ) )
+            // InternalLang.g:8795:1: ( ( ( rule__YJoin__JoindefsAssignment_2 ) ) )
+            // InternalLang.g:8796:1: ( ( rule__YJoin__JoindefsAssignment_2 ) )
             {
-            // InternalLang.g:8796:1: ( ( rule__YJoin__JoindefAssignment_2 ) )
-            // InternalLang.g:8797:2: ( rule__YJoin__JoindefAssignment_2 )
+            // InternalLang.g:8796:1: ( ( rule__YJoin__JoindefsAssignment_2 ) )
+            // InternalLang.g:8797:2: ( rule__YJoin__JoindefsAssignment_2 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYJoinAccess().getJoindefAssignment_2()); 
+               before(grammarAccess.getYJoinAccess().getJoindefsAssignment_2()); 
             }
-            // InternalLang.g:8798:2: ( rule__YJoin__JoindefAssignment_2 )
-            // InternalLang.g:8798:3: rule__YJoin__JoindefAssignment_2
+            // InternalLang.g:8798:2: ( rule__YJoin__JoindefsAssignment_2 )
+            // InternalLang.g:8798:3: rule__YJoin__JoindefsAssignment_2
             {
             pushFollow(FOLLOW_2);
-            rule__YJoin__JoindefAssignment_2();
+            rule__YJoin__JoindefsAssignment_2();
 
             state._fsp--;
             if (state.failed) return ;
@@ -29043,7 +29043,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYJoinAccess().getJoindefAssignment_2()); 
+               after(grammarAccess.getYJoinAccess().getJoindefsAssignment_2()); 
             }
 
             }
@@ -29281,26 +29281,26 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__YJoin__Group_3__1__Impl"
-    // InternalLang.g:8871:1: rule__YJoin__Group_3__1__Impl : ( ( rule__YJoin__JoindefAssignment_3_1 ) ) ;
+    // InternalLang.g:8871:1: rule__YJoin__Group_3__1__Impl : ( ( rule__YJoin__JoindefsAssignment_3_1 ) ) ;
     public final void rule__YJoin__Group_3__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalLang.g:8875:1: ( ( ( rule__YJoin__JoindefAssignment_3_1 ) ) )
-            // InternalLang.g:8876:1: ( ( rule__YJoin__JoindefAssignment_3_1 ) )
+            // InternalLang.g:8875:1: ( ( ( rule__YJoin__JoindefsAssignment_3_1 ) ) )
+            // InternalLang.g:8876:1: ( ( rule__YJoin__JoindefsAssignment_3_1 ) )
             {
-            // InternalLang.g:8876:1: ( ( rule__YJoin__JoindefAssignment_3_1 ) )
-            // InternalLang.g:8877:2: ( rule__YJoin__JoindefAssignment_3_1 )
+            // InternalLang.g:8876:1: ( ( rule__YJoin__JoindefsAssignment_3_1 ) )
+            // InternalLang.g:8877:2: ( rule__YJoin__JoindefsAssignment_3_1 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYJoinAccess().getJoindefAssignment_3_1()); 
+               before(grammarAccess.getYJoinAccess().getJoindefsAssignment_3_1()); 
             }
-            // InternalLang.g:8878:2: ( rule__YJoin__JoindefAssignment_3_1 )
-            // InternalLang.g:8878:3: rule__YJoin__JoindefAssignment_3_1
+            // InternalLang.g:8878:2: ( rule__YJoin__JoindefsAssignment_3_1 )
+            // InternalLang.g:8878:3: rule__YJoin__JoindefsAssignment_3_1
             {
             pushFollow(FOLLOW_2);
-            rule__YJoin__JoindefAssignment_3_1();
+            rule__YJoin__JoindefsAssignment_3_1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -29308,7 +29308,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYJoinAccess().getJoindefAssignment_3_1()); 
+               after(grammarAccess.getYJoinAccess().getJoindefsAssignment_3_1()); 
             }
 
             }
@@ -47608,9 +47608,9 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__YStructRefPair__StructclassAssignment_2"
 
 
-    // $ANTLR start "rule__YJoin__JoindefAssignment_2"
-    // InternalLang.g:14786:1: rule__YJoin__JoindefAssignment_2 : ( ruleYJoinDef ) ;
-    public final void rule__YJoin__JoindefAssignment_2() throws RecognitionException {
+    // $ANTLR start "rule__YJoin__JoindefsAssignment_2"
+    // InternalLang.g:14786:1: rule__YJoin__JoindefsAssignment_2 : ( ruleYJoinDef ) ;
+    public final void rule__YJoin__JoindefsAssignment_2() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -47622,7 +47622,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             // InternalLang.g:14792:3: ruleYJoinDef
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_2_0()); 
+               before(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_2_0()); 
             }
             pushFollow(FOLLOW_2);
             ruleYJoinDef();
@@ -47630,7 +47630,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_2_0()); 
+               after(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_2_0()); 
             }
 
             }
@@ -47650,12 +47650,12 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__YJoin__JoindefAssignment_2"
+    // $ANTLR end "rule__YJoin__JoindefsAssignment_2"
 
 
-    // $ANTLR start "rule__YJoin__JoindefAssignment_3_1"
-    // InternalLang.g:14801:1: rule__YJoin__JoindefAssignment_3_1 : ( ruleYJoinDef ) ;
-    public final void rule__YJoin__JoindefAssignment_3_1() throws RecognitionException {
+    // $ANTLR start "rule__YJoin__JoindefsAssignment_3_1"
+    // InternalLang.g:14801:1: rule__YJoin__JoindefsAssignment_3_1 : ( ruleYJoinDef ) ;
+    public final void rule__YJoin__JoindefsAssignment_3_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -47667,7 +47667,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             // InternalLang.g:14807:3: ruleYJoinDef
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_3_1_0()); 
+               before(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_3_1_0()); 
             }
             pushFollow(FOLLOW_2);
             ruleYJoinDef();
@@ -47675,7 +47675,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYJoinAccess().getJoindefYJoinDefParserRuleCall_3_1_0()); 
+               after(grammarAccess.getYJoinAccess().getJoindefsYJoinDefParserRuleCall_3_1_0()); 
             }
 
             }
@@ -47695,7 +47695,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__YJoin__JoindefAssignment_3_1"
+    // $ANTLR end "rule__YJoin__JoindefsAssignment_3_1"
 
 
     // $ANTLR start "rule__YJoinDef__FromViewAssignment_0"

@@ -36,7 +36,7 @@ import org.junit.runner.RunWith
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
-class TestLiteLangGeneratorReadStatement {
+class TestLiteLangGeneratorReadEachStatement {
 
 	//@Inject extension ParseHelper<YWidget>
 	//@Inject extension ValidationTestHelper
@@ -71,7 +71,7 @@ class TestLiteLangGeneratorReadStatement {
 				@id logid(number);
 			}  	  
 			    
-			class ReadF : Widget {              
+			class ReadEachF : Widget {              
 				
 				class ViewF : Structure -> F {
 					public var number : Int -> F.number;
@@ -80,28 +80,22 @@ class TestLiteLangGeneratorReadStatement {
 			        public var description : String -> F.description;
 				}
 				
-				var viewF : ViewF;
-				var viewF2 : ViewF;
+				public var viewF : ViewF; 
 				
-				public func start() {
-					
-					read viewF -> F  
-					   where self.viewF.number == 0 
-					success {
-
-					} not found {
-					// not found
-					}
-					
-				}
+				public var array : Array <viewF>;
+				  
 				
-				
+				public func start() {		
+					read each viewF -> F where self.viewF.number == 100  
+			 			target array {				
+			 			}
+				 }		
 			}			
 
 		'''
 	   
 		newArrayList(loadLibSource, body).compile() [	
-			println(it.getGeneratedCode("templates.ReadF"))		
+			println(it.getGeneratedCode("templates.ReadEachF"))		
 			Assert.assertFalse(checkIfIssues(it))			
 		]
 	}

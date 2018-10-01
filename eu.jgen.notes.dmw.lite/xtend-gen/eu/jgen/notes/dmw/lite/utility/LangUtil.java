@@ -30,6 +30,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnot;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
@@ -197,6 +198,20 @@ public class LangUtil {
         if (_equals) {
           return annotAbstractColumn.getName();
         }
+      } else {
+        EObject _type_2 = annotAbstractColumn.getType();
+        EObject _type_3 = ((YAnnotColumnLike) _type_2).getColumnref().getType();
+        String _name_2 = ((YAnnotAbstractColumn) _type_3).getName();
+        String _name_3 = member.getName();
+        boolean _equals_1 = Objects.equal(_name_2, _name_3);
+        if (_equals_1) {
+          EObject _type_4 = annotAbstractColumn.getType();
+          EObject _type_5 = ((YAnnotColumnLike) _type_4).getColumnref().getType();
+          return ((YAnnotAbstractColumn) _type_5).getName();
+        }
+        EObject _type_6 = annotAbstractColumn.getType();
+        EObject _type_7 = ((YAnnotColumnLike) _type_6).getColumnref().getType();
+        return ((YAnnotAbstractColumn) _type_7).getName();
       }
     }
     return "";

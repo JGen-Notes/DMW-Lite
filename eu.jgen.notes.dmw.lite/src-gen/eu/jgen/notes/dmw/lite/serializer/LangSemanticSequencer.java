@@ -1082,10 +1082,22 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YJoinDef returns YJoinDef
 	 *
 	 * Constraint:
-	 *     (fromView=[YProperty|ID] relRef+=[YAnnotRel|QualifiedName] toView=[YProperty|ID])
+	 *     (fromView=[YProperty|ID] relRef=[YAnnotRel|QualifiedName] toView=[YProperty|ID])
 	 */
 	protected void sequence_YJoinDef(ISerializationContext context, YJoinDef semanticObject) {
-		genericSequencer.createSequence(context, semanticObject);
+		if (errorAcceptor != null) {
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YJOIN_DEF__FROM_VIEW) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YJOIN_DEF__FROM_VIEW));
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YJOIN_DEF__REL_REF) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YJOIN_DEF__REL_REF));
+			if (transientValues.isValueTransient(semanticObject, LangPackage.Literals.YJOIN_DEF__TO_VIEW) == ValueTransient.YES)
+				errorAcceptor.accept(diagnosticProvider.createFeatureValueMissing(semanticObject, LangPackage.Literals.YJOIN_DEF__TO_VIEW));
+		}
+		SequenceFeeder feeder = createSequencerFeeder(context, semanticObject);
+		feeder.accept(grammarAccess.getYJoinDefAccess().getFromViewYPropertyIDTerminalRuleCall_0_0_1(), semanticObject.eGet(LangPackage.Literals.YJOIN_DEF__FROM_VIEW, false));
+		feeder.accept(grammarAccess.getYJoinDefAccess().getRelRefYAnnotRelQualifiedNameParserRuleCall_2_0_1(), semanticObject.eGet(LangPackage.Literals.YJOIN_DEF__REL_REF, false));
+		feeder.accept(grammarAccess.getYJoinDefAccess().getToViewYPropertyIDTerminalRuleCall_4_0_1(), semanticObject.eGet(LangPackage.Literals.YJOIN_DEF__TO_VIEW, false));
+		feeder.finish();
 	}
 	
 	
@@ -1094,7 +1106,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YJoin returns YJoin
 	 *
 	 * Constraint:
-	 *     (joindef+=YJoinDef joindef+=YJoinDef*)
+	 *     (joindefs+=YJoinDef joindefs+=YJoinDef*)
 	 */
 	protected void sequence_YJoin(ISerializationContext context, YJoin semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);

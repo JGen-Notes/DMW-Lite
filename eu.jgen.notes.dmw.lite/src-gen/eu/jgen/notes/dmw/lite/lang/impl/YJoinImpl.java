@@ -29,7 +29,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * The following features are implemented:
  * </p>
  * <ul>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YJoinImpl#getJoindef <em>Joindef</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YJoinImpl#getJoindefs <em>Joindefs</em>}</li>
  * </ul>
  *
  * @generated
@@ -37,14 +37,14 @@ import org.eclipse.emf.ecore.util.InternalEList;
 public class YJoinImpl extends MinimalEObjectImpl.Container implements YJoin
 {
   /**
-   * The cached value of the '{@link #getJoindef() <em>Joindef</em>}' containment reference list.
+   * The cached value of the '{@link #getJoindefs() <em>Joindefs</em>}' containment reference list.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getJoindef()
+   * @see #getJoindefs()
    * @generated
    * @ordered
    */
-  protected EList<YJoinDef> joindef;
+  protected EList<YJoinDef> joindefs;
 
   /**
    * <!-- begin-user-doc -->
@@ -72,13 +72,13 @@ public class YJoinImpl extends MinimalEObjectImpl.Container implements YJoin
    * <!-- end-user-doc -->
    * @generated
    */
-  public EList<YJoinDef> getJoindef()
+  public EList<YJoinDef> getJoindefs()
   {
-    if (joindef == null)
+    if (joindefs == null)
     {
-      joindef = new EObjectContainmentEList<YJoinDef>(YJoinDef.class, this, LangPackage.YJOIN__JOINDEF);
+      joindefs = new EObjectContainmentEList<YJoinDef>(YJoinDef.class, this, LangPackage.YJOIN__JOINDEFS);
     }
-    return joindef;
+    return joindefs;
   }
 
   /**
@@ -91,8 +91,8 @@ public class YJoinImpl extends MinimalEObjectImpl.Container implements YJoin
   {
     switch (featureID)
     {
-      case LangPackage.YJOIN__JOINDEF:
-        return ((InternalEList<?>)getJoindef()).basicRemove(otherEnd, msgs);
+      case LangPackage.YJOIN__JOINDEFS:
+        return ((InternalEList<?>)getJoindefs()).basicRemove(otherEnd, msgs);
     }
     return super.eInverseRemove(otherEnd, featureID, msgs);
   }
@@ -107,8 +107,8 @@ public class YJoinImpl extends MinimalEObjectImpl.Container implements YJoin
   {
     switch (featureID)
     {
-      case LangPackage.YJOIN__JOINDEF:
-        return getJoindef();
+      case LangPackage.YJOIN__JOINDEFS:
+        return getJoindefs();
     }
     return super.eGet(featureID, resolve, coreType);
   }
@@ -124,9 +124,9 @@ public class YJoinImpl extends MinimalEObjectImpl.Container implements YJoin
   {
     switch (featureID)
     {
-      case LangPackage.YJOIN__JOINDEF:
-        getJoindef().clear();
-        getJoindef().addAll((Collection<? extends YJoinDef>)newValue);
+      case LangPackage.YJOIN__JOINDEFS:
+        getJoindefs().clear();
+        getJoindefs().addAll((Collection<? extends YJoinDef>)newValue);
         return;
     }
     super.eSet(featureID, newValue);
@@ -142,8 +142,8 @@ public class YJoinImpl extends MinimalEObjectImpl.Container implements YJoin
   {
     switch (featureID)
     {
-      case LangPackage.YJOIN__JOINDEF:
-        getJoindef().clear();
+      case LangPackage.YJOIN__JOINDEFS:
+        getJoindefs().clear();
         return;
     }
     super.eUnset(featureID);
@@ -159,8 +159,8 @@ public class YJoinImpl extends MinimalEObjectImpl.Container implements YJoin
   {
     switch (featureID)
     {
-      case LangPackage.YJOIN__JOINDEF:
-        return joindef != null && !joindef.isEmpty();
+      case LangPackage.YJOIN__JOINDEFS:
+        return joindefs != null && !joindefs.isEmpty();
     }
     return super.eIsSet(featureID);
   }

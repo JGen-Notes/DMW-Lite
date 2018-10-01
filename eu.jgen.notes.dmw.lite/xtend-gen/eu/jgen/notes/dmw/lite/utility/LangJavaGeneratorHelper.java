@@ -2,6 +2,7 @@ package eu.jgen.notes.dmw.lite.utility;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
+import eu.jgen.notes.dmw.lite.lang.YAndExpression;
 import eu.jgen.notes.dmw.lite.lang.YAnnot;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
@@ -9,16 +10,33 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
 import eu.jgen.notes.dmw.lite.lang.YAnnotMax;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
+import eu.jgen.notes.dmw.lite.lang.YBoolConstant;
 import eu.jgen.notes.dmw.lite.lang.YClass;
+import eu.jgen.notes.dmw.lite.lang.YComparisonExpression;
+import eu.jgen.notes.dmw.lite.lang.YEqualityExpression;
+import eu.jgen.notes.dmw.lite.lang.YExpression;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
+import eu.jgen.notes.dmw.lite.lang.YIntConstant;
 import eu.jgen.notes.dmw.lite.lang.YMember;
+import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
+import eu.jgen.notes.dmw.lite.lang.YMinus;
+import eu.jgen.notes.dmw.lite.lang.YMulOrDiv;
+import eu.jgen.notes.dmw.lite.lang.YNot;
+import eu.jgen.notes.dmw.lite.lang.YOrExpression;
+import eu.jgen.notes.dmw.lite.lang.YParenties;
+import eu.jgen.notes.dmw.lite.lang.YPlus;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
+import eu.jgen.notes.dmw.lite.lang.YReadEachStatement;
 import eu.jgen.notes.dmw.lite.lang.YReadStatement;
-import eu.jgen.notes.dmw.lite.lang.YStatement;
+import eu.jgen.notes.dmw.lite.lang.YSelf;
+import eu.jgen.notes.dmw.lite.lang.YStringConstant;
 import eu.jgen.notes.dmw.lite.lang.YStructRefPair;
+import eu.jgen.notes.dmw.lite.lang.YSymbolRef;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -29,6 +47,7 @@ import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
+import org.eclipse.xtext.xbase.lib.InputOutput;
 
 @SuppressWarnings("all")
 public class LangJavaGeneratorHelper {
@@ -41,6 +60,8 @@ public class LangJavaGeneratorHelper {
   private final String SYSTEM_DEFAULT_DOUBLE = "0.0";
   
   private final String SYSTEM_DEFAULT_LONG = "0";
+  
+  private Map<String, Integer> usedNames = new HashMap<String, Integer>();
   
   @Inject
   @Extension
@@ -191,7 +212,10 @@ public class LangJavaGeneratorHelper {
     return this.getSystemDefault(this.translateTypeName(property.getType().getName()));
   }
   
-  public ArrayList<YProperty> listArrayProperties(final YClass eClass) {
+  /**
+   * Find all properties of type Array
+   */
+  public ArrayList<YProperty> findPropertiesOfTypeArray(final YClass eClass) {
     final ArrayList<YProperty> array = CollectionLiterals.<YProperty>newArrayList();
     EList<YMember> _members = eClass.getMembers();
     for (final YMember member : _members) {
@@ -207,7 +231,10 @@ public class LangJavaGeneratorHelper {
     return array;
   }
   
-  public int findArraySize(final YProperty property) {
+  /**
+   * Get size of the array.
+   */
+  public int getArraySize(final YProperty property) {
     EList<YAnnot> _annotations = property.getAnnotations();
     for (final YAnnot annotation : _annotations) {
       EObject _type = annotation.getType();
@@ -220,30 +247,216 @@ public class LangJavaGeneratorHelper {
     return 0;
   }
   
-  public ArrayList<String> createQualifiedColumnNamesList(final YStatement statement) {
+  public ArrayList<String> createQualifiedColumnNamesListForRead(final YReadStatement readStatement) {
     final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
     int index = 1;
-    if ((statement instanceof YReadStatement)) {
-      final YReadStatement readStatement = ((YReadStatement) statement);
-      EList<YStructRefPair> _structs = readStatement.getStructs();
-      for (final YStructRefPair struct : _structs) {
-        {
-          final YAnnotTable implementingTable = this._langUtil.getImplementingTable(readStatement.getStructs().get(0).getStructclass());
-          EList<YMember> _members = struct.getStructproperty().getType().getMembers();
-          for (final YMember member : _members) {
-            StringConcatenation _builder = new StringConcatenation();
-            _builder.append("T");
-            _builder.append(index);
-            _builder.append(".\\\"");
-            String _implementingColumnName = this._langUtil.getImplementingColumnName(implementingTable, member);
-            _builder.append(_implementingColumnName);
-            _builder.append("\\\"");
-            list.add(_builder.toString());
-          }
-          index++;
+    EList<YStructRefPair> _structs = readStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      {
+        final YAnnotTable implementingTable = this._langUtil.getImplementingTable(struct.getStructclass());
+        EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+        for (final YMember member : _members) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("T");
+          _builder.append(index);
+          _builder.append(".\\\"");
+          String _implementingColumnName = this._langUtil.getImplementingColumnName(implementingTable, member);
+          _builder.append(_implementingColumnName);
+          _builder.append("\\\"");
+          list.add(_builder.toString());
         }
+        index++;
       }
     }
     return list;
+  }
+  
+  public ArrayList<String> createQualifiedColumnNamesListForReadEach(final YReadEachStatement readEachStatement) {
+    final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
+    int index = 1;
+    EList<YStructRefPair> _structs = readEachStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      {
+        final YAnnotTable implementingTable = this._langUtil.getImplementingTable(struct.getStructclass());
+        EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+        for (final YMember member : _members) {
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("T");
+          _builder.append(index);
+          _builder.append(".\\\"");
+          String _implementingColumnName = this._langUtil.getImplementingColumnName(implementingTable, member);
+          _builder.append(_implementingColumnName);
+          _builder.append("\\\"");
+          list.add(_builder.toString());
+        }
+        index++;
+      }
+    }
+    return list;
+  }
+  
+  public ArrayList<String> createReadStatementSetMethodList(final ArrayList<String> list, final YExpression expression, final ArrayList<String> readProperties) {
+    boolean _matched = false;
+    if ((expression instanceof YPlus)) {
+      _matched=true;
+      final YPlus plus = ((YPlus) expression);
+      this.createReadStatementSetMethodList(list, plus.getLeft(), readProperties);
+      this.createReadStatementSetMethodList(list, plus.getRight(), readProperties);
+    }
+    if (!_matched) {
+      if ((expression instanceof YMinus)) {
+        _matched=true;
+        final YMinus minus = ((YMinus) expression);
+        this.createReadStatementSetMethodList(list, minus.getLeft(), readProperties);
+        this.createReadStatementSetMethodList(list, minus.getRight(), readProperties);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YMulOrDiv)) {
+        _matched=true;
+        final YMulOrDiv mulOrDiv = ((YMulOrDiv) expression);
+        this.createReadStatementSetMethodList(list, mulOrDiv.getLeft(), readProperties);
+        this.createReadStatementSetMethodList(list, mulOrDiv.getRight(), readProperties);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YAndExpression)) {
+        _matched=true;
+        final YAndExpression andExpression = ((YAndExpression) expression);
+        this.createReadStatementSetMethodList(list, andExpression.getLeft(), readProperties);
+        this.createReadStatementSetMethodList(list, andExpression.getRight(), readProperties);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YOrExpression)) {
+        _matched=true;
+        final YOrExpression orExpression = ((YOrExpression) expression);
+        this.createReadStatementSetMethodList(list, orExpression.getLeft(), readProperties);
+        this.createReadStatementSetMethodList(list, orExpression.getRight(), readProperties);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YComparisonExpression)) {
+        _matched=true;
+        final YComparisonExpression comparisonExpression = ((YComparisonExpression) expression);
+        this.createReadStatementSetMethodList(list, comparisonExpression.getLeft(), readProperties);
+        this.createReadStatementSetMethodList(list, comparisonExpression.getRight(), readProperties);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YEqualityExpression)) {
+        _matched=true;
+        final YEqualityExpression equalityExpression = ((YEqualityExpression) expression);
+        this.createReadStatementSetMethodList(list, equalityExpression.getLeft(), readProperties);
+        this.createReadStatementSetMethodList(list, equalityExpression.getRight(), readProperties);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YMemberSelection)) {
+        _matched=true;
+        final YMemberSelection memberSelection = ((YMemberSelection) expression);
+        YExpression _receiver = memberSelection.getReceiver();
+        boolean _isVaraibleProperty = this.isVaraibleProperty(readProperties, ((YMemberSelection) _receiver).getMember().getName());
+        boolean _not = (!_isVaraibleProperty);
+        if (_not) {
+          YExpression _receiver_1 = memberSelection.getReceiver();
+          String _name = ((YMemberSelection) _receiver_1).getMember().getName();
+          String _plus = (_name + ".");
+          String _name_1 = memberSelection.getMember().getName();
+          final String variableName = (_plus + _name_1);
+          String setMethodName = "";
+          String _name_2 = memberSelection.getMember().getType().getName();
+          if (_name_2 != null) {
+            switch (_name_2) {
+              case "Int":
+                setMethodName = "setInt";
+                break;
+              case "Short":
+                setMethodName = "setShort";
+                break;
+              case "String":
+                setMethodName = "setString";
+                break;
+              default:
+                setMethodName = "unknown";
+                break;
+            }
+          } else {
+            setMethodName = "unknown";
+          }
+          list.add((((setMethodName + "(&index&,") + variableName) + ");"));
+        }
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YSelf)) {
+        _matched=true;
+        InputOutput.<YExpression>println(expression);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YNot)) {
+        _matched=true;
+        final YNot not = ((YNot) expression);
+        this.createReadStatementSetMethodList(list, not.getExpression(), readProperties);
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YBoolConstant)) {
+        _matched=true;
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YParenties)) {
+        _matched=true;
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YSymbolRef)) {
+        _matched=true;
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YIntConstant)) {
+        _matched=true;
+      }
+    }
+    if (!_matched) {
+      if ((expression instanceof YStringConstant)) {
+        _matched=true;
+      }
+    }
+    if (!_matched) {
+      InputOutput.<YExpression>println(expression);
+    }
+    return list;
+  }
+  
+  public boolean isVaraibleProperty(final ArrayList<String> readProperties, final String name) {
+    for (final String property : readProperties) {
+      boolean _equals = Objects.equal(property, name);
+      if (_equals) {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public void resetLocalNames() {
+    this.usedNames.clear();
+  }
+  
+  public String generateLocalName(final String corename) {
+    boolean _containsKey = this.usedNames.containsKey(corename);
+    if (_containsKey) {
+      final int number = this.usedNames.get(corename).intValue();
+      Integer _integer = new Integer((number + 1));
+      this.usedNames.put(corename, _integer);
+      return ((corename + "_") + Integer.valueOf(number));
+    } else {
+      Integer _integer_1 = new Integer(1);
+      this.usedNames.put(corename, _integer_1);
+      return corename;
+    }
   }
 }

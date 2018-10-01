@@ -1542,7 +1542,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getYJoin_Joindef()
+  public EReference getYJoin_Joindefs()
   {
     return (EReference)yJoinEClass.getEStructuralFeatures().get(0);
   }
@@ -3095,7 +3095,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     createEReference(yStructRefPairEClass, YSTRUCT_REF_PAIR__STRUCTCLASS);
 
     yJoinEClass = createEClass(YJOIN);
-    createEReference(yJoinEClass, YJOIN__JOINDEF);
+    createEReference(yJoinEClass, YJOIN__JOINDEFS);
 
     yJoinDefEClass = createEClass(YJOIN_DEF);
     createEReference(yJoinDefEClass, YJOIN_DEF__FROM_VIEW);
@@ -3484,11 +3484,11 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEReference(getYStructRefPair_Structclass(), this.getYAnnotEntity(), null, "structclass", null, 0, 1, YStructRefPair.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yJoinEClass, YJoin.class, "YJoin", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-    initEReference(getYJoin_Joindef(), this.getYJoinDef(), null, "joindef", null, 0, -1, YJoin.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYJoin_Joindefs(), this.getYJoinDef(), null, "joindefs", null, 0, -1, YJoin.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yJoinDefEClass, YJoinDef.class, "YJoinDef", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getYJoinDef_FromView(), this.getYProperty(), null, "fromView", null, 0, 1, YJoinDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getYJoinDef_RelRef(), this.getYAnnotRel(), null, "relRef", null, 0, -1, YJoinDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, !IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYJoinDef_RelRef(), this.getYAnnotRel(), null, "relRef", null, 0, 1, YJoinDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYJoinDef_ToView(), this.getYProperty(), null, "toView", null, 0, 1, YJoinDef.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yWhereEClass, YWhere.class, "YWhere", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

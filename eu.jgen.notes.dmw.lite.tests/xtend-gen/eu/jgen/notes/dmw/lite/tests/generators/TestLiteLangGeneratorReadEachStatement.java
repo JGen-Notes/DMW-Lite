@@ -43,7 +43,7 @@ import org.junit.runner.RunWith;
 @RunWith(XtextRunner.class)
 @InjectWith(LangInjectorProvider.class)
 @SuppressWarnings("all")
-public class TestLiteLangGeneratorReadStatement {
+public class TestLiteLangGeneratorReadEachStatement {
   @Inject
   @Extension
   private CompilationTestHelper _compilationTestHelper;
@@ -112,7 +112,7 @@ public class TestLiteLangGeneratorReadStatement {
       _builder.newLine();
       _builder.append("    ");
       _builder.newLine();
-      _builder.append("class ReadF : Widget {              ");
+      _builder.append("class ReadEachF : Widget {              ");
       _builder.newLine();
       _builder.append("\t");
       _builder.newLine();
@@ -137,52 +137,38 @@ public class TestLiteLangGeneratorReadStatement {
       _builder.append("\t");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("var viewF : ViewF;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var viewF2 : ViewF;");
+      _builder.append("public var viewF : ViewF; ");
       _builder.newLine();
       _builder.append("\t");
       _builder.newLine();
       _builder.append("\t");
-      _builder.append("public func start() {");
+      _builder.append("public var array : Array <viewF>;");
+      _builder.newLine();
+      _builder.append("\t  ");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.newLine();
+      _builder.append("\t");
+      _builder.append("public func start() {\t\t");
       _builder.newLine();
       _builder.append("\t\t");
+      _builder.append("read each viewF -> F where self.viewF.number == 100  ");
       _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("read viewF -> F  ");
+      _builder.append(" \t\t\t");
+      _builder.append("target array {\t\t\t\t");
       _builder.newLine();
-      _builder.append("\t\t   ");
-      _builder.append("where self.viewF.number == 0 ");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("success {");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("} not found {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("// not found");
-      _builder.newLine();
-      _builder.append("\t\t");
+      _builder.append(" \t\t\t");
       _builder.append("}");
       _builder.newLine();
-      _builder.append("\t\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("\t");
+      _builder.append("\t ");
+      _builder.append("}\t\t");
       _builder.newLine();
       _builder.append("}\t\t\t");
       _builder.newLine();
       _builder.newLine();
       final String body = _builder.toString();
       final IAcceptor<CompilationTestHelper.Result> _function = (CompilationTestHelper.Result it) -> {
-        InputOutput.<String>println(it.getGeneratedCode("templates.ReadF"));
+        InputOutput.<String>println(it.getGeneratedCode("templates.ReadEachF"));
         Assert.assertFalse(this.checkIfIssues(it));
       };
       this._compilationTestHelper.compile(CollectionLiterals.<String>newArrayList(this._langLib.loadLibSource(), body), _function);
