@@ -102,6 +102,7 @@ class LangValidator extends AbstractLangValidator {
 	public static val NO_DESGNATED_PARENT = ISSUE_CODE_PREFIX + "NoDesignatedParent"
 	public static val ONLY_ONE_DESGNATED_PARENT = ISSUE_CODE_PREFIX + "OnlyOneDesignatedParent"
 	public static val CLASS_NEED_TO_BE_EXTENDED = ISSUE_CODE_PREFIX + "ClassNeedToBeExtended"
+	public static val CLASS_NEED_TO_HAVE_PROPERTIES = ISSUE_CODE_PREFIX + "ClassNeedToHaveProperties"
 	public static val CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL = ISSUE_CODE_PREFIX + "ClassNameFirstCharacterNotCapital"
 	public static val ENTITY_NAME_FIRST_CHARACTER_NOT_CAPITAL = ISSUE_CODE_PREFIX + "EntityNameFirstCharacterNotCapital"
 	public static val ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE = ISSUE_CODE_PREFIX +
@@ -112,9 +113,8 @@ class LangValidator extends AbstractLangValidator {
 		"PropertyNameFirstCharacterNotLowercase"
 	public static val VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE = ISSUE_CODE_PREFIX +
 		"VariableNameFirstCharacterNotLowercase"
-	public static val ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT = ISSUE_CODE_PREFIX +
-		"AttributeTypeNotCompatibleWithDefault"
-		
+	public static val ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT = ISSUE_CODE_PREFIX + "AttributeTypeNotCompatibleWithDefault"
+
 	// VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE
 	@Inject extension LangUtil
 	@Inject extension LangTypeComputer
@@ -127,10 +127,10 @@ class LangValidator extends AbstractLangValidator {
 	 * Supported Database
 	 ********************************************************/
 	@Check
-	def checkIfSupportedDatabase(YAnnotDatabase annotDatabase) {
+	def checkSupportedDatabase(YAnnotDatabase annotDatabase) {
 		if (annotDatabase.name !== null) {
-			if (annotDatabase.name == "MySQL" || annotDatabase.name == "SQLite" || annotDatabase.name == "PostgreSQL" ||
-				annotDatabase.name == "MongoDB") {
+			if (annotDatabase.name == "Derby" || annotDatabase.name == "MySQL" || annotDatabase.name == "SQLite" ||
+				annotDatabase.name == "PostgreSQL" || annotDatabase.name == "MongoDB") {
 				return
 			} else {
 				error("This database is not supported yet.", LangPackage.eINSTANCE.YAnnotDatabase_Name,
@@ -258,7 +258,7 @@ class LangValidator extends AbstractLangValidator {
 			println(element)
 			val a = element as YMemberSelection
 			val b = a.member as YProperty
-			println(b.name + " : " + b.type.name + " -> " + b.type.entity.name)
+			println(b.name + " : " + b.type.name + " -> " + b.type.entityRef.name)
 		]
 	}
 
@@ -267,27 +267,27 @@ class LangValidator extends AbstractLangValidator {
 	 ********************************************************/
 	@Check
 	def checkPropertyReferenceToAtttribute(YProperty property) {
-		if (property.attr === null) {
+		if (property.attrRef === null) {
 			return
 		}
 		val parent = property.eContainer as YClass
-		if (parent.entity === null) {
+		if (parent.entityRef === null) {
 			error("Entity has to implement entity type before pointing to attribute",
-				LangPackage.eINSTANCE.YProperty_Attr, MISSING_ENTITY_REFERENCE, property.name)
+				LangPackage.eINSTANCE.YProperty_AttrRef, MISSING_ENTITY_REFERENCE, property.name)
 			return
 		}
-		if (property.attr.name == property.name) {
-			if (property.type.name != property.attr.yclass.name) {
+		if (property.attrRef.name == property.name) {
+			if (property.type.name != property.attrRef.yclass.name) {
 				error("Attribute type does not match property type", LangPackage.eINSTANCE.YMember_Type, WRONG_TYPE,
 					property.type.name)
 			}
-			val name = (property.attr.eContainer as YAnnotEntity).name
-			if (name != parent.entity.name) {
-				error("Attribute does not belong to the chosen entity", LangPackage.eINSTANCE.YProperty_Attr,
+			val name = (property.attrRef.eContainer as YAnnotEntity).name
+			if (name != parent.entityRef.name) {
+				error("Attribute does not belong to the chosen entity", LangPackage.eINSTANCE.YProperty_AttrRef,
 					WRONG_CROSS_REFERENCE, property.name)
 			}
 		} else {
-			error("Cannot find matching attribute for selected entity type", LangPackage.eINSTANCE.YProperty_Attr,
+			error("Cannot find matching attribute for selected entity type", LangPackage.eINSTANCE.YProperty_AttrRef,
 				MISSING_ENTITY_REFERENCE, property.name)
 		}
 	}
@@ -329,7 +329,7 @@ class LangValidator extends AbstractLangValidator {
 		}
 	}
 
-	//@Check  - need to detect unreachable code
+	// @Check  - need to detect unreachable code
 	//
 	def void checkMethodEndsWithReturn(YFunction function) {
 		if (function.returnvalue) {
@@ -590,8 +590,19 @@ class LangValidator extends AbstractLangValidator {
 		}
 
 		@Check
+		def void checkClassExtendingStructureHasProperties(YClass clazz) {
+			if (clazz.name == "Object") {
+				return;
+			}
+			if (clazz.superclass.name == "Structure" && clazz.members.size == 0) {
+				error("Class " + clazz.name + " does not have any properties yet.", clazz,
+					LangPackage.eINSTANCE.YNamedElement_Name, CLASS_NEED_TO_HAVE_PROPERTIES);
+			}
+		}
+
+		@Check
 		def void checkIfClassHasExtention(YClass clazz) {
-			if(clazz.name == "Object") {
+			if (clazz.name == "Object") {
 				return;
 			}
 			if (clazz.superclass === null) {
@@ -632,7 +643,7 @@ class LangValidator extends AbstractLangValidator {
 					LangPackage.eINSTANCE.YAnnotAttr_Name, ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
 			}
 		}
-		
+
 		@Check
 		def void checkAttributeTypeMatchesDefaultValueIfAny(YAnnotAttr annotAttr) {
 			if (!annotAttr.isTypeCompatibleWithDefault) {

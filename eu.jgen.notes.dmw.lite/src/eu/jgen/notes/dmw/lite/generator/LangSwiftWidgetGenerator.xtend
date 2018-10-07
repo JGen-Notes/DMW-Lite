@@ -98,7 +98,7 @@ class LangSwiftWidgetGenerator implements IGenerator {
 	protected def String generateTableClasses(YClass clazz) {
 
 		for (inner : clazz.inners) {
-			if (inner.entity !== null) {
+			if (inner.entityRef !== null) {
 			 
 			}
 		}

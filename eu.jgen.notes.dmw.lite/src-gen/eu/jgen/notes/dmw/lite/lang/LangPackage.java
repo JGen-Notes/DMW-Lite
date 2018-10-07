@@ -309,13 +309,13 @@ public interface LangPackage extends EPackage
   int YCLASS__SUPERCLASS = YNAMED_ELEMENT_FEATURE_COUNT + 0;
 
   /**
-   * The feature id for the '<em><b>Entity</b></em>' reference.
+   * The feature id for the '<em><b>Entity Ref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YCLASS__ENTITY = YNAMED_ELEMENT_FEATURE_COUNT + 1;
+  int YCLASS__ENTITY_REF = YNAMED_ELEMENT_FEATURE_COUNT + 1;
 
   /**
    * The feature id for the '<em><b>Inners</b></em>' containment reference list.
@@ -446,13 +446,13 @@ public interface LangPackage extends EPackage
   int YPROPERTY__OPTIONAL = YMEMBER_FEATURE_COUNT + 1;
 
   /**
-   * The feature id for the '<em><b>Attr</b></em>' reference.
+   * The feature id for the '<em><b>Attr Ref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
    * @generated
    * @ordered
    */
-  int YPROPERTY__ATTR = YMEMBER_FEATURE_COUNT + 2;
+  int YPROPERTY__ATTR_REF = YMEMBER_FEATURE_COUNT + 2;
 
   /**
    * The feature id for the '<em><b>Annotations</b></em>' containment reference list.
@@ -3220,15 +3220,15 @@ public interface LangPackage extends EPackage
   EReference getYClass_Superclass();
 
   /**
-   * Returns the meta object for the reference '{@link eu.jgen.notes.dmw.lite.lang.YClass#getEntity <em>Entity</em>}'.
+   * Returns the meta object for the reference '{@link eu.jgen.notes.dmw.lite.lang.YClass#getEntityRef <em>Entity Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Entity</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YClass#getEntity()
+   * @return the meta object for the reference '<em>Entity Ref</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YClass#getEntityRef()
    * @see #getYClass()
    * @generated
    */
-  EReference getYClass_Entity();
+  EReference getYClass_EntityRef();
 
   /**
    * Returns the meta object for the containment reference list '{@link eu.jgen.notes.dmw.lite.lang.YClass#getInners <em>Inners</em>}'.
@@ -3317,15 +3317,15 @@ public interface LangPackage extends EPackage
   EAttribute getYProperty_Optional();
 
   /**
-   * Returns the meta object for the reference '{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAttr <em>Attr</em>}'.
+   * Returns the meta object for the reference '{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAttrRef <em>Attr Ref</em>}'.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @return the meta object for the reference '<em>Attr</em>'.
-   * @see eu.jgen.notes.dmw.lite.lang.YProperty#getAttr()
+   * @return the meta object for the reference '<em>Attr Ref</em>'.
+   * @see eu.jgen.notes.dmw.lite.lang.YProperty#getAttrRef()
    * @see #getYProperty()
    * @generated
    */
-  EReference getYProperty_Attr();
+  EReference getYProperty_AttrRef();
 
   /**
    * Returns the meta object for the containment reference list '{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAnnotations <em>Annotations</em>}'.
@@ -5604,12 +5604,12 @@ public interface LangPackage extends EPackage
     EReference YCLASS__SUPERCLASS = eINSTANCE.getYClass_Superclass();
 
     /**
-     * The meta object literal for the '<em><b>Entity</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Entity Ref</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference YCLASS__ENTITY = eINSTANCE.getYClass_Entity();
+    EReference YCLASS__ENTITY_REF = eINSTANCE.getYClass_EntityRef();
 
     /**
      * The meta object literal for the '<em><b>Inners</b></em>' containment reference list feature.
@@ -5680,12 +5680,12 @@ public interface LangPackage extends EPackage
     EAttribute YPROPERTY__OPTIONAL = eINSTANCE.getYProperty_Optional();
 
     /**
-     * The meta object literal for the '<em><b>Attr</b></em>' reference feature.
+     * The meta object literal for the '<em><b>Attr Ref</b></em>' reference feature.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      */
-    EReference YPROPERTY__ATTR = eINSTANCE.getYProperty_Attr();
+    EReference YPROPERTY__ATTR_REF = eINSTANCE.getYProperty_AttrRef();
 
     /**
      * The meta object literal for the '<em><b>Annotations</b></em>' containment reference list feature.

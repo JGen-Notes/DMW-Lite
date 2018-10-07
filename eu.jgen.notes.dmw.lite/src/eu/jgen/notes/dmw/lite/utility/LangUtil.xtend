@@ -48,6 +48,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
+import eu.jgen.notes.dmw.lite.lang.LangFactory
+import eu.jgen.notes.dmw.lite.lang.YAccessLevel
 
 class LangUtil {
 
@@ -239,6 +241,26 @@ class LangUtil {
 			}
 		}
 		return true
-	}	 
+	}	
+	
+	def YProperty converAttributeIntoPropertyPublic(YAnnotAttr annotAttr) {
+		val property = LangFactory.eINSTANCE.createYProperty => [
+			attrRef = annotAttr
+			type = annotAttr.yclass
+			name = annotAttr.name
+			access = YAccessLevel.PUBLIC
+		]
+		return property
+	} 
+	
+	def YProperty converAttributeIntoPropertyPrivate(YAnnotAttr annotAttr) {
+		val property = LangFactory.eINSTANCE.createYProperty => [
+			attrRef = annotAttr
+			type = annotAttr.yclass
+			name = annotAttr.name
+			access = YAccessLevel.PRIVATE
+		]
+		return property
+	} 
 
 }

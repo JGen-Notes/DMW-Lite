@@ -50,7 +50,7 @@ class LangTechicalDesignGenerator implements IGenerator {
 //	}
 	def private void generateTableForDerby(IFileSystemAccess fsa, YAnnotTable table) {
 		val text = '''
-			CREATE TABLE "«table.name.toUpperCase»" (
+			CREATE TABLE "«table.name»" (
 				«FOR abstractColumn : table.columns SEPARATOR ',' AFTER ','»
 					«generateColumnForDerby(abstractColumn)»
 				«ENDFOR»
@@ -61,7 +61,7 @@ class LangTechicalDesignGenerator implements IGenerator {
 			)
 		'''
 		fsa.generateFile(
-			"derby/" + table.name.toUpperCase + ".ddl",
+			"derby/" + table.name + ".ddl",
 			LangOutputProvider.DDL,
 			text
 		)

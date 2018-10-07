@@ -29,48 +29,131 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
 import eu.jgen.notes.dmw.lite.lang.YAnnotPrimaryKey
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey
+import eu.jgen.notes.dmw.lite.lang.YProperty
+import eu.jgen.notes.dmw.lite.lang.YFunction
+import eu.jgen.notes.dmw.lite.lang.YTuples
+import eu.jgen.notes.dmw.lite.lang.YBlock
+import eu.jgen.notes.dmw.lite.lang.YCreateStatement
+import eu.jgen.notes.dmw.lite.lang.YStructRefPair
+import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
 
 class LangFormatter extends AbstractFormatter2 {
-	
+
 	@Inject extension LangGrammarAccess
 
 	def dispatch void format(YWidget widget, extension IFormattableDocument document) {
 		widget.regionFor.keyword("package").append[oneSpace]
 		widget.regionFor.feature(LangPackage.eINSTANCE.YWidget_Name).append[noSpace]
-		 
+
 		for (YImport yImport : widget.getImports()) {
 			yImport.format;
 		}
 		for (YAnnotTop yAnnotTop : widget.getAnnotations()) {
 			yAnnotTop.format;
 		}
-		for (YClass yClass : widget.getClasses()) {
-			yClass.format;
+		for (YClass clazz : widget.getClasses()) {
+			clazz.format;
+
 		}
 	}
 
-	def dispatch void format(YClass yClass, extension IFormattableDocument document) {
-		// TODO: format HiddenRegions around keywords, attributes, cross references, etc. 
-		for (YClass _yClass : yClass.getInners()) {
-			_yClass.format;
-		}
-		for (YMember yMember : yClass.getMembers()) {
-			yMember.format;
-		}
+	def dispatch void format(YClass clazz, extension IFormattableDocument document) {
+		clazz.regionFor.keyword("class").prepend[newLine].append[oneSpace]
+		clazz.regionFor.keyword(":").surround[oneSpace]
+		clazz.regionFor.feature(LangPackage.eINSTANCE.YClass_Superclass).surround[oneSpace]
+		clazz.regionFor.keyword("->").surround[oneSpace]
+		clazz.regionFor.feature(LangPackage.eINSTANCE.YClass_EntityRef).surround[oneSpace]
+		clazz.regionFor.keyword("{").prepend[oneSpace].append[newLine]
+		clazz.inners.forEach [ innerClazz |
+			innerClazz.interior[indent].prepend[newLine].format
+		]
+		clazz.interior[indent].members.forEach [ member |
+				if (member instanceof YProperty) {
+					(member as YProperty).format
+				} else if (member instanceof YFunction) {
+					(member as YFunction).format
+				}
+			]		
+		clazz.regionFor.keyword("}").prepend[newLine].append[newLine]
+	}
+
+	def dispatch void format(YProperty property, extension IFormattableDocument document) {
+	 	if(property.access !== null) {
+	 		property.regionFor.keyword(property.access.getName).prepend[newLine].append[oneSpace]
+	 		property.regionFor.keyword("var").prepend[oneSpace].append[oneSpace]
+	 	} else {
+	 			property.regionFor.keyword("var").prepend[newLine].append[oneSpace]
+	 	}	
+		property.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).surround[oneSpace]
+		property.tuples.format
+		property.regionFor.keyword(":").surround[oneSpace]
+		property.regionFor.keyword("->").surround[oneSpace]
+		property.regionFor.feature(LangPackage.eINSTANCE.YProperty_AttrRef.surround[oneSpace])
+		property.regionFor.keyword(";").append[newLine]
+		
 	}
 	
+	def dispatch void format(YFunction function, extension IFormattableDocument document) {
+		    if(function.access !== null) {
+	 		    function.regionFor.keyword(function.access.getName).prepend[newLine].append[oneSpace]
+	 		    function.regionFor.keyword("func").prepend[oneSpace].append[oneSpace]
+	 	    } else {
+	 			function.regionFor.keyword("func").prepend[newLine].append[oneSpace]
+	 	    }
+			function.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).prepend[oneSpace].append[noSpace]
+			function.regionFor.keyword("(").prepend[noSpace].append[noSpace]
+			function.params.forEach[param |
+				param.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).prepend[noSpace].append[oneSpace]
+				param.regionFor.keyword(":").prepend[oneSpace].append[oneSpace]
+				param.type.prepend[oneSpace].append[noSpace]
+				function.regionFor.keyword(",").prepend[noSpace].append[noSpace]
+			]
+			function.regionFor.keyword(")").prepend[noSpace].append[oneSpace]
+			function.regionFor.keyword("->").surround[oneSpace]
+			function.regionFor.feature(LangPackage.eINSTANCE.YFunction_Returnvalue.surround[oneSpace])
+		    function.body.format
+	}
 	
+	def dispatch void format(YBlock block, extension IFormattableDocument document) {
+			block.regionFor.keyword("{").prepend[oneSpace].append[newLine]
+			block.interior[indent].statements.forEach[format]
+			block.regionFor.keyword("}").prepend[newLine]
+	}
+	
+	def dispatch void format(YCreateStatement createStatement, extension IFormattableDocument document) {
+		createStatement.regionFor.keyword("create").prepend[newLine].append[oneSpace]
+		createStatement.struct.format
+		createStatement.setBlock.format
+		createStatement.regionFor.keyword("success").prepend[newLine].append[oneSpace]
+		createStatement.success.format
+		createStatement.regionFor.keyword("already").prepend[newLine].append[oneSpace]
+		createStatement.regionFor.keyword("exist").prepend[oneSpace].append[oneSpace]
+		createStatement.alreadyExist.format
+	}
+	
+	def dispatch void format(YStructRefPair structRefPair, extension IFormattableDocument document) {
+		structRefPair.regionFor.feature(LangPackage.eINSTANCE.YStructRefPair_Structproperty).prepend[oneSpace].append[oneSpace]
+        structRefPair.regionFor.keyword(":").prepend[oneSpace].append[oneSpace]
+		structRefPair.regionFor.feature(LangPackage.eINSTANCE.YStructRefPair_Structclass).prepend[oneSpace].append[oneSpace]
+	}
+
+	def dispatch void format(YTuples tuples, extension IFormattableDocument document) {
+		tuples.regionFor.keyword("<").prepend[oneSpace].append[noSpace]
+		tuples.regionFor.keyword(",").prepend[noSpace].append[noSpace]
+		tuples.regionFor.keyword(">").prepend[noSpace].append[oneSpace]
+	}
+
 	def dispatch void format(YImport imp, extension IFormattableDocument document) {
 		imp.regionFor.keyword("import").prepend[newLine].append[oneSpace]
 		imp.regionFor.feature(LangPackage.eINSTANCE.YImport_ImportedNamespace)
 	}
-	
+
 	def dispatch void format(YAnnotDatabase annotDatabase, extension IFormattableDocument document) {
 		annotDatabase.regionFor.keyword("@database").prepend[newLines = 2].append[oneSpace]
 		annotDatabase.regionFor.feature(LangPackage.eINSTANCE.YImport_ImportedNamespace).prepend[oneSpace]
 		annotDatabase.regionFor.keyword(";").prepend[noSpace]
 	}
-	
+
 	def dispatch void format(YAnnotSwift annotSwift, extension IFormattableDocument document) {
 		annotSwift.regionFor.keyword("@swift").prepend[newLines = 2].append[oneSpace]
 		annotSwift.regionFor.keyword("module").surround[oneSpace]
@@ -78,53 +161,53 @@ class LangFormatter extends AbstractFormatter2 {
 		annotSwift.regionFor.keyword(";").prepend[noSpace]
 		annotSwift.regionFor.feature(LangPackage.eINSTANCE.YAnnotSwift_Name).surround[oneSpace]
 	}
-	
+
 	def dispatch void format(YAnnotJava annotJava, extension IFormattableDocument document) {
 		annotJava.regionFor.keyword("@java").prepend[newLines = 2].append[oneSpace]
 		annotJava.regionFor.keyword("uses").surround[oneSpace]
 		annotJava.regionFor.keyword(";").prepend[noSpace]
 		annotJava.regionFor.feature(LangPackage.eINSTANCE.YAnnotSwift_Name).surround[oneSpace]
 	}
-	
+
 	def dispatch void format(YAnnotEntity annotEntity, extension IFormattableDocument document) {
 		annotEntity.regionFor.keyword("@entity").prepend[newLines = 2].append[oneSpace]
 		annotEntity.regionFor.keyword(":").surround[oneSpace]
 		annotEntity.regionFor.feature(LangPackage.eINSTANCE.YAnnotEntity_Name).surround[oneSpace]
 		annotEntity.regionFor.keyword("{").prepend[oneSpace].append[newLine]
 		annotEntity.interior[indent].annots.forEach[format]
-		annotEntity.regionFor.keyword("}").prepend[newLine] 
+		annotEntity.regionFor.keyword("}").prepend[newLine]
 	}
-	
+
 	def dispatch void format(YAnnotAttr annotAttr, extension IFormattableDocument document) {
 		annotAttr.regionFor.keyword("@attr").prepend[newLine].append[oneSpace]
 		annotAttr.regionFor.feature(LangPackage.eINSTANCE.YAnnotAttr_Name).surround[oneSpace]
 		annotAttr.regionFor.keyword(":").surround[oneSpace]
-	
-		if(annotAttr.annots.size == 0) {
-				annotAttr.regionFor.feature(LangPackage.eINSTANCE.YAnnotAttr_Yclass).prepend[oneSpace].append[noSpace]
+
+		if (annotAttr.annots.size == 0) {
+			annotAttr.regionFor.feature(LangPackage.eINSTANCE.YAnnotAttr_Yclass).prepend[oneSpace].append[noSpace]
 		} else {
-				annotAttr.regionFor.feature(LangPackage.eINSTANCE.YAnnotAttr_Yclass).surround[oneSpace]
-				annotAttr.interior[].annots.forEach[format]
+			annotAttr.regionFor.feature(LangPackage.eINSTANCE.YAnnotAttr_Yclass).surround[oneSpace]
+			annotAttr.interior[].annots.forEach[format]
 		}
-		annotAttr.regionFor.keyword(";").prepend[noSpace]
+		annotAttr.regionFor.keyword(";")
 	}
-	
+
 	def dispatch void format(YAnnotLength annotLength, extension IFormattableDocument document) {
-			annotLength.regionFor.keyword("@length").prepend[oneSpace].append[noSpace]
-			annotLength.regionFor.keyword("(").prepend[noSpace].append[noSpace]
-			annotLength.regionFor.feature(LangPackage.eINSTANCE.YAnnotLength_Length).surround[noSpace]
-			annotLength.regionFor.keyword(")").prepend[noSpace].append[noSpace]
+		annotLength.regionFor.keyword("@length").prepend[oneSpace].append[noSpace]
+		annotLength.regionFor.keyword("(").prepend[noSpace].append[noSpace]
+		annotLength.regionFor.feature(LangPackage.eINSTANCE.YAnnotLength_Length).surround[noSpace]
+		annotLength.regionFor.keyword(")").prepend[noSpace].append[oneSpace]
 	}
-	
+
 	def dispatch void format(YAnnotDecimal annotDecimal, extension IFormattableDocument document) {
-			annotDecimal.regionFor.keyword("@decimal").prepend[oneSpace].append[noSpace]
-			annotDecimal.regionFor.keyword("(").prepend[noSpace].append[noSpace]
-			annotDecimal.regionFor.feature(LangPackage.eINSTANCE.YAnnotDecimal_Length).surround[noSpace]
-			annotDecimal.regionFor.keyword(",").surround[noSpace]
-			annotDecimal.regionFor.feature(LangPackage.eINSTANCE.YAnnotDecimal_Decimal).surround[noSpace]
-			annotDecimal.regionFor.keyword(")").prepend[noSpace].append[noSpace]
+		annotDecimal.regionFor.keyword("@decimal").prepend[oneSpace].append[noSpace]
+		annotDecimal.regionFor.keyword("(").prepend[noSpace].append[noSpace]
+		annotDecimal.regionFor.feature(LangPackage.eINSTANCE.YAnnotDecimal_Length).surround[noSpace]
+		annotDecimal.regionFor.keyword(",").surround[noSpace]
+		annotDecimal.regionFor.feature(LangPackage.eINSTANCE.YAnnotDecimal_Decimal).surround[noSpace]
+		annotDecimal.regionFor.keyword(")").prepend[noSpace].append[noSpace]
 	}
-	
+
 	def dispatch void format(YAnnotRel annotRel, extension IFormattableDocument document) {
 		annotRel.regionFor.keyword("@rel").prepend[newLine].append[oneSpace]
 		annotRel.regionFor.feature(LangPackage.eINSTANCE.YAnnotRel_Name).surround[oneSpace]
@@ -136,9 +219,9 @@ class LangFormatter extends AbstractFormatter2 {
 		annotRel.regionFor.feature(LangPackage.eINSTANCE.YAnnotRel_Inverse).prepend[oneSpace].append[noSpace]
 		annotRel.regionFor.keyword(";").prepend[noSpace]
 	}
-	
+
 	def dispatch void format(YAnnotId annotId, extension IFormattableDocument document) {
-		annotId.regionFor.keyword("@id").prepend[newLine].append[oneSpace]		
+		annotId.regionFor.keyword("@id").prepend[newLine].append[oneSpace]
 		annotId.regionFor.feature(LangPackage.eINSTANCE.YAnnotId_Name).prepend[oneSpace].append[noSpace]
 		annotId.regionFor.keyword("(").surround[noSpace]
 		annotId.regionFor.keyword(",").surround[noSpace]
@@ -146,16 +229,16 @@ class LangFormatter extends AbstractFormatter2 {
 		annotId.regionFor.keyword(")").surround[noSpace]
 		annotId.regionFor.keyword(";").prepend[noSpace]
 	}
-	
+
 	def dispatch void format(YAnnotTechnicalDesign annotTechnicalDesign, extension IFormattableDocument document) {
 		annotTechnicalDesign.regionFor.keyword("@td").prepend[newLines = 2].append[oneSpace]
 		annotTechnicalDesign.regionFor.keyword("database").surround[oneSpace]
 		annotTechnicalDesign.regionFor.feature(LangPackage.eINSTANCE.YAnnotTechnicalDesign_Database).surround[oneSpace]
 		annotTechnicalDesign.regionFor.keyword("{").prepend[oneSpace].append[newLine]
 		annotTechnicalDesign.interior[indent].features.forEach[format]
-		annotTechnicalDesign.regionFor.keyword("}").prepend[newLine] 
+		annotTechnicalDesign.regionFor.keyword("}").prepend[newLine]
 	}
-	
+
 	def dispatch void format(YAnnotTable annotTable, extension IFormattableDocument document) {
 		annotTable.regionFor.keyword("@table").prepend[newLine].append[oneSpace]
 		annotTable.regionFor.feature(LangPackage.eINSTANCE.YAnnotTable_Name).surround[oneSpace]
@@ -166,44 +249,55 @@ class LangFormatter extends AbstractFormatter2 {
 		annotTable.primarykey.format
 		annotTable.regionFor.keyword("}").prepend[newLine].append[newLine]
 	}
-	
+
 	def dispatch void format(YAnnotAbstractColumn annotAbstractColumn, extension IFormattableDocument document) {
 		annotAbstractColumn.regionFor.keyword("@column").prepend[newLine].append[oneSpace]
 		annotAbstractColumn.regionFor.feature(LangPackage.eINSTANCE.YAnnotAbstractColumn_Name).surround[oneSpace]
 		annotAbstractColumn.type.format
-		}
-				
-	def dispatch void format(YAnnotColumn annotColumn, extension IFormattableDocument document) { 
+	}
+
+	def dispatch void format(YAnnotColumn annotColumn, extension IFormattableDocument document) {
 		annotColumn.regionFor.keyword("->").surround[oneSpace]
 		annotColumn.regionFor.feature(LangPackage.eINSTANCE.YAnnotColumn_Attrref).surround[oneSpace]
 		annotColumn.regionFor.keyword("as").surround[oneSpace]
-        annotColumn.regionFor.feature(LangPackage.eINSTANCE.YAnnotColumn_Type).prepend[oneSpace]
-        annotColumn.regionFor.keyword(";").prepend[noSpace]
-		}
-				
+		annotColumn.regionFor.feature(LangPackage.eINSTANCE.YAnnotColumn_Type).prepend[oneSpace]
+		annotColumn.regionFor.keyword(";").prepend[noSpace]
+	}
+
 	def dispatch void format(YAnnotColumnLike annotColumnLike, extension IFormattableDocument document) {
 		annotColumnLike.regionFor.keyword("->").surround[oneSpace]
-		annotColumnLike.regionFor.feature(LangPackage.eINSTANCE.YAnnotColumnLike_Columnref).prepend[oneSpace].append[noSpace]
-        annotColumnLike.regionFor.keyword(";").prepend[noSpace]
-		}
-		
+		annotColumnLike.regionFor.feature(LangPackage.eINSTANCE.YAnnotColumnLike_Columnref).prepend[oneSpace].append [
+			noSpace
+		]
+		annotColumnLike.regionFor.keyword(";").prepend[noSpace]
+	}
+
 	def dispatch void format(YAnnotPrimaryKey annotPrimaryKey, extension IFormattableDocument document) {
 		annotPrimaryKey.regionFor.keyword("@primary").prepend[newLine].append[oneSpace]
 		annotPrimaryKey.regionFor.keyword("(").prepend[oneSpace].append[noSpace]
 		annotPrimaryKey.regionFor.keyword(",").surround[noSpace]
-	    annotPrimaryKey.interior[].columns.forEach[name]
+		annotPrimaryKey.interior[].columns.forEach[name]
 		annotPrimaryKey.regionFor.keyword(")").prepend[noSpace].append[noSpace]
 		annotPrimaryKey.regionFor.keyword(";").prepend[noSpace]
-		}
-		
+	}
+
 	def dispatch void format(YAnnotForeignKey annotForeignKey, extension IFormattableDocument document) {
 		annotForeignKey.regionFor.keyword("@foreign").prepend[newLine].append[oneSpace]
-        annotForeignKey.regionFor.feature(LangPackage.eINSTANCE.YAnnotForeignKey_Relationship).prepend[oneSpace].append[noSpace]
-        annotForeignKey.regionFor.keyword("(").prepend[oneSpace].append[noSpace]
-        annotForeignKey.regionFor.keyword(",").surround[noSpace]
-	    annotForeignKey.interior[].columns.forEach[name]
-        annotForeignKey.regionFor.keyword(")").prepend[noSpace].append[noSpace]
+		annotForeignKey.regionFor.feature(LangPackage.eINSTANCE.YAnnotForeignKey_Relationship).prepend[oneSpace].append [
+			noSpace
+		]
+		annotForeignKey.regionFor.keyword("(").prepend[oneSpace].append[noSpace]
+		annotForeignKey.regionFor.keyword(",").surround[noSpace]
+		annotForeignKey.interior[].columns.forEach[name]
+		annotForeignKey.regionFor.keyword(")").prepend[noSpace].append[noSpace]
 		annotForeignKey.regionFor.keyword(";").prepend[noSpace]
-		}
+	}
 	
+	def dispatch void format(YAnnotDefault annotDefault, extension IFormattableDocument document) {
+		annotDefault.regionFor.keyword("@default").prepend[oneSpace].append[noSpace]
+		annotDefault.regionFor.keyword("(").prepend[noSpace].append[noSpace]	
+		annotDefault.regionFor.keyword(")").prepend[noSpace].append[oneSpace]
+	}
+	
+
 }

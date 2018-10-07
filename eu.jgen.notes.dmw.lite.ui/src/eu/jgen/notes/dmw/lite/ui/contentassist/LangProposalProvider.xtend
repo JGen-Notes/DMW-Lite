@@ -25,22 +25,18 @@ package eu.jgen.notes.dmw.lite.ui.contentassist
 
 import com.google.inject.Inject
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr
+import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
+import eu.jgen.notes.dmw.lite.lang.YAnnotRel
 import eu.jgen.notes.dmw.lite.lang.YClass
+import eu.jgen.notes.dmw.lite.scoping.LangIndex
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.Assignment
 import org.eclipse.xtext.RuleCall
 import org.eclipse.xtext.ui.PluginImageHelper
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor
-import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
-import eu.jgen.notes.dmw.lite.scoping.LangIndex
-import org.eclipse.xtext.CrossReference
-import eu.jgen.notes.dmw.lite.lang.YAnnotRel
 
-/**
- * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
- * on how to customize the content assistant.
- */
+
 class LangProposalProvider extends AbstractLangProposalProvider {
 
 	@Inject
@@ -48,6 +44,7 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 	@Inject extension LangIndex
 	
 	override public void completeYAnnotDatabase_Name(EObject model, Assignment assignment, ContentAssistContext context, ICompletionProposalAcceptor acceptor) {
+				acceptor.accept(createCompletionProposal("Derby", "Derby", imageHelper.getImage("database.gif"), context))
 				acceptor.accept(createCompletionProposal("MySQL", "MySQL", imageHelper.getImage("database.gif"), context))
 		 		acceptor.accept(createCompletionProposal("SQLite", "SQLite", imageHelper.getImage("database.gif"), context))
 		 		acceptor.accept(createCompletionProposal("PostgreSQL", "PostgreSQL", imageHelper.getImage("database.gif"), context))
@@ -69,10 +66,11 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 	override completeYAnnotAttr_Yclass(EObject model, Assignment assignment, ContentAssistContext context,
 		ICompletionProposalAcceptor acceptor) {
 		acceptor.accept(createCompletionProposal("String", "String", imageHelper.getImage("class.gif"), context))
-		acceptor.accept(createCompletionProposal("Int", "Int", imageHelper.getImage("class.gif"), context))
 		acceptor.accept(createCompletionProposal("Short", "Short", imageHelper.getImage("class.gif"), context))
+		acceptor.accept(createCompletionProposal("Int", "Int", imageHelper.getImage("class.gif"), context))
+		acceptor.accept(createCompletionProposal("Long", "Long", imageHelper.getImage("class.gif"), context))
 		acceptor.accept(createCompletionProposal("Double", "Double", imageHelper.getImage("class.gif"), context))
-		acceptor.accept(createCompletionProposal("Boolean", "Boolean", imageHelper.getImage("class.gif"), context))
+		acceptor.accept(createCompletionProposal("Bool", "Bool", imageHelper.getImage("class.gif"), context))
 		acceptor.accept(createCompletionProposal("Date", "Date", imageHelper.getImage("class.gif"), context))
 		acceptor.accept(createCompletionProposal("Time", "Time", imageHelper.getImage("class.gif"), context))
 		acceptor.accept(createCompletionProposal("Timestamp", "Timestamp", imageHelper.getImage("class.gif"), context))
@@ -92,7 +90,7 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 		ICompletionProposalAcceptor acceptor) {
 		val clazz = model as YClass
 		if (clazz.superclass !== null && clazz.superclass.name == "Structure") {
-			if (clazz.entity !== null) {
+			if (clazz.entityRef !== null) {
 				createAttributeIncludeAll(clazz, acceptor, context)
 				createAttributeIncludeOne(clazz, acceptor, context)
 			}
@@ -125,12 +123,12 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 	protected def void createAttributeIncludeAll(YClass clazz, ICompletionProposalAcceptor acceptor,
 		ContentAssistContext context) {
 		val list = newArrayList()
-		for (annotEntityInner : clazz.entity.annots) {
+		for (annotEntityInner : clazz.entityRef.annots) {
 			if (annotEntityInner instanceof YAnnotAttr) {
 				val annotAttr = annotEntityInner as YAnnotAttr
 				if (!isPropertyAlreadyIncluded(clazz, annotAttr.name)) {
 					val line = "public var " + annotAttr.name + " : " + annotAttr.yclass.name + " -> " +
-						clazz.entity.name + "." + annotAttr.name + ";"
+						clazz.entityRef.name + "." + annotAttr.name + ";"
 					list.add(line)
 				}
 			}
@@ -145,12 +143,12 @@ class LangProposalProvider extends AbstractLangProposalProvider {
 
 	protected def void createAttributeIncludeOne(YClass clazz, ICompletionProposalAcceptor acceptor,
 		ContentAssistContext context) {
-		for (annotEntityInner : clazz.entity.annots) {
+		for (annotEntityInner : clazz.entityRef.annots) {
 			if (annotEntityInner instanceof YAnnotAttr) {
 				val annotAttr = annotEntityInner as YAnnotAttr
 				if (!isPropertyAlreadyIncluded(clazz, annotAttr.name)) {
 					val line = "public var " + annotAttr.name + " : " + annotAttr.yclass.name + " -> " +
-						clazz.entity.name + "." + annotAttr.name + ";"
+						clazz.entityRef.name + "." + annotAttr.name + ";"
 					acceptor.accept(
 						createCompletionProposal(line, "Include Only: " + annotAttr.name,
 							imageHelper.getImage("property.gif"), context))

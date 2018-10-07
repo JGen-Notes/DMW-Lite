@@ -38,6 +38,7 @@ import org.eclipse.xtext.ui.editor.quickfix.DefaultQuickfixProvider
 import org.eclipse.xtext.ui.editor.quickfix.Fix
 import org.eclipse.xtext.ui.editor.quickfix.IssueResolutionAcceptor
 import org.eclipse.xtext.validation.Issue
+import eu.jgen.notes.dmw.lite.lang.YAnnotTable
 
 class LangQuickfixProvider extends DefaultQuickfixProvider {
 
@@ -53,7 +54,6 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 			technicalDesign.features.add(
 				converEntityIntoTable(entity)
 			)
-		// technicalDesign.eContainer.eResource.save(null)
 		]
 	}
 
@@ -65,7 +65,6 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 				val table = getImplementingTable(attribute.eContainer as YAnnotEntity)
 				val abstractColumn = attribute.converAttributeIntoAbstractColumn
 				table.columns.add(abstractColumn)
-			// table.eContainer.eResource.save(null)
 			}
 		]
 	}
@@ -99,21 +98,21 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 	@Fix(LangValidator.CLASS_NEED_TO_BE_EXTENDED)
 	def createSuperClass(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Insert missing Object class', 'Insert missing Object class.', 'class.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach[p1, p2|
-				if(p1.lastSegment == "Object") {		
-				(element as YClass).superclass = p2.EObjectOrProxy as YClass					
-				}				
+			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+				if (p1.lastSegment == "Object") {
+					(element as YClass).superclass = p2.EObjectOrProxy as YClass
+				}
 			]
 		]
 	}
-	
+
 	@Fix(LangValidator.CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL)
 	def capitalizeClassNameFirstLetter(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Capitalize first letter', "Capitalize first letter", 'class.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach[p1, p2|
-			val xtextDocument = context.xtextDocument	
-			val firstLetter = xtextDocument.get(issue.offset, 1);
-			xtextDocument.replace(issue.offset, 1, firstLetter.toFirstUpper)			
+			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+				val xtextDocument = context.xtextDocument
+				val firstLetter = xtextDocument.get(issue.offset, 1);
+				xtextDocument.replace(issue.offset, 1, firstLetter.toFirstUpper)
 			]
 		]
 	}
@@ -121,55 +120,92 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 	@Fix(LangValidator.ENTITY_NAME_FIRST_CHARACTER_NOT_CAPITAL)
 	def capitalizeEntityNameFirstLetter(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Capitalize first letter', "Capitalize first letter", 'entity.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach[p1, p2|
-			val xtextDocument = context.xtextDocument	
-			val firstLetter = xtextDocument.get(issue.offset, 1);
-			xtextDocument.replace(issue.offset, 1, firstLetter.toFirstUpper)			
+			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+				val xtextDocument = context.xtextDocument
+				val firstLetter = xtextDocument.get(issue.offset, 1);
+				xtextDocument.replace(issue.offset, 1, firstLetter.toFirstUpper)
 			]
 		]
 	}
-	
+
 	@Fix(LangValidator.ATTRIBUTE_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
 	def lowercaseAttributeNameFirstLetter(Issue issue, IssueResolutionAcceptor acceptor) {
-		acceptor.accept(issue, 'Change to lower case first letter', "Change to lower case first letter", 'attribute.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach[p1, p2|
-			val xtextDocument = context.xtextDocument	
-			val firstLetter = xtextDocument.get(issue.offset, 1);
-			xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)			
+		acceptor.accept(issue, 'Change to lower case first letter', "Change to lower case first letter",
+			'attribute.gif') [ element, context |
+			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+				val xtextDocument = context.xtextDocument
+				val firstLetter = xtextDocument.get(issue.offset, 1);
+				xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)
 			]
 		]
 	}
-	
+
 	@Fix(LangValidator.FUNCTION_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
 	def lowercaseFunctionNameFirstLetter(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Change to lower case first letter', "Change to lower case first letter", 'function.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach[p1, p2|
-			val xtextDocument = context.xtextDocument	
-			val firstLetter = xtextDocument.get(issue.offset, 1);
-			xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)			
+			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+				val xtextDocument = context.xtextDocument
+				val firstLetter = xtextDocument.get(issue.offset, 1);
+				xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)
 			]
 		]
-	}	
-	
+	}
+
 	@Fix(LangValidator.PROPERTY_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
 	def lowercasePropertyNameFirstLetter(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Change to lower case first letter', "Change to lower case first letter", 'property.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach[p1, p2|
-			val xtextDocument = context.xtextDocument	
-			val firstLetter = xtextDocument.get(issue.offset, 1);
-			xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)			
+			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+				val xtextDocument = context.xtextDocument
+				val firstLetter = xtextDocument.get(issue.offset, 1);
+				xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)
 			]
 		]
-	} 
-	
+	}
+
 	@Fix(LangValidator.VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
 	def lowercaseVariableNameFirstLetter(Issue issue, IssueResolutionAcceptor acceptor) {
 		acceptor.accept(issue, 'Change to lower case first letter', "Change to lower case first letter", 'property.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach[p1, p2|
-			val xtextDocument = context.xtextDocument	
-			val firstLetter = xtextDocument.get(issue.offset, 1);
-			xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)			
+			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+				val xtextDocument = context.xtextDocument
+				val firstLetter = xtextDocument.get(issue.offset, 1);
+				xtextDocument.replace(issue.offset, 1, firstLetter.toFirstLower)
 			]
 		]
-	} 
+	}
+
+	@Fix(LangValidator.TABLE_DOES_NOT_HAVE_COLUMNS)
+	def addingColumnToTable(Issue issue, IssueResolutionAcceptor acceptor) {
+		acceptor.accept(issue, 'Add all missing columns using list of attributes',
+			"Add all missing columns using related list of attributes", 'column.gif') [ element, context |
+			if (element instanceof YAnnotTable && (element as YAnnotTable).entityref !== null) {
+				val table = element as YAnnotTable
+				val list = (element as YAnnotTable).entityref.annots
+				list.forEach [ entityInner |
+					if (entityInner instanceof YAnnotAttr) {
+						val attribute = entityInner as YAnnotAttr
+						val abstractColumn = attribute.converAttributeIntoAbstractColumn
+						table.columns.add(abstractColumn)
+					}
+				]
+			}
+		]
+	}
+	
+	@Fix(LangValidator.CLASS_NEED_TO_HAVE_PROPERTIES)
+	def addingPropertiesToStructure(Issue issue, IssueResolutionAcceptor acceptor) {
+		acceptor.accept(issue, 'Add all missing properties using list of attributes as public',
+			"Add all missing properties using list of attributes", 'property.gif') [ element, context |
+				if (element instanceof YClass && (element as YClass).entityRef !== null) {
+					val clazz = element as YClass
+					val list = (element as YClass).entityRef.annots
+					list.forEach[entityInner | 
+						if (entityInner instanceof YAnnotAttr) {
+							val attribute = entityInner as YAnnotAttr
+							val property = attribute.converAttributeIntoPropertyPublic
+							clazz.members.add(property)
+						}						
+					]
+				}
+			]
+	}
 }

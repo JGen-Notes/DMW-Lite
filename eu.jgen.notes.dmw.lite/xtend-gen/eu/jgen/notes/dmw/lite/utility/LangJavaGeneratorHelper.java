@@ -61,6 +61,14 @@ public class LangJavaGeneratorHelper {
   
   private final String SYSTEM_DEFAULT_LONG = "0";
   
+  private final String SYSTEM_DEFAULT_BOOLEAN = "true";
+  
+  private final String SYSTEM_DEFAULT_DATE = "new Date(System.currentTimeMillis())";
+  
+  private final String SYSTEM_DEFAULT_TIME = "new Time(System.currentTimeMillis())";
+  
+  private final String SYSTEM_DEFAULT_TIMESTAMP = "new Timestamp(System.currentTimeMillis())";
+  
   private Map<String, Integer> usedNames = new HashMap<String, Integer>();
   
   @Inject
@@ -126,12 +134,18 @@ public class LangJavaGeneratorHelper {
           return "short";
         case "Long":
           return "long";
-        case "Decimal":
+        case "Double":
           return "double";
         case "String":
           return "String";
-        case "Boolean":
+        case "Bool":
           return "boolean";
+        case "Date":
+          return "Date";
+        case "Time":
+          return "Time";
+        case "Timestamp":
+          return "Timestamp";
         default:
           return typeName;
       }
@@ -154,8 +168,8 @@ public class LangJavaGeneratorHelper {
   
   public String getPropertyDefaultValue(final YProperty property) {
     String _xifexpression = null;
-    YAnnotAttr _attr = property.getAttr();
-    boolean _tripleEquals = (_attr == null);
+    YAnnotAttr _attrRef = property.getAttrRef();
+    boolean _tripleEquals = (_attrRef == null);
     if (_tripleEquals) {
       _xifexpression = this.getSystemDefault(this.translateTypeName(property.getType().getName()));
     } else {
@@ -177,6 +191,14 @@ public class LangJavaGeneratorHelper {
           return this.SYSTEM_DEFAULT_DOUBLE;
         case "String":
           return this.SYSTEM_DEFAULT_STRING;
+        case "boolean":
+          return this.SYSTEM_DEFAULT_BOOLEAN;
+        case "Date":
+          return this.SYSTEM_DEFAULT_DATE;
+        case "Time":
+          return this.SYSTEM_DEFAULT_TIME;
+        case "Timestamp":
+          return this.SYSTEM_DEFAULT_TIMESTAMP;
         default:
           return "?";
       }
@@ -186,7 +208,7 @@ public class LangJavaGeneratorHelper {
   }
   
   public String findDefaultFromAnnot(final YProperty property) {
-    EList<YAnnot> _annots = property.getAttr().getAnnots();
+    EList<YAnnot> _annots = property.getAttrRef().getAnnots();
     for (final YAnnot annotation : _annots) {
       EObject _type = annotation.getType();
       if ((_type instanceof YAnnotDefault)) {

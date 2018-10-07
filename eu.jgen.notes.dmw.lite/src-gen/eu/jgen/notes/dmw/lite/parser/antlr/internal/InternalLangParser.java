@@ -1443,7 +1443,7 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
                     }
                     if ( state.backtracking==0 ) {
 
-                      						newCompositeNode(grammarAccess.getYClassAccess().getEntityYAnnotEntityCrossReference_4_1_0());
+                      						newCompositeNode(grammarAccess.getYClassAccess().getEntityRefYAnnotEntityCrossReference_4_1_0());
                       					
                     }
                     pushFollow(FOLLOW_13);
@@ -2186,7 +2186,7 @@ public class InternalLangParser extends AbstractInternalAntlrParser {
                     }
                     if ( state.backtracking==0 ) {
 
-                      						newCompositeNode(grammarAccess.getYPropertyAccess().getAttrYAnnotAttrCrossReference_5_1_0());
+                      						newCompositeNode(grammarAccess.getYPropertyAccess().getAttrRefYAnnotAttrCrossReference_5_1_0());
                       					
                     }
                     pushFollow(FOLLOW_21);

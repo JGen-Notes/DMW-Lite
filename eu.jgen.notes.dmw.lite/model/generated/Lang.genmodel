@@ -27,7 +27,7 @@
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YClass">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Lang.ecore#//YClass/superclass"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Lang.ecore#//YClass/entity"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Lang.ecore#//YClass/entityRef"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YClass/inners"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YClass/members"/>
     </genClasses>
@@ -38,7 +38,7 @@
     <genClasses ecoreClass="Lang.ecore#//YProperty">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YProperty/tuples"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute Lang.ecore#//YProperty/optional"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Lang.ecore#//YProperty/attr"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference Lang.ecore#//YProperty/attrRef"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference Lang.ecore#//YProperty/annotations"/>
     </genClasses>
     <genClasses ecoreClass="Lang.ecore#//YTuples">

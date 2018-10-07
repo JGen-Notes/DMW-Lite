@@ -391,12 +391,12 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
       String _xifexpression_1 = null;
       if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getName(), "Structure"))) {
         String _xifexpression_2 = null;
-        YAnnotEntity _entity = element.getEntity();
-        boolean _tripleNotEquals = (_entity != null);
+        YAnnotEntity _entityRef = element.getEntityRef();
+        boolean _tripleNotEquals = (_entityRef != null);
         if (_tripleNotEquals) {
           String _name = element.getName();
           String _plus = (_name + " -> ");
-          String _name_1 = element.getEntity().getName();
+          String _name_1 = element.getEntityRef().getName();
           _xifexpression_2 = (_plus + _name_1);
         } else {
           _xifexpression_2 = element.getName();

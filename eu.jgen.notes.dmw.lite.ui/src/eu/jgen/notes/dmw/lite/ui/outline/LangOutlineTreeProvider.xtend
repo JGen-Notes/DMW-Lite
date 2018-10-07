@@ -284,8 +284,8 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		if (element.superclass !== null && element.superclass.name == "Widget") {
 			element.name
 		} else if (element.superclass !== null && element.superclass.name == "Structure") {
-			if (element.entity !== null) {
-				element.name + " -> " + element.entity.name
+			if (element.entityRef !== null) {
+				element.name + " -> " + element.entityRef.name
 			} else {
 				element.name
 			}

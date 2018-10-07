@@ -169,7 +169,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYArgumentAccess().getValueAssignment_2(), "rule__YArgument__ValueAssignment_2");
 					put(grammarAccess.getYClassAccess().getNameAssignment_2(), "rule__YClass__NameAssignment_2");
 					put(grammarAccess.getYClassAccess().getSuperclassAssignment_3_1(), "rule__YClass__SuperclassAssignment_3_1");
-					put(grammarAccess.getYClassAccess().getEntityAssignment_4_1(), "rule__YClass__EntityAssignment_4_1");
+					put(grammarAccess.getYClassAccess().getEntityRefAssignment_4_1(), "rule__YClass__EntityRefAssignment_4_1");
 					put(grammarAccess.getYClassAccess().getInnersAssignment_6(), "rule__YClass__InnersAssignment_6");
 					put(grammarAccess.getYClassAccess().getMembersAssignment_7(), "rule__YClass__MembersAssignment_7");
 					put(grammarAccess.getYTypedDeclarationAccess().getNameAssignment_0(), "rule__YTypedDeclaration__NameAssignment_0");
@@ -177,7 +177,7 @@ public class LangParser extends AbstractContentAssistParser {
 					put(grammarAccess.getYPropertyAccess().getAccessAssignment_0(), "rule__YProperty__AccessAssignment_0");
 					put(grammarAccess.getYPropertyAccess().getTuplesAssignment_3(), "rule__YProperty__TuplesAssignment_3");
 					put(grammarAccess.getYPropertyAccess().getOptionalAssignment_4(), "rule__YProperty__OptionalAssignment_4");
-					put(grammarAccess.getYPropertyAccess().getAttrAssignment_5_1(), "rule__YProperty__AttrAssignment_5_1");
+					put(grammarAccess.getYPropertyAccess().getAttrRefAssignment_5_1(), "rule__YProperty__AttrRefAssignment_5_1");
 					put(grammarAccess.getYPropertyAccess().getAnnotationsAssignment_6(), "rule__YProperty__AnnotationsAssignment_6");
 					put(grammarAccess.getYTuplesAccess().getIncludesAssignment_2_0(), "rule__YTuples__IncludesAssignment_2_0");
 					put(grammarAccess.getYTuplesAccess().getIncludesAssignment_2_1_1(), "rule__YTuples__IncludesAssignment_2_1_1");

@@ -16,7 +16,7 @@ import org.eclipse.emf.common.util.EList;
  * <ul>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getTuples <em>Tuples</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#isOptional <em>Optional</em>}</li>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAttr <em>Attr</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAttrRef <em>Attr Ref</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAnnotations <em>Annotations</em>}</li>
  * </ul>
  *
@@ -79,30 +79,30 @@ public interface YProperty extends YMember
   void setOptional(boolean value);
 
   /**
-   * Returns the value of the '<em><b>Attr</b></em>' reference.
+   * Returns the value of the '<em><b>Attr Ref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Attr</em>' reference isn't clear,
+   * If the meaning of the '<em>Attr Ref</em>' reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Attr</em>' reference.
-   * @see #setAttr(YAnnotAttr)
-   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYProperty_Attr()
+   * @return the value of the '<em>Attr Ref</em>' reference.
+   * @see #setAttrRef(YAnnotAttr)
+   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYProperty_AttrRef()
    * @model
    * @generated
    */
-  YAnnotAttr getAttr();
+  YAnnotAttr getAttrRef();
 
   /**
-   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAttr <em>Attr</em>}' reference.
+   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YProperty#getAttrRef <em>Attr Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Attr</em>' reference.
-   * @see #getAttr()
+   * @param value the new value of the '<em>Attr Ref</em>' reference.
+   * @see #getAttrRef()
    * @generated
    */
-  void setAttr(YAnnotAttr value);
+  void setAttrRef(YAnnotAttr value);
 
   /**
    * Returns the value of the '<em><b>Annotations</b></em>' containment reference list.

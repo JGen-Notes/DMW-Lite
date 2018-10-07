@@ -28,6 +28,7 @@ import eu.jgen.notes.dmw.lite.lang.LangPackage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
+import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotId;
 import eu.jgen.notes.dmw.lite.lang.YAnnotPrimaryKey;
@@ -35,11 +36,14 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign;
 import eu.jgen.notes.dmw.lite.lang.YClass;
+import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.scoping.LangIndex;
 import eu.jgen.notes.dmw.lite.utility.LangDBUtil;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import eu.jgen.notes.dmw.lite.validation.LangValidator;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
@@ -187,7 +191,8 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
       };
       this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
     };
-    acceptor.accept(issue, "Change to lower case first letter", "Change to lower case first letter", "attribute.gif", _function);
+    acceptor.accept(issue, "Change to lower case first letter", "Change to lower case first letter", 
+      "attribute.gif", _function);
   }
   
   @Fix(LangValidator.FUNCTION_NAME_FIRST_CHARACTER_NOT_LOWERCASE)
@@ -239,5 +244,45 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
       this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
     };
     acceptor.accept(issue, "Change to lower case first letter", "Change to lower case first letter", "property.gif", _function);
+  }
+  
+  @Fix(LangValidator.TABLE_DOES_NOT_HAVE_COLUMNS)
+  public void addingColumnToTable(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      if (((element instanceof YAnnotTable) && (((YAnnotTable) element).getEntityref() != null))) {
+        final YAnnotTable table = ((YAnnotTable) element);
+        final EList<YAnnotEntityInner> list = ((YAnnotTable) element).getEntityref().getAnnots();
+        final Consumer<YAnnotEntityInner> _function_1 = (YAnnotEntityInner entityInner) -> {
+          if ((entityInner instanceof YAnnotAttr)) {
+            final YAnnotAttr attribute = ((YAnnotAttr) entityInner);
+            final YAnnotAbstractColumn abstractColumn = this._langDBUtil.converAttributeIntoAbstractColumn(attribute);
+            table.getColumns().add(abstractColumn);
+          }
+        };
+        list.forEach(_function_1);
+      }
+    };
+    acceptor.accept(issue, "Add all missing columns using list of attributes", 
+      "Add all missing columns using related list of attributes", "column.gif", _function);
+  }
+  
+  @Fix(LangValidator.CLASS_NEED_TO_HAVE_PROPERTIES)
+  public void addingPropertiesToStructure(final Issue issue, final IssueResolutionAcceptor acceptor) {
+    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
+      if (((element instanceof YClass) && (((YClass) element).getEntityRef() != null))) {
+        final YClass clazz = ((YClass) element);
+        final EList<YAnnotEntityInner> list = ((YClass) element).getEntityRef().getAnnots();
+        final Consumer<YAnnotEntityInner> _function_1 = (YAnnotEntityInner entityInner) -> {
+          if ((entityInner instanceof YAnnotAttr)) {
+            final YAnnotAttr attribute = ((YAnnotAttr) entityInner);
+            final YProperty property = this._langUtil.converAttributeIntoPropertyPublic(attribute);
+            clazz.getMembers().add(property);
+          }
+        };
+        list.forEach(_function_1);
+      }
+    };
+    acceptor.accept(issue, "Add all missing properties using list of attributes as public", 
+      "Add all missing properties using list of attributes", "property.gif", _function);
   }
 }

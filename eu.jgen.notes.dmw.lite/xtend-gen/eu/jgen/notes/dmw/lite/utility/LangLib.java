@@ -67,7 +67,7 @@ public class LangLib {
   
   public final static String LIB_TIMESTAMP = (LangLib.LIB_PACKAGE + ".Timestamp");
   
-  public final static String LIB_BOOLEAN = (LangLib.LIB_PACKAGE + ".Boolean");
+  public final static String LIB_BOOL = (LangLib.LIB_PACKAGE + ".Bool");
   
   public final static String LIB_WIDGET = (LangLib.LIB_PACKAGE + ".Widget");
   

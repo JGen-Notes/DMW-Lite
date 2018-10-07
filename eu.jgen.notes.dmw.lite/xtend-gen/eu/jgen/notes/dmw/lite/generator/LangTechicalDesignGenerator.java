@@ -45,8 +45,8 @@ public class LangTechicalDesignGenerator implements IGenerator {
   private void generateTableForDerby(final IFileSystemAccess fsa, final YAnnotTable table) {
     StringConcatenation _builder = new StringConcatenation();
     _builder.append("CREATE TABLE \"");
-    String _upperCase = table.getName().toUpperCase();
-    _builder.append(_upperCase);
+    String _name = table.getName();
+    _builder.append(_name);
     _builder.append("\" (");
     _builder.newLineIfNotEmpty();
     {
@@ -98,8 +98,8 @@ public class LangTechicalDesignGenerator implements IGenerator {
     _builder.append(")");
     _builder.newLine();
     final String text = _builder.toString();
-    String _upperCase_1 = table.getName().toUpperCase();
-    String _plus = ("derby/" + _upperCase_1);
+    String _name_1 = table.getName();
+    String _plus = ("derby/" + _name_1);
     String _plus_1 = (_plus + ".ddl");
     fsa.generateFile(_plus_1, 
       LangOutputProvider.DDL, text);

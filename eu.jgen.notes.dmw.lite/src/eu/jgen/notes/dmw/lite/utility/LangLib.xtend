@@ -48,7 +48,7 @@ class LangLib {
 	public val static LIB_DATE = LIB_PACKAGE + ".Date"
 	public val static LIB_TIME = LIB_PACKAGE + ".Time"
 	public val static LIB_TIMESTAMP = LIB_PACKAGE + ".Timestamp"
-	public val static LIB_BOOLEAN = LIB_PACKAGE + ".Boolean"
+	public val static LIB_BOOL = LIB_PACKAGE + ".Bool"
 	public val static LIB_WIDGET = LIB_PACKAGE + ".Widget"
 	public val static LIB_EXIT = LIB_PACKAGE + ".Exit"
 	private static final Logger LOG = Logger.getLogger(LangLib);

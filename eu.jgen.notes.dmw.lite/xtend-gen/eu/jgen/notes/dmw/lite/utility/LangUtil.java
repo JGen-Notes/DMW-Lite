@@ -25,7 +25,9 @@ package eu.jgen.notes.dmw.lite.utility;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
+import eu.jgen.notes.dmw.lite.lang.LangFactory;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
+import eu.jgen.notes.dmw.lite.lang.YAccessLevel;
 import eu.jgen.notes.dmw.lite.lang.YAnnot;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
@@ -66,6 +68,8 @@ import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.ListExtensions;
+import org.eclipse.xtext.xbase.lib.ObjectExtensions;
+import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 @SuppressWarnings("all")
 public class LangUtil {
@@ -329,5 +333,29 @@ public class LangUtil {
       }
     }
     return true;
+  }
+  
+  public YProperty converAttributeIntoPropertyPublic(final YAnnotAttr annotAttr) {
+    YProperty _createYProperty = LangFactory.eINSTANCE.createYProperty();
+    final Procedure1<YProperty> _function = (YProperty it) -> {
+      it.setAttrRef(annotAttr);
+      it.setType(annotAttr.getYclass());
+      it.setName(annotAttr.getName());
+      it.setAccess(YAccessLevel.PUBLIC);
+    };
+    final YProperty property = ObjectExtensions.<YProperty>operator_doubleArrow(_createYProperty, _function);
+    return property;
+  }
+  
+  public YProperty converAttributeIntoPropertyPrivate(final YAnnotAttr annotAttr) {
+    YProperty _createYProperty = LangFactory.eINSTANCE.createYProperty();
+    final Procedure1<YProperty> _function = (YProperty it) -> {
+      it.setAttrRef(annotAttr);
+      it.setType(annotAttr.getYclass());
+      it.setName(annotAttr.getName());
+      it.setAccess(YAccessLevel.PRIVATE);
+    };
+    final YProperty property = ObjectExtensions.<YProperty>operator_doubleArrow(_createYProperty, _function);
+    return property;
   }
 }

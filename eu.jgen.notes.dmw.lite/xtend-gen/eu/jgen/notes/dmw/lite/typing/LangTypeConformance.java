@@ -63,7 +63,7 @@ public class LangTypeConformance {
   }
   
   public boolean conformsToBoolean(final YClass yclass) {
-    return (Objects.equal(yclass, LangTypeComputer.BOOLEAN_TYPE) || Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(yclass).toString(), LangLib.LIB_BOOLEAN));
+    return (Objects.equal(yclass, LangTypeComputer.BOOLEAN_TYPE) || Objects.equal(this._iQualifiedNameProvider.getFullyQualifiedName(yclass).toString(), LangLib.LIB_BOOL));
   }
   
   public boolean isSubclassOf(final YClass yclass1, final YClass yclass2) {

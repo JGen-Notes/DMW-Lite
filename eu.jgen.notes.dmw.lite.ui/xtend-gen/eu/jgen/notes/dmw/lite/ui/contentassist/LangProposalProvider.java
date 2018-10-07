@@ -48,10 +48,6 @@ import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
-/**
- * See https://www.eclipse.org/Xtext/documentation/304_ide_concepts.html#content-assist
- * on how to customize the content assistant.
- */
 @SuppressWarnings("all")
 public class LangProposalProvider extends AbstractLangProposalProvider {
   @Inject
@@ -63,6 +59,7 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   
   @Override
   public void completeYAnnotDatabase_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
+    acceptor.accept(this.createCompletionProposal("Derby", "Derby", this.imageHelper.getImage("database.gif"), context));
     acceptor.accept(this.createCompletionProposal("MySQL", "MySQL", this.imageHelper.getImage("database.gif"), context));
     acceptor.accept(this.createCompletionProposal("SQLite", "SQLite", this.imageHelper.getImage("database.gif"), context));
     acceptor.accept(this.createCompletionProposal("PostgreSQL", "PostgreSQL", this.imageHelper.getImage("database.gif"), context));
@@ -87,10 +84,11 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   @Override
   public void completeYAnnotAttr_Yclass(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     acceptor.accept(this.createCompletionProposal("String", "String", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Int", "Int", this.imageHelper.getImage("class.gif"), context));
     acceptor.accept(this.createCompletionProposal("Short", "Short", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("Int", "Int", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("Long", "Long", this.imageHelper.getImage("class.gif"), context));
     acceptor.accept(this.createCompletionProposal("Double", "Double", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Boolean", "Boolean", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("Bool", "Bool", this.imageHelper.getImage("class.gif"), context));
     acceptor.accept(this.createCompletionProposal("Date", "Date", this.imageHelper.getImage("class.gif"), context));
     acceptor.accept(this.createCompletionProposal("Time", "Time", this.imageHelper.getImage("class.gif"), context));
     acceptor.accept(this.createCompletionProposal("Timestamp", "Timestamp", this.imageHelper.getImage("class.gif"), context));
@@ -110,8 +108,8 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   public void completeYClass_Members(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     final YClass clazz = ((YClass) model);
     if (((clazz.getSuperclass() != null) && Objects.equal(clazz.getSuperclass().getName(), "Structure"))) {
-      YAnnotEntity _entity = clazz.getEntity();
-      boolean _tripleNotEquals = (_entity != null);
+      YAnnotEntity _entityRef = clazz.getEntityRef();
+      boolean _tripleNotEquals = (_entityRef != null);
       if (_tripleNotEquals) {
         this.createAttributeIncludeAll(clazz, acceptor, context);
         this.createAttributeIncludeOne(clazz, acceptor, context);
@@ -157,7 +155,7 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   
   protected void createAttributeIncludeAll(final YClass clazz, final ICompletionProposalAcceptor acceptor, final ContentAssistContext context) {
     final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
-    EList<YAnnotEntityInner> _annots = clazz.getEntity().getAnnots();
+    EList<YAnnotEntityInner> _annots = clazz.getEntityRef().getAnnots();
     for (final YAnnotEntityInner annotEntityInner : _annots) {
       if ((annotEntityInner instanceof YAnnotAttr)) {
         final YAnnotAttr annotAttr = ((YAnnotAttr) annotEntityInner);
@@ -170,7 +168,7 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
           String _name_1 = annotAttr.getYclass().getName();
           String _plus_2 = (_plus_1 + _name_1);
           String _plus_3 = (_plus_2 + " -> ");
-          String _name_2 = clazz.getEntity().getName();
+          String _name_2 = clazz.getEntityRef().getName();
           String _plus_4 = (_plus_3 + _name_2);
           String _plus_5 = (_plus_4 + ".");
           String _name_3 = annotAttr.getName();
@@ -192,7 +190,7 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   }
   
   protected void createAttributeIncludeOne(final YClass clazz, final ICompletionProposalAcceptor acceptor, final ContentAssistContext context) {
-    EList<YAnnotEntityInner> _annots = clazz.getEntity().getAnnots();
+    EList<YAnnotEntityInner> _annots = clazz.getEntityRef().getAnnots();
     for (final YAnnotEntityInner annotEntityInner : _annots) {
       if ((annotEntityInner instanceof YAnnotAttr)) {
         final YAnnotAttr annotAttr = ((YAnnotAttr) annotEntityInner);
@@ -205,7 +203,7 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
           String _name_1 = annotAttr.getYclass().getName();
           String _plus_2 = (_plus_1 + _name_1);
           String _plus_3 = (_plus_2 + " -> ");
-          String _name_2 = clazz.getEntity().getName();
+          String _name_2 = clazz.getEntityRef().getName();
           String _plus_4 = (_plus_3 + _name_2);
           String _plus_5 = (_plus_4 + ".");
           String _name_3 = annotAttr.getName();

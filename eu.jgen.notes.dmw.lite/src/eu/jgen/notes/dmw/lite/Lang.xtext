@@ -56,7 +56,7 @@ YArgumentValue:
 	INT | STRING;
 
 YClass:
-	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
+	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entityRef=[YAnnotEntity|QualifiedName])?
 	'{'
 	inners+=YClass*
 	members+=YMember*
@@ -69,7 +69,7 @@ fragment YTypedDeclaration *:
 	name=ValidID ':' type=[YClass|QualifiedName];
 
 YProperty:
-	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? (optional?='?')? ('->' attr=[YAnnotAttr|QualifiedName])?
+	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? (optional?='?')? ('->' attrRef=[YAnnotAttr|QualifiedName])?
 	annotations+=YAnnot* ';';
 
 YTuples:

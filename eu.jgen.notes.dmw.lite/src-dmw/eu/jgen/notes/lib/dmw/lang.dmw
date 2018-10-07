@@ -12,7 +12,7 @@ class Object {
     return "not implemented";
   }
 
-  public  func equals(value : Object) -> Boolean {
+  public  func equals(value : Object) -> Bool {
     // fake implementation
     return false;
   }
@@ -70,10 +70,10 @@ class Object {
 }
 
 /*
- * Boolean values are referred to as logical and they can only be <code>true</code> 
+ * Bool values are referred to as logical and they can only be <code>true</code> 
  * or <code>false</code>.
  */
- class Boolean : Object {
+ class Bool : Object {
     
 }
 
@@ -98,6 +98,13 @@ class Object {
  * development fully functional widgets.
  */
  class Widget : Object {
+ 
+ 	/*
+	 *  This function allows to set global exit state value .
+	 */
+	public func println(string : String)  {
+	 
+	}
 	
 	/*
 	 *  This function allows to set global exit state value .
@@ -117,7 +124,7 @@ class Object {
 	 *  This function allows to check if global exist state is set to the
 	 *  concrete value .
 	 */
-	 public func isExitState(exitState : ExitState) -> Boolean {
+	 public func isExitState(exitState : ExitState) -> Bool {
 		return false;
 	}
 	
@@ -125,7 +132,7 @@ class Object {
 	 *  This function allows to check if global command is set to the
 	 *  concrete value .
 	 */
-	 public func isCommand(command : Command) -> Boolean {
+	 public func isCommand(command : Command) -> Bool {
 	 	return false;
 	}
 	
@@ -137,7 +144,7 @@ class Object {
 
  class ExitState : Object {
  
- 	public func isNormal() -> Boolean {
+ 	public func isNormal() -> Bool {
  	   return false;
  	}
 	

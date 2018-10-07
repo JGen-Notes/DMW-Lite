@@ -79,7 +79,7 @@ class LiteLangTypeConformanceTest {
 	}
 
 	@Test def void testBoolConformance() {
-		assertTrue(BOOLEAN_TYPE.isConformant(LangLib.LIB_BOOLEAN.libClass))
+		assertTrue(BOOLEAN_TYPE.isConformant(LangLib.LIB_BOOL.libClass))
 	}
 
 	def private libClass(String fqn) {

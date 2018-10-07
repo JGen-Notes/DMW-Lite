@@ -466,7 +466,7 @@ ruleYClass returns [EObject current=null]
 						}
 					}
 					{
-						newCompositeNode(grammarAccess.getYClassAccess().getEntityYAnnotEntityCrossReference_4_1_0());
+						newCompositeNode(grammarAccess.getYClassAccess().getEntityRefYAnnotEntityCrossReference_4_1_0());
 					}
 					ruleQualifiedName
 					{
@@ -708,7 +708,7 @@ ruleYProperty returns [EObject current=null]
 						}
 					}
 					{
-						newCompositeNode(grammarAccess.getYPropertyAccess().getAttrYAnnotAttrCrossReference_5_1_0());
+						newCompositeNode(grammarAccess.getYPropertyAccess().getAttrRefYAnnotAttrCrossReference_5_1_0());
 					}
 					ruleQualifiedName
 					{

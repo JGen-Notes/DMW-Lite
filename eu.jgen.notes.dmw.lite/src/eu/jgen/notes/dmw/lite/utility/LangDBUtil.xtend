@@ -84,6 +84,8 @@ class LangDBUtil {
 			column.type = "SMALLINT"
 		} else if (attribute.yclass.name == "Int") {
 			column.type = "INTEGER"
+		} else if (attribute.yclass.name == "Long") {
+			column.type = "BIGINT"
 		} else if (attribute.yclass.name == "Double") {
 			column.type = "DECIMAL"
 		} else if (attribute.yclass.name == "Date") {
@@ -92,6 +94,8 @@ class LangDBUtil {
 			column.type = "TIME"
 		} else if (attribute.yclass.name == "Timestamp") {
 			column.type = "TIMESTAMP"
+		} else if (attribute.yclass.name == "Bool") {
+			column.type = "BOOLEAN"
 		} else if (attribute.yclass.name == "Blob") {
 			column.type = "BLOB"
 		}

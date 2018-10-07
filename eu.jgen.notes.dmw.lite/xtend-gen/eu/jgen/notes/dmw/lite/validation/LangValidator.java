@@ -160,6 +160,8 @@ public class LangValidator extends AbstractLangValidator {
   
   public final static String CLASS_NEED_TO_BE_EXTENDED = (LangValidator.ISSUE_CODE_PREFIX + "ClassNeedToBeExtended");
   
+  public final static String CLASS_NEED_TO_HAVE_PROPERTIES = (LangValidator.ISSUE_CODE_PREFIX + "ClassNeedToHaveProperties");
+  
   public final static String CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL = (LangValidator.ISSUE_CODE_PREFIX + "ClassNameFirstCharacterNotCapital");
   
   public final static String ENTITY_NAME_FIRST_CHARACTER_NOT_CAPITAL = (LangValidator.ISSUE_CODE_PREFIX + "EntityNameFirstCharacterNotCapital");
@@ -176,8 +178,7 @@ public class LangValidator extends AbstractLangValidator {
   public final static String VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE = (LangValidator.ISSUE_CODE_PREFIX + 
     "VariableNameFirstCharacterNotLowercase");
   
-  public final static String ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT = (LangValidator.ISSUE_CODE_PREFIX + 
-    "AttributeTypeNotCompatibleWithDefault");
+  public final static String ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT = (LangValidator.ISSUE_CODE_PREFIX + "AttributeTypeNotCompatibleWithDefault");
   
   @Inject
   @Extension
@@ -207,12 +208,12 @@ public class LangValidator extends AbstractLangValidator {
    * Supported Database
    */
   @Check
-  public void checkIfSupportedDatabase(final YAnnotDatabase annotDatabase) {
+  public void checkSupportedDatabase(final YAnnotDatabase annotDatabase) {
     String _name = annotDatabase.getName();
     boolean _tripleNotEquals = (_name != null);
     if (_tripleNotEquals) {
-      if ((((Objects.equal(annotDatabase.getName(), "MySQL") || Objects.equal(annotDatabase.getName(), "SQLite")) || Objects.equal(annotDatabase.getName(), "PostgreSQL")) || 
-        Objects.equal(annotDatabase.getName(), "MongoDB"))) {
+      if (((((Objects.equal(annotDatabase.getName(), "Derby") || Objects.equal(annotDatabase.getName(), "MySQL")) || Objects.equal(annotDatabase.getName(), "SQLite")) || 
+        Objects.equal(annotDatabase.getName(), "PostgreSQL")) || Objects.equal(annotDatabase.getName(), "MongoDB"))) {
         return;
       } else {
         this.error("This database is not supported yet.", LangPackage.eINSTANCE.getYAnnotDatabase_Name(), 
@@ -409,7 +410,7 @@ public class LangValidator extends AbstractLangValidator {
       String _name_1 = b.getType().getName();
       String _plus_1 = (_plus + _name_1);
       String _plus_2 = (_plus_1 + " -> ");
-      String _name_2 = b.getType().getEntity().getName();
+      String _name_2 = b.getType().getEntityRef().getName();
       String _plus_3 = (_plus_2 + _name_2);
       InputOutput.<String>println(_plus_3);
     };
@@ -421,41 +422,41 @@ public class LangValidator extends AbstractLangValidator {
    */
   @Check
   public void checkPropertyReferenceToAtttribute(final YProperty property) {
-    YAnnotAttr _attr = property.getAttr();
-    boolean _tripleEquals = (_attr == null);
+    YAnnotAttr _attrRef = property.getAttrRef();
+    boolean _tripleEquals = (_attrRef == null);
     if (_tripleEquals) {
       return;
     }
     EObject _eContainer = property.eContainer();
     final YClass parent = ((YClass) _eContainer);
-    YAnnotEntity _entity = parent.getEntity();
-    boolean _tripleEquals_1 = (_entity == null);
+    YAnnotEntity _entityRef = parent.getEntityRef();
+    boolean _tripleEquals_1 = (_entityRef == null);
     if (_tripleEquals_1) {
       this.error("Entity has to implement entity type before pointing to attribute", 
-        LangPackage.eINSTANCE.getYProperty_Attr(), LangValidator.MISSING_ENTITY_REFERENCE, property.getName());
+        LangPackage.eINSTANCE.getYProperty_AttrRef(), LangValidator.MISSING_ENTITY_REFERENCE, property.getName());
       return;
     }
-    String _name = property.getAttr().getName();
+    String _name = property.getAttrRef().getName();
     String _name_1 = property.getName();
     boolean _equals = Objects.equal(_name, _name_1);
     if (_equals) {
       String _name_2 = property.getType().getName();
-      String _name_3 = property.getAttr().getYclass().getName();
+      String _name_3 = property.getAttrRef().getYclass().getName();
       boolean _notEquals = (!Objects.equal(_name_2, _name_3));
       if (_notEquals) {
         this.error("Attribute type does not match property type", LangPackage.eINSTANCE.getYMember_Type(), LangValidator.WRONG_TYPE, 
           property.getType().getName());
       }
-      EObject _eContainer_1 = property.getAttr().eContainer();
+      EObject _eContainer_1 = property.getAttrRef().eContainer();
       final String name = ((YAnnotEntity) _eContainer_1).getName();
-      String _name_4 = parent.getEntity().getName();
+      String _name_4 = parent.getEntityRef().getName();
       boolean _notEquals_1 = (!Objects.equal(name, _name_4));
       if (_notEquals_1) {
-        this.error("Attribute does not belong to the chosen entity", LangPackage.eINSTANCE.getYProperty_Attr(), 
+        this.error("Attribute does not belong to the chosen entity", LangPackage.eINSTANCE.getYProperty_AttrRef(), 
           LangValidator.WRONG_CROSS_REFERENCE, property.getName());
       }
     } else {
-      this.error("Cannot find matching attribute for selected entity type", LangPackage.eINSTANCE.getYProperty_Attr(), 
+      this.error("Cannot find matching attribute for selected entity type", LangPackage.eINSTANCE.getYProperty_AttrRef(), 
         LangValidator.MISSING_ENTITY_REFERENCE, property.getName());
     }
   }
@@ -884,6 +885,22 @@ public class LangValidator extends AbstractLangValidator {
         ") does not have designated parent.");
       this.error(_plus_3, relationship, LangPackage.Literals.YANNOT_REL__NAME, 
         LangValidator.NO_DESGNATED_PARENT);
+    }
+  }
+  
+  @Check
+  public void checkClassExtendingStructureHasProperties(final YClass clazz) {
+    String _name = clazz.getName();
+    boolean _equals = Objects.equal(_name, "Object");
+    if (_equals) {
+      return;
+    }
+    if ((Objects.equal(clazz.getSuperclass().getName(), "Structure") && (clazz.getMembers().size() == 0))) {
+      String _name_1 = clazz.getName();
+      String _plus = ("Class " + _name_1);
+      String _plus_1 = (_plus + " does not have any properties yet.");
+      this.error(_plus_1, clazz, 
+        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.CLASS_NEED_TO_HAVE_PROPERTIES);
     }
   }
   

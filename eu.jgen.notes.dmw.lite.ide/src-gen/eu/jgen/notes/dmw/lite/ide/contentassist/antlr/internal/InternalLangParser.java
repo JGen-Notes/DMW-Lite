@@ -11806,26 +11806,26 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__YClass__Group_4__1__Impl"
-    // InternalLang.g:3336:1: rule__YClass__Group_4__1__Impl : ( ( rule__YClass__EntityAssignment_4_1 ) ) ;
+    // InternalLang.g:3336:1: rule__YClass__Group_4__1__Impl : ( ( rule__YClass__EntityRefAssignment_4_1 ) ) ;
     public final void rule__YClass__Group_4__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalLang.g:3340:1: ( ( ( rule__YClass__EntityAssignment_4_1 ) ) )
-            // InternalLang.g:3341:1: ( ( rule__YClass__EntityAssignment_4_1 ) )
+            // InternalLang.g:3340:1: ( ( ( rule__YClass__EntityRefAssignment_4_1 ) ) )
+            // InternalLang.g:3341:1: ( ( rule__YClass__EntityRefAssignment_4_1 ) )
             {
-            // InternalLang.g:3341:1: ( ( rule__YClass__EntityAssignment_4_1 ) )
-            // InternalLang.g:3342:2: ( rule__YClass__EntityAssignment_4_1 )
+            // InternalLang.g:3341:1: ( ( rule__YClass__EntityRefAssignment_4_1 ) )
+            // InternalLang.g:3342:2: ( rule__YClass__EntityRefAssignment_4_1 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYClassAccess().getEntityAssignment_4_1()); 
+               before(grammarAccess.getYClassAccess().getEntityRefAssignment_4_1()); 
             }
-            // InternalLang.g:3343:2: ( rule__YClass__EntityAssignment_4_1 )
-            // InternalLang.g:3343:3: rule__YClass__EntityAssignment_4_1
+            // InternalLang.g:3343:2: ( rule__YClass__EntityRefAssignment_4_1 )
+            // InternalLang.g:3343:3: rule__YClass__EntityRefAssignment_4_1
             {
             pushFollow(FOLLOW_2);
-            rule__YClass__EntityAssignment_4_1();
+            rule__YClass__EntityRefAssignment_4_1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -11833,7 +11833,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYClassAccess().getEntityAssignment_4_1()); 
+               after(grammarAccess.getYClassAccess().getEntityRefAssignment_4_1()); 
             }
 
             }
@@ -12964,26 +12964,26 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
 
 
     // $ANTLR start "rule__YProperty__Group_5__1__Impl"
-    // InternalLang.g:3687:1: rule__YProperty__Group_5__1__Impl : ( ( rule__YProperty__AttrAssignment_5_1 ) ) ;
+    // InternalLang.g:3687:1: rule__YProperty__Group_5__1__Impl : ( ( rule__YProperty__AttrRefAssignment_5_1 ) ) ;
     public final void rule__YProperty__Group_5__1__Impl() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
         try {
-            // InternalLang.g:3691:1: ( ( ( rule__YProperty__AttrAssignment_5_1 ) ) )
-            // InternalLang.g:3692:1: ( ( rule__YProperty__AttrAssignment_5_1 ) )
+            // InternalLang.g:3691:1: ( ( ( rule__YProperty__AttrRefAssignment_5_1 ) ) )
+            // InternalLang.g:3692:1: ( ( rule__YProperty__AttrRefAssignment_5_1 ) )
             {
-            // InternalLang.g:3692:1: ( ( rule__YProperty__AttrAssignment_5_1 ) )
-            // InternalLang.g:3693:2: ( rule__YProperty__AttrAssignment_5_1 )
+            // InternalLang.g:3692:1: ( ( rule__YProperty__AttrRefAssignment_5_1 ) )
+            // InternalLang.g:3693:2: ( rule__YProperty__AttrRefAssignment_5_1 )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYPropertyAccess().getAttrAssignment_5_1()); 
+               before(grammarAccess.getYPropertyAccess().getAttrRefAssignment_5_1()); 
             }
-            // InternalLang.g:3694:2: ( rule__YProperty__AttrAssignment_5_1 )
-            // InternalLang.g:3694:3: rule__YProperty__AttrAssignment_5_1
+            // InternalLang.g:3694:2: ( rule__YProperty__AttrRefAssignment_5_1 )
+            // InternalLang.g:3694:3: rule__YProperty__AttrRefAssignment_5_1
             {
             pushFollow(FOLLOW_2);
-            rule__YProperty__AttrAssignment_5_1();
+            rule__YProperty__AttrRefAssignment_5_1();
 
             state._fsp--;
             if (state.failed) return ;
@@ -12991,7 +12991,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYPropertyAccess().getAttrAssignment_5_1()); 
+               after(grammarAccess.getYPropertyAccess().getAttrRefAssignment_5_1()); 
             }
 
             }
@@ -44038,9 +44038,9 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__YClass__SuperclassAssignment_3_1"
 
 
-    // $ANTLR start "rule__YClass__EntityAssignment_4_1"
-    // InternalLang.g:13586:1: rule__YClass__EntityAssignment_4_1 : ( ( ruleQualifiedName ) ) ;
-    public final void rule__YClass__EntityAssignment_4_1() throws RecognitionException {
+    // $ANTLR start "rule__YClass__EntityRefAssignment_4_1"
+    // InternalLang.g:13586:1: rule__YClass__EntityRefAssignment_4_1 : ( ( ruleQualifiedName ) ) ;
+    public final void rule__YClass__EntityRefAssignment_4_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -44052,13 +44052,13 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             // InternalLang.g:13592:3: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYClassAccess().getEntityYAnnotEntityCrossReference_4_1_0()); 
+               before(grammarAccess.getYClassAccess().getEntityRefYAnnotEntityCrossReference_4_1_0()); 
             }
             // InternalLang.g:13593:3: ( ruleQualifiedName )
             // InternalLang.g:13594:4: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYClassAccess().getEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1()); 
+               before(grammarAccess.getYClassAccess().getEntityRefYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1()); 
             }
             pushFollow(FOLLOW_2);
             ruleQualifiedName();
@@ -44066,13 +44066,13 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYClassAccess().getEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1()); 
+               after(grammarAccess.getYClassAccess().getEntityRefYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYClassAccess().getEntityYAnnotEntityCrossReference_4_1_0()); 
+               after(grammarAccess.getYClassAccess().getEntityRefYAnnotEntityCrossReference_4_1_0()); 
             }
 
             }
@@ -44092,7 +44092,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__YClass__EntityAssignment_4_1"
+    // $ANTLR end "rule__YClass__EntityRefAssignment_4_1"
 
 
     // $ANTLR start "rule__YClass__InnersAssignment_6"
@@ -44430,9 +44430,9 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
     // $ANTLR end "rule__YProperty__OptionalAssignment_4"
 
 
-    // $ANTLR start "rule__YProperty__AttrAssignment_5_1"
-    // InternalLang.g:13718:1: rule__YProperty__AttrAssignment_5_1 : ( ( ruleQualifiedName ) ) ;
-    public final void rule__YProperty__AttrAssignment_5_1() throws RecognitionException {
+    // $ANTLR start "rule__YProperty__AttrRefAssignment_5_1"
+    // InternalLang.g:13718:1: rule__YProperty__AttrRefAssignment_5_1 : ( ( ruleQualifiedName ) ) ;
+    public final void rule__YProperty__AttrRefAssignment_5_1() throws RecognitionException {
 
         		int stackSize = keepStackSize();
         	
@@ -44444,13 +44444,13 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             // InternalLang.g:13724:3: ( ruleQualifiedName )
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYPropertyAccess().getAttrYAnnotAttrCrossReference_5_1_0()); 
+               before(grammarAccess.getYPropertyAccess().getAttrRefYAnnotAttrCrossReference_5_1_0()); 
             }
             // InternalLang.g:13725:3: ( ruleQualifiedName )
             // InternalLang.g:13726:4: ruleQualifiedName
             {
             if ( state.backtracking==0 ) {
-               before(grammarAccess.getYPropertyAccess().getAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1()); 
+               before(grammarAccess.getYPropertyAccess().getAttrRefYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1()); 
             }
             pushFollow(FOLLOW_2);
             ruleQualifiedName();
@@ -44458,13 +44458,13 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
             state._fsp--;
             if (state.failed) return ;
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYPropertyAccess().getAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1()); 
+               after(grammarAccess.getYPropertyAccess().getAttrRefYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1()); 
             }
 
             }
 
             if ( state.backtracking==0 ) {
-               after(grammarAccess.getYPropertyAccess().getAttrYAnnotAttrCrossReference_5_1_0()); 
+               after(grammarAccess.getYPropertyAccess().getAttrRefYAnnotAttrCrossReference_5_1_0()); 
             }
 
             }
@@ -44484,7 +44484,7 @@ public class InternalLangParser extends AbstractInternalContentAssistParser {
         }
         return ;
     }
-    // $ANTLR end "rule__YProperty__AttrAssignment_5_1"
+    // $ANTLR end "rule__YProperty__AttrRefAssignment_5_1"
 
 
     // $ANTLR start "rule__YProperty__AnnotationsAssignment_6"

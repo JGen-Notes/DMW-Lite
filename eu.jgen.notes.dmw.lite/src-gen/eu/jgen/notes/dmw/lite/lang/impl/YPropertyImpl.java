@@ -34,7 +34,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * <ul>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getTuples <em>Tuples</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#isOptional <em>Optional</em>}</li>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getAttr <em>Attr</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getAttrRef <em>Attr Ref</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YPropertyImpl#getAnnotations <em>Annotations</em>}</li>
  * </ul>
  *
@@ -73,14 +73,14 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
   protected boolean optional = OPTIONAL_EDEFAULT;
 
   /**
-   * The cached value of the '{@link #getAttr() <em>Attr</em>}' reference.
+   * The cached value of the '{@link #getAttrRef() <em>Attr Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getAttr()
+   * @see #getAttrRef()
    * @generated
    * @ordered
    */
-  protected YAnnotAttr attr;
+  protected YAnnotAttr attrRef;
 
   /**
    * The cached value of the '{@link #getAnnotations() <em>Annotations</em>}' containment reference list.
@@ -189,19 +189,19 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
    * <!-- end-user-doc -->
    * @generated
    */
-  public YAnnotAttr getAttr()
+  public YAnnotAttr getAttrRef()
   {
-    if (attr != null && attr.eIsProxy())
+    if (attrRef != null && attrRef.eIsProxy())
     {
-      InternalEObject oldAttr = (InternalEObject)attr;
-      attr = (YAnnotAttr)eResolveProxy(oldAttr);
-      if (attr != oldAttr)
+      InternalEObject oldAttrRef = (InternalEObject)attrRef;
+      attrRef = (YAnnotAttr)eResolveProxy(oldAttrRef);
+      if (attrRef != oldAttrRef)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, LangPackage.YPROPERTY__ATTR, oldAttr, attr));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, LangPackage.YPROPERTY__ATTR_REF, oldAttrRef, attrRef));
       }
     }
-    return attr;
+    return attrRef;
   }
 
   /**
@@ -209,9 +209,9 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
    * <!-- end-user-doc -->
    * @generated
    */
-  public YAnnotAttr basicGetAttr()
+  public YAnnotAttr basicGetAttrRef()
   {
-    return attr;
+    return attrRef;
   }
 
   /**
@@ -219,12 +219,12 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setAttr(YAnnotAttr newAttr)
+  public void setAttrRef(YAnnotAttr newAttrRef)
   {
-    YAnnotAttr oldAttr = attr;
-    attr = newAttr;
+    YAnnotAttr oldAttrRef = attrRef;
+    attrRef = newAttrRef;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YPROPERTY__ATTR, oldAttr, attr));
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YPROPERTY__ATTR_REF, oldAttrRef, attrRef));
   }
 
   /**
@@ -273,9 +273,9 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
         return getTuples();
       case LangPackage.YPROPERTY__OPTIONAL:
         return isOptional();
-      case LangPackage.YPROPERTY__ATTR:
-        if (resolve) return getAttr();
-        return basicGetAttr();
+      case LangPackage.YPROPERTY__ATTR_REF:
+        if (resolve) return getAttrRef();
+        return basicGetAttrRef();
       case LangPackage.YPROPERTY__ANNOTATIONS:
         return getAnnotations();
     }
@@ -299,8 +299,8 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
       case LangPackage.YPROPERTY__OPTIONAL:
         setOptional((Boolean)newValue);
         return;
-      case LangPackage.YPROPERTY__ATTR:
-        setAttr((YAnnotAttr)newValue);
+      case LangPackage.YPROPERTY__ATTR_REF:
+        setAttrRef((YAnnotAttr)newValue);
         return;
       case LangPackage.YPROPERTY__ANNOTATIONS:
         getAnnotations().clear();
@@ -326,8 +326,8 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
       case LangPackage.YPROPERTY__OPTIONAL:
         setOptional(OPTIONAL_EDEFAULT);
         return;
-      case LangPackage.YPROPERTY__ATTR:
-        setAttr((YAnnotAttr)null);
+      case LangPackage.YPROPERTY__ATTR_REF:
+        setAttrRef((YAnnotAttr)null);
         return;
       case LangPackage.YPROPERTY__ANNOTATIONS:
         getAnnotations().clear();
@@ -350,8 +350,8 @@ public class YPropertyImpl extends YMemberImpl implements YProperty
         return tuples != null;
       case LangPackage.YPROPERTY__OPTIONAL:
         return optional != OPTIONAL_EDEFAULT;
-      case LangPackage.YPROPERTY__ATTR:
-        return attr != null;
+      case LangPackage.YPROPERTY__ATTR_REF:
+        return attrRef != null;
       case LangPackage.YPROPERTY__ANNOTATIONS:
         return annotations != null && !annotations.isEmpty();
     }

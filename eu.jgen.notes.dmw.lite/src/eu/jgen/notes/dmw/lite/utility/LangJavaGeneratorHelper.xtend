@@ -44,6 +44,10 @@ class LangJavaGeneratorHelper {
 	val String SYSTEM_DEFAULT_SHORT = "0"
 	val String SYSTEM_DEFAULT_DOUBLE = "0.0"
 	val String SYSTEM_DEFAULT_LONG = "0"
+	val String SYSTEM_DEFAULT_BOOLEAN = "true"
+	val String SYSTEM_DEFAULT_DATE = "new Date(System.currentTimeMillis())"
+	val String SYSTEM_DEFAULT_TIME = "new Time(System.currentTimeMillis())"
+	val String SYSTEM_DEFAULT_TIMESTAMP = "new Timestamp(System.currentTimeMillis())"
 
 	var Map<String, Integer> usedNames = new HashMap<String, Integer>()
 
@@ -103,14 +107,23 @@ class LangJavaGeneratorHelper {
 			case "Long": {
 				return "long"
 			}
-			case "Decimal": {
+			case "Double": {
 				return "double"
 			}
 			case "String": {
 				return "String"
 			}
-			case "Boolean": {
+			case "Bool": {
 				return "boolean"
+			}
+			case "Date": {
+				return "Date"
+			}
+			case "Time": {
+				return "Time"
+			}
+			case "Timestamp": {
+				return "Timestamp"
 			}
 			default: {
 				return typeName
@@ -127,7 +140,7 @@ class LangJavaGeneratorHelper {
 	}
 
 	def String getPropertyDefaultValue(YProperty property) {
-		if (property.attr === null) {
+		if (property.attrRef === null) {
 			getSystemDefault(property.type.name.translateTypeName)
 		} else {
 			findDefaultFromAnnot(property)
@@ -151,6 +164,18 @@ class LangJavaGeneratorHelper {
 			case "String": {
 				return SYSTEM_DEFAULT_STRING
 			}
+			case "boolean": {
+				return SYSTEM_DEFAULT_BOOLEAN
+			}
+			case "Date": {
+				return SYSTEM_DEFAULT_DATE
+			}
+			case "Time": {
+				return SYSTEM_DEFAULT_TIME
+			}
+			case "Timestamp": {
+				return SYSTEM_DEFAULT_TIMESTAMP
+			}
 			default: {
 				return "?"
 			}
@@ -158,7 +183,7 @@ class LangJavaGeneratorHelper {
 	}
 
 	def String findDefaultFromAnnot(YProperty property) {
-		for (annotation : property.attr.annots) {
+		for (annotation : property.attrRef.annots) {
 			if (annotation.type instanceof YAnnotDefault) {
 				val annotDefault = annotation.type as YAnnotDefault
 				// TODO - need more work to handle other types of data

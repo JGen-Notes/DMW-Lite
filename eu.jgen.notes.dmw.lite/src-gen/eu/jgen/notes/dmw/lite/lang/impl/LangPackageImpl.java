@@ -852,7 +852,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getYClass_Entity()
+  public EReference getYClass_EntityRef()
   {
     return (EReference)yClassEClass.getEStructuralFeatures().get(1);
   }
@@ -942,7 +942,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
    * <!-- end-user-doc -->
    * @generated
    */
-  public EReference getYProperty_Attr()
+  public EReference getYProperty_AttrRef()
   {
     return (EReference)yPropertyEClass.getEStructuralFeatures().get(2);
   }
@@ -3004,7 +3004,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
 
     yClassEClass = createEClass(YCLASS);
     createEReference(yClassEClass, YCLASS__SUPERCLASS);
-    createEReference(yClassEClass, YCLASS__ENTITY);
+    createEReference(yClassEClass, YCLASS__ENTITY_REF);
     createEReference(yClassEClass, YCLASS__INNERS);
     createEReference(yClassEClass, YCLASS__MEMBERS);
 
@@ -3015,7 +3015,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     yPropertyEClass = createEClass(YPROPERTY);
     createEReference(yPropertyEClass, YPROPERTY__TUPLES);
     createEAttribute(yPropertyEClass, YPROPERTY__OPTIONAL);
-    createEReference(yPropertyEClass, YPROPERTY__ATTR);
+    createEReference(yPropertyEClass, YPROPERTY__ATTR_REF);
     createEReference(yPropertyEClass, YPROPERTY__ANNOTATIONS);
 
     yTuplesEClass = createEClass(YTUPLES);
@@ -3393,7 +3393,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
 
     initEClass(yClassEClass, YClass.class, "YClass", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getYClass_Superclass(), this.getYClass(), null, "superclass", null, 0, 1, YClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getYClass_Entity(), this.getYAnnotEntity(), null, "entity", null, 0, 1, YClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYClass_EntityRef(), this.getYAnnotEntity(), null, "entityRef", null, 0, 1, YClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYClass_Inners(), this.getYClass(), null, "inners", null, 0, -1, YClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYClass_Members(), this.getYMember(), null, "members", null, 0, -1, YClass.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
@@ -3404,7 +3404,7 @@ public class LangPackageImpl extends EPackageImpl implements LangPackage
     initEClass(yPropertyEClass, YProperty.class, "YProperty", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
     initEReference(getYProperty_Tuples(), this.getYTuples(), null, "tuples", null, 0, 1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEAttribute(getYProperty_Optional(), ecorePackage.getEBoolean(), "optional", null, 0, 1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-    initEReference(getYProperty_Attr(), this.getYAnnotAttr(), null, "attr", null, 0, 1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+    initEReference(getYProperty_AttrRef(), this.getYAnnotAttr(), null, "attrRef", null, 0, 1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
     initEReference(getYProperty_Annotations(), this.getYAnnot(), null, "annotations", null, 0, -1, YProperty.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
     initEClass(yTuplesEClass, YTuples.class, "YTuples", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

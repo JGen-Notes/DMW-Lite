@@ -143,29 +143,41 @@ public class LangDBUtil {
             column.setType("INTEGER");
           } else {
             String _name_4 = attribute.getYclass().getName();
-            boolean _equals_4 = Objects.equal(_name_4, "Double");
+            boolean _equals_4 = Objects.equal(_name_4, "Long");
             if (_equals_4) {
-              column.setType("DECIMAL");
+              column.setType("BIGINT");
             } else {
               String _name_5 = attribute.getYclass().getName();
-              boolean _equals_5 = Objects.equal(_name_5, "Date");
+              boolean _equals_5 = Objects.equal(_name_5, "Double");
               if (_equals_5) {
-                column.setType("DATE");
+                column.setType("DECIMAL");
               } else {
                 String _name_6 = attribute.getYclass().getName();
-                boolean _equals_6 = Objects.equal(_name_6, "Time");
+                boolean _equals_6 = Objects.equal(_name_6, "Date");
                 if (_equals_6) {
-                  column.setType("TIME");
+                  column.setType("DATE");
                 } else {
                   String _name_7 = attribute.getYclass().getName();
-                  boolean _equals_7 = Objects.equal(_name_7, "Timestamp");
+                  boolean _equals_7 = Objects.equal(_name_7, "Time");
                   if (_equals_7) {
-                    column.setType("TIMESTAMP");
+                    column.setType("TIME");
                   } else {
                     String _name_8 = attribute.getYclass().getName();
-                    boolean _equals_8 = Objects.equal(_name_8, "Blob");
+                    boolean _equals_8 = Objects.equal(_name_8, "Timestamp");
                     if (_equals_8) {
-                      column.setType("BLOB");
+                      column.setType("TIMESTAMP");
+                    } else {
+                      String _name_9 = attribute.getYclass().getName();
+                      boolean _equals_9 = Objects.equal(_name_9, "Bool");
+                      if (_equals_9) {
+                        column.setType("BOOLEAN");
+                      } else {
+                        String _name_10 = attribute.getYclass().getName();
+                        boolean _equals_10 = Objects.equal(_name_10, "Blob");
+                        if (_equals_10) {
+                          column.setType("BLOB");
+                        }
+                      }
                     }
                   }
                 }

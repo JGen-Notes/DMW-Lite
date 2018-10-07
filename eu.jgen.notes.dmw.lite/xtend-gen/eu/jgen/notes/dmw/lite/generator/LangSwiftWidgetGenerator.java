@@ -164,8 +164,8 @@ public class LangSwiftWidgetGenerator implements IGenerator {
   protected String generateTableClasses(final YClass clazz) {
     EList<YClass> _inners = clazz.getInners();
     for (final YClass inner : _inners) {
-      YAnnotEntity _entity = inner.getEntity();
-      boolean _tripleNotEquals = (_entity != null);
+      YAnnotEntity _entityRef = inner.getEntityRef();
+      boolean _tripleNotEquals = (_entityRef != null);
       if (_tripleNotEquals) {
       }
     }

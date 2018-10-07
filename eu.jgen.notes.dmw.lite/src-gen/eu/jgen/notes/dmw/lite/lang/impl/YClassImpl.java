@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.util.InternalEList;
  * </p>
  * <ul>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YClassImpl#getSuperclass <em>Superclass</em>}</li>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YClassImpl#getEntity <em>Entity</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YClassImpl#getEntityRef <em>Entity Ref</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YClassImpl#getInners <em>Inners</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.impl.YClassImpl#getMembers <em>Members</em>}</li>
  * </ul>
@@ -52,14 +52,14 @@ public class YClassImpl extends YNamedElementImpl implements YClass
   protected YClass superclass;
 
   /**
-   * The cached value of the '{@link #getEntity() <em>Entity</em>}' reference.
+   * The cached value of the '{@link #getEntityRef() <em>Entity Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @see #getEntity()
+   * @see #getEntityRef()
    * @generated
    * @ordered
    */
-  protected YAnnotEntity entity;
+  protected YAnnotEntity entityRef;
 
   /**
    * The cached value of the '{@link #getInners() <em>Inners</em>}' containment reference list.
@@ -150,19 +150,19 @@ public class YClassImpl extends YNamedElementImpl implements YClass
    * <!-- end-user-doc -->
    * @generated
    */
-  public YAnnotEntity getEntity()
+  public YAnnotEntity getEntityRef()
   {
-    if (entity != null && entity.eIsProxy())
+    if (entityRef != null && entityRef.eIsProxy())
     {
-      InternalEObject oldEntity = (InternalEObject)entity;
-      entity = (YAnnotEntity)eResolveProxy(oldEntity);
-      if (entity != oldEntity)
+      InternalEObject oldEntityRef = (InternalEObject)entityRef;
+      entityRef = (YAnnotEntity)eResolveProxy(oldEntityRef);
+      if (entityRef != oldEntityRef)
       {
         if (eNotificationRequired())
-          eNotify(new ENotificationImpl(this, Notification.RESOLVE, LangPackage.YCLASS__ENTITY, oldEntity, entity));
+          eNotify(new ENotificationImpl(this, Notification.RESOLVE, LangPackage.YCLASS__ENTITY_REF, oldEntityRef, entityRef));
       }
     }
-    return entity;
+    return entityRef;
   }
 
   /**
@@ -170,9 +170,9 @@ public class YClassImpl extends YNamedElementImpl implements YClass
    * <!-- end-user-doc -->
    * @generated
    */
-  public YAnnotEntity basicGetEntity()
+  public YAnnotEntity basicGetEntityRef()
   {
-    return entity;
+    return entityRef;
   }
 
   /**
@@ -180,12 +180,12 @@ public class YClassImpl extends YNamedElementImpl implements YClass
    * <!-- end-user-doc -->
    * @generated
    */
-  public void setEntity(YAnnotEntity newEntity)
+  public void setEntityRef(YAnnotEntity newEntityRef)
   {
-    YAnnotEntity oldEntity = entity;
-    entity = newEntity;
+    YAnnotEntity oldEntityRef = entityRef;
+    entityRef = newEntityRef;
     if (eNotificationRequired())
-      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YCLASS__ENTITY, oldEntity, entity));
+      eNotify(new ENotificationImpl(this, Notification.SET, LangPackage.YCLASS__ENTITY_REF, oldEntityRef, entityRef));
   }
 
   /**
@@ -247,9 +247,9 @@ public class YClassImpl extends YNamedElementImpl implements YClass
       case LangPackage.YCLASS__SUPERCLASS:
         if (resolve) return getSuperclass();
         return basicGetSuperclass();
-      case LangPackage.YCLASS__ENTITY:
-        if (resolve) return getEntity();
-        return basicGetEntity();
+      case LangPackage.YCLASS__ENTITY_REF:
+        if (resolve) return getEntityRef();
+        return basicGetEntityRef();
       case LangPackage.YCLASS__INNERS:
         return getInners();
       case LangPackage.YCLASS__MEMBERS:
@@ -272,8 +272,8 @@ public class YClassImpl extends YNamedElementImpl implements YClass
       case LangPackage.YCLASS__SUPERCLASS:
         setSuperclass((YClass)newValue);
         return;
-      case LangPackage.YCLASS__ENTITY:
-        setEntity((YAnnotEntity)newValue);
+      case LangPackage.YCLASS__ENTITY_REF:
+        setEntityRef((YAnnotEntity)newValue);
         return;
       case LangPackage.YCLASS__INNERS:
         getInners().clear();
@@ -300,8 +300,8 @@ public class YClassImpl extends YNamedElementImpl implements YClass
       case LangPackage.YCLASS__SUPERCLASS:
         setSuperclass((YClass)null);
         return;
-      case LangPackage.YCLASS__ENTITY:
-        setEntity((YAnnotEntity)null);
+      case LangPackage.YCLASS__ENTITY_REF:
+        setEntityRef((YAnnotEntity)null);
         return;
       case LangPackage.YCLASS__INNERS:
         getInners().clear();
@@ -325,8 +325,8 @@ public class YClassImpl extends YNamedElementImpl implements YClass
     {
       case LangPackage.YCLASS__SUPERCLASS:
         return superclass != null;
-      case LangPackage.YCLASS__ENTITY:
-        return entity != null;
+      case LangPackage.YCLASS__ENTITY_REF:
+        return entityRef != null;
       case LangPackage.YCLASS__INNERS:
         return inners != null && !inners.isEmpty();
       case LangPackage.YCLASS__MEMBERS:

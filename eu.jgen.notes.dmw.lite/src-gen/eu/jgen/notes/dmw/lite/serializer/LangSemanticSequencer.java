@@ -898,7 +898,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *     YNamedElement returns YClass
 	 *
 	 * Constraint:
-	 *     (name=ValidID superclass=[YClass|QualifiedName]? entity=[YAnnotEntity|QualifiedName]? inners+=YClass* members+=YMember*)
+	 *     (name=ValidID superclass=[YClass|QualifiedName]? entityRef=[YAnnotEntity|QualifiedName]? inners+=YClass* members+=YMember*)
 	 */
 	protected void sequence_YClass(ISerializationContext context, YClass semanticObject) {
 		genericSequencer.createSequence(context, semanticObject);
@@ -1234,7 +1234,7 @@ public class LangSemanticSequencer extends AbstractDelegatingSemanticSequencer {
 	 *         type=[YClass|QualifiedName] 
 	 *         tuples=YTuples? 
 	 *         optional?='?'? 
-	 *         attr=[YAnnotAttr|QualifiedName]? 
+	 *         attrRef=[YAnnotAttr|QualifiedName]? 
 	 *         annotations+=YAnnot*
 	 *     )
 	 */

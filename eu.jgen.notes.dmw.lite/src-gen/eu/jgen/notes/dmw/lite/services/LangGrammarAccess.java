@@ -244,9 +244,9 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final RuleCall cSuperclassYClassQualifiedNameParserRuleCall_3_1_0_1 = (RuleCall)cSuperclassYClassCrossReference_3_1_0.eContents().get(1);
 		private final Group cGroup_4 = (Group)cGroup.eContents().get(4);
 		private final Keyword cHyphenMinusGreaterThanSignKeyword_4_0 = (Keyword)cGroup_4.eContents().get(0);
-		private final Assignment cEntityAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
-		private final CrossReference cEntityYAnnotEntityCrossReference_4_1_0 = (CrossReference)cEntityAssignment_4_1.eContents().get(0);
-		private final RuleCall cEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1 = (RuleCall)cEntityYAnnotEntityCrossReference_4_1_0.eContents().get(1);
+		private final Assignment cEntityRefAssignment_4_1 = (Assignment)cGroup_4.eContents().get(1);
+		private final CrossReference cEntityRefYAnnotEntityCrossReference_4_1_0 = (CrossReference)cEntityRefAssignment_4_1.eContents().get(0);
+		private final RuleCall cEntityRefYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1 = (RuleCall)cEntityRefYAnnotEntityCrossReference_4_1_0.eContents().get(1);
 		private final Keyword cLeftCurlyBracketKeyword_5 = (Keyword)cGroup.eContents().get(5);
 		private final Assignment cInnersAssignment_6 = (Assignment)cGroup.eContents().get(6);
 		private final RuleCall cInnersYClassParserRuleCall_6_0 = (RuleCall)cInnersAssignment_6.eContents().get(0);
@@ -255,15 +255,15 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cRightCurlyBracketKeyword_8 = (Keyword)cGroup.eContents().get(8);
 		
 		//YClass:
-		//	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
+		//	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entityRef=[YAnnotEntity|QualifiedName])?
 		//	'{'
 		//	inners+=YClass*
 		//	members+=YMember*
 		//	'}';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])? '{'
-		//inners+=YClass* members+=YMember* '}'
+		//{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entityRef=[YAnnotEntity|QualifiedName])?
+		//'{' inners+=YClass* members+=YMember* '}'
 		public Group getGroup() { return cGroup; }
 		
 		//{YClass}
@@ -293,20 +293,20 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//QualifiedName
 		public RuleCall getSuperclassYClassQualifiedNameParserRuleCall_3_1_0_1() { return cSuperclassYClassQualifiedNameParserRuleCall_3_1_0_1; }
 		
-		//('->' entity=[YAnnotEntity|QualifiedName])?
+		//('->' entityRef=[YAnnotEntity|QualifiedName])?
 		public Group getGroup_4() { return cGroup_4; }
 		
 		//'->'
 		public Keyword getHyphenMinusGreaterThanSignKeyword_4_0() { return cHyphenMinusGreaterThanSignKeyword_4_0; }
 		
-		//entity=[YAnnotEntity|QualifiedName]
-		public Assignment getEntityAssignment_4_1() { return cEntityAssignment_4_1; }
+		//entityRef=[YAnnotEntity|QualifiedName]
+		public Assignment getEntityRefAssignment_4_1() { return cEntityRefAssignment_4_1; }
 		
 		//[YAnnotEntity|QualifiedName]
-		public CrossReference getEntityYAnnotEntityCrossReference_4_1_0() { return cEntityYAnnotEntityCrossReference_4_1_0; }
+		public CrossReference getEntityRefYAnnotEntityCrossReference_4_1_0() { return cEntityRefYAnnotEntityCrossReference_4_1_0; }
 		
 		//QualifiedName
-		public RuleCall getEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1() { return cEntityYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1; }
+		public RuleCall getEntityRefYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1() { return cEntityRefYAnnotEntityQualifiedNameParserRuleCall_4_1_0_1; }
 		
 		//'{'
 		public Keyword getLeftCurlyBracketKeyword_5() { return cLeftCurlyBracketKeyword_5; }
@@ -393,19 +393,19 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		private final Keyword cOptionalQuestionMarkKeyword_4_0 = (Keyword)cOptionalAssignment_4.eContents().get(0);
 		private final Group cGroup_5 = (Group)cGroup.eContents().get(5);
 		private final Keyword cHyphenMinusGreaterThanSignKeyword_5_0 = (Keyword)cGroup_5.eContents().get(0);
-		private final Assignment cAttrAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
-		private final CrossReference cAttrYAnnotAttrCrossReference_5_1_0 = (CrossReference)cAttrAssignment_5_1.eContents().get(0);
-		private final RuleCall cAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1 = (RuleCall)cAttrYAnnotAttrCrossReference_5_1_0.eContents().get(1);
+		private final Assignment cAttrRefAssignment_5_1 = (Assignment)cGroup_5.eContents().get(1);
+		private final CrossReference cAttrRefYAnnotAttrCrossReference_5_1_0 = (CrossReference)cAttrRefAssignment_5_1.eContents().get(0);
+		private final RuleCall cAttrRefYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1 = (RuleCall)cAttrRefYAnnotAttrCrossReference_5_1_0.eContents().get(1);
 		private final Assignment cAnnotationsAssignment_6 = (Assignment)cGroup.eContents().get(6);
 		private final RuleCall cAnnotationsYAnnotParserRuleCall_6_0 = (RuleCall)cAnnotationsAssignment_6.eContents().get(0);
 		private final Keyword cSemicolonKeyword_7 = (Keyword)cGroup.eContents().get(7);
 		
 		//YProperty:
-		//	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attr=[YAnnotAttr|QualifiedName])?
+		//	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attrRef=[YAnnotAttr|QualifiedName])?
 		//	annotations+=YAnnot* ';';
 		@Override public ParserRule getRule() { return rule; }
 		
-		//access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attr=[YAnnotAttr|QualifiedName])?
+		//access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attrRef=[YAnnotAttr|QualifiedName])?
 		//annotations+=YAnnot* ';'
 		public Group getGroup() { return cGroup; }
 		
@@ -433,20 +433,20 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 		//'?'
 		public Keyword getOptionalQuestionMarkKeyword_4_0() { return cOptionalQuestionMarkKeyword_4_0; }
 		
-		//('->' attr=[YAnnotAttr|QualifiedName])?
+		//('->' attrRef=[YAnnotAttr|QualifiedName])?
 		public Group getGroup_5() { return cGroup_5; }
 		
 		//'->'
 		public Keyword getHyphenMinusGreaterThanSignKeyword_5_0() { return cHyphenMinusGreaterThanSignKeyword_5_0; }
 		
-		//attr=[YAnnotAttr|QualifiedName]
-		public Assignment getAttrAssignment_5_1() { return cAttrAssignment_5_1; }
+		//attrRef=[YAnnotAttr|QualifiedName]
+		public Assignment getAttrRefAssignment_5_1() { return cAttrRefAssignment_5_1; }
 		
 		//[YAnnotAttr|QualifiedName]
-		public CrossReference getAttrYAnnotAttrCrossReference_5_1_0() { return cAttrYAnnotAttrCrossReference_5_1_0; }
+		public CrossReference getAttrRefYAnnotAttrCrossReference_5_1_0() { return cAttrRefYAnnotAttrCrossReference_5_1_0; }
 		
 		//QualifiedName
-		public RuleCall getAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1() { return cAttrYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1; }
+		public RuleCall getAttrRefYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1() { return cAttrRefYAnnotAttrQualifiedNameParserRuleCall_5_1_0_1; }
 		
 		//annotations+=YAnnot*
 		public Assignment getAnnotationsAssignment_6() { return cAnnotationsAssignment_6; }
@@ -3993,7 +3993,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YClass:
-	//	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entity=[YAnnotEntity|QualifiedName])?
+	//	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entityRef=[YAnnotEntity|QualifiedName])?
 	//	'{'
 	//	inners+=YClass*
 	//	members+=YMember*
@@ -4027,7 +4027,7 @@ public class LangGrammarAccess extends AbstractGrammarElementFinder {
 	}
 	
 	//YProperty:
-	//	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attr=[YAnnotAttr|QualifiedName])?
+	//	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? optional?='?'? ('->' attrRef=[YAnnotAttr|QualifiedName])?
 	//	annotations+=YAnnot* ';';
 	public YPropertyElements getYPropertyAccess() {
 		return pYProperty;

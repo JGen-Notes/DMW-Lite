@@ -62,7 +62,7 @@ class LangTypeConformance {
 	}
 
 	def conformsToBoolean(YClass yclass) {
-		yclass == BOOLEAN_TYPE || yclass.fullyQualifiedName.toString == LangLib.LIB_BOOLEAN
+		yclass == BOOLEAN_TYPE || yclass.fullyQualifiedName.toString == LangLib.LIB_BOOL
 	}
 
 	def isSubclassOf(YClass yclass1, YClass yclass2) {

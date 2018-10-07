@@ -111,7 +111,7 @@ public class LiteLangTypeConformanceTest {
   
   @Test
   public void testBoolConformance() {
-    Assert.assertTrue(this._langTypeConformance.isConformant(LangTypeComputer.BOOLEAN_TYPE, this.libClass(LangLib.LIB_BOOLEAN)));
+    Assert.assertTrue(this._langTypeConformance.isConformant(LangTypeComputer.BOOLEAN_TYPE, this.libClass(LangLib.LIB_BOOL)));
   }
   
   private YClass libClass(final String fqn) {

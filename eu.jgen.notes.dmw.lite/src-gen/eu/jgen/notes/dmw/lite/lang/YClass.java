@@ -15,7 +15,7 @@ import org.eclipse.emf.common.util.EList;
  * </p>
  * <ul>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YClass#getSuperclass <em>Superclass</em>}</li>
- *   <li>{@link eu.jgen.notes.dmw.lite.lang.YClass#getEntity <em>Entity</em>}</li>
+ *   <li>{@link eu.jgen.notes.dmw.lite.lang.YClass#getEntityRef <em>Entity Ref</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YClass#getInners <em>Inners</em>}</li>
  *   <li>{@link eu.jgen.notes.dmw.lite.lang.YClass#getMembers <em>Members</em>}</li>
  * </ul>
@@ -53,30 +53,30 @@ public interface YClass extends YNamedElement
   void setSuperclass(YClass value);
 
   /**
-   * Returns the value of the '<em><b>Entity</b></em>' reference.
+   * Returns the value of the '<em><b>Entity Ref</b></em>' reference.
    * <!-- begin-user-doc -->
    * <p>
-   * If the meaning of the '<em>Entity</em>' reference isn't clear,
+   * If the meaning of the '<em>Entity Ref</em>' reference isn't clear,
    * there really should be more of a description here...
    * </p>
    * <!-- end-user-doc -->
-   * @return the value of the '<em>Entity</em>' reference.
-   * @see #setEntity(YAnnotEntity)
-   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYClass_Entity()
+   * @return the value of the '<em>Entity Ref</em>' reference.
+   * @see #setEntityRef(YAnnotEntity)
+   * @see eu.jgen.notes.dmw.lite.lang.LangPackage#getYClass_EntityRef()
    * @model
    * @generated
    */
-  YAnnotEntity getEntity();
+  YAnnotEntity getEntityRef();
 
   /**
-   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YClass#getEntity <em>Entity</em>}' reference.
+   * Sets the value of the '{@link eu.jgen.notes.dmw.lite.lang.YClass#getEntityRef <em>Entity Ref</em>}' reference.
    * <!-- begin-user-doc -->
    * <!-- end-user-doc -->
-   * @param value the new value of the '<em>Entity</em>' reference.
-   * @see #getEntity()
+   * @param value the new value of the '<em>Entity Ref</em>' reference.
+   * @see #getEntityRef()
    * @generated
    */
-  void setEntity(YAnnotEntity value);
+  void setEntityRef(YAnnotEntity value);
 
   /**
    * Returns the value of the '<em><b>Inners</b></em>' containment reference list.
