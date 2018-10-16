@@ -8,37 +8,18 @@ package eu.jgen.notes.dmw.lite.runtimes;
  */
 public class XWidget {
 
-	/*
-	 *  This function allows to set global exit state value .
-	 */
-	 public void setExitState(ExitState exitState )  {
-	 
-	}
+	private DMWContext context;
 	
-	/*
-	 *  This function allows to set global command value .
-	 */
-	 public void setCommand(Command command ) {
+	 public DMWContext getContext() {
+		return context;
+	}
 
+	public XWidget(DMWContext context) {
+		super();
+		this.context = context;
 	}
-	
-	/*
-	 *  This function allows to check if global exist state is set to the
-	 *  concrete value .
-	 */
-	 public boolean isExitState(ExitState exitState) {
-		return false;
-	}
-	
-	/*
-	 *  This function allows to check if global command is set to the
-	 *  concrete value .
-	 */
-	 public boolean isCommand(Command command ) {
-	 	return false;
-	}
-	
-	 public void moveStruct(XStructure fromview  , XStructure toview) {
+
+	public void moveStruct(XStructure fromview  , XStructure toview) {
 
 	}
 }

@@ -45,63 +45,65 @@ class TestLiteLangGeneratorReadStatement {
 	//@Inject Provider<ResourceSet> resourceSetProvider;
 
 	@Test
-	def void testGenerateExpressionPlus() {
+	def void testGenerateReadStatement() {
 		val body = '''
-			package templates;
+			package sample.project             
 			
-			@database MySQL
+			import eu.jgen.notes.dmw.lite.runtimes.XStructure  
+			import eu.jgen.notes.dmw.lite.runtimes.XWidget
+			import eu.jgen.notes.dmw.lite.runtimes.XInt
+			import eu.jgen.notes.dmw.lite.runtimes.XString
+			import eu.jgen.notes.dmw.lite.runtimes.XShort
 			
-			@java
-			
-			@td database MySQL {
-				@table F -> F {
-					@column NUMBER -> number as INTEGER @length ( 9 )
-					@column TYPE -> type as SMALLINT @length ( 2 )
-					@column MESSAGE -> message as CHAR @length ( 128 )
-					@column DESCRIPTION -> description as CHAR ? @length ( 200 )
+			@database Derby 
+			@entity Ee {
+				@attr number : XInt @length(9) @default(20) ; 
+				@attr type : XShort @length(2) @default(20) ;
+				@attr message : XString @length(128) @default("Some message") ;
+				@attr description : XString ? @length(500) @default("Some description") ;
+				@id logid(number);
+			} 
+			     
+			@td database Derby {
+				@table F -> Ee {
+					@column NUMBER -> Ee.number as INTEGER @length ( 9 )
+					@column TYPE -> Ee.type as SMALLINT @length ( 2 )
+					@column MESSAGE -> Ee.message as CHAR @length ( 128 )
+					@column DESCRIPTION -> Ee.description as CHAR ? @length ( 200 )
 					@primary (NUMBER)
 				}
-			}
-			
-			@entity F {
-				@attr number : Int @length(9)@default(20);
-				@attr type : Short @length(2)@default(20);
-				@attr message : String @length(128)@default("Some message");
-				@attr description : String ? @length(200)@default("Some description");
-				@id logid(number);
-			}  	  
-			    
-			class ReadF : Widget {              
+			}    
+			class ReadF : XWidget {                
+				      
+			   class CurrentEe : XStructure -> Ee {
+					var number : XInt -> Ee.number;
+					var type : XShort -> Ee.type;
+			   }
+				                    
 				
-				class ViewF : Structure -> F {
-					public var number : Int -> F.number;
-			        public var type : Short -> F.type;
-			        public var message : String -> F.message;
-			        public var description : String -> F.description;
-				}
-				
-				var viewF : ViewF;
-				var viewF2 : ViewF;
-				
-				public func start() {
-					
-					read viewF -> F  
-					   where self.viewF.number == 0 
+			   var a : ReadF$CurrentEe;   
+			   var b : ReadF$CurrentEe;  
+			       
+			   func start() {
+			   	     
+			   	this.a.number.value = 1        
+			   
+					db-read a -> Ee 
+				    	where a.number.value == 1 || a.number.value == 2
 					success {
-
+						
 					} not found {
-					// not found
+						
 					}
-					
-				}
-				
-				
-			}			
+			   	    
+			   }
+			 	
+			}  			
 
 		'''
 	   
 		newArrayList(loadLibSource, body).compile() [	
-			println(it.getGeneratedCode("templates.ReadF"))		
+			println(it.getGeneratedCode("sample.project.ReadF"))		
 			Assert.assertFalse(checkIfIssues(it))			
 		]
 	}

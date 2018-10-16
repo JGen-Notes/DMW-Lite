@@ -169,33 +169,8 @@ public class LiteLangValidatorTest2 {
   
   @Test
   public void testCheckVariableFirstCharacterNotLowercase() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C : Object {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var d : Int;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func start() {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("I : Int = 0;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("}\t\t\t");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      this._validationTestHelper.assertError(this._parseHelper.parse(_builder, this.loadLibInResourceSet()), 
-        LangPackage.eINSTANCE.getYVariableDeclaration(), 
-        LangValidator.VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE, 
-        "Variable name should start with a lower case letter");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YVariableDeclaration is undefined for the type LangPackage");
   }
   
   private ResourceSet loadLibInResourceSet() {

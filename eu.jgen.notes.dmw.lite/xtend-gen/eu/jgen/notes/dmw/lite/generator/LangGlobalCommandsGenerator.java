@@ -1,8 +1,6 @@
 package eu.jgen.notes.dmw.lite.generator;
 
-import com.google.common.base.Objects;
 import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.generator.LangOutputProvider;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
@@ -10,7 +8,6 @@ import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.utility.LangJavaGeneratorHelper;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.List;
-import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -42,63 +39,8 @@ public class LangGlobalCommandsGenerator implements IGenerator {
     };
     final Procedure1<EObject> _function_1 = (EObject element) -> {
       final YWidget widget = ((YWidget) element);
-      this.generateWidget(fsa, widget);
     };
     IteratorExtensions.<EObject>forEach(IteratorExtensions.<EObject>filter(input.getAllContents(), _function), _function_1);
-  }
-  
-  protected void generateWidget(final IFileSystemAccess fsa, final YWidget widget) {
-    this.imports.clear();
-    final Consumer<YClass> _function = (YClass clazz) -> {
-      if (((clazz.getSuperclass() != null) && Objects.equal(clazz.getSuperclass().getName(), "GlobalCommands"))) {
-        this.imports.add("eu.jgen.notes.dmw.lite.runtimes.GlobalCommands");
-        this.imports.add("eu.jgen.notes.dmw.lite.runtimes.Command");
-        StringConcatenation _builder = new StringConcatenation();
-        String _documentation = this._langJavaGeneratorHelper.getDocumentation(clazz);
-        _builder.append(_documentation);
-        _builder.append("  ");
-        _builder.newLineIfNotEmpty();
-        _builder.append("public class ");
-        String _name = clazz.getName();
-        _builder.append(_name);
-        _builder.append(" extends GlobalCommands {");
-        _builder.newLineIfNotEmpty();
-        _builder.append("   ");
-        String _generateCommands = this.generateCommands(clazz);
-        _builder.append(_generateCommands, "   ");
-        _builder.newLineIfNotEmpty();
-        _builder.append("}");
-        _builder.newLine();
-        final String body = _builder.toString();
-        String _fileSystemPath = this._langUtil.getFileSystemPath(widget.getName());
-        String _plus = (_fileSystemPath + "/");
-        String _name_1 = clazz.getName();
-        String _plus_1 = (_plus + _name_1);
-        String _plus_2 = (_plus_1 + ".java");
-        StringConcatenation _builder_1 = new StringConcatenation();
-        _builder_1.append("package ");
-        String _name_2 = widget.getName();
-        _builder_1.append(_name_2);
-        _builder_1.append(";");
-        _builder_1.newLineIfNotEmpty();
-        _builder_1.newLine();
-        {
-          for(final String imp : this.imports) {
-            _builder_1.append("import ");
-            _builder_1.append(imp);
-            _builder_1.append(";");
-            _builder_1.newLineIfNotEmpty();
-          }
-        }
-        _builder_1.newLine();
-        _builder_1.append(body);
-        _builder_1.append("\t\t\t\t\t\t");
-        _builder_1.newLineIfNotEmpty();
-        fsa.generateFile(_plus_2, 
-          LangOutputProvider.DEFAULT, _builder_1);
-      }
-    };
-    widget.getClasses().forEach(_function);
   }
   
   protected String generateCommands(final YClass clazz) {
@@ -119,15 +61,7 @@ public class LangGlobalCommandsGenerator implements IGenerator {
   }
   
   protected String generatePropertyForCommand(final YProperty property) {
-    StringConcatenation _builder = new StringConcatenation();
-    String _documentation = this._langJavaGeneratorHelper.getDocumentation(property);
-    _builder.append(_documentation);
-    _builder.newLineIfNotEmpty();
-    _builder.append("public Command ");
-    String _name = property.getName();
-    _builder.append(_name);
-    _builder.append(";");
-    _builder.newLineIfNotEmpty();
-    return _builder.toString();
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field documentation is undefined for the type YProperty");
   }
 }

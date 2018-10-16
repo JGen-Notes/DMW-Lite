@@ -76,27 +76,27 @@ class LangDBUtil {
 
 	def private void doSelectColumnProperties(YAnnotColumn column, YAnnotAttr attribute) {
 		// Set default values in case annotation does not exist.
-		if (attribute.yclass.name == "String") {
+		if (attribute.yclass.simpleName == "XString") {
 			column.type = "CHAR"
-		} else if (attribute.yclass.name == "String") {
+		} else if (attribute.yclass.simpleName == "XString") {
 			column.type = "CHAR"
-		} else if (attribute.yclass.name == "Short") {
+		} else if (attribute.yclass.simpleName == "XShort") {
 			column.type = "SMALLINT"
-		} else if (attribute.yclass.name == "Int") {
+		} else if (attribute.yclass.simpleName == "XInt") {
 			column.type = "INTEGER"
-		} else if (attribute.yclass.name == "Long") {
+		} else if (attribute.yclass.simpleName == "XLong") {
 			column.type = "BIGINT"
-		} else if (attribute.yclass.name == "Double") {
+		} else if (attribute.yclass.simpleName == "XDouble") {
 			column.type = "DECIMAL"
-		} else if (attribute.yclass.name == "Date") {
+		} else if (attribute.yclass.simpleName == "XDate") {
 			column.type = "DATE"
-		} else if (attribute.yclass.name == "Time") {
+		} else if (attribute.yclass.simpleName == "XTime") {
 			column.type = "TIME"
-		} else if (attribute.yclass.name == "Timestamp") {
+		} else if (attribute.yclass.simpleName == "XTimestamp") {
 			column.type = "TIMESTAMP"
-		} else if (attribute.yclass.name == "Bool") {
+		} else if (attribute.yclass.simpleName == "XBool") {
 			column.type = "BOOLEAN"
-		} else if (attribute.yclass.name == "Blob") {
+		} else if (attribute.yclass.simpleName == "XBlob") {
 			column.type = "BLOB"
 		}
 		//TODO need to check this

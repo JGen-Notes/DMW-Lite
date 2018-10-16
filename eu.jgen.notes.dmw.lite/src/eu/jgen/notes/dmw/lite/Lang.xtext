@@ -21,55 +21,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
  */
-grammar eu.jgen.notes.dmw.lite.Lang with org.eclipse.xtext.common.Terminals
-
+grammar eu.jgen.notes.dmw.lite.Lang with org.eclipse.xtext.xbase.Xbase
+//grammar eu.jgen.notes.dmw.lite.Lang with org.eclipse.xtext.xbase.annotations.XbaseWithAnnotations
 generate lang "http://www.jgen.eu/notes/dmw/lite/Lang"
 
+import "http://www.eclipse.org/xtext/xbase/Xbase" as xbase
+import "http://www.eclipse.org/xtext/xbase/Xtype" as xtype
+import "http://www.eclipse.org/xtext/common/JavaVMTypes" as types
+ 
+
 YWidget:
-	('package' name=QualifiedName ';'?)?
-	imports+=YImport*
+	{YWidget} package=YPackageDeclaration  
+	importSection=XImportSection?
 	annotations+=YAnnotTop*
 	classes+=YClass*;
+	
+YPackageDeclaration:
+	{YPackageDeclaration} 'package' name=QualifiedName;
 
-YImport:
-	'import' importedNamespace=QualifiedNameWithWildcard ';';
-
-QualifiedName:
-	ValidID (=> '.' ValidID)*;
-
-QualifiedNameWithWildcard:
-	QualifiedName '.*'?;
-
-ValidID:
-	ID;
-
-YParameter:
-	YTypedDeclaration;
 
 enum YAccessLevel:
 	PRIVATE='private' | PROTECTED='protected' | PUBLIC='public';
-
-YArgument:
-	name=ValidID ':' value=YArgumentValue;
 
 YArgumentValue:
 	INT | STRING;
 
 YClass:
-	{YClass} 'class' name=ValidID (':' superclass=[YClass|QualifiedName])? ('->' entityRef=[YAnnotEntity|QualifiedName])?
+	{YClass} 'class' name=ValidID (':' superclass=JvmTypeReference)? ('->' entityRef=[YAnnotEntity|QualifiedName])?
 	'{'
-	inners+=YClass*
 	members+=YMember*
 	'}';
 
 YMember:
-	YProperty | YFunction;
+	YClass | YProperty | YFunction;
 
-fragment YTypedDeclaration *:
-	name=ValidID ':' type=[YClass|QualifiedName];
 
 YProperty:
-	access=YAccessLevel? 'var' YTypedDeclaration tuples=YTuples? (optional?='?')? ('->' attrRef=[YAnnotAttr|QualifiedName])?
+	access=YAccessLevel? 'var' name=ValidID ':' type=JvmTypeReference tuples=YTuples? (optional?='?')? ('->' attrRef=[YAnnotAttr|QualifiedName])?
 	annotations+=YAnnot* ';';
 
 YTuples:
@@ -77,144 +65,37 @@ YTuples:
 
 YFunction:
 	access=YAccessLevel? 'func' name=ValidID
-	'(' (params+=YParameter (',' params+=YParameter)*)? ')' (returnvalue?='->')? type=[YClass|QualifiedName]?
-	body=YBlock;
+	'(' (params+=JvmTypeReference (',' params+=JvmTypeReference)*)? ')' ('->' type=JvmTypeReference)?
+	body=XBlockExpression;
 
-YBlock:
-	{YBlock} '{' statements+=YStatement* '}';
-
-YStatement:
-	YVariableDeclaration |
-	YReturn |
-	YReadStatement |
-	YCreateStatement |
-	YUpdateStatement |
-	YAssociateStatement |
-	YDeleteStatement |
-	YReadEachStatement |
-	YWhileStatement |
-	YRepeatWhileStatement |
-	YForInStatement |
-	YExpression ';' |
-	YIfStatement |
-	YSwitchStatement;
-
-YVariableDeclaration:
-	YTypedDeclaration '=' expression=YOrExpression ';';
-
-YReturn:
-	{YReturn} 'return' expression=YOrExpression? ';';
-
-YIfStatement:
-	'if' '(' expression=YOrExpression ')' thenBlock=YBlock
-	(=> 'else' elseBlock=YBlock)?;
-
-YSwitchStatement:
-	{YSwitchStatement}
-	'switch' switchExpression=YExpression '{'
-	(cases+=YSwitchCase)*
-	('default' ':' default=YBlock)?
+YReadStatement returns XExpression:
+	{YReadStatement} 'db-read' structs+=YStructRefPair (',' structs+=YStructRefPair)* 
+	joinclause=YJoin? 
+	('where' whereclause=XExpression)?
+	'success' '{'
+    successExpressions += XExpression*
+	'}' 'not' 'found' '{' 
+	notfoundExpressions += XExpression*
 	'}';
 
-YSwitchCase:
-	{YSwitchCase}
-	('case' caseExpression=YExpression)?
-	':' then=YBlock;
-
-YSymbol:
-	YVariableDeclaration | YParameter;
-
-YNamedElement:
-	YClass | YMember | YSymbol;
-
-YExpression:
-	YAssignment;
-
-YAssignment returns YExpression:
-	YSelectionExpression
-	({YAssignment.left=current} '=' right=YOrExpression)?;
-
-YSelectionExpression returns YExpression:
-	YTerminalExpression
-	({YMemberSelection.receiver=current} '.'
-	member=[YMember]
-	(functioninvocation?='('
-	(args+=YOrExpression (',' args+=YOrExpression)*)? ')')?)*;
-
-/*
- * Expressions
- */
-OpSingleAssign:
-	'=';
-
-YOrExpression returns YExpression:
-	YAndExpression ({YOrExpression.left=current} OpOr right=YAndExpression)*;
-
-OpOr:
-	'||';
-
-YAndExpression returns YExpression:
-	YEqualityExpression ({YAndExpression.left=current} OpAnd right=YEqualityExpression)*;
-
-OpAnd:
-	'&&';
-
-YEqualityExpression returns YExpression:
-	YComparisonExpression ({YEqualityExpression.left=current} op=("==" | "!=") right=YComparisonExpression)*;
-
-YComparisonExpression returns YExpression:
-	YAdditiveExpression ({YComparisonExpression.left=current} op=OpCompare right=YAdditiveExpression)*;
-
-OpCompare:
-	'>=' | '<=' | '>' | '<';
-
-YAdditiveExpression returns YExpression:
-	YMultiplicativeExpression (({YPlus.left=current} '+' | {YMinus.left=current} '-') right=YMultiplicativeExpression)*;
-
-OpAdd:
-	'+' | '-';
-
-YMultiplicativeExpression returns YExpression:
-	YPrimary ({YMulOrDiv.left=current} op=('*' | '/') right=YPrimary)*;
-
-YPrimary returns YExpression:
-	{YParenties}'(' a=YOrExpression ')' |
-	{YNot} "!" expression=YPrimary |
-	YSelectionExpression;
-
-YTerminalExpression returns YExpression:
-	{YStringConstant} value=STRING |
-	{YIntConstant} value=INT |
-	{YBoolConstant} value=('true' | 'false') |
-	{YSelf} 'self' |
-	{YSuper} 'super' |
-	{YNull} 'null' |
-	{YSymbolRef} symbol=[YSymbol] |
-	{YNew} 'new' type=[YClass|QualifiedName] '('
-	(arguments+=YOrExpression (',' arguments+=YOrExpression)*)? ')' 
-	//|	'(' YOrExpression ')'
-;
-
-YReadStatement:
-	'read' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
-	'success' success=YBlock
-	'not' 'found' notfound=YBlock;
-
 YReadEachStatement:
-	'read' 'each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
+	'readeach' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=XExpression?
 	'target' target=[YProperty]
-	success=YBlock;
+	success=XBlockExpression;
 
-YCreateStatement:
-	'create' struct=YStructRefPair
-	setBlock=YBlock
-	'success' success=YBlock
-	'already' 'exist' alreadyExist=YBlock;
+YCreateStatement returns XExpression:
+	{YCreateStatement} 'db-create' struct=YStructRefPair '{'
+	setExpressions += XExpression*
+	'}' 'success' '{'
+    successExpressions += XExpression*
+    '}' 'already' 'exist' '{' 
+	alreadyExistExpressions += XExpression*
+	'}';
 
 YUpdateStatement:
 	'update' struct=YStructRefPair
-	setBlock=YBlock
-	'success' success=YBlock;
+	setBlock=XBlockExpression
+	'success' success=XBlockExpression;
 
 YDeleteStatement:
 	'delete' struct=YStructRefPair ';';
@@ -231,21 +112,8 @@ YJoin:
 YJoinDef:
 	fromView=[YProperty] '->' relRef=[YAnnotRel|QualifiedName] '->' toView=[YProperty];
 
-YWhere:
-	{YWhere} 'where' expression=YOrExpression;
-
-YWhileStatement:
-	'while' '('expression=YOrExpression')'
-	body=YBlock;
-
-YRepeatWhileStatement:
-	'repeat'
-	body=YBlock
-	'while' '(' expression=YOrExpression ')';
-
-YForInStatement:
-	'for' item=[YProperty] 'in' collection=[YProperty]
-	body=YBlock;
+YWhere returns XExpression:
+	{YWhere} 'where' expression=XExpression;
 
 /*
  * Predefined annotations
@@ -298,7 +166,7 @@ YAnnotEntity:
 	'}';
 
 YAnnotAttr:
-	{YAnnotAttr} '@attr' name=ValidID ':' yclass=[YClass|QualifiedName] (optional='?')? annots+=YAnnot* ';'?;
+	{YAnnotAttr} '@attr' name=ValidID ':' yclass=JvmTypeReference (optional='?')? annots+=YAnnot* ';'?;
 
 YAnnotRel:
 	{YAnnotRel} '@rel' (parent?='@parent')? name=ValidID (optional?='?')? '->' target=[YAnnotEntity|QualifiedName]
@@ -311,7 +179,7 @@ YAnnotIdInner:
 YAnnotId:
 	{YAnnotId} '@id' name=ValidID '(' annots+=[YAnnotEntityInner] (',' annots+=[YAnnotEntityInner])* ')' ';'?;
 
-	/*
+/*
  * Start Technical design
  */
 YAnnotTechnicalDesign:
@@ -346,24 +214,54 @@ YAnnotForeignKey:
 	columns+=YAnnotAbstractColumn (',' columns+=YAnnotAbstractColumn)*
 	'}' ';'?;
 
-	/*
+/*
  * Swift Generation Annotations
  */
 YAnnotJava:
 	{YAnnotJava} '@java' ('uses' database=[YAnnotDatabase])? ';'?;
 
-	/*
+/*
  * Swift Generation Annotations
  */
 YAnnotSwift:
 	{YAnnotSwift} '@swift' 'module' name=ValidID ('uses' database=[YAnnotDatabase])? ';'?;
 
-	/*
+/*
  * Database Generation Annotations
  */
 YAnnotDatabase:
 	{YAnnotDatabase} '@database' name=ValidID ';'?;
  
+@Override 
+XPrimaryExpression returns xbase::XExpression:
+	YReadStatement |
+	YCreateStatement |
+	YDeleteStatement |
+	YUpdateStatement |
+	YReadEachStatement |
+	super
+	;
+
+/*
+ * Database Generation Annotations
+ */
+ 
+DBExpression returns DBExpression :
+	'where' DBOrExpression;
+
+DBOrExpression returns DBExpression:
+	DBAndExpression (=>({DBBinaryOperation.leftOperand=current} feature=[types::JvmIdentifiableElement|OpOr]) rightOperand=DBAndExpression)*;
 
 
+DBAndExpression returns DBExpression:
+	DBEqualityExpression (=>({DBBinaryOperation.leftOperand=current} feature=[types::JvmIdentifiableElement|OpAnd]) rightOperand=DBEqualityExpression)*;
+
+
+DBEqualityExpression returns DBExpression:
+	DBRelationalExpression (=>({DBBinaryOperation.leftOperand=current} feature=[types::JvmIdentifiableElement|OpEquality])
+	rightOperand=DBRelationalExpression)*;
+
+DBRelationalExpression returns DBExpression:
+	leftOperand=[types::JvmIdentifiableElement|OpCompare] rightOperand=[types::JvmIdentifiableElement|OpCompare];
+	 
 	

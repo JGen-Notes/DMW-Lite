@@ -22,45 +22,22 @@
  */
 package eu.jgen.notes.dmw.lite.ui.wizard;
 
-import com.google.common.base.Objects;
 import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.ui.wizard.LangNewFileWizardPage;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import org.eclipse.core.resources.IContainer;
-import org.eclipse.core.resources.IFile;
-import org.eclipse.core.resources.IResource;
-import org.eclipse.core.resources.IWorkspaceRoot;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jdt.core.IJavaProject;
-import org.eclipse.jdt.core.IPackageFragment;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.ide.IDE;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.ui.PluginImageHelper;
-import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.StringExtensions;
 
 /**
  * This is a sample new wizard. Its role is to create a new file
@@ -74,7 +51,7 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
  */
 @SuppressWarnings("all")
 public class LangNewFileWizard extends Wizard implements INewWizard {
-  private LangNewFileWizardPage page;
+  private /* LangNewFileWizardPage */Object page;
   
   private ISelection selection;
   
@@ -94,10 +71,12 @@ public class LangNewFileWizard extends Wizard implements INewWizard {
    */
   @Override
   public void addPages() {
-    LangNewFileWizardPage _langNewFileWizardPage = new LangNewFileWizardPage(this.imageHelper);
-    this.page = _langNewFileWizardPage;
-    this.page.init(((IStructuredSelection) this.selection));
-    this.addPage(this.page);
+    throw new Error("Unresolved compilation problems:"
+      + "\nLangNewFileWizardPage cannot be resolved."
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\ninit cannot be resolved");
   }
   
   /**
@@ -107,51 +86,27 @@ public class LangNewFileWizard extends Wizard implements INewWizard {
    */
   @Override
   public boolean performFinish() {
-    try {
-      final IJavaProject javaProject = this.page.getJavaProject();
-      final Function1<IPackageFragment, Boolean> _function = (IPackageFragment element) -> {
-        String _elementName = element.getElementName();
-        String _packageText = this.page.getPackageText();
-        return Boolean.valueOf(Objects.equal(_elementName, _packageText));
-      };
-      final Function1<IPackageFragment, Boolean> _function_1 = (IPackageFragment it) -> {
-        return Boolean.valueOf(true);
-      };
-      final IPath path = IterableExtensions.<IPackageFragment>findFirst(IterableExtensions.<IPackageFragment>filter(((Iterable<IPackageFragment>)Conversions.doWrapArray(javaProject.getPackageFragments())), _function), _function_1).getPath();
-      final IRunnableWithProgress _function_2 = (IProgressMonitor monitor) -> {
-        try {
-          this.doFinish(path, this.page.getTypeName(), this.page.getPackageText(), this.page.getModifiers(), monitor);
-        } catch (final Throwable _t) {
-          if (_t instanceof CoreException) {
-            final CoreException e = (CoreException)_t;
-            throw new InvocationTargetException(e);
-          } else {
-            throw Exceptions.sneakyThrow(_t);
-          }
-        } finally {
-          monitor.done();
-        }
-      };
-      IRunnableWithProgress op = _function_2;
-      try {
-        this.getContainer().run(true, false, op);
-      } catch (final Throwable _t) {
-        if (_t instanceof InterruptedException) {
-          final InterruptedException e = (InterruptedException)_t;
-          return false;
-        } else if (_t instanceof InvocationTargetException) {
-          final InvocationTargetException e_1 = (InvocationTargetException)_t;
-          Throwable realException = e_1.getTargetException();
-          MessageDialog.openError(this.getShell(), "Error", realException.getMessage());
-          return false;
-        } else {
-          throw Exceptions.sneakyThrow(_t);
-        }
-      }
-      return true;
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field elementName is undefined for the type Object"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThere is no context to infer the closure\'s argument types from. Consider typing the arguments or put the closures into a typed context."
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\nThe field LangNewFileWizard.page refers to the missing type LangNewFileWizardPage"
+      + "\njavaProject cannot be resolved"
+      + "\ngetPackageFragments cannot be resolved"
+      + "\nfilter cannot be resolved"
+      + "\n== cannot be resolved"
+      + "\npackageText cannot be resolved"
+      + "\nfindFirst cannot be resolved"
+      + "\npath cannot be resolved"
+      + "\ntypeName cannot be resolved"
+      + "\npackageText cannot be resolved"
+      + "\nmodifiers cannot be resolved");
   }
   
   /**
@@ -160,86 +115,17 @@ public class LangNewFileWizard extends Wizard implements INewWizard {
    * the editor on the newly created file.
    */
   private void doFinish(final IPath path, final String typeName, final String packageName, final int modifier, final IProgressMonitor monitor) throws CoreException {
-    String _firstUpper = StringExtensions.toFirstUpper(typeName);
-    final String fileName = (_firstUpper + ".dmw");
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("Creating ");
-    _builder.append(fileName);
-    monitor.beginTask(_builder.toString(), 2);
-    IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-    IResource resource = root.findMember(path);
-    if (((!resource.exists()) || (!(resource instanceof IContainer)))) {
-      StringConcatenation _builder_1 = new StringConcatenation();
-      _builder_1.append("Container \"");
-      _builder_1.append(path);
-      _builder_1.append("\" does not exist.");
-      this.throwCoreException(_builder_1.toString());
-    }
-    IContainer container = ((IContainer) resource);
-    Path _path = new Path(fileName);
-    final IFile file = container.getFile(_path);
-    try {
-      InputStream stream = this.openContentStreamAction(packageName, typeName);
-      boolean _matched = false;
-      if (Objects.equal(modifier, LangNewFileWizardPage.TEMPLATE_WIDGET)) {
-        _matched=true;
-        stream = this.openContentStreamAction(packageName, typeName);
-      }
-      if (!_matched) {
-        if (Objects.equal(modifier, LangNewFileWizardPage.TEMPLATE_ENTITY)) {
-          _matched=true;
-          stream = this.openContentStreamEntity(packageName, typeName);
-        }
-      }
-      if (!_matched) {
-        if (Objects.equal(modifier, LangNewFileWizardPage.TEMPLATE_USER_EXITS)) {
-          _matched=true;
-          stream = this.openContentStreamExits(packageName, typeName);
-        }
-      }
-      if (!_matched) {
-        if (Objects.equal(modifier, LangNewFileWizardPage.TEMPLATE_COMMANDS)) {
-          _matched=true;
-          stream = this.openContentStreamCommands(packageName, typeName);
-        }
-      }
-      if (!_matched) {
-        if (Objects.equal(modifier, LangNewFileWizardPage.TEMPLATE_NONE)) {
-          _matched=true;
-          stream = this.openContentStreamNone(packageName, typeName);
-        }
-      }
-      boolean _exists = file.exists();
-      if (_exists) {
-        file.setContents(stream, true, true, monitor);
-      } else {
-        file.create(stream, true, monitor);
-      }
-      stream.close();
-    } catch (final Throwable _t) {
-      if (_t instanceof IOException) {
-        final IOException e = (IOException)_t;
-      } else {
-        throw Exceptions.sneakyThrow(_t);
-      }
-    }
-    monitor.worked(1);
-    monitor.setTaskName("Opening file for editing...");
-    final Runnable _function = () -> {
-      IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-      try {
-        IDE.openEditor(page, file, true);
-      } catch (final Throwable _t_1) {
-        if (_t_1 instanceof PartInitException) {
-          final PartInitException e_1 = (PartInitException)_t_1;
-        } else {
-          throw Exceptions.sneakyThrow(_t_1);
-        }
-      }
-    };
-    this.getShell().getDisplay().asyncExec(_function);
-    monitor.worked(
-      1);
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field LangNewFileWizardPage is undefined"
+      + "\nThe method or field LangNewFileWizardPage is undefined"
+      + "\nThe method or field LangNewFileWizardPage is undefined"
+      + "\nThe method or field LangNewFileWizardPage is undefined"
+      + "\nThe method or field LangNewFileWizardPage is undefined"
+      + "\nTEMPLATE_WIDGET cannot be resolved"
+      + "\nTEMPLATE_ENTITY cannot be resolved"
+      + "\nTEMPLATE_USER_EXITS cannot be resolved"
+      + "\nTEMPLATE_COMMANDS cannot be resolved"
+      + "\nTEMPLATE_NONE cannot be resolved");
   }
   
   public ByteArrayInputStream openContentStreamNone(final String packageName, final String name) {

@@ -42,7 +42,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTop;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
-import eu.jgen.notes.dmw.lite.lang.YImport;
+import eu.jgen.notes.dmw.lite.lang.YMember;
+import eu.jgen.notes.dmw.lite.lang.YPackageDeclaration;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YTuples;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
@@ -52,14 +53,18 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference;
+import org.eclipse.xtext.common.types.JvmTypeReference;
 import org.eclipse.xtext.ui.PluginImageHelper;
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider;
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode;
 import org.eclipse.xtext.ui.editor.utils.TextStyle;
 import org.eclipse.xtext.ui.label.StylerFactory;
+import org.eclipse.xtext.xtype.XImportDeclaration;
+import org.eclipse.xtext.xtype.XImportSection;
 
 /**
- * Customization of the default outline structure.
+ * Customisation of the default outline structure.
  * 
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#outline
  */
@@ -72,19 +77,16 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   private StylerFactory stylerFactory;
   
   public void _createChildren(final DocumentRootNode outlineNode, final YWidget widget) {
-    this.createNode(outlineNode, widget);
-    final Consumer<YImport> _function = (YImport element) -> {
-      this.createNode(outlineNode, element);
-    };
-    widget.getImports().forEach(_function);
-    final Consumer<YAnnotTop> _function_1 = (YAnnotTop element) -> {
+    this.createNode(outlineNode, widget.getPackage());
+    this.createNode(outlineNode, widget.getImportSection());
+    final Consumer<YAnnotTop> _function = (YAnnotTop element) -> {
       this.createNode(outlineNode, element.getType());
     };
-    widget.getAnnotations().forEach(_function_1);
-    final Consumer<YClass> _function_2 = (YClass element) -> {
+    widget.getAnnotations().forEach(_function);
+    final Consumer<YClass> _function_1 = (YClass element) -> {
       this.createNode(outlineNode, element);
     };
-    widget.getClasses().forEach(_function_2);
+    widget.getClasses().forEach(_function_1);
   }
   
   public void _createChildren(final DocumentRootNode outlineNode, final YAnnotTop annotTop) {
@@ -98,29 +100,50 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
     annotEntity.getAnnots().forEach(_function);
   }
   
+  public void _createChildren(final DocumentRootNode outlineNode, final XImportSection importSection) {
+    final Consumer<XImportDeclaration> _function = (XImportDeclaration importDeclaration) -> {
+      this.createNode(outlineNode, importDeclaration);
+    };
+    importSection.getImportDeclarations().forEach(_function);
+  }
+  
+  public void _createChildren(final DocumentRootNode outlineNode, final YClass clazz) {
+    final Consumer<YMember> _function = (YMember member) -> {
+      this.createNode(outlineNode, member);
+    };
+    clazz.getMembers().forEach(_function);
+  }
+  
   public boolean _isLeaf(final YWidget element) {
     return true;
   }
   
-  public Object _text(final YWidget widget) {
-    String _name = widget.getName();
-    boolean _tripleNotEquals = (_name != null);
-    if (_tripleNotEquals) {
-      return widget.getName();
-    }
+  public Object _text(final JvmParameterizedTypeReference element) {
     return null;
   }
   
-  /**
-   * Widget
-   */
-  public Object _image(final YWidget widget) {
-    String _name = widget.getName();
-    boolean _tripleNotEquals = (_name != null);
-    if (_tripleNotEquals) {
-      return this.imageHelper.getImage("package.gif");
-    }
-    return null;
+  public Object _text(final XImportSection importSection) {
+    return "import declarations";
+  }
+  
+  public Object _image(final XImportSection importSection) {
+    return this.imageHelper.getImage("imports.gif");
+  }
+  
+  public Object _text(final YPackageDeclaration packageDeclaration) {
+    return packageDeclaration.getName();
+  }
+  
+  public Object _image(final YPackageDeclaration packageDeclaration) {
+    return this.imageHelper.getImage("package.gif");
+  }
+  
+  public Object _text(final XImportDeclaration importDeclaration) {
+    return importDeclaration.getImportedName();
+  }
+  
+  public Object _image(final XImportDeclaration importDeclaration) {
+    return this.imageHelper.getImage("import.gif");
   }
   
   /**
@@ -315,13 +338,13 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   }
   
   public Object _text(final YAnnotAttr element) {
-    YClass _yclass = element.getYclass();
+    JvmTypeReference _yclass = element.getYclass();
     boolean _tripleNotEquals = (_yclass != null);
     if (_tripleNotEquals) {
       String _name = element.getName();
       String _plus = (_name + " : ");
-      String _name_1 = element.getYclass().getName();
-      return (_plus + _name_1);
+      String _simpleName = element.getYclass().getSimpleName();
+      return (_plus + _simpleName);
     } else {
       return element.getName();
     }
@@ -366,13 +389,13 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
     if (_tripleNotEquals_1) {
       return element.getName();
     }
-    YClass _type = element.getType();
+    JvmTypeReference _type = element.getType();
     boolean _tripleNotEquals_2 = (_type != null);
     if (_tripleNotEquals_2) {
       String _name_1 = element.getName();
       String _plus = (_name_1 + " : ");
-      String _name_2 = element.getType().getName();
-      String _plus_1 = (_plus + _name_2);
+      String _simpleName = element.getType().getSimpleName();
+      String _plus_1 = (_plus + _simpleName);
       return (_plus_1 + tuple);
     }
     return "";
@@ -385,19 +408,25 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   
   public Object _text(final YClass element) {
     String _xifexpression = null;
-    if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getName(), "Widget"))) {
-      _xifexpression = element.getName();
+    if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getSimpleName(), "XWidget"))) {
+      String _name = element.getName();
+      String _plus = (_name + " : ");
+      String _simpleName = element.getSuperclass().getSimpleName();
+      _xifexpression = (_plus + _simpleName);
     } else {
       String _xifexpression_1 = null;
-      if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getName(), "Structure"))) {
+      if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getSimpleName(), "XStructure"))) {
         String _xifexpression_2 = null;
         YAnnotEntity _entityRef = element.getEntityRef();
         boolean _tripleNotEquals = (_entityRef != null);
         if (_tripleNotEquals) {
-          String _name = element.getName();
-          String _plus = (_name + " -> ");
-          String _name_1 = element.getEntityRef().getName();
-          _xifexpression_2 = (_plus + _name_1);
+          String _name_1 = element.getName();
+          String _plus_1 = (_name_1 + " : ");
+          String _simpleName_1 = element.getSuperclass().getSimpleName();
+          String _plus_2 = (_plus_1 + _simpleName_1);
+          String _plus_3 = (_plus_2 + " -> ");
+          String _name_2 = element.getEntityRef().getName();
+          _xifexpression_2 = (_plus_3 + _name_2);
         } else {
           _xifexpression_2 = element.getName();
         }
@@ -411,10 +440,10 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   }
   
   public Object _image(final YClass element) {
-    if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getName(), "Widget"))) {
+    if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getSimpleName(), "XWidget"))) {
       return this.imageHelper.getImage("widget.gif");
     } else {
-      if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getName(), "Structure"))) {
+      if (((element.getSuperclass() != null) && Objects.equal(element.getSuperclass().getSimpleName(), "XStructure"))) {
         return this.imageHelper.getImage("structure.gif");
       } else {
         return this.imageHelper.getImage("class.gif");
@@ -432,10 +461,6 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   
   public Object _image(final YFunction element) {
     return this.imageHelper.getImage("function.gif");
-  }
-  
-  public Object _image(final YImport element) {
-    return this.imageHelper.getImage("import.gif");
   }
   
   public Object _image(final YAnnotAttr element) {

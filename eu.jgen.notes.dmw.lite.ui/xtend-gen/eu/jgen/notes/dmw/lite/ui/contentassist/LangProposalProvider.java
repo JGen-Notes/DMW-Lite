@@ -30,32 +30,23 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YMember;
-import eu.jgen.notes.dmw.lite.scoping.LangIndex;
 import eu.jgen.notes.dmw.lite.ui.contentassist.AbstractLangProposalProvider;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.Assignment;
 import org.eclipse.xtext.RuleCall;
-import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.ui.PluginImageHelper;
 import org.eclipse.xtext.ui.editor.contentassist.ContentAssistContext;
 import org.eclipse.xtext.ui.editor.contentassist.ICompletionProposalAcceptor;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
-import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class LangProposalProvider extends AbstractLangProposalProvider {
   @Inject
   private PluginImageHelper imageHelper;
-  
-  @Inject
-  @Extension
-  private LangIndex _langIndex;
   
   @Override
   public void completeYAnnotDatabase_Name(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
@@ -67,31 +58,16 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   }
   
   @Override
-  public void completeYAnnotEntity_Superannot(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    final Set<IEObjectDescription> allVisibleEntities = IterableExtensions.<IEObjectDescription>toSet(this._langIndex.getVisibleEntitiesDescriptions(((YAnnotEntity) model)));
-    for (final IEObjectDescription element : allVisibleEntities) {
-      String _lastSegment = element.getName().getLastSegment();
-      String _name = ((YAnnotEntity) model).getName();
-      boolean _notEquals = (!Objects.equal(_lastSegment, _name));
-      if (_notEquals) {
-        acceptor.accept(
-          this.createCompletionProposal(element.getName().toString(), element.getName().toString(), 
-            this.imageHelper.getImage("entity.gif"), context));
-      }
-    }
-  }
-  
-  @Override
   public void completeYAnnotAttr_Yclass(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    acceptor.accept(this.createCompletionProposal("String", "String", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Short", "Short", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Int", "Int", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Long", "Long", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Double", "Double", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Bool", "Bool", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Date", "Date", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Time", "Time", this.imageHelper.getImage("class.gif"), context));
-    acceptor.accept(this.createCompletionProposal("Timestamp", "Timestamp", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XString", "XString", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XShort", "XShort", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XInt", "XInt", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XLong", "XLong", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XDouble", "XDouble", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XBool", "XBool", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XDate", "XDate", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XTime", "XTime", this.imageHelper.getImage("class.gif"), context));
+    acceptor.accept(this.createCompletionProposal("XTimestamp", "XTimestamp", this.imageHelper.getImage("class.gif"), context));
   }
   
   @Override
@@ -102,21 +78,6 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
   @Override
   public void complete_YClass(final EObject model, final RuleCall ruleCall, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
     super.complete_YClass(model, ruleCall, context, acceptor);
-  }
-  
-  @Override
-  public void completeYClass_Members(final EObject model, final Assignment assignment, final ContentAssistContext context, final ICompletionProposalAcceptor acceptor) {
-    final YClass clazz = ((YClass) model);
-    if (((clazz.getSuperclass() != null) && Objects.equal(clazz.getSuperclass().getName(), "Structure"))) {
-      YAnnotEntity _entityRef = clazz.getEntityRef();
-      boolean _tripleNotEquals = (_entityRef != null);
-      if (_tripleNotEquals) {
-        this.createAttributeIncludeAll(clazz, acceptor, context);
-        this.createAttributeIncludeOne(clazz, acceptor, context);
-      }
-    } else {
-      super.completeYClass_Members(model, assignment, context, acceptor);
-    }
   }
   
   @Override
@@ -165,14 +126,14 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
           String _name = annotAttr.getName();
           String _plus = ("public var " + _name);
           String _plus_1 = (_plus + " : ");
-          String _name_1 = annotAttr.getYclass().getName();
-          String _plus_2 = (_plus_1 + _name_1);
+          String _qualifiedName = annotAttr.getYclass().getQualifiedName();
+          String _plus_2 = (_plus_1 + _qualifiedName);
           String _plus_3 = (_plus_2 + " -> ");
-          String _name_2 = clazz.getEntityRef().getName();
-          String _plus_4 = (_plus_3 + _name_2);
+          String _name_1 = clazz.getEntityRef().getName();
+          String _plus_4 = (_plus_3 + _name_1);
           String _plus_5 = (_plus_4 + ".");
-          String _name_3 = annotAttr.getName();
-          String _plus_6 = (_plus_5 + _name_3);
+          String _name_2 = annotAttr.getName();
+          String _plus_6 = (_plus_5 + _name_2);
           final String line = (_plus_6 + ";");
           list.add(line);
         }
@@ -200,17 +161,17 @@ public class LangProposalProvider extends AbstractLangProposalProvider {
           String _name = annotAttr.getName();
           String _plus = ("public var " + _name);
           String _plus_1 = (_plus + " : ");
-          String _name_1 = annotAttr.getYclass().getName();
-          String _plus_2 = (_plus_1 + _name_1);
+          String _qualifiedName = annotAttr.getYclass().getQualifiedName();
+          String _plus_2 = (_plus_1 + _qualifiedName);
           String _plus_3 = (_plus_2 + " -> ");
-          String _name_2 = clazz.getEntityRef().getName();
-          String _plus_4 = (_plus_3 + _name_2);
+          String _name_1 = clazz.getEntityRef().getName();
+          String _plus_4 = (_plus_3 + _name_1);
           String _plus_5 = (_plus_4 + ".");
-          String _name_3 = annotAttr.getName();
-          String _plus_6 = (_plus_5 + _name_3);
+          String _name_2 = annotAttr.getName();
+          String _plus_6 = (_plus_5 + _name_2);
           final String line = (_plus_6 + ";");
-          String _name_4 = annotAttr.getName();
-          String _plus_7 = ("Include Only: " + _name_4);
+          String _name_3 = annotAttr.getName();
+          String _plus_7 = ("Include Only: " + _name_3);
           acceptor.accept(
             this.createCompletionProposal(line, _plus_7, 
               this.imageHelper.getImage("property.gif"), context));

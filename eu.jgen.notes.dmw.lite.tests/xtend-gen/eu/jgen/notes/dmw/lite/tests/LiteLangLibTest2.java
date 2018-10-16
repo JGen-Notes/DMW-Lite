@@ -102,22 +102,16 @@ public class LiteLangLibTest2 {
   
   @Test
   public void testObjectWithoutLibraryLoaded() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {}");
-      final YWidget context = this._parseHelper.parse(_builder);
-      this._validationTestHelper.assertNoErrors(this._langLib.getLangObjectClass(context));
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method getLangObjectClass(YWidget) is undefined"
+      + "\nassertNoErrors cannot be resolved");
   }
   
   @Test
   public void testLangObjectWithLibraryLoaded() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("class C {}");
-    final YWidget context = this.loadLibAndParse(_builder);
-    this._validationTestHelper.assertNoErrors(this._langLib.getLangObjectClass(context));
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method getLangObjectClass(YWidget) is undefined"
+      + "\nassertNoErrors cannot be resolved");
   }
   
   private YWidget loadLibAndParse(final CharSequence p) {

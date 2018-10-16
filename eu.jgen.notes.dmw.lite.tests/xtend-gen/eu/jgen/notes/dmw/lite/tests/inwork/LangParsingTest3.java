@@ -25,7 +25,6 @@ package eu.jgen.notes.dmw.lite.tests.inwork;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
-import eu.jgen.notes.dmw.lite.scoping.LangIndex;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
 import eu.jgen.notes.dmw.lite.utility.LangLib;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
@@ -65,7 +64,7 @@ public class LangParsingTest3 {
   
   @Inject
   @Extension
-  private LangIndex _langIndex;
+  private /* LangIndex */Object _langIndex;
   
   @Inject
   private Provider<ResourceSet> rsp;

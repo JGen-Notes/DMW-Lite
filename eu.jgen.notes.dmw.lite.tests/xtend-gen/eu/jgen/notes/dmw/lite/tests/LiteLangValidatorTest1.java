@@ -127,65 +127,14 @@ public class LiteLangValidatorTest1 {
   
   @Test
   public void testInvocationOnField() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("class A {");
-    _builder.newLine();
-    _builder.append("  ");
-    _builder.append("var f : A;");
-    _builder.newLine();
-    _builder.append("   ");
-    _builder.append("func m() -> A {");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("return self.f();");
-    _builder.newLine();
-    _builder.append("  ");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    final Procedure1<String> _function = (String it) -> {
-      try {
-        this._validationTestHelper.assertError(this._parseHelper.parse(it), 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.FUNCTION_INVOCATION_ON_PROPERTY, 
-          it.lastIndexOf("("), 1, 
-          "Function invocation on a property");
-      } catch (Throwable _e) {
-        throw Exceptions.sneakyThrow(_e);
-      }
-    };
-    ObjectExtensions.<String>operator_doubleArrow(_builder.toString(), _function);
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
   public void testFieldSelectionOnMethod() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("class A {");
-    _builder.newLine();
-    _builder.append("  ");
-    _builder.append("func  m() -> A{");
-    _builder.newLine();
-    _builder.append("    ");
-    _builder.append("return self.m;");
-    _builder.newLine();
-    _builder.append("  ");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    final Procedure1<String> _function = (String it) -> {
-      try {
-        this._validationTestHelper.assertError(this._parseHelper.parse(it), 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.PROPERTY_SELECTION_ON_FUNCTION, 
-          it.lastIndexOf("m"), 1, 
-          "Property selection on a function");
-      } catch (Throwable _e) {
-        throw Exceptions.sneakyThrow(_e);
-      }
-    };
-    ObjectExtensions.<String>operator_doubleArrow(_builder.toString(), _function);
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
@@ -219,141 +168,26 @@ public class LiteLangValidatorTest1 {
   
   @Test
   public void testUnreachableCode() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.m();");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      this._validationTestHelper.assertError(this._parseHelper.parse(_builder), 
-        LangPackage.eINSTANCE.getYMemberSelection(), 
-        LangValidator.UNREACHABLE_CODE, 
-        "Unreachable code");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
   public void testUnreachableCode2() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("i : C = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.m();");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      this._validationTestHelper.assertError(this._parseHelper.parse(_builder), 
-        LangPackage.eINSTANCE.getYVariableDeclaration(), 
-        LangValidator.UNREACHABLE_CODE, 
-        "Unreachable code");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YVariableDeclaration is undefined for the type LangPackage");
   }
   
   @Test
   public void testUnreachableCodeOnlyOnce() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t\t ");
-      _builder.append("i : C = null; // error only here");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null; // no error here");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        this._validationTestHelper.assertError(it, 
-          LangPackage.eINSTANCE.getYVariableDeclaration(), 
-          LangValidator.UNREACHABLE_CODE, 
-          "Unreachable code");
-        Assert.assertEquals(1, this._validationTestHelper.validate(it).size());
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YVariableDeclaration is undefined for the type LangPackage");
   }
   
   @Test
   public void testUnreachableCodeInsideIf() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("if (true) {");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("i : C  = null;");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("self.m();");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      this._validationTestHelper.assertError(this._parseHelper.parse(_builder), 
-        LangPackage.eINSTANCE.getYVariableDeclaration(), 
-        LangValidator.UNREACHABLE_CODE, 
-        "Unreachable code");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YVariableDeclaration is undefined for the type LangPackage");
   }
   
   @Test
@@ -452,43 +286,14 @@ public class LiteLangValidatorTest1 {
   
   @Test
   public void testDuplicateParams() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("class C {");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("func m(p : C, p : C) -> C { return null; }");
-    _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    this.assertDuplicate(_builder.toString(), LangPackage.eINSTANCE.getYParameter(), "parameter", "p");
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YParameter is undefined for the type LangPackage");
   }
   
   @Test
   public void testDuplicateVariables() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("class C {");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("func m() -> C {");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("v : C = null;");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("if (true)");
-    _builder.newLine();
-    _builder.append("\t\t\t");
-    _builder.append("v : C = null;");
-    _builder.newLine();
-    _builder.append("\t\t");
-    _builder.append("return null;");
-    _builder.newLine();
-    _builder.append("\t");
-    _builder.append("}");
-    _builder.newLine();
-    _builder.append("}");
-    _builder.newLine();
-    this.assertDuplicate(_builder.toString(), LangPackage.eINSTANCE.getYVariableDeclaration(), "variable", "v");
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YVariableDeclaration is undefined for the type LangPackage");
   }
   
   @Test
@@ -513,57 +318,38 @@ public class LiteLangValidatorTest1 {
   
   @Test
   public void testVariableDeclExpIncompatibleTypes() {
-    this.assertIncompatibleTypes("v : A = new C(); return null;", LangPackage.eINSTANCE.getYNew(), "A", "C");
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YNew is undefined for the type LangPackage");
   }
   
   @Test
   public void testReturnExpIncompatibleTypes() {
-    this.assertIncompatibleTypes("return new C();", LangPackage.eINSTANCE.getYNew(), "A", "C");
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YNew is undefined for the type LangPackage");
   }
   
   @Test
   public void testArgExpIncompatibleTypes() {
-    this.assertIncompatibleTypes("this.m(new C());", LangPackage.eINSTANCE.getYNew(), "A", "C");
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YNew is undefined for the type LangPackage");
   }
   
   @Test
   public void testIfExpressionIncompatibleTypes() {
-    this.assertIncompatibleTypes("if (new C()) { return null; } ", 
-      LangPackage.eINSTANCE.getYNew(), 
-      "booleanType", "C");
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YNew is undefined for the type LangPackage");
   }
   
   @Test
   public void testAssignmentIncompatibleTypes() {
-    this.assertIncompatibleTypes("v : A = null; v = new C();", 
-      LangPackage.eINSTANCE.getYNew(), 
-      "A", "C");
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YNew is undefined for the type LangPackage");
   }
   
   @Test
   public void testInvalidNumberOfArgs() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {}");
-      _builder.newLine();
-      _builder.append("class B {}");
-      _builder.newLine();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m(a : A, b : B) -> C { return self.m(new B()); }");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      EClass _yMemberSelection = LangPackage.eINSTANCE.getYMemberSelection();
-      StringConcatenation _builder_1 = new StringConcatenation();
-      _builder_1.append("Invalid number of arguments: expected 2 but was 1");
-      this._validationTestHelper.assertError(_parse, _yMemberSelection, 
-        LangValidator.INVALID_ARGS, _builder_1.toString());
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
@@ -662,309 +448,28 @@ public class LiteLangValidatorTest1 {
   
   @Test
   public void testFieldAccessibility() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var private priv : A;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var protected  prot : A;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var public pub : A ;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> A{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.priv = null; // private field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.prot = null; // protected field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.pub = null; // public field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class B : A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> A{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.priv = null; // private field ERROR");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.prot = null; // protected field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.pub = null; // public field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        Assert.assertEquals(1, this._validationTestHelper.validate(it).size());
-        this._validationTestHelper.assertError(it, 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.MEMBER_NOT_ACCESSIBLE, 
-          "The private member priv is not accessible here");
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
   public void testFieldAccessibilityInSubclass() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var private A priv;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var protected A prot;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public A pub;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("A m() {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("this.priv = null; // private field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("this.prot = null; // protected field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("this.pub = null; // public field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("A m() {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).priv = null; // private field ERROR");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).prot = null; // protected field ERROR");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).pub = null; // public field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        Assert.assertEquals(2, this._validationTestHelper.validate(it).size());
-        this._validationTestHelper.assertError(it, 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.MEMBER_NOT_ACCESSIBLE, 
-          "The private member priv is not accessible here");
-        this._validationTestHelper.assertError(it, 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.MEMBER_NOT_ACCESSIBLE, 
-          "The protected member prot is not accessible here");
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
   public void testMethodAccessibility() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("private func priv() -> A{ return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("protected func prot() -> A { return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public func pub() -> A { return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> A{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a : A = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.priv(); // private method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.prot(); // protected method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.pub(); // public method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class B : A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> A{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a : A = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.priv(); // private method ERROR");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.prot(); // protected method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.pub(); // public method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        Assert.assertEquals(1, this._validationTestHelper.validate(it).size());
-        this._validationTestHelper.assertError(it, 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.MEMBER_NOT_ACCESSIBLE, 
-          "The private member priv is not accessible here");
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
   public void testMethodAccessibilityInSubclass() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("private func priv() -> A { return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("protected func prot() -> A { return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public func pub() -> A { return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func A m() -> A{");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a : A = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.priv(); // private method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.prot(); // protected method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = self.pub(); // public method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("func  m() -> A {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a : A = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = (new A()).priv(); // private method ERROR");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = (new A()).prot(); // protected method ERROR");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("a = (new A()).pub(); // public method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        Assert.assertEquals(4, this._validationTestHelper.validate(it).size());
-        this._validationTestHelper.assertError(it, 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.MEMBER_NOT_ACCESSIBLE, 
-          "The private member priv is not accessible here");
-        this._validationTestHelper.assertError(it, 
-          LangPackage.eINSTANCE.getYMemberSelection(), 
-          LangValidator.MEMBER_NOT_ACCESSIBLE, 
-          "The protected member prot is not accessible here");
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage"
+      + "\nThe method or field YMemberSelection is undefined for the type LangPackage");
   }
   
   @Test
@@ -1391,27 +896,8 @@ public class LiteLangValidatorTest1 {
   
   @Test
   public void testWrongSuperUsage() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("C m() {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return super;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      this._validationTestHelper.assertError(this._parseHelper.parse(_builder), LangPackage.eINSTANCE.getYSuper(), 
-        LangValidator.WRONG_SUPER_USAGE, 
-        "\'super\' can be used only as member selection receiver");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field YSuper is undefined for the type LangPackage");
   }
   
   @Test

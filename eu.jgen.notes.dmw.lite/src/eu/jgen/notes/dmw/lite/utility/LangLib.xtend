@@ -28,7 +28,6 @@ import org.apache.log4j.Logger
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.resource.ResourceSet
-import eu.jgen.notes.dmw.lite.scoping.LangIndex
 import eu.jgen.notes.dmw.lite.lang.YClass
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
 import com.google.common.io.CharStreams
@@ -36,7 +35,7 @@ import java.io.InputStreamReader
 import com.google.common.base.Charsets
 
 class LangLib {
-	@Inject extension LangIndex
+	//@Inject extension LangIndex
 
 	public val static MAIN_LIB = "eu/jgen/notes/lib/dmw/lang.dmw"
 
@@ -68,26 +67,26 @@ class LangLib {
 		resource.load(stream, resourceSet.getLoadOptions())
 	}
 
-	def getLangObjectClass(EObject context) {
-		val desc = context.getVisibleClassesDescriptions.findFirst[qualifiedName.toString == LIB_OBJECT]
-		if (desc === null)
-			return null
-		var o = desc.getEObjectOrProxy
-		if (o.eIsProxy)
-			o = context.eResource.resourceSet.getEObject(desc.getEObjectURI, true)
-		o as YClass
-	}
+//	def getLangObjectClass(EObject context) {
+//		val desc = context.getVisibleClassesDescriptions.findFirst[qualifiedName.toString == LIB_OBJECT]
+//		if (desc === null)
+//			return null
+//		var o = desc.getEObjectOrProxy
+//		if (o.eIsProxy)
+//			o = context.eResource.resourceSet.getEObject(desc.getEObjectURI, true)
+//		o as YClass
+//	}
 
 	/*
 	 * for Entities
 	 */
-	def getLangObjectEntity(EObject context) {
-		val desc = context.getVisibleEntityDescriptions.findFirst[qualifiedName.toString == LIB_OBJECT]
-		if (desc === null)
-			return null
-		var o = desc.getEObjectOrProxy
-		if (o.eIsProxy)
-			o = context.eResource.resourceSet.getEObject(desc.getEObjectURI, true)
-		o as YAnnotEntity
-	}
+//	def getLangObjectEntity(EObject context) {
+//		val desc = context.getVisibleEntityDescriptions.findFirst[qualifiedName.toString == LIB_OBJECT]
+//		if (desc === null)
+//			return null
+//		var o = desc.getEObjectOrProxy
+//		if (o.eIsProxy)
+//			o = context.eResource.resourceSet.getEObject(desc.getEObjectURI, true)
+//		o as YAnnotEntity
+//	}
 }

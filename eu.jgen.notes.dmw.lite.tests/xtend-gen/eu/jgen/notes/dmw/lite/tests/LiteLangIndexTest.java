@@ -25,21 +25,15 @@ package eu.jgen.notes.dmw.lite.tests;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
-import eu.jgen.notes.dmw.lite.scoping.LangIndex;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
-import java.util.Map;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -53,7 +47,7 @@ public class LiteLangIndexTest {
   
   @Inject
   @Extension
-  private LangIndex _langIndex;
+  private /* LangIndex */Object _langIndex;
   
   @Test
   public void testExportedEObjectDescriptions() {
@@ -193,28 +187,27 @@ public class LiteLangIndexTest {
   }
   
   private void assertExportedEObjectDescriptions(final EObject o, final CharSequence expected) {
-    final Function1<IEObjectDescription, QualifiedName> _function = (IEObjectDescription it) -> {
-      return it.getQualifiedName();
-    };
-    Assert.assertEquals(expected.toString(), 
-      IterableExtensions.join(IterableExtensions.<IEObjectDescription, QualifiedName>map(this._langIndex.getExportedEObjectDescriptions(o), _function), ", "));
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field getExportedEObjectDescriptions is undefined for the type EObject"
+      + "\nThe method or field qualifiedName is undefined"
+      + "\nmap cannot be resolved"
+      + "\njoin cannot be resolved");
   }
   
   private void assertClassesInIndex(final EObject o, final String expected) {
-    final Iterable<IEObjectDescription> visibleClassesDescriptions = this._langIndex.getVisibleClassesDescriptions(o);
-    final Function1<IEObjectDescription, QualifiedName> _function = (IEObjectDescription it) -> {
-      return it.getQualifiedName();
-    };
-    Assert.assertEquals(expected, 
-      IterableExtensions.join(IterableExtensions.<IEObjectDescription, QualifiedName>map(visibleClassesDescriptions, _function), ", "));
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field getVisibleClassesDescriptions is undefined for the type EObject"
+      + "\nThe method or field qualifiedName is undefined for the type Object"
+      + "\nmap cannot be resolved"
+      + "\njoin cannot be resolved");
   }
   
   private void assertExternalClassesInIndex(final EObject o, final String expected) {
-    final Map<QualifiedName, IEObjectDescription> visibleExternalClassesDescriptions = this._langIndex.getVisibleExternalClassesDescriptions(o);
-    final Function1<IEObjectDescription, QualifiedName> _function = (IEObjectDescription it) -> {
-      return it.getQualifiedName();
-    };
-    Assert.assertEquals(expected, 
-      IterableExtensions.join(IterableExtensions.<IEObjectDescription, QualifiedName>map(visibleExternalClassesDescriptions.values(), _function), ", "));
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field getVisibleExternalClassesDescriptions is undefined for the type EObject"
+      + "\nThe method or field qualifiedName is undefined for the type Object"
+      + "\nvalues cannot be resolved"
+      + "\nmap cannot be resolved"
+      + "\njoin cannot be resolved");
   }
 }

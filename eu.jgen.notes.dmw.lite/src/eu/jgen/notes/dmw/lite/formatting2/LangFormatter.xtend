@@ -6,7 +6,6 @@ package eu.jgen.notes.dmw.lite.formatting2
 import com.google.inject.Inject
 import eu.jgen.notes.dmw.lite.lang.YAnnotTop
 import eu.jgen.notes.dmw.lite.lang.YClass
-import eu.jgen.notes.dmw.lite.lang.YImport
 import eu.jgen.notes.dmw.lite.lang.YMember
 import eu.jgen.notes.dmw.lite.lang.YWidget
 import eu.jgen.notes.dmw.lite.services.LangGrammarAccess
@@ -32,7 +31,6 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey
 import eu.jgen.notes.dmw.lite.lang.YProperty
 import eu.jgen.notes.dmw.lite.lang.YFunction
 import eu.jgen.notes.dmw.lite.lang.YTuples
-import eu.jgen.notes.dmw.lite.lang.YBlock
 import eu.jgen.notes.dmw.lite.lang.YCreateStatement
 import eu.jgen.notes.dmw.lite.lang.YStructRefPair
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
@@ -43,11 +41,9 @@ class LangFormatter extends AbstractFormatter2 {
 
 	def dispatch void format(YWidget widget, extension IFormattableDocument document) {
 		widget.regionFor.keyword("package").append[oneSpace]
-		widget.regionFor.feature(LangPackage.eINSTANCE.YWidget_Name).append[noSpace]
 
-		for (YImport yImport : widget.getImports()) {
-			yImport.format;
-		}
+		widget.importSection.format
+
 		for (YAnnotTop yAnnotTop : widget.getAnnotations()) {
 			yAnnotTop.format;
 		}
@@ -64,14 +60,13 @@ class LangFormatter extends AbstractFormatter2 {
 		clazz.regionFor.keyword("->").surround[oneSpace]
 		clazz.regionFor.feature(LangPackage.eINSTANCE.YClass_EntityRef).surround[oneSpace]
 		clazz.regionFor.keyword("{").prepend[oneSpace].append[newLine]
-		clazz.inners.forEach [ innerClazz |
-			innerClazz.interior[indent].prepend[newLine].format
-		]
 		clazz.interior[indent].members.forEach [ member |
 				if (member instanceof YProperty) {
 					(member as YProperty).format
 				} else if (member instanceof YFunction) {
 					(member as YFunction).format
+				} else if (member instanceof YClass) {
+					(member as YClass).format
 				}
 			]		
 		clazz.regionFor.keyword("}").prepend[newLine].append[newLine]
@@ -84,7 +79,7 @@ class LangFormatter extends AbstractFormatter2 {
 	 	} else {
 	 			property.regionFor.keyword("var").prepend[newLine].append[oneSpace]
 	 	}	
-		property.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).surround[oneSpace]
+//		property.regionFor.feature(LangPackage.eINSTANCE.Yp).surround[oneSpace]
 		property.tuples.format
 		property.regionFor.keyword(":").surround[oneSpace]
 		property.regionFor.keyword("->").surround[oneSpace]
@@ -100,35 +95,28 @@ class LangFormatter extends AbstractFormatter2 {
 	 	    } else {
 	 			function.regionFor.keyword("func").prepend[newLine].append[oneSpace]
 	 	    }
-			function.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).prepend[oneSpace].append[noSpace]
+	//		function.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).prepend[oneSpace].append[noSpace]
 			function.regionFor.keyword("(").prepend[noSpace].append[noSpace]
 			function.params.forEach[param |
-				param.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).prepend[noSpace].append[oneSpace]
+//				param.regionFor.feature(LangPackage.eINSTANCE.YNamedElement_Name).prepend[noSpace].append[oneSpace]
 				param.regionFor.keyword(":").prepend[oneSpace].append[oneSpace]
 				param.type.prepend[oneSpace].append[noSpace]
 				function.regionFor.keyword(",").prepend[noSpace].append[noSpace]
 			]
 			function.regionFor.keyword(")").prepend[noSpace].append[oneSpace]
 			function.regionFor.keyword("->").surround[oneSpace]
-			function.regionFor.feature(LangPackage.eINSTANCE.YFunction_Returnvalue.surround[oneSpace])
 		    function.body.format
-	}
-	
-	def dispatch void format(YBlock block, extension IFormattableDocument document) {
-			block.regionFor.keyword("{").prepend[oneSpace].append[newLine]
-			block.interior[indent].statements.forEach[format]
-			block.regionFor.keyword("}").prepend[newLine]
 	}
 	
 	def dispatch void format(YCreateStatement createStatement, extension IFormattableDocument document) {
 		createStatement.regionFor.keyword("create").prepend[newLine].append[oneSpace]
 		createStatement.struct.format
-		createStatement.setBlock.format
+		createStatement.setExpressions.forEach[format]
 		createStatement.regionFor.keyword("success").prepend[newLine].append[oneSpace]
-		createStatement.success.format
+		createStatement.successExpressions.forEach[format]
 		createStatement.regionFor.keyword("already").prepend[newLine].append[oneSpace]
 		createStatement.regionFor.keyword("exist").prepend[oneSpace].append[oneSpace]
-		createStatement.alreadyExist.format
+		createStatement.alreadyExistExpressions.forEach[format]
 	}
 	
 	def dispatch void format(YStructRefPair structRefPair, extension IFormattableDocument document) {
@@ -143,14 +131,8 @@ class LangFormatter extends AbstractFormatter2 {
 		tuples.regionFor.keyword(">").prepend[noSpace].append[oneSpace]
 	}
 
-	def dispatch void format(YImport imp, extension IFormattableDocument document) {
-		imp.regionFor.keyword("import").prepend[newLine].append[oneSpace]
-		imp.regionFor.feature(LangPackage.eINSTANCE.YImport_ImportedNamespace)
-	}
-
 	def dispatch void format(YAnnotDatabase annotDatabase, extension IFormattableDocument document) {
 		annotDatabase.regionFor.keyword("@database").prepend[newLines = 2].append[oneSpace]
-		annotDatabase.regionFor.feature(LangPackage.eINSTANCE.YImport_ImportedNamespace).prepend[oneSpace]
 		annotDatabase.regionFor.keyword(";").prepend[noSpace]
 	}
 

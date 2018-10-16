@@ -26,7 +26,6 @@ import com.google.common.base.Objects;
 import com.google.common.collect.HashMultimap;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
-import eu.jgen.notes.dmw.lite.lang.YAccessLevel;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumn;
@@ -40,48 +39,21 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotPrimaryKey;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTop;
-import eu.jgen.notes.dmw.lite.lang.YBlock;
-import eu.jgen.notes.dmw.lite.lang.YClass;
-import eu.jgen.notes.dmw.lite.lang.YExpression;
-import eu.jgen.notes.dmw.lite.lang.YFunction;
-import eu.jgen.notes.dmw.lite.lang.YMember;
-import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
-import eu.jgen.notes.dmw.lite.lang.YNamedElement;
-import eu.jgen.notes.dmw.lite.lang.YParameter;
-import eu.jgen.notes.dmw.lite.lang.YProperty;
-import eu.jgen.notes.dmw.lite.lang.YReturn;
-import eu.jgen.notes.dmw.lite.lang.YStatement;
-import eu.jgen.notes.dmw.lite.lang.YSuper;
-import eu.jgen.notes.dmw.lite.lang.YVariableDeclaration;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
-import eu.jgen.notes.dmw.lite.scoping.LangIndex;
-import eu.jgen.notes.dmw.lite.typing.LangTypeComputer;
-import eu.jgen.notes.dmw.lite.typing.LangTypeConformance;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
-import eu.jgen.notes.dmw.lite.validation.AbstractLangValidator;
-import eu.jgen.notes.dmw.lite.validation.LangAccessibility;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Consumer;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.EcoreUtil2;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
-import org.eclipse.xtext.naming.QualifiedName;
-import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.validation.Check;
 import org.eclipse.xtext.validation.CheckType;
-import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ListExtensions;
 import org.eclipse.xtext.xbase.lib.StringExtensions;
+import org.eclipse.xtext.xbase.validation.XbaseValidator;
 
 /**
  * This class contains custom validation rules.
@@ -89,7 +61,7 @@ import org.eclipse.xtext.xbase.lib.StringExtensions;
  * See https://www.eclipse.org/Xtext/documentation/303_runtime_concepts.html#validation
  */
 @SuppressWarnings("all")
-public class LangValidator extends AbstractLangValidator {
+public class LangValidator extends XbaseValidator {
   protected final static String ISSUE_CODE_PREFIX = " eu.jgen.notes.dmw.lite.";
   
   public final static String HIERARCHY_CYCLE = (LangValidator.ISSUE_CODE_PREFIX + "HierarchyCycle");
@@ -186,22 +158,6 @@ public class LangValidator extends AbstractLangValidator {
   
   @Inject
   @Extension
-  private LangTypeComputer _langTypeComputer;
-  
-  @Inject
-  @Extension
-  private LangTypeConformance _langTypeConformance;
-  
-  @Inject
-  @Extension
-  private LangAccessibility _langAccessibility;
-  
-  @Inject
-  @Extension
-  private LangIndex _langIndex;
-  
-  @Inject
-  @Extension
   private IQualifiedNameProvider _iQualifiedNameProvider;
   
   /**
@@ -226,15 +182,8 @@ public class LangValidator extends AbstractLangValidator {
    * Entities
    */
   @Check(CheckType.FAST)
-  public void checkEntityHierarchy(final YAnnotEntity entity) {
-    boolean _contains = this._langUtil.entityHierarchy(entity).contains(entity);
-    if (_contains) {
-      String _name = entity.getName();
-      String _plus = ("cycle in hierarchy of entities \'" + _name);
-      String _plus_1 = (_plus + "\'");
-      this.error(_plus_1, LangPackage.eINSTANCE.getYAnnotEntity_Superannot(), 
-        LangValidator.HIERARCHY_CYCLE, entity.getSuperannot().getName());
-    }
+  public Object checkEntityHierarchy(final YAnnotEntity entity) {
+    return null;
   }
   
   @Check
@@ -263,27 +212,6 @@ public class LangValidator extends AbstractLangValidator {
             this.error(_plus_1, d, 
               LangPackage.eINSTANCE.getYAnnotEntity_Name(), LangValidator.DUPLICATE_ELEMENT);
           }
-        }
-      }
-    }
-  }
-  
-  @Check
-  public void checkDuplicateEntitiesAcrossFiles(final YWidget widget) {
-    final Map<QualifiedName, IEObjectDescription> externalEntities = this._langIndex.getVisibleExternalEntitiesDescriptions(widget);
-    EList<YAnnotTop> _annotations = widget.getAnnotations();
-    for (final YAnnotTop annot : _annotations) {
-      EObject _type = annot.getType();
-      if ((_type instanceof YAnnotEntity)) {
-        final QualifiedName annotName = this._iQualifiedNameProvider.getFullyQualifiedName(annot.getType());
-        boolean _containsKey = externalEntities.containsKey(annotName);
-        if (_containsKey) {
-          EObject _type_1 = annot.getType();
-          String _name = ((YAnnotEntity) _type_1).getName();
-          String _plus = ("The entity " + _name);
-          String _plus_1 = (_plus + " is already defined");
-          this.error(_plus_1, annot.getType(), 
-            LangPackage.eINSTANCE.getYAnnotEntity_Name(), LangValidator.DUPLICATE_ENTITY);
         }
       }
     }
@@ -382,303 +310,6 @@ public class LangValidator extends AbstractLangValidator {
     for (final YAnnotEntityInner element : _annots) {
       if ((element instanceof YAnnotRel)) {
         this.doCheckRelationshipCorrectness(((YAnnotRel) element));
-      }
-    }
-  }
-  
-  @Check
-  public void checkFunctionInvocation(final YMemberSelection memberSelection) {
-    boolean _isFunctioninvocation = memberSelection.isFunctioninvocation();
-    if (_isFunctioninvocation) {
-      String _name = memberSelection.getMember().getName();
-      boolean _equals = Objects.equal(_name, "moveView");
-      if (_equals) {
-        this.doValidateMoveStructureFunction(memberSelection);
-      }
-    }
-  }
-  
-  private void doValidateMoveStructureFunction(final YMemberSelection memberSelection) {
-    InputOutput.<String>println(memberSelection.getMember().getName());
-    final Consumer<YExpression> _function = (YExpression element) -> {
-      InputOutput.<YExpression>println(element);
-      final YMemberSelection a = ((YMemberSelection) element);
-      YMember _member = a.getMember();
-      final YProperty b = ((YProperty) _member);
-      String _name = b.getName();
-      String _plus = (_name + " : ");
-      String _name_1 = b.getType().getName();
-      String _plus_1 = (_plus + _name_1);
-      String _plus_2 = (_plus_1 + " -> ");
-      String _name_2 = b.getType().getEntityRef().getName();
-      String _plus_3 = (_plus_2 + _name_2);
-      InputOutput.<String>println(_plus_3);
-    };
-    memberSelection.getArgs().forEach(_function);
-  }
-  
-  /**
-   * Classes YMemberSelection
-   */
-  @Check
-  public void checkPropertyReferenceToAtttribute(final YProperty property) {
-    YAnnotAttr _attrRef = property.getAttrRef();
-    boolean _tripleEquals = (_attrRef == null);
-    if (_tripleEquals) {
-      return;
-    }
-    EObject _eContainer = property.eContainer();
-    final YClass parent = ((YClass) _eContainer);
-    YAnnotEntity _entityRef = parent.getEntityRef();
-    boolean _tripleEquals_1 = (_entityRef == null);
-    if (_tripleEquals_1) {
-      this.error("Entity has to implement entity type before pointing to attribute", 
-        LangPackage.eINSTANCE.getYProperty_AttrRef(), LangValidator.MISSING_ENTITY_REFERENCE, property.getName());
-      return;
-    }
-    String _name = property.getAttrRef().getName();
-    String _name_1 = property.getName();
-    boolean _equals = Objects.equal(_name, _name_1);
-    if (_equals) {
-      String _name_2 = property.getType().getName();
-      String _name_3 = property.getAttrRef().getYclass().getName();
-      boolean _notEquals = (!Objects.equal(_name_2, _name_3));
-      if (_notEquals) {
-        this.error("Attribute type does not match property type", LangPackage.eINSTANCE.getYMember_Type(), LangValidator.WRONG_TYPE, 
-          property.getType().getName());
-      }
-      EObject _eContainer_1 = property.getAttrRef().eContainer();
-      final String name = ((YAnnotEntity) _eContainer_1).getName();
-      String _name_4 = parent.getEntityRef().getName();
-      boolean _notEquals_1 = (!Objects.equal(name, _name_4));
-      if (_notEquals_1) {
-        this.error("Attribute does not belong to the chosen entity", LangPackage.eINSTANCE.getYProperty_AttrRef(), 
-          LangValidator.WRONG_CROSS_REFERENCE, property.getName());
-      }
-    } else {
-      this.error("Cannot find matching attribute for selected entity type", LangPackage.eINSTANCE.getYProperty_AttrRef(), 
-        LangValidator.MISSING_ENTITY_REFERENCE, property.getName());
-    }
-  }
-  
-  @Check
-  public void checkClassHierarchy(final YClass yclass) {
-    boolean _contains = this._langUtil.classHierarchy(yclass).contains(yclass);
-    if (_contains) {
-      String _name = yclass.getName();
-      String _plus = ("cycle in hierarchy of class \'" + _name);
-      String _plus_1 = (_plus + "\'");
-      this.error(_plus_1, LangPackage.eINSTANCE.getYClass_Superclass(), 
-        LangValidator.HIERARCHY_CYCLE, yclass.getSuperclass().getName());
-    }
-  }
-  
-  @Check
-  public void checkMemberSelection(final YMemberSelection memberSelection) {
-    final YMember member = memberSelection.getMember();
-    if (((member instanceof YProperty) && memberSelection.isFunctioninvocation())) {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("Function invocation on a property");
-      this.error(_builder.toString(), LangPackage.eINSTANCE.getYMemberSelection_Functioninvocation(), 
-        LangValidator.FUNCTION_INVOCATION_ON_PROPERTY);
-    } else {
-      if (((member instanceof YFunction) && (!memberSelection.isFunctioninvocation()))) {
-        StringConcatenation _builder_1 = new StringConcatenation();
-        _builder_1.append("Property selection on a function");
-        this.error(_builder_1.toString(), 
-          LangPackage.eINSTANCE.getYMemberSelection_Member(), 
-          LangValidator.PROPERTY_SELECTION_ON_FUNCTION);
-      }
-    }
-  }
-  
-  @Check
-  public void checkUnreachableCode(final YBlock block) {
-    final EList<YStatement> statements = block.getStatements();
-    for (int i = 0; (i < (((Object[])Conversions.unwrapArray(statements, Object.class)).length - 1)); i++) {
-      YStatement _get = statements.get(i);
-      if ((_get instanceof YReturn)) {
-        this.error("Unreachable code", statements.get((i + 1)), null, 
-          LangValidator.UNREACHABLE_CODE);
-        return;
-      }
-    }
-  }
-  
-  public void checkMethodEndsWithReturn(final YFunction function) {
-    boolean _isReturnvalue = function.isReturnvalue();
-    if (_isReturnvalue) {
-      YReturn _returnStatement = this._langUtil.returnStatement(function);
-      boolean _tripleEquals = (_returnStatement == null);
-      if (_tripleEquals) {
-        this.error(
-          "Function must end with a return statement", 
-          LangPackage.eINSTANCE.getYFunction_Body(), 
-          LangValidator.FUNCTION_FINAL_RETURN);
-      }
-    }
-  }
-  
-  @Check
-  public void checkNoDuplicateClasses(final YWidget widget) {
-    this.checkNoDuplicateElements(widget.getClasses(), "class");
-  }
-  
-  @Check
-  public void checkNoDuplicateMembers(final YClass yclass) {
-    this.checkNoDuplicateElements(this._langUtil.properties(yclass), "property");
-    this.checkNoDuplicateElements(this._langUtil.functions(yclass), "function");
-  }
-  
-  @Check
-  public void checkNoDuplicateSymbols(final YFunction function) {
-    this.checkNoDuplicateElements(function.getParams(), "parameter");
-    this.checkNoDuplicateElements(EcoreUtil2.<YVariableDeclaration>getAllContentsOfType(function.getBody(), YVariableDeclaration.class), "variable");
-  }
-  
-  @Check
-  public void checkConformance(final YExpression expression) {
-    final YClass actualType = this._langTypeComputer.typeFor(expression);
-    final YClass expectedType = this._langTypeComputer.expectedType(expression);
-    if (((expectedType == null) || (actualType == null))) {
-      return;
-    }
-    boolean _isConformant = this._langTypeConformance.isConformant(actualType, expectedType);
-    boolean _not = (!_isConformant);
-    if (_not) {
-      String _name = expectedType.getName();
-      String _plus = ("Incompatible types. Expected \'" + _name);
-      String _plus_1 = (_plus + "\' but was \'");
-      String _name_1 = actualType.getName();
-      String _plus_2 = (_plus_1 + _name_1);
-      String _plus_3 = (_plus_2 + "\'");
-      this.error(_plus_3, null, 
-        LangValidator.INCOMPATIBLE_TYPES);
-    }
-  }
-  
-  @Check
-  public void checkFunctionInvocationArguments(final YMemberSelection selection) {
-    final YMember method = selection.getMember();
-    if ((method instanceof YFunction)) {
-      int _size = ((YFunction)method).getParams().size();
-      int _size_1 = selection.getArgs().size();
-      boolean _notEquals = (_size != _size_1);
-      if (_notEquals) {
-        int _size_2 = ((YFunction)method).getParams().size();
-        String _plus = ("Invalid number of arguments: expected " + Integer.valueOf(_size_2));
-        String _plus_1 = (_plus + " but was ");
-        int _size_3 = selection.getArgs().size();
-        String _plus_2 = (_plus_1 + Integer.valueOf(_size_3));
-        this.error(_plus_2, 
-          LangPackage.eINSTANCE.getYMemberSelection_Member(), LangValidator.INVALID_ARGS);
-      }
-    }
-  }
-  
-  @Check
-  public void checkFunctionOverride(final YClass yclass) {
-    final Map<String, YFunction> hierarchyMethods = this._langUtil.classHierarchyMethods(yclass);
-    Iterable<YFunction> _functions = this._langUtil.functions(yclass);
-    for (final YFunction function : _functions) {
-      {
-        final YFunction overridden = hierarchyMethods.get(function.getName());
-        if (((overridden != null) && ((!this._langTypeConformance.isConformant(function.getType(), overridden.getType())) || 
-          (!IterableExtensions.elementsEqual(ListExtensions.<YParameter, YClass>map(function.getParams(), ((Function1<YParameter, YClass>) (YParameter it) -> {
-            return it.getType();
-          })), ListExtensions.<YParameter, YClass>map(overridden.getParams(), ((Function1<YParameter, YClass>) (YParameter it) -> {
-            return it.getType();
-          }))))))) {
-          String _name = function.getName();
-          String _plus = ("The function \'" + _name);
-          String _plus_1 = (_plus + "\' must override a superclass function");
-          this.error(_plus_1, function, 
-            LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.WRONG_FUNCTION_OVERRIDE);
-        } else {
-          YAccessLevel _access = function.getAccess();
-          YAccessLevel _access_1 = overridden.getAccess();
-          boolean _lessThan = (_access.compareTo(_access_1) < 0);
-          if (_lessThan) {
-            YAccessLevel _access_2 = overridden.getAccess();
-            String _plus_2 = ("Cannot reduce access from " + _access_2);
-            String _plus_3 = (_plus_2 + " to ");
-            YAccessLevel _access_3 = function.getAccess();
-            String _plus_4 = (_plus_3 + _access_3);
-            this.error(_plus_4, function, 
-              LangPackage.eINSTANCE.getYMember_Access(), LangValidator.REDUCED_ACCESSIBILITY);
-          }
-        }
-      }
-    }
-  }
-  
-  @Check
-  public void checkAccessibility(final YMemberSelection selection) {
-    final YMember member = selection.getMember();
-    if (((member.getName() != null) && (!this._langAccessibility.isAccessibleFrom(member, selection)))) {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("The ");
-      YAccessLevel _access = member.getAccess();
-      _builder.append(_access);
-      _builder.append(" member ");
-      String _name = member.getName();
-      _builder.append(_name);
-      _builder.append(" is not accessible here");
-      this.error(_builder.toString(), 
-        LangPackage.eINSTANCE.getYMemberSelection_Member(), 
-        LangValidator.MEMBER_NOT_ACCESSIBLE);
-    }
-  }
-  
-  @Check
-  public void checkDuplicateClassesInFiles(final YWidget widget) {
-    final Map<QualifiedName, IEObjectDescription> externalClasses = this._langIndex.getVisibleExternalClassesDescriptions(widget);
-    EList<YClass> _classes = widget.getClasses();
-    for (final YClass clazz : _classes) {
-      {
-        final QualifiedName className = this._iQualifiedNameProvider.getFullyQualifiedName(clazz);
-        boolean _containsKey = externalClasses.containsKey(className);
-        if (_containsKey) {
-          String _name = clazz.getName();
-          String _plus = ("The type " + _name);
-          String _plus_1 = (_plus + " is already defined");
-          this.error(_plus_1, clazz, LangPackage.eINSTANCE.getYNamedElement_Name(), 
-            LangValidator.DUPLICATE_CLASS);
-        }
-      }
-    }
-  }
-  
-  @Check
-  public void checkSuper(final YSuper ysuper) {
-    EStructuralFeature _eContainingFeature = ysuper.eContainingFeature();
-    EReference _yMemberSelection_Receiver = LangPackage.eINSTANCE.getYMemberSelection_Receiver();
-    boolean _notEquals = (!Objects.equal(_eContainingFeature, _yMemberSelection_Receiver));
-    if (_notEquals) {
-      this.error("\'super\' can be used only as member selection receiver", null, LangValidator.WRONG_SUPER_USAGE);
-    }
-  }
-  
-  private void checkNoDuplicateElements(final Iterable<? extends YNamedElement> elements, final String desc) {
-    final HashMultimap<String, YNamedElement> multiMap = HashMultimap.<String, YNamedElement>create();
-    for (final YNamedElement element : elements) {
-      multiMap.put(element.getName(), element);
-    }
-    Set<Map.Entry<String, Collection<YNamedElement>>> _entrySet = multiMap.asMap().entrySet();
-    for (final Map.Entry<String, Collection<YNamedElement>> entry : _entrySet) {
-      {
-        final Collection<YNamedElement> duplicates = entry.getValue();
-        int _size = duplicates.size();
-        boolean _greaterThan = (_size > 1);
-        if (_greaterThan) {
-          for (final YNamedElement duplicate : duplicates) {
-            String _name = duplicate.getName();
-            String _plus = ((("Duplicate " + desc) + " \'") + _name);
-            String _plus_1 = (_plus + "\'");
-            this.error(_plus_1, duplicate, 
-              LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.DUPLICATE_ELEMENT);
-          }
-        }
       }
     }
   }
@@ -889,40 +520,6 @@ public class LangValidator extends AbstractLangValidator {
   }
   
   @Check
-  public void checkClassExtendingStructureHasProperties(final YClass clazz) {
-    String _name = clazz.getName();
-    boolean _equals = Objects.equal(_name, "Object");
-    if (_equals) {
-      return;
-    }
-    if ((Objects.equal(clazz.getSuperclass().getName(), "Structure") && (clazz.getMembers().size() == 0))) {
-      String _name_1 = clazz.getName();
-      String _plus = ("Class " + _name_1);
-      String _plus_1 = (_plus + " does not have any properties yet.");
-      this.error(_plus_1, clazz, 
-        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.CLASS_NEED_TO_HAVE_PROPERTIES);
-    }
-  }
-  
-  @Check
-  public void checkIfClassHasExtention(final YClass clazz) {
-    String _name = clazz.getName();
-    boolean _equals = Objects.equal(_name, "Object");
-    if (_equals) {
-      return;
-    }
-    YClass _superclass = clazz.getSuperclass();
-    boolean _tripleEquals = (_superclass == null);
-    if (_tripleEquals) {
-      String _name_1 = clazz.getName();
-      String _plus = ("Class " + _name_1);
-      String _plus_1 = (_plus + " does need to extend Object type.");
-      this.error(_plus_1, clazz, 
-        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.CLASS_NEED_TO_BE_EXTENDED);
-    }
-  }
-  
-  @Check
   public void checkRelationshipHasOnlySingleParentDesignated(final YAnnotRel relationship) {
     if ((((relationship.getInverse() != null) && relationship.isParent()) && relationship.getInverse().isParent())) {
       String _name = relationship.getName();
@@ -934,17 +531,6 @@ public class LangValidator extends AbstractLangValidator {
         ") can have  only one designated parent.");
       this.error(_plus_3, relationship, LangPackage.Literals.YANNOT_REL__NAME, 
         LangValidator.ONLY_ONE_DESGNATED_PARENT);
-    }
-  }
-  
-  @Check
-  public void checkClassNameStartsWithCapital(final YClass clazz) {
-    String _firstUpper = StringExtensions.toFirstUpper(clazz.getName());
-    String _name = clazz.getName();
-    boolean _notEquals = (!Objects.equal(_firstUpper, _name));
-    if (_notEquals) {
-      this.error("Class name should start with a capital letter", clazz, LangPackage.eINSTANCE.getYNamedElement_Name(), 
-        LangValidator.CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL);
     }
   }
   
@@ -977,39 +563,6 @@ public class LangValidator extends AbstractLangValidator {
     if (_not) {
       this.error("Attribute type not compatible with default value", annotAttr, 
         LangPackage.eINSTANCE.getYAnnotAttr_Yclass(), LangValidator.ATTRIBUTE_TYPE_NOT_COMP_WITH_DEFAULT);
-    }
-  }
-  
-  @Check
-  public void checkFunctionNameStartsWithLowecase(final YFunction function) {
-    String _firstLower = StringExtensions.toFirstLower(function.getName());
-    String _name = function.getName();
-    boolean _notEquals = (!Objects.equal(_firstLower, _name));
-    if (_notEquals) {
-      this.error("Function name should start with a lower case letter", function, 
-        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.FUNCTION_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
-    }
-  }
-  
-  @Check
-  public void checkPropertyNameStartsWithLowecase(final YProperty property) {
-    String _firstLower = StringExtensions.toFirstLower(property.getName());
-    String _name = property.getName();
-    boolean _notEquals = (!Objects.equal(_firstLower, _name));
-    if (_notEquals) {
-      this.error("Property name should start with a lower case letter", property, 
-        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.PROPERTY_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
-    }
-  }
-  
-  @Check
-  public void checkVariableNameStartsWithLowecase(final YVariableDeclaration variableDeclaration) {
-    String _firstLower = StringExtensions.toFirstLower(variableDeclaration.getName());
-    String _name = variableDeclaration.getName();
-    boolean _notEquals = (!Objects.equal(_firstLower, _name));
-    if (_notEquals) {
-      this.error("Variable name should start with a lower case letter", variableDeclaration, 
-        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.VARIABLE_NAME_FIRST_CHARACTER_NOT_LOWERCASE);
     }
   }
   

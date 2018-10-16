@@ -31,174 +31,174 @@ class LangSwiftWidgetGenerator implements IGenerator {
 
 			input.allContents.filter[element2|element2 instanceof YWidget].forEach [ element2 |
 				val widget = element2 as YWidget
-				generateTableClasses(fsa, widget, annotSwift)
-				generateWidget(fsa, widget, annotSwift)
+	//			generateTableClasses(fsa, widget, annotSwift)
+	//			generateWidget(fsa, widget, annotSwift)
 			]
 		]
 	}
 
-	def generateWidget(IFileSystemAccess fsa, YWidget widget, YAnnotSwift annotSwift) {
-		widget.classes.forEach [ clazz |
-			if (clazz.superclass !== null && clazz.superclass.name == "Widget") {
-				val body = '''
-					// dmw-generator-version: 0.2
-															
-					//  Created by Marek Stankiewicz on 17.04.2018.
-					//  Copyright © 2018 JGen. All rights reserved.
-															
-					import Foundation
-					
-					«clazz.documentation»
-					class «clazz.name»  {
-						   «generateInnerClasses(clazz)»
-						   
-						   «generateTableClasses(clazz)»
-					
-					}
-				'''
-				fsa.generateFile(
-					annotSwift.name + "/Sources/" + annotSwift.name + "/" + clazz.name + ".swift",
-					LangOutputProvider.SWIFT,
-					'''		
-						
-						«body»
-					'''
-				)
-				fsa.generateFile(
-					annotSwift.name + "/Sources/" + annotSwift.name + "/" + "main.swift",
-					LangOutputProvider.SWIFT,
-					'''		
-						// dmw-generator-version: 0.2
-																					
-						//  Created by Marek Stankiewicz on 17.04.2018.
-						//  Copyright © 2018 JGen. All rights reserved.
-																					
-						import Foundation
-						import Kitura
-						import HeliumLogger
-						import LoggerAPI
-						
-						let logger = HeliumLogger()
-						let router = Router()
-						
-						router.get("/") { request, response, next in
-						response.send("Hello")
-						next()
-						}
-						
-						Kitura.addHTTPServer(onPort: 8080, with: router)
-						Kitura.run()
-					'''
-				)
+//	def generateWidget(IFileSystemAccess fsa, YWidget widget, YAnnotSwift annotSwift) {
+//		widget.classes.forEach [ clazz |
+//			if (clazz.superclass !== null && clazz.superclass.name == "Widget") {
+//				val body = '''
+//					// dmw-generator-version: 0.2
+//															
+//					//  Created by Marek Stankiewicz on 17.04.2018.
+//					//  Copyright © 2018 JGen. All rights reserved.
+//															
+//					import Foundation
+//					
+//					«clazz.documentation»
+//					class «clazz.name»  {
+//						   «generateInnerClasses(clazz)»
+//						   
+//						   «generateTableClasses(clazz)»
+//					
+//					}
+//				'''
+//				fsa.generateFile(
+//					annotSwift.name + "/Sources/" + annotSwift.name + "/" + clazz.name + ".swift",
+//					LangOutputProvider.SWIFT,
+//					'''		
+//						
+//						«body»
+//					'''
+//				)
+//				fsa.generateFile(
+//					annotSwift.name + "/Sources/" + annotSwift.name + "/" + "main.swift",
+//					LangOutputProvider.SWIFT,
+//					'''		
+//						// dmw-generator-version: 0.2
+//																					
+//						//  Created by Marek Stankiewicz on 17.04.2018.
+//						//  Copyright © 2018 JGen. All rights reserved.
+//																					
+//						import Foundation
+//						import Kitura
+//						import HeliumLogger
+//						import LoggerAPI
+//						
+//						let logger = HeliumLogger()
+//						let router = Router()
+//						
+//						router.get("/") { request, response, next in
+//						response.send("Hello")
+//						next()
+//						}
+//						
+//						Kitura.addHTTPServer(onPort: 8080, with: router)
+//						Kitura.run()
+//					'''
+//				)
+//
+//			}
+//		]
+//	}
 
-			}
-		]
-	}
+//	protected def String generateTableClasses(YClass clazz) {
+//
+//		for (inner : clazz.inners) {
+//			if (inner.entityRef !== null) {
+//			 
+//			}
+//		}
+//		return ""
+//	}
 
-	protected def String generateTableClasses(YClass clazz) {
+//	protected def String generateInnerClasses(YClass clazz) {
+//		'''
+//			«FOR innerclazz : clazz.inners»
+//				«generateClass(innerclazz)»
+//				
+//			«ENDFOR»
+//		'''
+//	}
 
-		for (inner : clazz.inners) {
-			if (inner.entityRef !== null) {
-			 
-			}
-		}
-		return ""
-	}
+//	protected def String generateClass(YClass innerclazz) {
+//		if (innerclazz.superclass !== null && innerclazz.superclass.name == "Structure") {
+//			'''
+//				«innerclazz.documentation»  
+//				public class «innerclazz.name»  {
+//					«FOR member : innerclazz.members»
+//						«IF member instanceof YProperty»
+//							«generatePropertyForStructure(member as YProperty)»
+//						«ENDIF»
+//					«ENDFOR»
+//					«generateFunctionInit(innerclazz)» 
+//				}
+//			'''
+//		}
+//	}
 
-	protected def String generateInnerClasses(YClass clazz) {
-		'''
-			«FOR innerclazz : clazz.inners»
-				«generateClass(innerclazz)»
-				
-			«ENDFOR»
-		'''
-	}
+//	def generateFunctionInit(YClass clazz) {
+//		'''
+//			init() {
+//				«FOR member : clazz.members»
+//					«IF member instanceof YProperty»
+//						«generatePropertyInit(member as YProperty)»
+//					«ENDIF»
+//				«ENDFOR»
+//			}
+//		'''
+//	}
 
-	protected def String generateClass(YClass innerclazz) {
-		if (innerclazz.superclass !== null && innerclazz.superclass.name == "Structure") {
-			'''
-				«innerclazz.documentation»  
-				public class «innerclazz.name»  {
-					«FOR member : innerclazz.members»
-						«IF member instanceof YProperty»
-							«generatePropertyForStructure(member as YProperty)»
-						«ENDIF»
-					«ENDFOR»
-					«generateFunctionInit(innerclazz)» 
-				}
-			'''
-		}
-	}
+//	def generatePropertyInit(YProperty property) {
+//		switch (property.type.name) {
+//			case "Double": {
+//				return property.name + " = " + "0;"
+//			}
+//			case "Int": {
+//				return property.name + " = " + "0;"
+//			}
+//			case "Short": {
+//				return property.name + " = " + "0;"
+//			}
+//			case "String": {
+//				return property.name + " = " + "\"\";"
+//			}
+//			case "Date": {
+//				return property.name + " = " + "Date();"
+//			}
+//			case "Time": {
+//				return property.name + " = " + "Date();"
+//			}
+//			default: {
+//				return "unknown"
+//			}
+//		}
+//	}
 
-	def generateFunctionInit(YClass clazz) {
-		'''
-			init() {
-				«FOR member : clazz.members»
-					«IF member instanceof YProperty»
-						«generatePropertyInit(member as YProperty)»
-					«ENDIF»
-				«ENDFOR»
-			}
-		'''
-	}
+//	protected def String generatePropertyForStructure(YProperty property) {
+//		'''
+//		«property.documentation»  
+//		var «property.name» : «property.generatePropertyType»;'''
+//	}
 
-	def generatePropertyInit(YProperty property) {
-		switch (property.type.name) {
-			case "Double": {
-				return property.name + " = " + "0;"
-			}
-			case "Int": {
-				return property.name + " = " + "0;"
-			}
-			case "Short": {
-				return property.name + " = " + "0;"
-			}
-			case "String": {
-				return property.name + " = " + "\"\";"
-			}
-			case "Date": {
-				return property.name + " = " + "Date();"
-			}
-			case "Time": {
-				return property.name + " = " + "Date();"
-			}
-			default: {
-				return "unknown"
-			}
-		}
-	}
-
-	protected def String generatePropertyForStructure(YProperty property) {
-		'''
-		«property.documentation»  
-		var «property.name» : «property.generatePropertyType»;'''
-	}
-
-	protected def String generatePropertyType(YProperty property) {
-		switch (property.type.name) {
-			case "Double": {
-				return "Double"
-			}
-			case "Int": {
-				return "Int"
-			}
-			case "Short": {
-				return "Int16"
-			}
-			case "String": {
-				return "String"
-			}
-			case "Date": {
-				return "Date"
-			}
-			case "Time": {
-				return "Date"
-			}
-			default: {
-				return "unknown"
-			}
-		}
-	}
+//	protected def String generatePropertyType(YProperty property) {
+//		switch (property.type.name) {
+//			case "Double": {
+//				return "Double"
+//			}
+//			case "Int": {
+//				return "Int"
+//			}
+//			case "Short": {
+//				return "Int16"
+//			}
+//			case "String": {
+//				return "String"
+//			}
+//			case "Date": {
+//				return "Date"
+//			}
+//			case "Time": {
+//				return "Date"
+//			}
+//			default: {
+//				return "unknown"
+//			}
+//		}
+//	}
 
 	protected def void generatePackageModule(IFileSystemAccess fsa, YAnnotSwift annotSwift) {
 		fsa.generateFile(

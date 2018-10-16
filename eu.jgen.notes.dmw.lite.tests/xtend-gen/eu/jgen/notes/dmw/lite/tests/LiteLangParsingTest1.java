@@ -23,35 +23,16 @@
 package eu.jgen.notes.dmw.lite.tests;
 
 import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.lang.YAssignment;
-import eu.jgen.notes.dmw.lite.lang.YClass;
-import eu.jgen.notes.dmw.lite.lang.YFunction;
-import eu.jgen.notes.dmw.lite.lang.YIfStatement;
-import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
-import eu.jgen.notes.dmw.lite.lang.YNew;
-import eu.jgen.notes.dmw.lite.lang.YNull;
-import eu.jgen.notes.dmw.lite.lang.YParameter;
-import eu.jgen.notes.dmw.lite.lang.YReturn;
-import eu.jgen.notes.dmw.lite.lang.YSelf;
-import eu.jgen.notes.dmw.lite.lang.YStatement;
-import eu.jgen.notes.dmw.lite.lang.YSymbolRef;
-import eu.jgen.notes.dmw.lite.lang.YVariableDeclaration;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
-import java.util.function.Consumer;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
 import org.eclipse.xtext.testing.validation.ValidationTestHelper;
-import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ObjectExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -91,314 +72,93 @@ public class LiteLangParsingTest1 {
   
   @Test
   public void testThenBlockWithoutStatements() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var c : C;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("if (true) {");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return self.c;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final String text = _builder.toString();
-      final Consumer<Issue> _function = (Issue it) -> {
-        InputOutput.println();
-      };
-      this._validationTestHelper.validate(this.parseHelper.parse(text)).forEach(_function);
-      YWidget _parse = this.parseHelper.parse(text);
-      final Procedure1<YWidget> _function_1 = (YWidget it) -> {
-        YStatement _head = IterableExtensions.<YStatement>head(IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(it.getClasses()))).getBody().getStatements());
-        final YIfStatement ifS = ((YIfStatement) _head);
-        Assert.assertTrue(ifS.getThenBlock().getStatements().isEmpty());
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function_1);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nYIfStatement cannot be resolved to a type."
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nhead cannot be resolved"
+      + "\nthenBlock cannot be resolved"
+      + "\nstatements cannot be resolved"
+      + "\nempty cannot be resolved"
+      + "\nassertTrue cannot be resolved");
   }
   
   @Test
   public void testElse() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var c : C;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C  {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("if (true)");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("if (false)");
-      _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.append("self.c = null;");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("else");
-      _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.append("self.c = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return self.c;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final String text = _builder.toString();
-      final Consumer<Issue> _function = (Issue it) -> {
-        InputOutput.println();
-      };
-      this._validationTestHelper.validate(this.parseHelper.parse(text)).forEach(_function);
-      YWidget _parse = this.parseHelper.parse(text);
-      final Procedure1<YWidget> _function_1 = (YWidget it) -> {
-        YStatement _head = IterableExtensions.<YStatement>head(IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(it.getClasses()))).getBody().getStatements());
-        final YIfStatement ifS = ((YIfStatement) _head);
-        Assert.assertNull(ifS.getElseBlock());
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function_1);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nYIfStatement cannot be resolved to a type."
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nhead cannot be resolved"
+      + "\nelseBlock cannot be resolved"
+      + "\nassertNull cannot be resolved");
   }
   
   @Test
   public void testElseWithBlock() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var c : C;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("if (true) {");
-      _builder.newLine();
-      _builder.append("\t\t\t");
-      _builder.append("if (false)");
-      _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.append("self.c = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("} else");
-      _builder.newLine();
-      _builder.append("\t\t\t\t");
-      _builder.append("self.c = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return self.c;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final String text = _builder.toString();
-      final Consumer<Issue> _function = (Issue it) -> {
-        InputOutput.println();
-      };
-      this._validationTestHelper.validate(this.parseHelper.parse(text)).forEach(_function);
-      YWidget _parse = this.parseHelper.parse(text);
-      final Procedure1<YWidget> _function_1 = (YWidget it) -> {
-        YStatement _head = IterableExtensions.<YStatement>head(IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(it.getClasses()))).getBody().getStatements());
-        final YIfStatement ifS = ((YIfStatement) _head);
-        Assert.assertNotNull(ifS.getElseBlock());
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function_1);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nYIfStatement cannot be resolved to a type."
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nhead cannot be resolved"
+      + "\nelseBlock cannot be resolved"
+      + "\nassertNotNull cannot be resolved");
   }
   
   @Test
   public void testMemberSelectionLeftAssociativity() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> A { return self.m().m(); }");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final String text = _builder.toString();
-      final Consumer<Issue> _function = (Issue it) -> {
-        InputOutput.println();
-      };
-      this._validationTestHelper.validate(this.parseHelper.parse(text)).forEach(_function);
-      this.assertAssociativity(IterableExtensions.<YStatement>last(IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(this.parseHelper.parse(text).getClasses()))).getBody().getStatements()), "((this.m).m)");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nlast cannot be resolved"
+      + "\nassertAssociativity cannot be resolved");
   }
   
   @Test
   public void testAssignmentRightAssociativity() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> A {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("f : A = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("g : A = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("f = g = null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final String text = _builder.toString();
-      final Consumer<Issue> _function = (Issue it) -> {
-        InputOutput.println();
-      };
-      this._validationTestHelper.validate(this.parseHelper.parse(text)).forEach(_function);
-      this.assertAssociativity(IterableExtensions.<YStatement>last(IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(this.parseHelper.parse(text).getClasses()))).getBody().getStatements()), "(f = (g = null))");
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nlast cannot be resolved"
+      + "\nassertAssociativity cannot be resolved");
   }
   
   @Test
   public void testParameterAndVariable() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m(A p) -> A {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("v : A = null;");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      final String text = _builder.toString();
-      final Consumer<Issue> _function = (Issue it) -> {
-        InputOutput.println();
-      };
-      this._validationTestHelper.validate(this.parseHelper.parse(text)).forEach(_function);
-      YFunction _head = IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(this.parseHelper.parse(text).getClasses())));
-      final Procedure1<YFunction> _function_1 = (YFunction it) -> {
-        Assert.assertNotNull(IterableExtensions.<YParameter>head(it.getParams()));
-        YStatement _head_1 = IterableExtensions.<YStatement>head(it.getBody().getStatements());
-        Assert.assertTrue((_head_1 instanceof YVariableDeclaration));
-      };
-      ObjectExtensions.<YFunction>operator_doubleArrow(_head, _function_1);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nYVariableDeclaration cannot be resolved to a type."
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nhead cannot be resolved");
   }
   
-  private void assertAssociativity(final YStatement s, final CharSequence expected) {
-    Assert.assertEquals(expected.toString(), this.stringRepr(s));
+  private void assertAssociativity(final /* YStatement */Object s, final CharSequence expected) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nstringRepr cannot be resolved");
   }
   
-  private String stringRepr(final YStatement s) {
-    String _switchResult = null;
-    boolean _matched = false;
-    if (s instanceof YAssignment) {
-      _matched=true;
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("(");
-      String _stringRepr = this.stringRepr(((YAssignment)s).getLeft());
-      _builder.append(_stringRepr);
-      _builder.append(" = ");
-      String _stringRepr_1 = this.stringRepr(((YAssignment)s).getRight());
-      _builder.append(_stringRepr_1);
-      _builder.append(")");
-      _switchResult = _builder.toString();
-    }
-    if (!_matched) {
-      if (s instanceof YMemberSelection) {
-        _matched=true;
-        StringConcatenation _builder = new StringConcatenation();
-        _builder.append("(");
-        String _stringRepr = this.stringRepr(((YMemberSelection)s).getReceiver());
-        _builder.append(_stringRepr);
-        _builder.append(".");
-        String _name = ((YMemberSelection)s).getMember().getName();
-        _builder.append(_name);
-        _builder.append(")");
-        _switchResult = _builder.toString();
-      }
-    }
-    if (!_matched) {
-      if (s instanceof YSelf) {
-        _matched=true;
-        _switchResult = "this";
-      }
-    }
-    if (!_matched) {
-      if (s instanceof YNew) {
-        _matched=true;
-        StringConcatenation _builder = new StringConcatenation();
-        _builder.append("new ");
-        String _name = ((YNew)s).getType().getName();
-        _builder.append(_name);
-        _builder.append("()");
-        _switchResult = _builder.toString();
-      }
-    }
-    if (!_matched) {
-      if (s instanceof YNull) {
-        _matched=true;
-        _switchResult = "null";
-      }
-    }
-    if (!_matched) {
-      if (s instanceof YSymbolRef) {
-        _matched=true;
-        _switchResult = ((YSymbolRef)s).getSymbol().getName();
-      }
-    }
-    if (!_matched) {
-      if (s instanceof YReturn) {
-        _matched=true;
-        _switchResult = this.stringRepr(((YReturn)s).getExpression());
-      }
-    }
-    return _switchResult;
+  private String stringRepr(final /* YStatement */Object s) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nYAssignment cannot be resolved to a type."
+      + "\nYMemberSelection cannot be resolved to a type."
+      + "\nYSelf cannot be resolved to a type."
+      + "\nYNew cannot be resolved to a type."
+      + "\nYNull cannot be resolved to a type."
+      + "\nYSymbolRef cannot be resolved to a type."
+      + "\nYReturn cannot be resolved to a type."
+      + "\nUnreachable code: The case can never match. It is already handled by a previous condition."
+      + "\nUnreachable code: The case can never match. It is already handled by a previous condition."
+      + "\nUnreachable code: The case can never match. It is already handled by a previous condition."
+      + "\nUnreachable code: The case can never match. It is already handled by a previous condition."
+      + "\nUnreachable code: The case can never match. It is already handled by a previous condition."
+      + "\nUnreachable code: The case can never match. It is already handled by a previous condition."
+      + "\nleft cannot be resolved"
+      + "\nstringRepr cannot be resolved"
+      + "\nright cannot be resolved"
+      + "\nstringRepr cannot be resolved"
+      + "\nreceiver cannot be resolved"
+      + "\nstringRepr cannot be resolved"
+      + "\nmember cannot be resolved"
+      + "\nname cannot be resolved"
+      + "\ntype cannot be resolved"
+      + "\nname cannot be resolved"
+      + "\nsymbol cannot be resolved"
+      + "\nname cannot be resolved"
+      + "\nexpression cannot be resolved"
+      + "\nstringRepr cannot be resolved");
   }
 }

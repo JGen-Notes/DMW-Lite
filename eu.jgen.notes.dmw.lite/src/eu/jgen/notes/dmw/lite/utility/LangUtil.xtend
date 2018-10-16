@@ -30,12 +30,10 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable
 import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign
-import eu.jgen.notes.dmw.lite.lang.YBlock
 import eu.jgen.notes.dmw.lite.lang.YClass
 import eu.jgen.notes.dmw.lite.lang.YFunction
 import eu.jgen.notes.dmw.lite.lang.YMember
 import eu.jgen.notes.dmw.lite.lang.YProperty
-import eu.jgen.notes.dmw.lite.lang.YReturn
 import org.eclipse.emf.ecore.EClass
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.xtext.EcoreUtil2
@@ -50,6 +48,8 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
 import eu.jgen.notes.dmw.lite.lang.LangFactory
 import eu.jgen.notes.dmw.lite.lang.YAccessLevel
+import eu.jgen.notes.dmw.lite.runtimes.DMWRuntimeException
+import java.util.List
 
 class LangUtil {
 
@@ -65,57 +65,51 @@ class LangUtil {
 		c.members.filter(YFunction)
 	}
 
-	def returnStatement(YFunction m) {
-		m.body.returnStatement
-	}
-
-	def returnStatement(YBlock block) {
-		block.statements.filter(YReturn).head
-	}
-
-	def classHierarchy(YClass c) {
-		val visited = newLinkedHashSet()
-
-		var current = c.superclass
-		while (current !== null && !visited.contains(current)) {
-			visited.add(current)
-			current = current.superclass
-		}
-
-		val object = c.getLangObjectClass
-		if (object !== null)
-			visited.add(object)
-
-		visited
-	}
-
-	def classHierarchyMethods(YClass c) {
-		// reverse the list so that methods in subclasses
-		// will be added later to the map, thus overriding
-		// the one already present in the superclasses
-		// if the methods have the same name
-		// do something
-		c.classHierarchy.toList.reverseView.map[functions].flatten.toMap[name]
-	}
-
-	def classHierarchyMembers(YClass c) {
-		c.classHierarchy.map[members].flatten
-	}
-
-	def memberAsString(YMember m) {
-		val a = m.eContainer as YClass
-		a.name + if (m instanceof YFunction)
-			"(" + m.params.map[type.name].join(", ") + ")"
-		else
-			""
-	}
-
-	def memberAsStringWithType(YMember m) {
-
-		// println(m)
-		m.memberAsString + " : " // + m.type.name
-	}
-
+//	def returnStatement(YFunction m) {
+//		m.body.returnStatement
+//	}
+//
+//	def returnStatement(YBlock block) {
+//		block.statements.filter(YReturn).head
+//	}
+//	def classHierarchy(YClass c) {
+//		val visited = newLinkedHashSet()
+//
+//		var current = c.superclass
+//		while (current !== null && !visited.contains(current)) {
+//			visited.add(current)
+//			current = current.superclass
+//		}
+//
+//		val object = c.getLangObjectClass
+//		if (object !== null)
+//			visited.add(object)
+//
+//		visited
+//	}
+//	def classHierarchyMethods(YClass c) {
+//		// reverse the list so that methods in subclasses
+//		// will be added later to the map, thus overriding
+//		// the one already present in the superclasses
+//		// if the methods have the same name
+//		// do something
+//		c.classHierarchy.toList.reverseView.map[functions].flatten.toMap[name]
+//	}
+//	def classHierarchyMembers(YClass c) {
+//		c.classHierarchy.map[members].flatten
+//	}
+//	def memberAsString(YMember m) {
+//		val a = m.eContainer as YClass
+//		a.name + if (m instanceof YFunction)
+//			"(" + m.params.map[type.name].join(", ") + ")"
+//		else
+//			""
+//	}
+//	def memberAsStringWithType(YMember m) {
+//
+//		// println(m)
+//		m.memberAsString + " : " // + m.type.name
+//	}
 	def getMemberName(YMember member) {
 		member
 	}
@@ -123,35 +117,36 @@ class LangUtil {
 	/*
 	 *  for Entities
 	 */
-	def entityHierarchy(YAnnotEntity c) {
-		val visited = newLinkedHashSet()
-		var current = c.superannot
-		while (current !== null && !visited.contains(current)) {
-			visited.add(current)
-			current = current.superannot
-		}
-		val object = c.getLangObjectClass
-		if (object !== null)
-			visited.add(object)
-		visited
-	}
-	
+//	def entityHierarchy(YAnnotEntity c) {
+//		val visited = newLinkedHashSet()
+//		var current = c.superannot
+//		while (current !== null && !visited.contains(current)) {
+//			visited.add(current)
+//			current = current.superannot
+//		}
+//		val object = c.getLangObjectClass
+//		if (object !== null)
+//			visited.add(object)
+//		visited
+//	}
 	def String getImplementingColumnName(YAnnotTable table, YMember member) {
 		for (annotAbstractColumn : table.columns) {
-			if(annotAbstractColumn.type instanceof YAnnotColumn) {
-				if((annotAbstractColumn.type as YAnnotColumn).attrref.name == member.name) {
+			if (annotAbstractColumn.type instanceof YAnnotColumn) {
+				if ((annotAbstractColumn.type as YAnnotColumn).attrref.name == member.name) {
 					return annotAbstractColumn.name
 				}
 			} else {
-				
+
 				// need to review
-				if((((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).name == member.name) {
-					return (((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).name
+				if ((((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).name ==
+					member.name) {
+					return (((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).
+						name
 				}
 				return (((annotAbstractColumn.type as YAnnotColumnLike).columnref.type) as YAnnotAbstractColumn).name
-			}			
+			}
 		}
-		return ""	
+		return ""
 	}
 
 	def YAnnotTable getImplementingTable(YAnnotEntity entity) {
@@ -176,7 +171,7 @@ class LangUtil {
 		return null
 	}
 
-	def boolean isTechnicalDesign(EObject context) { 
+	def boolean isTechnicalDesign(EObject context) {
 		for (element : EcoreUtil2.getResourceSet(EcoreUtil2.getRoot(context, true)).allContents.toList) {
 			if (element instanceof YAnnotTechnicalDesign) {
 				return true
@@ -205,11 +200,11 @@ class LangUtil {
 		}
 		return null
 	}
-	
+
 	def String getFileSystemPath(String packname) {
-		packname.replace(".","/")
+		packname.replace(".", "/")
 	}
-	
+
 	def boolean isInverseRelationshipDefinedInTarget(YAnnotRel annotRel) {
 		for (element : annotRel.target.annots) {
 			if (element instanceof YAnnotRel) {
@@ -220,20 +215,22 @@ class LangUtil {
 		}
 		return false
 	}
-	
+
 	def boolean isTypeCompatibleWithDefault(YAnnotAttr annotAttr) {
 		for (annot : annotAttr.annots) {
-			if(annot.type instanceof YAnnotDefault) {
+			if (annot.type instanceof YAnnotDefault) {
 				val annotDefault = annot.type as YAnnotDefault
-				if (annotDefault.type instanceof  YAnnotDefaultText) {
-					if(annotAttr.yclass.name == "String" || annotAttr.yclass.name == "Date" || annotAttr.yclass.name == "Time" || annotAttr.yclass.name == "Timestamp") {
+				if (annotDefault.type instanceof YAnnotDefaultText) {
+					if (annotAttr.yclass.simpleName == "XString" || annotAttr.yclass.simpleName == "XDate" ||
+						annotAttr.yclass.simpleName == "XTime" || annotAttr.yclass.simpleName == "XTimestamp") {
 						return true
 					} else {
 						return false
 					}
-				} else if (annotDefault.type instanceof  YAnnotDefaultNumber) { 
-					if(annotAttr.yclass.name == "Int" || annotAttr.yclass.name == "Short" || annotAttr.yclass.name == "Double" || annotAttr.yclass.name == "Long") {
-						return true	
+				} else if (annotDefault.type instanceof YAnnotDefaultNumber) {
+					if (annotAttr.yclass.simpleName == "XInt" || annotAttr.yclass.simpleName == "XShort" ||
+						annotAttr.yclass.simpleName == "XDouble" || annotAttr.yclass.simpleName == "XLong") {
+						return true
 					} else {
 						return false
 					}
@@ -241,26 +238,59 @@ class LangUtil {
 			}
 		}
 		return true
-	}	
-	
-	def YProperty converAttributeIntoPropertyPublic(YAnnotAttr annotAttr) {
-		val property = LangFactory.eINSTANCE.createYProperty => [
-			attrRef = annotAttr
-			type = annotAttr.yclass
-			name = annotAttr.name
-			access = YAccessLevel.PUBLIC
-		]
-		return property
-	} 
-	
-	def YProperty converAttributeIntoPropertyPrivate(YAnnotAttr annotAttr) {
-		val property = LangFactory.eINSTANCE.createYProperty => [
-			attrRef = annotAttr
-			type = annotAttr.yclass
-			name = annotAttr.name
-			access = YAccessLevel.PRIVATE
-		]
-		return property
-	} 
+	}
 
+	def List<YProperty> findPropertiesTypeStructure(YClass clazz) {
+		val list = newArrayList()
+		for (member : clazz.members) {
+			if (member instanceof YProperty && (member as YProperty).findStructureDeclaration !== null &&
+				(member as YProperty).findStructureDeclaration.superclass !== null &&
+				(member as YProperty).findStructureDeclaration.superclass.simpleName == "XStructure") {
+				list.add(member as YProperty)
+			}
+		}
+		return list
+	}
+
+	def YClass findStructureDeclaration(YProperty property) {
+		val className = property.type.simpleName;
+		val widgetClass = findOwningWidgetClass(property)
+		for (member : widgetClass.members) {
+			if (member instanceof YClass && (member as YClass).name == className) {
+				return member as YClass
+			}
+		}
+		return null
+	}
+
+	def YClass findOwningWidgetClass(EObject object) {
+		if (object instanceof YClass && (object as YClass).superclass !== null &&
+			(object as YClass).superclass.simpleName == "XWidget") {
+			return object as YClass
+		} else if (object.eContainer !== null) {
+			findOwningWidgetClass(object.eContainer)
+		} else {
+			throw new DMWRuntimeException("Cannot find class of type XWidget owning object: " + object)
+		}
+	}
+
+//	def YProperty converAttributeIntoPropertyPublic(YAnnotAttr annotAttr) {
+//		val property = LangFactory.eINSTANCE.createYProperty => [
+//			attrRef = annotAttr
+//			type = annotAttr.yclass
+//			name = annotAttr.name
+//			access = YAccessLevel.PUBLIC
+//		]
+//		return property
+//	} 
+//	
+//	def YProperty converAttributeIntoPropertyPrivate(YAnnotAttr annotAttr) {
+//		val property = LangFactory.eINSTANCE.createYProperty => [
+//			attrRef = annotAttr
+//			type = annotAttr.yclass
+//			name = annotAttr.name
+//			access = YAccessLevel.PRIVATE
+//		]
+//		return property
+//	} 
 }

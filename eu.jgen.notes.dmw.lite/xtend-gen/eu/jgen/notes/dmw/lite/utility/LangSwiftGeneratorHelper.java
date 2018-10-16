@@ -54,20 +54,24 @@ public class LangSwiftGeneratorHelper {
   }
   
   public String findPackageName(final YProperty property) {
-    final EObject a = property.getType().eContainer();
-    if ((a instanceof YWidget)) {
-      return ((YWidget) a).getName();
-    } else {
-      if ((a instanceof YClass)) {
-        EObject _eContainer = ((YClass) a).eContainer();
-        String _name = ((YWidget) _eContainer).getName();
-        String _plus = (_name + ".");
-        String _name_1 = ((YClass) a).getName();
-        return (_plus + _name_1);
+    Object _xblockexpression = null;
+    {
+      final EObject a = property.getType().eContainer();
+      Object _xifexpression = null;
+      if ((a instanceof YWidget)) {
+        _xifexpression = null;
       } else {
-        return "<do not know what to do yet>";
+        Object _xifexpression_1 = null;
+        if ((a instanceof YClass)) {
+          _xifexpression_1 = null;
+        } else {
+          return "<do not know what to do yet>";
+        }
+        _xifexpression = _xifexpression_1;
       }
+      _xblockexpression = _xifexpression;
     }
+    return ((String)_xblockexpression);
   }
   
   public String getSwiftColumnName(final YAnnotAbstractColumn abstractColumn) {

@@ -24,10 +24,19 @@
 package eu.jgen.notes.dmw.lite.ui
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.xtext.xbase.ui.validation.ProjectAwareUniqueClassNameValidator
+import org.eclipse.xtext.service.SingletonBinding
+import org.eclipse.xtext.xbase.validation.UniqueClassNameValidator
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
  */
 @FinalFieldsConstructor
 class LangUiModule extends AbstractLangUiModule {
+	
+	@SingletonBinding(eager = true)
+	override public Class<? extends UniqueClassNameValidator> bindUniqueClassNameValidator() {
+		return ProjectAwareUniqueClassNameValidator;
+	}
+	
 }

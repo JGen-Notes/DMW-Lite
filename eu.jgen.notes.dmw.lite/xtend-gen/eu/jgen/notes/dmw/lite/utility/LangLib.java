@@ -23,32 +23,18 @@
 package eu.jgen.notes.dmw.lite.utility;
 
 import com.google.common.base.Charsets;
-import com.google.common.base.Objects;
 import com.google.common.io.CharStreams;
-import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.lang.YAnnotEntity;
-import eu.jgen.notes.dmw.lite.lang.YClass;
-import eu.jgen.notes.dmw.lite.scoping.LangIndex;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtext.resource.IEObjectDescription;
 import org.eclipse.xtext.xbase.lib.Exceptions;
-import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 
 @SuppressWarnings("all")
 public class LangLib {
-  @Inject
-  @Extension
-  private LangIndex _langIndex;
-  
   public final static String MAIN_LIB = "eu/jgen/notes/lib/dmw/lang.dmw";
   
   public final static String LIB_PACKAGE = "eu.jgen.notes.lib.dmw";
@@ -101,50 +87,5 @@ public class LangLib {
     } catch (Throwable _e) {
       throw Exceptions.sneakyThrow(_e);
     }
-  }
-  
-  public YClass getLangObjectClass(final EObject context) {
-    YClass _xblockexpression = null;
-    {
-      final Function1<IEObjectDescription, Boolean> _function = (IEObjectDescription it) -> {
-        String _string = it.getQualifiedName().toString();
-        return Boolean.valueOf(Objects.equal(_string, LangLib.LIB_OBJECT));
-      };
-      final IEObjectDescription desc = IterableExtensions.<IEObjectDescription>findFirst(this._langIndex.getVisibleClassesDescriptions(context), _function);
-      if ((desc == null)) {
-        return null;
-      }
-      EObject o = desc.getEObjectOrProxy();
-      boolean _eIsProxy = o.eIsProxy();
-      if (_eIsProxy) {
-        o = context.eResource().getResourceSet().getEObject(desc.getEObjectURI(), true);
-      }
-      _xblockexpression = ((YClass) o);
-    }
-    return _xblockexpression;
-  }
-  
-  /**
-   * for Entities
-   */
-  public YAnnotEntity getLangObjectEntity(final EObject context) {
-    YAnnotEntity _xblockexpression = null;
-    {
-      final Function1<IEObjectDescription, Boolean> _function = (IEObjectDescription it) -> {
-        String _string = it.getQualifiedName().toString();
-        return Boolean.valueOf(Objects.equal(_string, LangLib.LIB_OBJECT));
-      };
-      final IEObjectDescription desc = IterableExtensions.<IEObjectDescription>findFirst(this._langIndex.getVisibleEntityDescriptions(context), _function);
-      if ((desc == null)) {
-        return null;
-      }
-      EObject o = desc.getEObjectOrProxy();
-      boolean _eIsProxy = o.eIsProxy();
-      if (_eIsProxy) {
-        o = context.eResource().getResourceSet().getEObject(desc.getEObjectURI(), true);
-      }
-      _xblockexpression = ((YAnnotEntity) o);
-    }
-    return _xblockexpression;
   }
 }

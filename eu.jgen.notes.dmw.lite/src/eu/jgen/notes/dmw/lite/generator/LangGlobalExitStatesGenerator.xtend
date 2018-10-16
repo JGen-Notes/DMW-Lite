@@ -23,38 +23,38 @@ class LangGlobalExitStatesGenerator implements IGenerator {
 	override doGenerate(Resource input, IFileSystemAccess fsa) {
 		input.allContents.filter[element|element instanceof YWidget].forEach [ element |
 			val widget = element as YWidget
-			generateWidget(fsa, widget)
+	//		generateWidget(fsa, widget)
 		]
 	}
 
-	protected def void generateWidget(IFileSystemAccess fsa, YWidget widget) {
-				imports.clear		
-		widget.classes.forEach [ clazz |
-			if (clazz.superclass !== null && clazz.superclass.name == "GlobalExitStates") {
-				imports.add("eu.jgen.notes.dmw.lite.runtimes.GlobalExitStates")			
-				imports.add("eu.jgen.notes.dmw.lite.runtimes.ExitState")		
-				val body = '''
-				«clazz.documentation»  
-				public class «clazz.name» extends GlobalExitStates {
-				   «generateExitStates(clazz)»
-				}
-				'''
-				fsa.generateFile(
-					widget.name.getFileSystemPath + "/" + clazz.name + ".java",
-					LangOutputProvider.DEFAULT,
-					'''		
-					package «widget.name»;
-					
-					«FOR imp : imports»
-					import «imp»;
-					«ENDFOR»					
-					
-					«body»		
-					'''
-				)
-			}
-		]
-	}
+//	protected def void generateWidget(IFileSystemAccess fsa, YWidget widget) {
+//				imports.clear		
+//		widget.classes.forEach [ clazz |
+//			if (clazz.superclass !== null && clazz.superclass.name == "GlobalExitStates") {
+//				imports.add("eu.jgen.notes.dmw.lite.runtimes.GlobalExitStates")			
+//				imports.add("eu.jgen.notes.dmw.lite.runtimes.ExitState")		
+//				val body = '''
+//				«clazz.documentation»  
+//				public class «clazz.name» extends GlobalExitStates {
+//				   «generateExitStates(clazz)»
+//				}
+//				'''
+//				fsa.generateFile(
+//					widget.name.getFileSystemPath + "/" + clazz.name + ".java",
+//					LangOutputProvider.DEFAULT,
+//					'''		
+//					package «widget.name»;
+//					
+//					«FOR imp : imports»
+//					import «imp»;
+//					«ENDFOR»					
+//					
+//					«body»		
+//					'''
+//				)
+//			}
+//		]
+//	}
 	
 	protected def String generateExitStates(YClass clazz) {
 		'''

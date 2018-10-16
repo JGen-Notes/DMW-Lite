@@ -122,58 +122,58 @@ public class LangDBUtil {
   }
   
   private void doSelectColumnProperties(final YAnnotColumn column, final YAnnotAttr attribute) {
-    String _name = attribute.getYclass().getName();
-    boolean _equals = Objects.equal(_name, "String");
+    String _simpleName = attribute.getYclass().getSimpleName();
+    boolean _equals = Objects.equal(_simpleName, "XString");
     if (_equals) {
       column.setType("CHAR");
     } else {
-      String _name_1 = attribute.getYclass().getName();
-      boolean _equals_1 = Objects.equal(_name_1, "String");
+      String _simpleName_1 = attribute.getYclass().getSimpleName();
+      boolean _equals_1 = Objects.equal(_simpleName_1, "XString");
       if (_equals_1) {
         column.setType("CHAR");
       } else {
-        String _name_2 = attribute.getYclass().getName();
-        boolean _equals_2 = Objects.equal(_name_2, "Short");
+        String _simpleName_2 = attribute.getYclass().getSimpleName();
+        boolean _equals_2 = Objects.equal(_simpleName_2, "XShort");
         if (_equals_2) {
           column.setType("SMALLINT");
         } else {
-          String _name_3 = attribute.getYclass().getName();
-          boolean _equals_3 = Objects.equal(_name_3, "Int");
+          String _simpleName_3 = attribute.getYclass().getSimpleName();
+          boolean _equals_3 = Objects.equal(_simpleName_3, "XInt");
           if (_equals_3) {
             column.setType("INTEGER");
           } else {
-            String _name_4 = attribute.getYclass().getName();
-            boolean _equals_4 = Objects.equal(_name_4, "Long");
+            String _simpleName_4 = attribute.getYclass().getSimpleName();
+            boolean _equals_4 = Objects.equal(_simpleName_4, "XLong");
             if (_equals_4) {
               column.setType("BIGINT");
             } else {
-              String _name_5 = attribute.getYclass().getName();
-              boolean _equals_5 = Objects.equal(_name_5, "Double");
+              String _simpleName_5 = attribute.getYclass().getSimpleName();
+              boolean _equals_5 = Objects.equal(_simpleName_5, "XDouble");
               if (_equals_5) {
                 column.setType("DECIMAL");
               } else {
-                String _name_6 = attribute.getYclass().getName();
-                boolean _equals_6 = Objects.equal(_name_6, "Date");
+                String _simpleName_6 = attribute.getYclass().getSimpleName();
+                boolean _equals_6 = Objects.equal(_simpleName_6, "XDate");
                 if (_equals_6) {
                   column.setType("DATE");
                 } else {
-                  String _name_7 = attribute.getYclass().getName();
-                  boolean _equals_7 = Objects.equal(_name_7, "Time");
+                  String _simpleName_7 = attribute.getYclass().getSimpleName();
+                  boolean _equals_7 = Objects.equal(_simpleName_7, "XTime");
                   if (_equals_7) {
                     column.setType("TIME");
                   } else {
-                    String _name_8 = attribute.getYclass().getName();
-                    boolean _equals_8 = Objects.equal(_name_8, "Timestamp");
+                    String _simpleName_8 = attribute.getYclass().getSimpleName();
+                    boolean _equals_8 = Objects.equal(_simpleName_8, "XTimestamp");
                     if (_equals_8) {
                       column.setType("TIMESTAMP");
                     } else {
-                      String _name_9 = attribute.getYclass().getName();
-                      boolean _equals_9 = Objects.equal(_name_9, "Bool");
+                      String _simpleName_9 = attribute.getYclass().getSimpleName();
+                      boolean _equals_9 = Objects.equal(_simpleName_9, "XBool");
                       if (_equals_9) {
                         column.setType("BOOLEAN");
                       } else {
-                        String _name_10 = attribute.getYclass().getName();
-                        boolean _equals_10 = Objects.equal(_name_10, "Blob");
+                        String _simpleName_10 = attribute.getYclass().getSimpleName();
+                        boolean _equals_10 = Objects.equal(_simpleName_10, "XBlob");
                         if (_equals_10) {
                           column.setType("BLOB");
                         }

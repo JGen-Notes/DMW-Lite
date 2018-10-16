@@ -23,26 +23,13 @@
 package eu.jgen.notes.dmw.lite.tests;
 
 import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.lang.YClass;
-import eu.jgen.notes.dmw.lite.lang.YFunction;
-import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
-import eu.jgen.notes.dmw.lite.lang.YStatement;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
-import eu.jgen.notes.dmw.lite.validation.LangAccessibility;
-import org.eclipse.emf.common.util.EList;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.eclipse.xtext.xbase.lib.Conversions;
-import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ObjectExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -56,7 +43,7 @@ public class LiteLangAccessibilityTest {
   
   @Inject
   @Extension
-  private LangAccessibility _langAccessibility;
+  private /* LangAccessibility */Object _langAccessibility;
   
   @Inject
   @Extension
@@ -64,235 +51,120 @@ public class LiteLangAccessibilityTest {
   
   @Test
   public void testPropertyAccessibility() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("private var  priv : D;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("protected var  prot : D;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public var pub : D;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func D m() -> D {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.priv; // private field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.prot; // protected field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.pub; // public field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class B : A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> D {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.priv; // private field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.prot; // protected field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.pub; // public field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> D {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).priv; // private field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).prot; // protected field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).pub; // public field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class D {}");
-      _builder.newLine();
-      EList<YClass> _classes = this._parseHelper.parse(_builder).getClasses();
-      final Procedure1<EList<YClass>> _function = (EList<YClass> it) -> {
-        EList<YStatement> _statements = ((YFunction[])Conversions.unwrapArray(this._langUtil.functions(it.get(0)), YFunction.class))[0].getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_1 = (EList<YStatement> it_1) -> {
-          this.assertMemberAccessible(it_1.get(0), true);
-          this.assertMemberAccessible(it_1.get(1), true);
-          this.assertMemberAccessible(it_1.get(2), true);
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements, _function_1);
-        EList<YStatement> _statements_1 = ((YFunction[])Conversions.unwrapArray(this._langUtil.functions(it.get(1)), YFunction.class))[0].getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_2 = (EList<YStatement> it_1) -> {
-          this.assertMemberAccessible(it_1.get(0), false);
-          this.assertMemberAccessible(it_1.get(1), true);
-          this.assertMemberAccessible(it_1.get(2), true);
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements_1, _function_2);
-        EList<YStatement> _statements_2 = ((YFunction[])Conversions.unwrapArray(this._langUtil.functions(it.get(2)), YFunction.class))[0].getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_3 = (EList<YStatement> it_1) -> {
-          this.assertMemberAccessible(it_1.get(0), false);
-          this.assertMemberAccessible(it_1.get(1), false);
-          this.assertMemberAccessible(it_1.get(2), true);
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements_2, _function_3);
-      };
-      ObjectExtensions.<EList<YClass>>operator_doubleArrow(_classes, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\n=> cannot be resolved"
+      + "\n=> cannot be resolved"
+      + "\n=> cannot be resolved");
   }
   
   @Test
   public void testFunctionAccessibility() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("privatefunc   priv() -> D{ return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("protected func   prot() -> D { return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("public func  D pub() -> D { return null; }");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> D {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.priv(); // private method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.prot(); // protected method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.pub(); // public method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("} ");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class B : A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func  m() -> D {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.priv(); // private method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.prot(); // protected method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("self.pub(); // public method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> D {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).priv(); // private method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).prot(); // protected method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("(new A()).pub(); // public method");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class D {}");
-      _builder.newLine();
-      EList<YClass> _classes = this._parseHelper.parse(_builder).getClasses();
-      final Procedure1<EList<YClass>> _function = (EList<YClass> it) -> {
-        EList<YStatement> _statements = IterableExtensions.<YFunction>last(this._langUtil.functions(it.get(0))).getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_1 = (EList<YStatement> it_1) -> {
-          this.assertMemberAccessible(it_1.get(0), true);
-          this.assertMemberAccessible(it_1.get(1), true);
-          this.assertMemberAccessible(it_1.get(2), true);
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements, _function_1);
-        EList<YStatement> _statements_1 = IterableExtensions.<YFunction>last(this._langUtil.functions(it.get(1))).getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_2 = (EList<YStatement> it_1) -> {
-          this.assertMemberAccessible(it_1.get(0), false);
-          this.assertMemberAccessible(it_1.get(1), true);
-          this.assertMemberAccessible(it_1.get(2), true);
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements_1, _function_2);
-        EList<YStatement> _statements_2 = IterableExtensions.<YFunction>last(this._langUtil.functions(it.get(2))).getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_3 = (EList<YStatement> it_1) -> {
-          this.assertMemberAccessible(it_1.get(0), false);
-          this.assertMemberAccessible(it_1.get(1), false);
-          this.assertMemberAccessible(it_1.get(2), true);
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements_2, _function_3);
-      };
-      ObjectExtensions.<EList<YClass>>operator_doubleArrow(_classes, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\nThe method assertMemberAccessible(YStatement, boolean) from the type LiteLangAccessibilityTest refers to the missing type YStatement"
+      + "\n=> cannot be resolved"
+      + "\n=> cannot be resolved"
+      + "\n=> cannot be resolved");
   }
   
-  private void assertMemberAccessible(final YStatement s, final boolean expected) {
-    final YMemberSelection sel = ((YMemberSelection) s);
-    Assert.assertEquals(Boolean.valueOf(expected), 
-      Boolean.valueOf(this._langAccessibility.isAccessibleFrom(sel.getMember(), sel)));
+  private void assertMemberAccessible(final /* YStatement */Object s, final boolean expected) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nYMemberSelection cannot be resolved to a type."
+      + "\nmember cannot be resolved"
+      + "\nisAccessibleFrom cannot be resolved");
   }
 }

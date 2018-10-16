@@ -23,21 +23,10 @@
 package eu.jgen.notes.dmw.lite.tests;
 
 import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.lang.YAssignment;
-import eu.jgen.notes.dmw.lite.lang.YClass;
-import eu.jgen.notes.dmw.lite.lang.YExpression;
-import eu.jgen.notes.dmw.lite.lang.YFunction;
-import eu.jgen.notes.dmw.lite.lang.YIfStatement;
-import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
-import eu.jgen.notes.dmw.lite.lang.YReturn;
-import eu.jgen.notes.dmw.lite.lang.YStatement;
-import eu.jgen.notes.dmw.lite.lang.YVariableDeclaration;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
-import eu.jgen.notes.dmw.lite.typing.LangTypeComputer;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.function.Consumer;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
@@ -47,10 +36,6 @@ import org.eclipse.xtext.validation.Issue;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.InputOutput;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ObjectExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -64,7 +49,7 @@ public class LiteLangTypeComputerTest {
   
   @Inject
   @Extension
-  private LangTypeComputer _langTypeComputer;
+  private /* LangTypeComputer */Object _langTypeComputer;
   
   @Inject
   @Extension
@@ -131,219 +116,163 @@ public class LiteLangTypeComputerTest {
   
   @Test
   public void testTypeForUnresolvedReferences() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("U m() {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("f ; // unresolved symbol");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("this.n(); // unresolved method ");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("this.f; // unresolved field");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        EList<YStatement> _statements = IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(it.getClasses()))).getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_1 = (EList<YStatement> it_1) -> {
-          Assert.assertNull(this.statementExpressionType(it_1.get(0)));
-          Assert.assertNull(this.statementExpressionType(it_1.get(1)));
-          Assert.assertNull(this.statementExpressionType(it_1.get(2)));
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements, _function_1);
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method statementExpressionType(YStatement) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\n=> cannot be resolved"
+      + "\nassertNull cannot be resolved"
+      + "\nassertNull cannot be resolved"
+      + "\nassertNull cannot be resolved");
   }
   
   @Test
   public void testIsPrimitiveType() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> C {");
-      _builder.newLine();
-      _builder.append("\t\t");
-      _builder.append("return true;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YClass _head = IterableExtensions.<YClass>head(this._parseHelper.parse(_builder).getClasses());
-      final Procedure1<YClass> _function = (YClass it) -> {
-        Assert.assertFalse(this._langTypeComputer.isPrimitive(it));
-        Assert.assertTrue(this._langTypeComputer.isPrimitive(this._langTypeComputer.typeFor(this._langUtil.returnStatement(IterableExtensions.<YFunction>head(this._langUtil.functions(it))).getExpression())));
-      };
-      ObjectExtensions.<YClass>operator_doubleArrow(_head, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field isPrimitive is undefined for the type YClass"
+      + "\nThe method or field returnStatement is undefined for the type YFunction"
+      + "\nassertFalse cannot be resolved"
+      + "\nexpression cannot be resolved"
+      + "\ntypeFor cannot be resolved"
+      + "\nisPrimitive cannot be resolved"
+      + "\nassertTrue cannot be resolved");
   }
   
   @Test
   public void testVarDeclExpectedType() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("v : V = null;");
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements(_builder));
-    this.assertExpectedType(((YVariableDeclaration) _head).getExpression(), "V");
+    throw new Error("Unresolved compilation problems:"
+      + "\nYVariableDeclaration cannot be resolved to a type."
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nhead cannot be resolved"
+      + "\nexpression cannot be resolved"
+      + "\nassertExpectedType cannot be resolved");
   }
   
   @Test
   public void testAssignmentRightExpectedType() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("self.f = null;");
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements(_builder));
-    this.assertExpectedType(((YAssignment) _head).getRight(), "F");
+    throw new Error("Unresolved compilation problems:"
+      + "\nYAssignment cannot be resolved to a type."
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nhead cannot be resolved"
+      + "\nright cannot be resolved"
+      + "\nassertExpectedType cannot be resolved");
   }
   
   @Test
   public void testAssignmentLeftExpectedType() {
-    StringConcatenation _builder = new StringConcatenation();
-    _builder.append("self.f = null;");
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements(_builder));
-    Assert.assertNull(this._langTypeComputer.expectedType(((YAssignment) _head).getLeft()));
+    throw new Error("Unresolved compilation problems:"
+      + "\nYAssignment cannot be resolved to a type."
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nhead cannot be resolved"
+      + "\nleft cannot be resolved"
+      + "\nexpectedType cannot be resolved"
+      + "\nassertNull cannot be resolved");
   }
   
   @Test
   public void testReturnExpectedType() {
-    YStatement _last = IterableExtensions.<YStatement>last(this.testStatements(""));
-    this.assertExpectedType(((YReturn) _last).getExpression(), "R");
+    throw new Error("Unresolved compilation problems:"
+      + "\nYReturn cannot be resolved to a type."
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nlast cannot be resolved"
+      + "\nexpression cannot be resolved"
+      + "\nassertExpectedType cannot be resolved");
   }
   
   @Test
   public void testIfExpressionExpectedType() {
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("if (e) {}"));
-    this.assertExpectedType(((YIfStatement) _head).getExpression(), "booleanType");
+    throw new Error("Unresolved compilation problems:"
+      + "\nYIfStatement cannot be resolved to a type."
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nhead cannot be resolved"
+      + "\nexpression cannot be resolved"
+      + "\nassertExpectedType cannot be resolved");
   }
   
   @Test
   public void testMethodInvocationArgsExpectedType() {
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("self.m(new P1(), new P2());"));
-    EList<YExpression> _args = ((YMemberSelection) _head).getArgs();
-    final Procedure1<EList<YExpression>> _function = (EList<YExpression> it) -> {
-      this.assertExpectedType(it.get(0), "P1");
-      this.assertExpectedType(it.get(1), "P2");
-    };
-    ObjectExtensions.<EList<YExpression>>operator_doubleArrow(_args, _function);
+    throw new Error("Unresolved compilation problems:"
+      + "\nYMemberSelection cannot be resolved to a type."
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method assertExpectedType(YExpression, String) from the type LiteLangTypeComputerTest refers to the missing type YExpression"
+      + "\nThe method assertExpectedType(YExpression, String) from the type LiteLangTypeComputerTest refers to the missing type YExpression"
+      + "\nThe method assertExpectedType(YExpression, String) from the type LiteLangTypeComputerTest refers to the missing type YExpression"
+      + "\nThe method assertExpectedType(YExpression, String) from the type LiteLangTypeComputerTest refers to the missing type YExpression"
+      + "\nhead cannot be resolved"
+      + "\nargs cannot be resolved"
+      + "\n=> cannot be resolved");
   }
   
   @Test
   public void testMethodInvocationReceiverExpectedType() {
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("self.m();"));
-    Assert.assertNull(this._langTypeComputer.expectedType(((YMemberSelection) _head).getReceiver()));
+    throw new Error("Unresolved compilation problems:"
+      + "\nYMemberSelection cannot be resolved to a type."
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nhead cannot be resolved"
+      + "\nreceiver cannot be resolved"
+      + "\nexpectedType cannot be resolved"
+      + "\nassertNull cannot be resolved");
   }
   
   @Test
   public void testStandaloneMemberSelectionExpectedType() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var a : A;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m() -> { self.a; self.m(); return null; }");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        EList<YStatement> _statements = IterableExtensions.<YFunction>head(this._langUtil.functions(IterableExtensions.<YClass>head(it.getClasses()))).getBody().getStatements();
-        final Procedure1<EList<YStatement>> _function_1 = (EList<YStatement> it_1) -> {
-          YStatement _get = it_1.get(0);
-          Assert.assertNull(this._langTypeComputer.expectedType(((YExpression) _get)));
-          YStatement _get_1 = it_1.get(1);
-          Assert.assertNull(this._langTypeComputer.expectedType(((YExpression) _get_1)));
-        };
-        ObjectExtensions.<EList<YStatement>>operator_doubleArrow(_statements, _function_1);
-      };
-      ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nYExpression cannot be resolved to a type."
+      + "\nYExpression cannot be resolved to a type."
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\n=> cannot be resolved"
+      + "\nexpectedType cannot be resolved"
+      + "\nassertNull cannot be resolved"
+      + "\nexpectedType cannot be resolved"
+      + "\nassertNull cannot be resolved");
   }
   
   @Test
   public void testWrongMethodInvocationArgsExpectedType() {
-    YStatement _head = IterableExtensions.<YStatement>head(this.testStatements("self.n(new P1(), new P2());"));
-    EList<YExpression> _args = ((YMemberSelection) _head).getArgs();
-    final Procedure1<EList<YExpression>> _function = (EList<YExpression> it) -> {
-      Assert.assertNull(this._langTypeComputer.expectedType(it.get(0)));
-      Assert.assertNull(this._langTypeComputer.expectedType(it.get(1)));
-    };
-    ObjectExtensions.<EList<YExpression>>operator_doubleArrow(_args, _function);
-    YStatement _head_1 = IterableExtensions.<YStatement>head(this.testStatements("self.m(new P1(), new P2(), new P1());"));
-    Assert.assertNull(this._langTypeComputer.expectedType(((YMemberSelection) _head_1).getArgs().get(2)));
+    throw new Error("Unresolved compilation problems:"
+      + "\nYMemberSelection cannot be resolved to a type."
+      + "\nYMemberSelection cannot be resolved to a type."
+      + "\nThe method or field expectedType is undefined for the type Object"
+      + "\nThe method or field expectedType is undefined for the type Object"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nType mismatch: cannot convert implicit first argument from Object to Object[]"
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nThe method testStatements(CharSequence) from the type LiteLangTypeComputerTest refers to the missing type Object"
+      + "\nhead cannot be resolved"
+      + "\nargs cannot be resolved"
+      + "\n=> cannot be resolved"
+      + "\nassertNull cannot be resolved"
+      + "\nassertNull cannot be resolved"
+      + "\nhead cannot be resolved"
+      + "\nargs cannot be resolved"
+      + "\nget cannot be resolved"
+      + "\nexpectedType cannot be resolved"
+      + "\nassertNull cannot be resolved");
   }
   
   private YWidget assertType(final CharSequence testExp, final String expectedClassName) {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class R { }");
-      _builder.newLine();
-      _builder.append("class P { }");
-      _builder.newLine();
-      _builder.append("class V { }");
-      _builder.newLine();
-      _builder.append("class N { }");
-      _builder.newLine();
-      _builder.append("class F { }");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("  ");
-      _builder.append("var f : F;");
-      _builder.newLine();
-      _builder.append("  ");
-      _builder.newLine();
-      _builder.append("  ");
-      _builder.append("func m(p : P) -> R {");
-      _builder.newLine();
-      _builder.append("    ");
-      _builder.append("v : V = null;");
-      _builder.newLine();
-      _builder.append("   ");
-      _builder.append(testExp, "   ");
-      _builder.append(";");
-      _builder.newLineIfNotEmpty();
-      _builder.append("    ");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("  ");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      YWidget _parse = this._parseHelper.parse(_builder);
-      final Procedure1<YWidget> _function = (YWidget it) -> {
-        Assert.assertEquals(expectedClassName, 
-          this.statementExpressionType(IterableExtensions.<YFunction>last(this._langUtil.functions(IterableExtensions.<YClass>last(it.getClasses()))).getBody().getStatements().get(1)).getName());
-      };
-      return ObjectExtensions.<YWidget>operator_doubleArrow(_parse, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field statements is undefined for the type XExpression"
+      + "\nget cannot be resolved"
+      + "\nstatementExpressionType cannot be resolved"
+      + "\nname cannot be resolved");
   }
   
   @Test
@@ -395,48 +324,15 @@ public class LiteLangTypeComputerTest {
     }
   }
   
-  private YClass statementExpressionType(final YStatement s) {
-    return this._langTypeComputer.typeFor(((YExpression) s));
+  private Object statementExpressionType(final /* YStatement */Object s) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nYExpression cannot be resolved to a type."
+      + "\ntypeFor cannot be resolved");
   }
   
-  private EList<YStatement> testStatements(final CharSequence statement) {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class R {  }");
-      _builder.newLine();
-      _builder.append("class P1 {  }");
-      _builder.newLine();
-      _builder.append("class P2 {  }");
-      _builder.newLine();
-      _builder.append("class V {  }");
-      _builder.newLine();
-      _builder.append("class F {  }");
-      _builder.newLine();
-      _builder.newLine();
-      _builder.append("class C {");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("var f : F;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("func m(p1 : P1, p2 : P2) -> R {");
-      _builder.newLine();
-      _builder.append("\t ");
-      _builder.append(statement, "\t ");
-      _builder.append(";;");
-      _builder.newLineIfNotEmpty();
-      _builder.append("\t\t");
-      _builder.append("return null;");
-      _builder.newLine();
-      _builder.append("\t");
-      _builder.append("}");
-      _builder.newLine();
-      _builder.append("}");
-      _builder.newLine();
-      return IterableExtensions.<YFunction>last(this._langUtil.functions(IterableExtensions.<YClass>last(this._parseHelper.parse(_builder).getClasses()))).getBody().getStatements();
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+  private Object testStatements(final CharSequence statement) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field statements is undefined for the type XExpression");
   }
   
   @Test
@@ -483,7 +379,9 @@ public class LiteLangTypeComputerTest {
     }
   }
   
-  private void assertExpectedType(final YExpression exp, final String expectedClassName) {
-    Assert.assertEquals(expectedClassName, this._langTypeComputer.expectedType(exp).getName());
+  private void assertExpectedType(final /* YExpression */Object exp, final String expectedClassName) {
+    throw new Error("Unresolved compilation problems:"
+      + "\nexpectedType cannot be resolved"
+      + "\nname cannot be resolved");
   }
 }

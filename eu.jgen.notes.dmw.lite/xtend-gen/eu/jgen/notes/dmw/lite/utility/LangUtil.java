@@ -25,9 +25,7 @@ package eu.jgen.notes.dmw.lite.utility;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.lang.LangFactory;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
-import eu.jgen.notes.dmw.lite.lang.YAccessLevel;
 import eu.jgen.notes.dmw.lite.lang.YAnnot;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
@@ -41,17 +39,14 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotEntityInner;
 import eu.jgen.notes.dmw.lite.lang.YAnnotRel;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign;
-import eu.jgen.notes.dmw.lite.lang.YBlock;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
 import eu.jgen.notes.dmw.lite.lang.YMember;
-import eu.jgen.notes.dmw.lite.lang.YParameter;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
-import eu.jgen.notes.dmw.lite.lang.YReturn;
+import eu.jgen.notes.dmw.lite.runtimes.DMWRuntimeException;
 import eu.jgen.notes.dmw.lite.utility.LangLib;
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
@@ -64,12 +59,7 @@ import org.eclipse.xtext.resource.IResourceDescriptions;
 import org.eclipse.xtext.resource.impl.ResourceDescriptionsProvider;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.Functions.Function1;
-import org.eclipse.xtext.xbase.lib.IterableExtensions;
 import org.eclipse.xtext.xbase.lib.IteratorExtensions;
-import org.eclipse.xtext.xbase.lib.ListExtensions;
-import org.eclipse.xtext.xbase.lib.ObjectExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 @SuppressWarnings("all")
 public class LangUtil {
@@ -91,78 +81,6 @@ public class LangUtil {
     return Iterables.<YFunction>filter(c.getMembers(), YFunction.class);
   }
   
-  public YReturn returnStatement(final YFunction m) {
-    return this.returnStatement(m.getBody());
-  }
-  
-  public YReturn returnStatement(final YBlock block) {
-    return IterableExtensions.<YReturn>head(Iterables.<YReturn>filter(block.getStatements(), YReturn.class));
-  }
-  
-  public LinkedHashSet<YClass> classHierarchy(final YClass c) {
-    LinkedHashSet<YClass> _xblockexpression = null;
-    {
-      final LinkedHashSet<YClass> visited = CollectionLiterals.<YClass>newLinkedHashSet();
-      YClass current = c.getSuperclass();
-      while (((current != null) && (!visited.contains(current)))) {
-        {
-          visited.add(current);
-          current = current.getSuperclass();
-        }
-      }
-      final YClass object = this._langLib.getLangObjectClass(c);
-      if ((object != null)) {
-        visited.add(object);
-      }
-      _xblockexpression = visited;
-    }
-    return _xblockexpression;
-  }
-  
-  public Map<String, YFunction> classHierarchyMethods(final YClass c) {
-    final Function1<YClass, Iterable<YFunction>> _function = (YClass it) -> {
-      return this.functions(it);
-    };
-    final Function1<YFunction, String> _function_1 = (YFunction it) -> {
-      return it.getName();
-    };
-    return IterableExtensions.<String, YFunction>toMap(Iterables.<YFunction>concat(ListExtensions.<YClass, Iterable<YFunction>>map(ListExtensions.<YClass>reverseView(IterableExtensions.<YClass>toList(this.classHierarchy(c))), _function)), _function_1);
-  }
-  
-  public Iterable<YMember> classHierarchyMembers(final YClass c) {
-    final Function1<YClass, EList<YMember>> _function = (YClass it) -> {
-      return it.getMembers();
-    };
-    return Iterables.<YMember>concat(IterableExtensions.<YClass, EList<YMember>>map(this.classHierarchy(c), _function));
-  }
-  
-  public String memberAsString(final YMember m) {
-    String _xblockexpression = null;
-    {
-      EObject _eContainer = m.eContainer();
-      final YClass a = ((YClass) _eContainer);
-      String _name = a.getName();
-      String _xifexpression = null;
-      if ((m instanceof YFunction)) {
-        final Function1<YParameter, String> _function = (YParameter it) -> {
-          return it.getType().getName();
-        };
-        String _join = IterableExtensions.join(ListExtensions.<YParameter, String>map(((YFunction)m).getParams(), _function), ", ");
-        String _plus = ("(" + _join);
-        _xifexpression = (_plus + ")");
-      } else {
-        _xifexpression = "";
-      }
-      _xblockexpression = (_name + _xifexpression);
-    }
-    return _xblockexpression;
-  }
-  
-  public String memberAsStringWithType(final YMember m) {
-    String _memberAsString = this.memberAsString(m);
-    return (_memberAsString + " : ");
-  }
-  
   public YMember getMemberName(final YMember member) {
     return member;
   }
@@ -170,26 +88,6 @@ public class LangUtil {
   /**
    * for Entities
    */
-  public LinkedHashSet<EObject> entityHierarchy(final YAnnotEntity c) {
-    LinkedHashSet<EObject> _xblockexpression = null;
-    {
-      final LinkedHashSet<EObject> visited = CollectionLiterals.<EObject>newLinkedHashSet();
-      YAnnotEntity current = c.getSuperannot();
-      while (((current != null) && (!visited.contains(current)))) {
-        {
-          visited.add(current);
-          current = current.getSuperannot();
-        }
-      }
-      final YClass object = this._langLib.getLangObjectClass(c);
-      if ((object != null)) {
-        visited.add(object);
-      }
-      _xblockexpression = visited;
-    }
-    return _xblockexpression;
-  }
-  
   public String getImplementingColumnName(final YAnnotTable table, final YMember member) {
     EList<YAnnotAbstractColumn> _columns = table.getColumns();
     for (final YAnnotAbstractColumn annotAbstractColumn : _columns) {
@@ -315,7 +213,8 @@ public class LangUtil {
         final YAnnotDefault annotDefault = ((YAnnotDefault) _type_1);
         EObject _type_2 = annotDefault.getType();
         if ((_type_2 instanceof YAnnotDefaultText)) {
-          if ((((Objects.equal(annotAttr.getYclass().getName(), "String") || Objects.equal(annotAttr.getYclass().getName(), "Date")) || Objects.equal(annotAttr.getYclass().getName(), "Time")) || Objects.equal(annotAttr.getYclass().getName(), "Timestamp"))) {
+          if ((((Objects.equal(annotAttr.getYclass().getSimpleName(), "XString") || Objects.equal(annotAttr.getYclass().getSimpleName(), "XDate")) || 
+            Objects.equal(annotAttr.getYclass().getSimpleName(), "XTime")) || Objects.equal(annotAttr.getYclass().getSimpleName(), "XTimestamp"))) {
             return true;
           } else {
             return false;
@@ -323,7 +222,8 @@ public class LangUtil {
         } else {
           EObject _type_3 = annotDefault.getType();
           if ((_type_3 instanceof YAnnotDefaultNumber)) {
-            if ((((Objects.equal(annotAttr.getYclass().getName(), "Int") || Objects.equal(annotAttr.getYclass().getName(), "Short")) || Objects.equal(annotAttr.getYclass().getName(), "Double")) || Objects.equal(annotAttr.getYclass().getName(), "Long"))) {
+            if ((((Objects.equal(annotAttr.getYclass().getSimpleName(), "XInt") || Objects.equal(annotAttr.getYclass().getSimpleName(), "XShort")) || 
+              Objects.equal(annotAttr.getYclass().getSimpleName(), "XDouble")) || Objects.equal(annotAttr.getYclass().getSimpleName(), "XLong"))) {
               return true;
             } else {
               return false;
@@ -335,27 +235,47 @@ public class LangUtil {
     return true;
   }
   
-  public YProperty converAttributeIntoPropertyPublic(final YAnnotAttr annotAttr) {
-    YProperty _createYProperty = LangFactory.eINSTANCE.createYProperty();
-    final Procedure1<YProperty> _function = (YProperty it) -> {
-      it.setAttrRef(annotAttr);
-      it.setType(annotAttr.getYclass());
-      it.setName(annotAttr.getName());
-      it.setAccess(YAccessLevel.PUBLIC);
-    };
-    final YProperty property = ObjectExtensions.<YProperty>operator_doubleArrow(_createYProperty, _function);
-    return property;
+  public List<YProperty> findPropertiesTypeStructure(final YClass clazz) {
+    final ArrayList<YProperty> list = CollectionLiterals.<YProperty>newArrayList();
+    EList<YMember> _members = clazz.getMembers();
+    for (final YMember member : _members) {
+      if (((((member instanceof YProperty) && (this.findStructureDeclaration(((YProperty) member)) != null)) && 
+        (this.findStructureDeclaration(((YProperty) member)).getSuperclass() != null)) && 
+        Objects.equal(this.findStructureDeclaration(((YProperty) member)).getSuperclass().getSimpleName(), "XStructure"))) {
+        list.add(((YProperty) member));
+      }
+    }
+    return list;
   }
   
-  public YProperty converAttributeIntoPropertyPrivate(final YAnnotAttr annotAttr) {
-    YProperty _createYProperty = LangFactory.eINSTANCE.createYProperty();
-    final Procedure1<YProperty> _function = (YProperty it) -> {
-      it.setAttrRef(annotAttr);
-      it.setType(annotAttr.getYclass());
-      it.setName(annotAttr.getName());
-      it.setAccess(YAccessLevel.PRIVATE);
-    };
-    final YProperty property = ObjectExtensions.<YProperty>operator_doubleArrow(_createYProperty, _function);
-    return property;
+  public YClass findStructureDeclaration(final YProperty property) {
+    final String className = property.getType().getSimpleName();
+    final YClass widgetClass = this.findOwningWidgetClass(property);
+    EList<YMember> _members = widgetClass.getMembers();
+    for (final YMember member : _members) {
+      if (((member instanceof YClass) && Objects.equal(((YClass) member).getName(), className))) {
+        return ((YClass) member);
+      }
+    }
+    return null;
+  }
+  
+  public YClass findOwningWidgetClass(final EObject object) {
+    YClass _xifexpression = null;
+    if ((((object instanceof YClass) && (((YClass) object).getSuperclass() != null)) && 
+      Objects.equal(((YClass) object).getSuperclass().getSimpleName(), "XWidget"))) {
+      return ((YClass) object);
+    } else {
+      YClass _xifexpression_1 = null;
+      EObject _eContainer = object.eContainer();
+      boolean _tripleNotEquals = (_eContainer != null);
+      if (_tripleNotEquals) {
+        _xifexpression_1 = this.findOwningWidgetClass(object.eContainer());
+      } else {
+        throw new DMWRuntimeException(("Cannot find class of type XWidget owning object: " + object));
+      }
+      _xifexpression = _xifexpression_1;
+    }
+    return _xifexpression;
   }
 }

@@ -2,7 +2,6 @@ package eu.jgen.notes.dmw.lite.utility;
 
 import com.google.common.base.Objects;
 import com.google.inject.Inject;
-import eu.jgen.notes.dmw.lite.lang.YAndExpression;
 import eu.jgen.notes.dmw.lite.lang.YAnnot;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault;
@@ -10,44 +9,23 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber;
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText;
 import eu.jgen.notes.dmw.lite.lang.YAnnotMax;
 import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
-import eu.jgen.notes.dmw.lite.lang.YBoolConstant;
 import eu.jgen.notes.dmw.lite.lang.YClass;
-import eu.jgen.notes.dmw.lite.lang.YComparisonExpression;
-import eu.jgen.notes.dmw.lite.lang.YEqualityExpression;
-import eu.jgen.notes.dmw.lite.lang.YExpression;
-import eu.jgen.notes.dmw.lite.lang.YFunction;
-import eu.jgen.notes.dmw.lite.lang.YIntConstant;
 import eu.jgen.notes.dmw.lite.lang.YMember;
-import eu.jgen.notes.dmw.lite.lang.YMemberSelection;
-import eu.jgen.notes.dmw.lite.lang.YMinus;
-import eu.jgen.notes.dmw.lite.lang.YMulOrDiv;
-import eu.jgen.notes.dmw.lite.lang.YNot;
-import eu.jgen.notes.dmw.lite.lang.YOrExpression;
-import eu.jgen.notes.dmw.lite.lang.YParenties;
-import eu.jgen.notes.dmw.lite.lang.YPlus;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YReadEachStatement;
 import eu.jgen.notes.dmw.lite.lang.YReadStatement;
-import eu.jgen.notes.dmw.lite.lang.YSelf;
-import eu.jgen.notes.dmw.lite.lang.YStringConstant;
 import eu.jgen.notes.dmw.lite.lang.YStructRefPair;
-import eu.jgen.notes.dmw.lite.lang.YSymbolRef;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.xtend2.lib.StringConcatenation;
-import org.eclipse.xtext.common.types.JvmIdentifiableElement;
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider;
-import org.eclipse.xtext.xbase.compiler.DocumentationAdapter;
 import org.eclipse.xtext.xbase.lib.CollectionLiterals;
 import org.eclipse.xtext.xbase.lib.Extension;
-import org.eclipse.xtext.xbase.lib.InputOutput;
 
 @SuppressWarnings("all")
 public class LangJavaGeneratorHelper {
@@ -78,21 +56,6 @@ public class LangJavaGeneratorHelper {
   @Inject
   private IEObjectDocumentationProvider documentationProvider;
   
-  public String getDocumentation(final EObject source) {
-    if ((source == null)) {
-      return null;
-    }
-    if ((source instanceof JvmIdentifiableElement)) {
-      Adapter _adapter = EcoreUtil.getAdapter(((JvmIdentifiableElement)source).eAdapters(), DocumentationAdapter.class);
-      final DocumentationAdapter adapter = ((DocumentationAdapter) _adapter);
-      if ((adapter != null)) {
-        return this.wrapAsJavaComment(adapter.getDocumentation());
-      }
-    }
-    final String documentation = this.documentationProvider.getDocumentation(source);
-    return this.wrapAsJavaComment(documentation);
-  }
-  
   private String wrapAsJavaComment(final String documentation) {
     if ((documentation == null)) {
       return "";
@@ -109,20 +72,24 @@ public class LangJavaGeneratorHelper {
   }
   
   public String findPackageName(final YProperty property) {
-    final EObject a = property.getType().eContainer();
-    if ((a instanceof YWidget)) {
-      return ((YWidget) a).getName();
-    } else {
-      if ((a instanceof YClass)) {
-        EObject _eContainer = ((YClass) a).eContainer();
-        String _name = ((YWidget) _eContainer).getName();
-        String _plus = (_name + ".");
-        String _name_1 = ((YClass) a).getName();
-        return (_plus + _name_1);
+    Object _xblockexpression = null;
+    {
+      final EObject a = property.getType().eContainer();
+      Object _xifexpression = null;
+      if ((a instanceof YWidget)) {
+        _xifexpression = null;
       } else {
-        return "<do not know what to do yet>";
+        Object _xifexpression_1 = null;
+        if ((a instanceof YClass)) {
+          _xifexpression_1 = null;
+        } else {
+          return "<do not know what to do yet>";
+        }
+        _xifexpression = _xifexpression_1;
       }
+      _xblockexpression = _xifexpression;
     }
+    return ((String)_xblockexpression);
   }
   
   public String translateTypeName(final String typeName) {
@@ -154,24 +121,12 @@ public class LangJavaGeneratorHelper {
     }
   }
   
-  public YClass whatFuntionType(final EObject eobject) {
-    YClass _xifexpression = null;
-    EObject _eContainer = eobject.eContainer();
-    if ((_eContainer instanceof YFunction)) {
-      EObject _eContainer_1 = eobject.eContainer();
-      return ((YFunction) _eContainer_1).getType();
-    } else {
-      _xifexpression = this.whatFuntionType(eobject.eContainer());
-    }
-    return _xifexpression;
-  }
-  
   public String getPropertyDefaultValue(final YProperty property) {
     String _xifexpression = null;
     YAnnotAttr _attrRef = property.getAttrRef();
     boolean _tripleEquals = (_attrRef == null);
     if (_tripleEquals) {
-      _xifexpression = this.getSystemDefault(this.translateTypeName(property.getType().getName()));
+      _xifexpression = this.getSystemDefault(this.translateTypeName(property.getType().getSimpleName()));
     } else {
       _xifexpression = this.findDefaultFromAnnot(property);
     }
@@ -231,7 +186,7 @@ public class LangJavaGeneratorHelper {
         }
       }
     }
-    return this.getSystemDefault(this.translateTypeName(property.getType().getName()));
+    return this.getSystemDefault(this.translateTypeName(property.getName()));
   }
   
   /**
@@ -243,7 +198,7 @@ public class LangJavaGeneratorHelper {
     for (final YMember member : _members) {
       if ((member instanceof YProperty)) {
         final YProperty property = ((YProperty) member);
-        String _name = property.getType().getName();
+        String _name = property.getName();
         boolean _equals = Objects.equal(_name, "Array");
         if (_equals) {
           array.add(property);
@@ -276,7 +231,7 @@ public class LangJavaGeneratorHelper {
     for (final YStructRefPair struct : _structs) {
       {
         final YAnnotTable implementingTable = this._langUtil.getImplementingTable(struct.getStructclass());
-        EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+        EList<YMember> _members = this._langUtil.findStructureDeclaration(struct.getStructproperty()).getMembers();
         for (final YMember member : _members) {
           StringConcatenation _builder = new StringConcatenation();
           _builder.append("T");
@@ -300,7 +255,7 @@ public class LangJavaGeneratorHelper {
     for (final YStructRefPair struct : _structs) {
       {
         final YAnnotTable implementingTable = this._langUtil.getImplementingTable(struct.getStructclass());
-        EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+        EList<YMember> _members = this._langUtil.findStructureDeclaration(struct.getStructproperty()).getMembers();
         for (final YMember member : _members) {
           StringConcatenation _builder = new StringConcatenation();
           _builder.append("T");
@@ -317,139 +272,24 @@ public class LangJavaGeneratorHelper {
     return list;
   }
   
-  public ArrayList<String> createReadStatementSetMethodList(final ArrayList<String> list, final YExpression expression, final ArrayList<String> readProperties) {
-    boolean _matched = false;
-    if ((expression instanceof YPlus)) {
-      _matched=true;
-      final YPlus plus = ((YPlus) expression);
-      this.createReadStatementSetMethodList(list, plus.getLeft(), readProperties);
-      this.createReadStatementSetMethodList(list, plus.getRight(), readProperties);
-    }
-    if (!_matched) {
-      if ((expression instanceof YMinus)) {
-        _matched=true;
-        final YMinus minus = ((YMinus) expression);
-        this.createReadStatementSetMethodList(list, minus.getLeft(), readProperties);
-        this.createReadStatementSetMethodList(list, minus.getRight(), readProperties);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YMulOrDiv)) {
-        _matched=true;
-        final YMulOrDiv mulOrDiv = ((YMulOrDiv) expression);
-        this.createReadStatementSetMethodList(list, mulOrDiv.getLeft(), readProperties);
-        this.createReadStatementSetMethodList(list, mulOrDiv.getRight(), readProperties);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YAndExpression)) {
-        _matched=true;
-        final YAndExpression andExpression = ((YAndExpression) expression);
-        this.createReadStatementSetMethodList(list, andExpression.getLeft(), readProperties);
-        this.createReadStatementSetMethodList(list, andExpression.getRight(), readProperties);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YOrExpression)) {
-        _matched=true;
-        final YOrExpression orExpression = ((YOrExpression) expression);
-        this.createReadStatementSetMethodList(list, orExpression.getLeft(), readProperties);
-        this.createReadStatementSetMethodList(list, orExpression.getRight(), readProperties);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YComparisonExpression)) {
-        _matched=true;
-        final YComparisonExpression comparisonExpression = ((YComparisonExpression) expression);
-        this.createReadStatementSetMethodList(list, comparisonExpression.getLeft(), readProperties);
-        this.createReadStatementSetMethodList(list, comparisonExpression.getRight(), readProperties);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YEqualityExpression)) {
-        _matched=true;
-        final YEqualityExpression equalityExpression = ((YEqualityExpression) expression);
-        this.createReadStatementSetMethodList(list, equalityExpression.getLeft(), readProperties);
-        this.createReadStatementSetMethodList(list, equalityExpression.getRight(), readProperties);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YMemberSelection)) {
-        _matched=true;
-        final YMemberSelection memberSelection = ((YMemberSelection) expression);
-        YExpression _receiver = memberSelection.getReceiver();
-        boolean _isVaraibleProperty = this.isVaraibleProperty(readProperties, ((YMemberSelection) _receiver).getMember().getName());
-        boolean _not = (!_isVaraibleProperty);
-        if (_not) {
-          YExpression _receiver_1 = memberSelection.getReceiver();
-          String _name = ((YMemberSelection) _receiver_1).getMember().getName();
-          String _plus = (_name + ".");
-          String _name_1 = memberSelection.getMember().getName();
-          final String variableName = (_plus + _name_1);
-          String setMethodName = "";
-          String _name_2 = memberSelection.getMember().getType().getName();
-          if (_name_2 != null) {
-            switch (_name_2) {
-              case "Int":
-                setMethodName = "setInt";
-                break;
-              case "Short":
-                setMethodName = "setShort";
-                break;
-              case "String":
-                setMethodName = "setString";
-                break;
-              default:
-                setMethodName = "unknown";
-                break;
-            }
-          } else {
-            setMethodName = "unknown";
-          }
-          list.add((((setMethodName + "(&index&,") + variableName) + ");"));
+  public ArrayList<String> generateFROMClause(final YReadStatement readStatement) {
+    final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
+    int index = 1;
+    if ((readStatement instanceof YReadStatement)) {
+      EList<YStructRefPair> _structs = readStatement.getStructs();
+      for (final YStructRefPair struct : _structs) {
+        {
+          final YAnnotTable implementingTable = this._langUtil.getImplementingTable(readStatement.getStructs().get(0).getStructclass());
+          StringConcatenation _builder = new StringConcatenation();
+          _builder.append("\\\"");
+          String _name = implementingTable.getName();
+          _builder.append(_name);
+          _builder.append("\\\" T");
+          _builder.append(index);
+          list.add(_builder.toString());
+          index++;
         }
       }
-    }
-    if (!_matched) {
-      if ((expression instanceof YSelf)) {
-        _matched=true;
-        InputOutput.<YExpression>println(expression);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YNot)) {
-        _matched=true;
-        final YNot not = ((YNot) expression);
-        this.createReadStatementSetMethodList(list, not.getExpression(), readProperties);
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YBoolConstant)) {
-        _matched=true;
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YParenties)) {
-        _matched=true;
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YSymbolRef)) {
-        _matched=true;
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YIntConstant)) {
-        _matched=true;
-      }
-    }
-    if (!_matched) {
-      if ((expression instanceof YStringConstant)) {
-        _matched=true;
-      }
-    }
-    if (!_matched) {
-      InputOutput.<YExpression>println(expression);
     }
     return list;
   }
@@ -480,5 +320,9 @@ public class LangJavaGeneratorHelper {
       this.usedNames.put(corename, _integer_1);
       return corename;
     }
+  }
+  
+  public void findListOfProperties(final YProperty property) {
+    property.getType();
   }
 }

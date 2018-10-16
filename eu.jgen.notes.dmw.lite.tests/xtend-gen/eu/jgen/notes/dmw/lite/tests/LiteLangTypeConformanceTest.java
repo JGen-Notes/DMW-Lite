@@ -28,25 +28,17 @@ import com.google.inject.Provider;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
-import eu.jgen.notes.dmw.lite.typing.LangTypeComputer;
-import eu.jgen.notes.dmw.lite.typing.LangTypeConformance;
 import eu.jgen.notes.dmw.lite.utility.LangLib;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.naming.IQualifiedNameProvider;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
-import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Functions.Function1;
 import org.eclipse.xtext.xbase.lib.IterableExtensions;
-import org.eclipse.xtext.xbase.lib.ObjectExtensions;
-import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -60,7 +52,7 @@ public class LiteLangTypeConformanceTest {
   
   @Inject
   @Extension
-  private LangTypeConformance _langTypeConformance;
+  private /* LangTypeConformance */Object _langTypeConformance;
   
   @Inject
   @Extension
@@ -75,43 +67,34 @@ public class LiteLangTypeConformanceTest {
   
   @Test
   public void testClassConformance() {
-    try {
-      StringConcatenation _builder = new StringConcatenation();
-      _builder.append("class A {}");
-      _builder.newLine();
-      _builder.append("class B : A {}");
-      _builder.newLine();
-      _builder.append("class C {}");
-      _builder.newLine();
-      _builder.append("class D : B {}");
-      _builder.newLine();
-      EList<YClass> _classes = this._parseHelper.parse(_builder).getClasses();
-      final Procedure1<EList<YClass>> _function = (EList<YClass> it) -> {
-        Assert.assertTrue(this._langTypeConformance.isConformant(it.get(0), it.get(0)));
-        Assert.assertTrue(this._langTypeConformance.isConformant(it.get(1), it.get(0)));
-        Assert.assertTrue(this._langTypeConformance.isConformant(it.get(2), it.get(0)));
-        Assert.assertTrue(this._langTypeConformance.isConformant(it.get(3), it.get(0)));
-        Assert.assertTrue(this._langTypeConformance.isConformant(LangTypeComputer.NULL_TYPE, it.get(0)));
-      };
-      ObjectExtensions.<EList<YClass>>operator_doubleArrow(_classes, _function);
-    } catch (Throwable _e) {
-      throw Exceptions.sneakyThrow(_e);
-    }
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method isConformant(YClass) is undefined for the type YClass"
+      + "\nThe method isConformant(YClass) is undefined for the type YClass"
+      + "\nThe method isConformant(YClass) is undefined for the type YClass"
+      + "\nThe method isConformant(YClass) is undefined for the type YClass"
+      + "\nThe method or field NULL_TYPE is undefined"
+      + "\nisConformant cannot be resolved");
   }
   
   @Test
   public void testStringConformance() {
-    Assert.assertTrue(this._langTypeConformance.isConformant(LangTypeComputer.STRING_TYPE, this.libClass(LangLib.LIB_STRING)));
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field STRING_TYPE is undefined"
+      + "\nisConformant cannot be resolved");
   }
   
   @Test
   public void testIntConformance() {
-    Assert.assertTrue(this._langTypeConformance.isConformant(LangTypeComputer.INT_TYPE, this.libClass(LangLib.LIB_INTEGER)));
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field INT_TYPE is undefined"
+      + "\nisConformant cannot be resolved");
   }
   
   @Test
   public void testBoolConformance() {
-    Assert.assertTrue(this._langTypeConformance.isConformant(LangTypeComputer.BOOLEAN_TYPE, this.libClass(LangLib.LIB_BOOL)));
+    throw new Error("Unresolved compilation problems:"
+      + "\nThe method or field BOOLEAN_TYPE is undefined"
+      + "\nisConformant cannot be resolved");
   }
   
   private YClass libClass(final String fqn) {

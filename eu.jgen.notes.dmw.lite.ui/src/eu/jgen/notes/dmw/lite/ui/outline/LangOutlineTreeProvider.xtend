@@ -26,6 +26,8 @@ package eu.jgen.notes.dmw.lite.ui.outline
 import com.google.inject.Inject
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotAttr
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumn
+import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
 import eu.jgen.notes.dmw.lite.lang.YAnnotDatabase
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
 import eu.jgen.notes.dmw.lite.lang.YAnnotForeignKey
@@ -38,23 +40,23 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotTechnicalDesign
 import eu.jgen.notes.dmw.lite.lang.YAnnotTop
 import eu.jgen.notes.dmw.lite.lang.YClass
 import eu.jgen.notes.dmw.lite.lang.YFunction
-import eu.jgen.notes.dmw.lite.lang.YImport
+import eu.jgen.notes.dmw.lite.lang.YPackageDeclaration
 import eu.jgen.notes.dmw.lite.lang.YProperty
 import eu.jgen.notes.dmw.lite.lang.YWidget
+import org.eclipse.jface.viewers.StyledString
+import org.eclipse.swt.SWT
+import org.eclipse.swt.widgets.Display
 import org.eclipse.xtext.ui.PluginImageHelper
 import org.eclipse.xtext.ui.editor.outline.impl.DefaultOutlineTreeProvider
 import org.eclipse.xtext.ui.editor.outline.impl.DocumentRootNode
-import eu.jgen.notes.dmw.lite.lang.YAnnotColumn
-import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
-import org.eclipse.jface.viewers.StyledString
-import org.eclipse.xtext.ui.label.StylerFactory
 import org.eclipse.xtext.ui.editor.utils.TextStyle
-import org.eclipse.swt.widgets.Display
-import org.eclipse.swt.SWT
-import org.eclipse.swt.graphics.RGB
+import org.eclipse.xtext.ui.label.StylerFactory
+import org.eclipse.xtext.xtype.XImportDeclaration
+import org.eclipse.xtext.xtype.XImportSection
+import org.eclipse.xtext.common.types.JvmParameterizedTypeReference
 
 /**
- * Customization of the default outline structure.
+ * Customisation of the default outline structure.
  * 
  * See https://www.eclipse.org/Xtext/documentation/310_eclipse_support.html#outline
  */
@@ -67,8 +69,8 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	private StylerFactory stylerFactory;
 
 	def void _createChildren(DocumentRootNode outlineNode, YWidget widget) {
-		createNode(outlineNode, widget);
-		widget.imports.forEach[element|createNode(outlineNode, element)]
+		createNode(outlineNode, widget.package);
+		createNode(outlineNode, widget.importSection);
 		widget.annotations.forEach[element|createNode(outlineNode, element.type)]
 		widget.classes.forEach[element|createNode(outlineNode, element)]
 	}
@@ -83,23 +85,48 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		]
 	}
 
+	def void _createChildren(DocumentRootNode outlineNode, XImportSection importSection) {
+		importSection.importDeclarations.forEach [ importDeclaration |
+			createNode(outlineNode, importDeclaration)
+		]
+	}
+
+	def void _createChildren(DocumentRootNode outlineNode, YClass clazz) {
+		clazz.members.forEach [ member |
+				createNode(outlineNode, member)
+			]
+	}
+
 	def boolean _isLeaf(YWidget element) {
 		return true
 	}
 
-	def Object _text(YWidget widget) {
-		if (widget.name !== null) {
-			return widget.name
-		}
+	def Object _text(JvmParameterizedTypeReference element) {
+		return null
+	}
+	
+	def Object _text(XImportSection importSection) {
+		return "import declarations"
 	}
 
-	/*
-	 * Widget
-	 */
-	def Object _image(YWidget widget) {
-		if (widget.name !== null) {
-			return imageHelper.getImage("package.gif")
-		}
+	def Object _image(XImportSection importSection) {
+		return imageHelper.getImage("imports.gif")
+	}
+
+	def Object _text(YPackageDeclaration packageDeclaration) {
+		return packageDeclaration.name
+	}
+
+	def Object _image(YPackageDeclaration packageDeclaration) {
+		return imageHelper.getImage("package.gif")
+	}
+
+	def Object _text(XImportDeclaration importDeclaration) {
+		return importDeclaration.importedName
+	}
+
+	def Object _image(XImportDeclaration importDeclaration) {
+		return imageHelper.getImage("import.gif")
 	}
 
 	/*
@@ -193,7 +220,6 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			}
 		}
 		return ""
-
 	}
 
 	def Object _image(YAnnotAbstractColumn element) {
@@ -242,7 +268,7 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 
 	def Object _text(YAnnotAttr element) {
 		if (element.yclass !== null) {
-			return element.name + " : " + element.yclass.name
+			return element.name + " : " + element.yclass.simpleName
 		} else {
 			return element.name
 		}
@@ -271,7 +297,7 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 			return element.name
 		}
 		if (element.type !== null) {
-			return element.name + " : " + element.type.name + tuple
+			return element.name + " : " + element.type.simpleName + tuple
 		}
 		return ""
 	}
@@ -281,11 +307,11 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	def Object _text(YClass element) {
-		if (element.superclass !== null && element.superclass.name == "Widget") {
-			element.name
-		} else if (element.superclass !== null && element.superclass.name == "Structure") {
+		if (element.superclass !== null && element.superclass.simpleName == "XWidget") {
+			element.name + " : " + element.superclass.simpleName
+		} else if (element.superclass !== null && element.superclass.simpleName == "XStructure") {
 			if (element.entityRef !== null) {
-				element.name + " -> " + element.entityRef.name
+				element.name + " : " + element.superclass.simpleName + " -> " + element.entityRef.name
 			} else {
 				element.name
 			}
@@ -295,9 +321,9 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	def Object _image(YClass element) {
-		if (element.superclass !== null && element.superclass.name == "Widget") {
+		if (element.superclass !== null && element.superclass.simpleName == "XWidget") {
 			return imageHelper.getImage("widget.gif")
-		} else if (element.superclass !== null && element.superclass.name == "Structure") {
+		} else if (element.superclass !== null && element.superclass.simpleName == "XStructure") {
 			return imageHelper.getImage("structure.gif")
 		} else {
 			return imageHelper.getImage("class.gif")
@@ -316,10 +342,9 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		return imageHelper.getImage("function.gif")
 	}
 
-	def Object _image(YImport element) {
-		return imageHelper.getImage("import.gif")
-	}
-
+//	def Object _image(YImport element) {
+//		return imageHelper.getImage("import.gif")
+//	}
 	def Object _image(YAnnotAttr element) {
 		return imageHelper.getImage("attribute.gif")
 	}
@@ -368,15 +393,15 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	def TextStyle getTypeKeywordStyleText() {
 		val textStyle = new TextStyle();
 		textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY).RGB)
-		textStyle.setStyle(SWT.ITALIC );
+		textStyle.setStyle(SWT.ITALIC);
 		return textStyle;
 	}
-	
+
 	def TextStyle getTypeTextStyleParameter() {
 		val textStyle = new TextStyle();
 		textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_FOREGROUND).RGB);
 		textStyle.setStyle(SWT.NORMAL);
 		return textStyle;
 	}
-	
+
 }

@@ -50,9 +50,9 @@ class LangSwiftGeneratorHelper {
 	def String findPackageName(YProperty property) {
 		val a = property.type.eContainer
 		if (a instanceof YWidget) {
-			return (a as YWidget).name
+	//		return (a as YWidget).name
 		} else if (a instanceof YClass) {
-			return ((a as YClass).eContainer as YWidget).name + "." + (a as YClass).name
+	//		return ((a as YClass).eContainer as YWidget).name + "." + (a as YClass).name
 		} else {
 			return "<do not know what to do yet>"
 		}
