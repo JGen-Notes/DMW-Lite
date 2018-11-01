@@ -7,7 +7,7 @@ import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YMember;
 import eu.jgen.notes.dmw.lite.lang.YProperty;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
-import eu.jgen.notes.dmw.lite.utility.LangJavaGeneratorHelper;
+import eu.jgen.notes.dmw.lite.utility.LangGeneratorHelperForJava;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,7 +31,7 @@ public class LangGlobalCommandsGenerator implements IGenerator {
   
   @Inject
   @Extension
-  private LangJavaGeneratorHelper _langJavaGeneratorHelper;
+  private LangGeneratorHelperForJava _langGeneratorHelperForJava;
   
   private List<String> imports = CollectionLiterals.<String>newArrayList();
   
@@ -54,7 +54,7 @@ public class LangGlobalCommandsGenerator implements IGenerator {
         this.imports.add("eu.jgen.notes.dmw.lite.runtimes.GlobalCommands");
         this.imports.add("eu.jgen.notes.dmw.lite.runtimes.Command");
         StringConcatenation _builder = new StringConcatenation();
-        String _documentation = this._langJavaGeneratorHelper.getDocumentation(clazz);
+        String _documentation = this._langGeneratorHelperForJava.getDocumentation(clazz);
         _builder.append(_documentation);
         _builder.append("  ");
         _builder.newLineIfNotEmpty();
@@ -120,7 +120,7 @@ public class LangGlobalCommandsGenerator implements IGenerator {
   
   protected String generatePropertyForCommand(final YProperty property) {
     StringConcatenation _builder = new StringConcatenation();
-    String _documentation = this._langJavaGeneratorHelper.getDocumentation(property);
+    String _documentation = this._langGeneratorHelperForJava.getDocumentation(property);
     _builder.append(_documentation);
     _builder.newLineIfNotEmpty();
     _builder.append("public Command ");

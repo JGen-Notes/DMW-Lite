@@ -35,7 +35,6 @@ class LangImportedNamespaceAwareLocalScopeProvider extends ImportedNamespaceAwar
 			true,
 			ignoreCase
 		))
-
 	}
 
 }

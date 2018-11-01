@@ -226,7 +226,13 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	}
 
 	def Object _text(YAnnotForeignKey element) {
-		return element.relationship.name + " -> " + element.relationship.target.name
+		if (element.relationship !== null) {
+			if (element.relationship.target !== null) {
+				return element.relationship.name + " -> " + element.relationship.target.name
+			} else {
+				return element.relationship.name
+			}
+		}
 	}
 
 	def Object _image(YAnnotForeignKey element) {
@@ -255,9 +261,17 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 		}
 		var desc = ""
 		if (element.many) {
-			desc = element.name + opt + " -> " + element.target.name + "*"
+			if (element.target !== null) {
+				desc = element.name + opt + " -> " + element.target.name + "*"
+			} else {
+				desc = element.name + opt
+			}
 		} else {
-			desc = element.name + opt + " -> " + element.target.name
+			if (element.target !== null) {
+				desc = element.name + opt + " -> " + element.target.name
+			} else {
+				desc = element.name + opt
+			}
 		}
 		return prepareText(element, desc)
 	}
@@ -368,15 +382,15 @@ class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
 	def TextStyle getTypeKeywordStyleText() {
 		val textStyle = new TextStyle();
 		textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY).RGB)
-		textStyle.setStyle(SWT.ITALIC );
+		textStyle.setStyle(SWT.ITALIC);
 		return textStyle;
 	}
-	
+
 	def TextStyle getTypeTextStyleParameter() {
 		val textStyle = new TextStyle();
 		textStyle.setColor(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_FOREGROUND).RGB);
 		textStyle.setStyle(SWT.NORMAL);
 		return textStyle;
 	}
-	
+
 }

@@ -1,6 +1,6 @@
 package eu.jgen.notes.dmw.lite.runtimes;
 
-public class ExitState {
+public class DMWExitState {
 	
 	public boolean isNormal() {
 		return true;

@@ -435,4 +435,39 @@
       </wizard>
 		
    </extension>
+   <extension point="org.eclipse.core.runtime.adapters">
+        <factory class="eu.jgen.notes.dmw.lite.ui.LangExecutableExtensionFactory:eu.jgen.notes.dmw.lite.ui.LangStratumBreakpointAdapterFactory"
+            adaptableType="eu.jgen.notes.dmw.lite.ui.LangEditor">
+            <adapter type="org.eclipse.debug.ui.actions.IToggleBreakpointsTarget"/>
+        </factory> 
+    </extension>
+    <extension point="org.eclipse.ui.editorActions">
+        <editorContribution targetID="eu.jgen.notes.dmw.lite.Lang" 
+            id="eu.jgen.notes.dmw.lite.Lang.rulerActions">
+            <action
+                label="Not Used"
+                class="eu.jgen.notes.dmw.lite.ui.LangExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+                style="push"
+                actionID="RulerDoubleClick"
+                id="eu.jgen.notes.dmw.lite.Lang.doubleClickBreakpointAction"/>
+        </editorContribution>
+    </extension>
+    <extension point="org.eclipse.ui.popupMenus">
+        <viewerContribution
+            targetID="eu.jgen.notes.dmw.lite.Lang.RulerContext"
+            id="eu.jgen.notes.dmw.lite.Lang.RulerPopupActions">
+            <action
+                label="Toggle Breakpoint"
+                class="eu.jgen.notes.dmw.lite.ui.LangExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerToggleBreakpointActionDelegate"
+                menubarPath="debug"
+                id="eu.jgen.notes.dmw.lite.Lang.rulerContextMenu.toggleBreakpointAction">
+            </action>
+            <action
+                label="Not used"
+                class="eu.jgen.notes.dmw.lite.ui.LangExecutableExtensionFactory:org.eclipse.debug.ui.actions.RulerEnableDisableBreakpointActionDelegate"
+                menubarPath="debug"
+                id="eu.jgen.notes.dmw.lite.Lang.rulerContextMenu.enableDisableBreakpointAction">
+            </action>
+        </viewerContribution>
+    </extension>
 </plugin>

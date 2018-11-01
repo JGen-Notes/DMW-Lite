@@ -47,62 +47,69 @@ class TestLiteLangGeneratorCreateStatement{
 	@Test
 	def void testGenerateExpressionPlus() {
 		val body = '''
-			package templates;
+			package dmw.test.derby;
 			
-			@database MySQL
-			@java 
-			         
-			@td database MySQL {
-				@table F -> F {
-					@column NUMBER -> number as INTEGER @length ( 9 )
-					@column TYPE -> type as SMALLINT @length ( 2 )
-					@column MESSAGE -> message as CHAR @length ( 128 )
-					@column DESCRIPTION -> description as CHAR ? @length ( 200 )
+			@database Derby    
+			
+			@java                
+			  
+			@td database Derby {     
+				@table DataTypes -> AllDataTypes {
+					@column NUMBER -> AllDataTypes.number as INTEGER @length ( 9 )
+					@column INT_TYPE -> AllDataTypes.intType as INTEGER @length ( 9 )
+					@column SHORT_TYPE -> AllDataTypes.shortType as SMALLINT @length ( 2 )
+					@column DATE_TYPE -> AllDataTypes.dateType as DATE
+					@column TIME_TYPE -> AllDataTypes.timeType as TIME
+					@column STRING_TYPE -> AllDataTypes.stringType as CHAR @length ( 128 )
+					@column TIMESTAMP_TYPE -> AllDataTypes.timestampType as TIMESTAMP
+					@column DOUBLE_TYPE -> AllDataTypes.doubleType as DECIMAL @length ( 2 )
+					@column LONG_TYPE -> AllDataTypes.longType as BIGINT     @length ( 2 )
+					@column BOOL_TYPE -> AllDataTypes.boolType as BOOLEAN
 					@primary (NUMBER)
+				} 
+			}                     
+			     
+			@entity AllDataTypes {
+				@attr number : Int @length(9) @default(20) ;
+				@attr intType : Int @length(9) @default(100000) ;
+				@attr shortType : Short @length(2) @default(20) ;
+				@attr longType : Long @length(2) @default(20) ;
+				@attr doubleType : Double @length(2) @default(20) ;
+				@attr dateType : Date;
+				@attr timeType : Time;
+				@attr timestampType : Timestamp;
+				@attr stringType : String @length(128) @default("Some message") ;
+				@attr boolType : Bool;
+				@id logid(number);       
+			}
+			class CreateAllDataTypes : Widget {   
+				class EntityAllTypes : Structure -> AllDataTypes {  
+						public var number : Int -> AllDataTypes.number;
+						public var intType : Int -> AllDataTypes.intType;
+						public var shortType : Short -> AllDataTypes.shortType;
+						public var longType : Long -> AllDataTypes.longType;
+						public var doubleType : Double -> AllDataTypes.doubleType;
+						public var dateType : Date -> AllDataTypes.dateType;
+						public var timeType : Time -> AllDataTypes.timeType;
+						public var timestampType : Timestamp -> AllDataTypes.timestampType;  
+						public var stringType : String -> AllDataTypes.stringType;
+						public var boolType : Bool -> AllDataTypes.boolType;  
 				}
-			} 
-			
-			@entity F {
-				@attr number : Int @length(9)@default(20);
-				@attr type : Short @length(2)@default(20);
-				@attr message : String @length(128)@default("Some message");
-				@attr description : String ? @length(200)@default("Some description");
-				@id logid(number);
-			}  	
-			    
-			class CreateF : Widget {      
-				
-				class ViewF : Structure -> F {
-					public var number : Int -> F.number;
-			        public var type : Short -> F.type;
-			        public var message : String -> F.message;
-			        public var description : String -> F.description;
-				}
-				
-				var viewF : ViewF;
-				
+				public var entityAllTypes : EntityAllTypes;
 				public func start() {
-					
-					create viewF -> F  {
-						self.viewF.number = 100;
-						self.viewF.type = 1;
-						self.viewF.message = "Short message";
-						self.viewF.description = "Longer description";
-					} success {
-						
-					} already exist {
-						
+					db-create entityAllTypes -> AllDataTypes {
+					}  
+					success {
 					}
-					
-				}
-				
-				
-			}			
+					already exist {
+					}
+				}                  
+			}  			
 			
 		'''
 	   
 		newArrayList(loadLibSource, body).compile() [	
-			println(it.getGeneratedCode("templates.CreateF"))		
+			println(it.getGeneratedCode("dmw.test.derby.CreateAllDataTypes"))		
 			Assert.assertFalse(checkIfIssues(it))			
 		]
 	}

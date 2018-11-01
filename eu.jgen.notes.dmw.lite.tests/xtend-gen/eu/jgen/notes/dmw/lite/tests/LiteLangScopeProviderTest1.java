@@ -25,6 +25,7 @@ package eu.jgen.notes.dmw.lite.tests;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterators;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YExpression;
@@ -36,11 +37,13 @@ import eu.jgen.notes.dmw.lite.lang.YSymbolRef;
 import eu.jgen.notes.dmw.lite.lang.YVariableDeclaration;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.tests.LangInjectorProvider;
+import eu.jgen.notes.dmw.lite.utility.LangLib;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.Iterator;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.xtend2.lib.StringConcatenation;
 import org.eclipse.xtext.naming.QualifiedName;
 import org.eclipse.xtext.resource.IEObjectDescription;
@@ -48,6 +51,7 @@ import org.eclipse.xtext.scoping.IScopeProvider;
 import org.eclipse.xtext.testing.InjectWith;
 import org.eclipse.xtext.testing.XtextRunner;
 import org.eclipse.xtext.testing.util.ParseHelper;
+import org.eclipse.xtext.testing.validation.ValidationTestHelper;
 import org.eclipse.xtext.xbase.lib.Conversions;
 import org.eclipse.xtext.xbase.lib.Exceptions;
 import org.eclipse.xtext.xbase.lib.Extension;
@@ -70,11 +74,22 @@ public class LiteLangScopeProviderTest1 {
   
   @Inject
   @Extension
+  private ValidationTestHelper _validationTestHelper;
+  
+  @Inject
+  @Extension
   private IScopeProvider _iScopeProvider;
   
   @Inject
   @Extension
   private LangUtil _langUtil;
+  
+  @Inject
+  @Extension
+  private LangLib _langLib;
+  
+  @Inject
+  private Provider<ResourceSet> rsp;
   
   @Test
   public void testScopeProvider() {
@@ -548,6 +563,112 @@ public class LiteLangScopeProviderTest1 {
     }
   }
   
+  @Test
+  public void testPackagesAndClassQualifiedNames() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("package my.first.pack;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("class B : my.second.pack.A {}");
+      _builder.newLine();
+      _builder.newLine();
+      final YWidget first = this._parseHelper.parse(_builder);
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("package my.second.pack;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("class A  {");
+      _builder_1.newLine();
+      _builder_1.append("  ");
+      _builder_1.append("var b : my.first.pack.B ;");
+      _builder_1.newLine();
+      _builder_1.append("}");
+      _builder_1.newLine();
+      final YWidget second = this._parseHelper.parse(_builder_1, first.eResource().getResourceSet());
+      this._validationTestHelper.assertNoErrors(first);
+      this._validationTestHelper.assertNoErrors(second);
+      Assert.assertSame(IterableExtensions.<YClass>head(second.getClasses()), IterableExtensions.<YClass>head(first.getClasses()).getSuperclass());
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
+  @Test
+  public void testImports() {
+    try {
+      StringConcatenation _builder = new StringConcatenation();
+      _builder.append("package my.first.pack;");
+      _builder.newLine();
+      _builder.newLine();
+      _builder.append("class C1 {}");
+      _builder.newLine();
+      _builder.append("class C2 {}");
+      _builder.newLine();
+      _builder.newLine();
+      final YWidget first = this._parseHelper.parse(_builder);
+      StringConcatenation _builder_1 = new StringConcatenation();
+      _builder_1.append("package my.second.pack;");
+      _builder_1.newLine();
+      _builder_1.newLine();
+      _builder_1.append("class D1 {}");
+      _builder_1.newLine();
+      _builder_1.append("class D2 {}");
+      _builder_1.newLine();
+      final YWidget second = this._parseHelper.parse(_builder_1, first.eResource().getResourceSet());
+      StringConcatenation _builder_2 = new StringConcatenation();
+      _builder_2.append("package my.third.pack;");
+      _builder_2.newLine();
+      _builder_2.append("import my.first.pack.C1;");
+      _builder_2.newLine();
+      _builder_2.append("import my.second.pack.*;");
+      _builder_2.newLine();
+      _builder_2.newLine();
+      _builder_2.append("class E : C1 {");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("// C1 is imported");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("var c : my.first.pack.C2;");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("// C2 not imported");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("var d1 : D1;");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("// D1 imported by wildcard");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("var d2 : D2;");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.append("// D2 imported by wildcard");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.newLine();
+      _builder_2.append("\t");
+      _builder_2.newLine();
+      _builder_2.append("}");
+      _builder_2.newLine();
+      _builder_2.newLine();
+      final YWidget third = this._parseHelper.parse(_builder_2, first.eResource().getResourceSet());
+      this._validationTestHelper.assertNoErrors(first);
+      this._validationTestHelper.assertNoErrors(second);
+      this._validationTestHelper.assertNoErrors(third);
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
+  }
+  
   private YMemberSelection returnExpSel(final YFunction function) {
     YExpression _expression = this._langUtil.returnStatement(function).getExpression();
     return ((YMemberSelection) _expression);
@@ -558,5 +679,19 @@ public class LiteLangScopeProviderTest1 {
       return it.getName();
     };
     Assert.assertEquals(expected.toString(), IterableExtensions.join(IterableExtensions.<IEObjectDescription, QualifiedName>map(this._iScopeProvider.getScope(context, reference).getAllElements(), _function), ", "));
+  }
+  
+  private YWidget loadLibAndParse(final CharSequence p) {
+    try {
+      YWidget _xblockexpression = null;
+      {
+        final ResourceSet resourceSet = this.rsp.get();
+        this._langLib.loadLib(resourceSet);
+        _xblockexpression = this._parseHelper.parse(p, resourceSet);
+      }
+      return _xblockexpression;
+    } catch (Throwable _e) {
+      throw Exceptions.sneakyThrow(_e);
+    }
   }
 }

@@ -101,7 +101,7 @@ class LangValidator extends AbstractLangValidator {
 	public static val INVERSE_RELATIONSHIP_DOES_NOT_EXIST_IN_TAGET = ISSUE_CODE_PREFIX + "InverseDoesNotExistInTarget"
 	public static val NO_DESGNATED_PARENT = ISSUE_CODE_PREFIX + "NoDesignatedParent"
 	public static val ONLY_ONE_DESGNATED_PARENT = ISSUE_CODE_PREFIX + "OnlyOneDesignatedParent"
-	public static val CLASS_NEED_TO_BE_EXTENDED = ISSUE_CODE_PREFIX + "ClassNeedToBeExtended"
+//	public static val CLASS_NEED_TO_BE_EXTENDED = ISSUE_CODE_PREFIX + "ClassNeedToBeExtended"
 	public static val CLASS_NEED_TO_HAVE_PROPERTIES = ISSUE_CODE_PREFIX + "ClassNeedToHaveProperties"
 	public static val CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL = ISSUE_CODE_PREFIX + "ClassNameFirstCharacterNotCapital"
 	public static val ENTITY_NAME_FIRST_CHARACTER_NOT_CAPITAL = ISSUE_CODE_PREFIX + "EntityNameFirstCharacterNotCapital"
@@ -600,16 +600,16 @@ class LangValidator extends AbstractLangValidator {
 			}
 		}
 
-		@Check
-		def void checkIfClassHasExtention(YClass clazz) {
-			if (clazz.name == "Object") {
-				return;
-			}
-			if (clazz.superclass === null) {
-				error("Class " + clazz.name + " does need to extend Object type.", clazz,
-					LangPackage.eINSTANCE.YNamedElement_Name, CLASS_NEED_TO_BE_EXTENDED);
-			}
-		}
+//		@Check
+//		def void checkIfClassHasExtention(YClass clazz) {
+//			if (clazz.name == "Object") {
+//				return;
+//			}
+//			if (clazz.superclass === null) {
+//				error("Class " + clazz.name + " does need to extend Object type.", clazz,
+//					LangPackage.eINSTANCE.YNamedElement_Name, CLASS_NEED_TO_BE_EXTENDED);
+//			}
+//		}
 
 		@Check
 		def void checkRelationshipHasOnlySingleParentDesignated(YAnnotRel relationship) {

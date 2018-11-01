@@ -2,16 +2,17 @@ package eu.jgen.notes.dmw.lite.generator;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.xtext.generator.IFileSystemAccess;
+import org.eclipse.xtext.generator.IFileSystemAccess2;
 import org.eclipse.xtext.generator.IFileSystemAccessExtension;
 import org.eclipse.xtext.generator.IFileSystemAccessExtension2;
 
 @SuppressWarnings("all")
 public class OutputConfigurationFileSystemAccess implements IFileSystemAccess, IFileSystemAccessExtension, IFileSystemAccessExtension2 {
-  protected IFileSystemAccess fsa;
+  protected IFileSystemAccess2 fsa;
   
   protected String outputConfigurationName;
   
-  protected OutputConfigurationFileSystemAccess(final IFileSystemAccess fsa, final String outputConfigurationName) {
+  protected OutputConfigurationFileSystemAccess(final IFileSystemAccess2 fsa, final String outputConfigurationName) {
     this.fsa = fsa;
     this.outputConfigurationName = outputConfigurationName;
   }

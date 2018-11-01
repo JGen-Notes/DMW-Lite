@@ -158,8 +158,6 @@ public class LangValidator extends AbstractLangValidator {
   
   public final static String ONLY_ONE_DESGNATED_PARENT = (LangValidator.ISSUE_CODE_PREFIX + "OnlyOneDesignatedParent");
   
-  public final static String CLASS_NEED_TO_BE_EXTENDED = (LangValidator.ISSUE_CODE_PREFIX + "ClassNeedToBeExtended");
-  
   public final static String CLASS_NEED_TO_HAVE_PROPERTIES = (LangValidator.ISSUE_CODE_PREFIX + "ClassNeedToHaveProperties");
   
   public final static String CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL = (LangValidator.ISSUE_CODE_PREFIX + "ClassNameFirstCharacterNotCapital");
@@ -901,24 +899,6 @@ public class LangValidator extends AbstractLangValidator {
       String _plus_1 = (_plus + " does not have any properties yet.");
       this.error(_plus_1, clazz, 
         LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.CLASS_NEED_TO_HAVE_PROPERTIES);
-    }
-  }
-  
-  @Check
-  public void checkIfClassHasExtention(final YClass clazz) {
-    String _name = clazz.getName();
-    boolean _equals = Objects.equal(_name, "Object");
-    if (_equals) {
-      return;
-    }
-    YClass _superclass = clazz.getSuperclass();
-    boolean _tripleEquals = (_superclass == null);
-    if (_tripleEquals) {
-      String _name_1 = clazz.getName();
-      String _plus = ("Class " + _name_1);
-      String _plus_1 = (_plus + " does need to extend Object type.");
-      this.error(_plus_1, clazz, 
-        LangPackage.eINSTANCE.getYNamedElement_Name(), LangValidator.CLASS_NEED_TO_BE_EXTENDED);
     }
   }
   

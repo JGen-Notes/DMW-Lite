@@ -37,14 +37,14 @@ import com.google.inject.Inject
 class LangGenerator extends AbstractGenerator {
 	
 	@Inject LangTechicalDesignGenerator g1
-	@Inject LangJavaWidgetGenerator g2
+	@Inject LangWidgetGeneratorForJava g2
 	@Inject LangGlobalExitStatesGenerator g3
 	@Inject LangGlobalCommandsGenerator g4
-	@Inject LangSwiftWidgetGenerator g5
+	@Inject LangWidgetGeneratorForSwift g5
 
 	override void doGenerate(Resource resource, IFileSystemAccess2 fsa, IGeneratorContext context) {		
 			g1.doGenerate(resource, fsa)
-			g2.doGenerate(resource, fsa)
+			g2.doGenerate(resource, fsa, context)
 			g3.doGenerate(resource, fsa)
 			g4.doGenerate(resource, fsa)
 			g5.doGenerate(resource, fsa)

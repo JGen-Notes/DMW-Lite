@@ -1,43 +1,45 @@
 package eu.jgen.notes.dmw.lite.utility
 
 import com.google.inject.Inject
+import eu.jgen.notes.dmw.lite.lang.YAndExpression
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefault
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultNumber
 import eu.jgen.notes.dmw.lite.lang.YAnnotDefaultText
 import eu.jgen.notes.dmw.lite.lang.YAnnotMax
+import eu.jgen.notes.dmw.lite.lang.YBoolConstant
 import eu.jgen.notes.dmw.lite.lang.YClass
+import eu.jgen.notes.dmw.lite.lang.YComparisonExpression
+import eu.jgen.notes.dmw.lite.lang.YCreateStatement
+import eu.jgen.notes.dmw.lite.lang.YEqualityExpression
+import eu.jgen.notes.dmw.lite.lang.YExpression
 import eu.jgen.notes.dmw.lite.lang.YFunction
+import eu.jgen.notes.dmw.lite.lang.YIntConstant
+import eu.jgen.notes.dmw.lite.lang.YMember
+import eu.jgen.notes.dmw.lite.lang.YMemberSelection
+import eu.jgen.notes.dmw.lite.lang.YMinus
+import eu.jgen.notes.dmw.lite.lang.YMulOrDiv
+import eu.jgen.notes.dmw.lite.lang.YNot
+import eu.jgen.notes.dmw.lite.lang.YOrExpression
+import eu.jgen.notes.dmw.lite.lang.YParenties
+import eu.jgen.notes.dmw.lite.lang.YPlus
 import eu.jgen.notes.dmw.lite.lang.YProperty
+import eu.jgen.notes.dmw.lite.lang.YReadEachStatement
 import eu.jgen.notes.dmw.lite.lang.YReadStatement
-import eu.jgen.notes.dmw.lite.lang.YStatement
+import eu.jgen.notes.dmw.lite.lang.YSelf
+import eu.jgen.notes.dmw.lite.lang.YStringConstant
+import eu.jgen.notes.dmw.lite.lang.YSymbolRef
+import eu.jgen.notes.dmw.lite.lang.YUpdateStatement
 import eu.jgen.notes.dmw.lite.lang.YWidget
 import java.util.ArrayList
+import java.util.HashMap
+import java.util.Map
 import org.eclipse.emf.ecore.EObject
 import org.eclipse.emf.ecore.util.EcoreUtil
 import org.eclipse.xtext.common.types.JvmIdentifiableElement
 import org.eclipse.xtext.documentation.IEObjectDocumentationProvider
 import org.eclipse.xtext.xbase.compiler.DocumentationAdapter
-import java.util.Map
-import java.util.HashMap
-import eu.jgen.notes.dmw.lite.lang.YExpression
-import eu.jgen.notes.dmw.lite.lang.YMemberSelection
-import eu.jgen.notes.dmw.lite.lang.YPlus
-import eu.jgen.notes.dmw.lite.lang.YMinus
-import eu.jgen.notes.dmw.lite.lang.YAndExpression
-import eu.jgen.notes.dmw.lite.lang.YOrExpression
-import eu.jgen.notes.dmw.lite.lang.YComparisonExpression
-import eu.jgen.notes.dmw.lite.lang.YEqualityExpression
-import eu.jgen.notes.dmw.lite.lang.YNot
-import eu.jgen.notes.dmw.lite.lang.YSelf
-import eu.jgen.notes.dmw.lite.lang.YBoolConstant
-import eu.jgen.notes.dmw.lite.lang.YParenties
-import eu.jgen.notes.dmw.lite.lang.YSymbolRef
-import eu.jgen.notes.dmw.lite.lang.YIntConstant
-import eu.jgen.notes.dmw.lite.lang.YStringConstant
-import eu.jgen.notes.dmw.lite.lang.YMulOrDiv
-import eu.jgen.notes.dmw.lite.lang.YReadEachStatement
 
-class LangJavaGeneratorHelper {
+class LangGeneratorHelperForJava {
 
 	val String SYSTEM_DEFAULT_STRING = "\"\""
 	val String SYSTEM_DEFAULT_INT = "0"
@@ -53,8 +55,7 @@ class LangJavaGeneratorHelper {
 
 	@Inject extension LangUtil
 
-	@Inject
-	private IEObjectDocumentationProvider documentationProvider;
+	@Inject IEObjectDocumentationProvider documentationProvider;
 
 	def String getDocumentation( /* @Nullable */ EObject source) {
 		if (source === null)
@@ -367,5 +368,263 @@ class LangJavaGeneratorHelper {
 			return corename
 		}
 	}
+
+	def String generateGetMethodsForRead(YReadStatement readStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		for (struct : readStatement.structs) {
+			for (member : struct.structproperty.type.members) {
+				var setMethodName = ""
+				switch (member.type.name) {
+					case "Int": {
+						setMethodName = "getInt"
+					}
+					case "Short": {
+						setMethodName = "getShort"
+					}
+					case "Long": {
+						setMethodName = "getLong"
+					}
+					case "Bool": {
+						setMethodName = "getBoolean"
+					}
+					case "String": {
+						setMethodName = "getString"
+					}
+					case "Double": {
+						setMethodName = "getDouble"
+					}
+					case "Time": {
+						setMethodName = "getTime"
+					}
+					case "Date": {
+						setMethodName = "getDate"
+					}
+					case "Timestamp": {
+						setMethodName = "getTimestamp"
+					}
+					default: {
+						setMethodName = "unknown"
+					}
+				}
+				buffer.append(
+					struct.structproperty.name + "." + member.name + " = _rs." + setMethodName + "(" +
+						Integer.toString(index) + ");\n")
+				index++
+			}
+		}
+		return buffer.toString
+	}
+
+	def String generaterUpdateMethodName(YMember member) {
+		switch (member.type.name) {
+			case "Int": {
+				return "updateInt"
+			}
+			case "Short": {
+				return "updateShort"
+			}
+			case "Long": {
+				return "updateLong"
+			}
+			case "String": {
+				return "updateString"
+			}
+			case "Double": {
+				return "updateDouble"
+			}
+			case "Date": {
+				return "updateDate"
+			}
+			case "Time": {
+				return "updateTime"
+			}
+			case "Timestamp": {
+				return "updateTimestamp"
+			}
+			case "Bool": {
+				return "updateBoolean"
+			}
+			default: {
+				return "not yet done"
+			}
+		}
+	}
+
+	def String generaterSetMethodName(YMember member) {
+		switch (member.type.name) {
+			case "Int": {
+				return "setInt"
+			}
+			case "Short": {
+				return "setShort"
+			}
+			case "Long": {
+				return "setLong"
+			}
+			case "Bool": {
+				return "setBoolean"
+			}
+			case "String": {
+				return "setString"
+			}
+			case "Double": {
+				return "setDouble"
+			}
+			case "Time": {
+				return "setTime"
+			}
+			case "Date": {
+				return "setDate"
+			}
+			case "Timestamp": {
+				return "setTimestamp"
+			}
+			default: {
+				return "not yet done"
+
+			}
+		}
+	}
+
+	def String generateGetMethodsForReadEach(YReadEachStatement readEachStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		for (struct : readEachStatement.structs) {
+			for (member : struct.structproperty.type.members) {
+				var setMethodName = ""
+				switch (member.type.name) {
+					case "Int": {
+						setMethodName = "getInt"
+					}
+					case "Short": {
+						setMethodName = "getShort"
+					}
+					case "Long": {
+						setMethodName = "getLong"
+					}
+					case "Bool": {
+						setMethodName = "getBoolean"
+					}
+					case "String": {
+						setMethodName = "getString"
+					}
+					case "Double": {
+						setMethodName = "getDouble"
+					}
+					case "Time": {
+						setMethodName = "getTime"
+					}
+					case "Date": {
+						setMethodName = "getDate"
+					}
+					case "Timestamp": {
+						setMethodName = "getTimestamp"
+					}
+					default: {
+						setMethodName = "unknown"
+					}
+				}
+				buffer.append(
+					struct.structproperty.name + "." + member.name + " = _rs." + setMethodName + "(" +
+						Integer.toString(index) + ");\n")
+				index++
+			}
+		}
+		return buffer.toString
+	}
+
+	def String generateSetMethodsForCreateStatement(YCreateStatement createStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		for (member : createStatement.struct.structproperty.type.members) {
+			buffer.append("_statement." + generaterSetMethodName(member))
+			buffer.append("(")
+			buffer.append(index)
+			buffer.append(", ")
+			buffer.append(createStatement.struct.structproperty.name + "." + member.name)
+			buffer.append(");\n")
+			index++
+		}
+		return buffer.toString
+	}
+
+	def String generateSetMethodsForUpdateStatement(YUpdateStatement updateStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		for (member : updateStatement.struct.structproperty.type.members) {
+			buffer.append("_rs." + generaterUpdateMethodName(member))
+			buffer.append("(")
+			buffer.append(index)
+			buffer.append(", ")
+			buffer.append(updateStatement.struct.structproperty.name + "." + member.name)
+			buffer.append(");\n")
+			index++
+		}
+		return buffer.toString
+	}
+
+	def String generateSetMethodsForRead(YReadStatement readStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		val list = newArrayList()
+		val proplist = newArrayList()
+		getListOfPropertiesForRead(readStatement, proplist)
+		proplist.add("viewF")
+		val newlist = createReadStatementSetMethodList(list, readStatement.whereclause.expression, proplist)
+		for (setMethod : newlist) {
+			buffer.append("_statement." + setMethod.replace("&index&", Integer.toString(index)) + "\n")
+			index++
+		}
+		return buffer.toString
+	}
+
+	def String generateSetMethodsForReadEach(YReadEachStatement readEachStatement) {
+		val buffer = new StringBuffer()
+		var index = 1;
+		val list = newArrayList()
+		val proplist = newArrayList()
+		getListOfPropertiesForReadEach(readEachStatement, proplist)
+		proplist.add("viewF")
+		val newlist = createReadStatementSetMethodList(list, readEachStatement.whereclause.expression, proplist)
+		for (setMethod : newlist) {
+			buffer.append("_statement." + setMethod.replace("&index&", Integer.toString(index)) + "\n")
+			index++
+		}
+		return buffer.toString
+	}
+
+	private def getListOfPropertiesForRead(YReadStatement readStatement, ArrayList<String> readProperties) {
+		for (struct : readStatement.structs) {
+			readProperties.add(struct.structproperty.name)
+		}
+	}
+
+	private def getListOfPropertiesForReadEach(YReadEachStatement readEachStatement, ArrayList<String> readProperties) {
+		for (struct : readEachStatement.structs) {
+			readProperties.add(struct.structproperty.name)
+		}
+	}
+	
+    def String generateFunctionMove(YMemberSelection memberSelection) {
+		val buffer = new StringBuffer()
+		buffer.append("\n// start of moveStruct()\n")
+		val fromProperty = memberSelection.args.get(0) as YMemberSelection
+		val toProperty = memberSelection.args.get(1) as YMemberSelection
+		for (from : fromProperty.member.type.members) {
+			for (to : toProperty.member.type.members) {
+				if ((from as YProperty).name == (to as YProperty).name &&
+					(from as YProperty).type.name == (to as YProperty).type.name) {
+					buffer.append(
+						"this." + toProperty.member.name + "." + (to as YProperty).name + " = " + "this." +
+							fromProperty.member.name + "." + (from as YProperty).name + ";\n")
+				}
+			}
+		}
+		buffer.append("// end of moveStruct()\n")
+		return buffer.toString
+	}
+	
+	
 
 }

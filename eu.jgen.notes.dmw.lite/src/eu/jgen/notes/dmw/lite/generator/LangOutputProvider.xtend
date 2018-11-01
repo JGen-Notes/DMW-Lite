@@ -4,6 +4,7 @@ import com.google.common.collect.Sets
 import java.util.Set
 import org.eclipse.xtext.generator.IOutputConfigurationProvider
 import org.eclipse.xtext.generator.OutputConfiguration
+import org.eclipse.xtext.generator.IFileSystemAccess
 
 class LangOutputProvider implements IOutputConfigurationProvider {
 	public static final String DEFAULT = "DEFAULT_OUTPUT"
@@ -14,7 +15,7 @@ class LangOutputProvider implements IOutputConfigurationProvider {
 		
 		val Set<OutputConfiguration> configurations = Sets.newHashSet()
 		
-		var defaultOutput = new OutputConfiguration(DEFAULT);
+		var defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
 	    defaultOutput.setDescription("Default Folder");
 	    defaultOutput.setOutputDirectory("./src-gen");
 	    defaultOutput.setOverrideExistingResources(true);

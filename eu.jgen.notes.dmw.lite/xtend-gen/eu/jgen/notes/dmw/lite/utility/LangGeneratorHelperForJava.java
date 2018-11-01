@@ -13,6 +13,7 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotTable;
 import eu.jgen.notes.dmw.lite.lang.YBoolConstant;
 import eu.jgen.notes.dmw.lite.lang.YClass;
 import eu.jgen.notes.dmw.lite.lang.YComparisonExpression;
+import eu.jgen.notes.dmw.lite.lang.YCreateStatement;
 import eu.jgen.notes.dmw.lite.lang.YEqualityExpression;
 import eu.jgen.notes.dmw.lite.lang.YExpression;
 import eu.jgen.notes.dmw.lite.lang.YFunction;
@@ -32,6 +33,7 @@ import eu.jgen.notes.dmw.lite.lang.YSelf;
 import eu.jgen.notes.dmw.lite.lang.YStringConstant;
 import eu.jgen.notes.dmw.lite.lang.YStructRefPair;
 import eu.jgen.notes.dmw.lite.lang.YSymbolRef;
+import eu.jgen.notes.dmw.lite.lang.YUpdateStatement;
 import eu.jgen.notes.dmw.lite.lang.YWidget;
 import eu.jgen.notes.dmw.lite.utility.LangUtil;
 import java.util.ArrayList;
@@ -50,7 +52,7 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.InputOutput;
 
 @SuppressWarnings("all")
-public class LangJavaGeneratorHelper {
+public class LangGeneratorHelperForJava {
   private final String SYSTEM_DEFAULT_STRING = "\"\"";
   
   private final String SYSTEM_DEFAULT_INT = "0";
@@ -480,5 +482,329 @@ public class LangJavaGeneratorHelper {
       this.usedNames.put(corename, _integer_1);
       return corename;
     }
+  }
+  
+  public String generateGetMethodsForRead(final YReadStatement readStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    EList<YStructRefPair> _structs = readStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+      for (final YMember member : _members) {
+        {
+          String setMethodName = "";
+          String _name = member.getType().getName();
+          if (_name != null) {
+            switch (_name) {
+              case "Int":
+                setMethodName = "getInt";
+                break;
+              case "Short":
+                setMethodName = "getShort";
+                break;
+              case "Long":
+                setMethodName = "getLong";
+                break;
+              case "Bool":
+                setMethodName = "getBoolean";
+                break;
+              case "String":
+                setMethodName = "getString";
+                break;
+              case "Double":
+                setMethodName = "getDouble";
+                break;
+              case "Time":
+                setMethodName = "getTime";
+                break;
+              case "Date":
+                setMethodName = "getDate";
+                break;
+              case "Timestamp":
+                setMethodName = "getTimestamp";
+                break;
+              default:
+                setMethodName = "unknown";
+                break;
+            }
+          } else {
+            setMethodName = "unknown";
+          }
+          String _name_1 = struct.getStructproperty().getName();
+          String _plus = (_name_1 + ".");
+          String _name_2 = member.getName();
+          String _plus_1 = (_plus + _name_2);
+          String _plus_2 = (_plus_1 + " = _rs.");
+          String _plus_3 = (_plus_2 + setMethodName);
+          String _plus_4 = (_plus_3 + "(");
+          String _string = Integer.toString(index);
+          String _plus_5 = (_plus_4 + _string);
+          String _plus_6 = (_plus_5 + ");\n");
+          buffer.append(_plus_6);
+          index++;
+        }
+      }
+    }
+    return buffer.toString();
+  }
+  
+  public String generaterUpdateMethodName(final YMember member) {
+    String _name = member.getType().getName();
+    if (_name != null) {
+      switch (_name) {
+        case "Int":
+          return "updateInt";
+        case "Short":
+          return "updateShort";
+        case "Long":
+          return "updateLong";
+        case "String":
+          return "updateString";
+        case "Double":
+          return "updateDouble";
+        case "Date":
+          return "updateDate";
+        case "Time":
+          return "updateTime";
+        case "Timestamp":
+          return "updateTimestamp";
+        case "Bool":
+          return "updateBoolean";
+        default:
+          return "not yet done";
+      }
+    } else {
+      return "not yet done";
+    }
+  }
+  
+  public String generaterSetMethodName(final YMember member) {
+    String _name = member.getType().getName();
+    if (_name != null) {
+      switch (_name) {
+        case "Int":
+          return "setInt";
+        case "Short":
+          return "setShort";
+        case "Long":
+          return "setLong";
+        case "Bool":
+          return "setBoolean";
+        case "String":
+          return "setString";
+        case "Double":
+          return "setDouble";
+        case "Time":
+          return "setTime";
+        case "Date":
+          return "setDate";
+        case "Timestamp":
+          return "setTimestamp";
+        default:
+          return "not yet done";
+      }
+    } else {
+      return "not yet done";
+    }
+  }
+  
+  public String generateGetMethodsForReadEach(final YReadEachStatement readEachStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    EList<YStructRefPair> _structs = readEachStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      EList<YMember> _members = struct.getStructproperty().getType().getMembers();
+      for (final YMember member : _members) {
+        {
+          String setMethodName = "";
+          String _name = member.getType().getName();
+          if (_name != null) {
+            switch (_name) {
+              case "Int":
+                setMethodName = "getInt";
+                break;
+              case "Short":
+                setMethodName = "getShort";
+                break;
+              case "Long":
+                setMethodName = "getLong";
+                break;
+              case "Bool":
+                setMethodName = "getBoolean";
+                break;
+              case "String":
+                setMethodName = "getString";
+                break;
+              case "Double":
+                setMethodName = "getDouble";
+                break;
+              case "Time":
+                setMethodName = "getTime";
+                break;
+              case "Date":
+                setMethodName = "getDate";
+                break;
+              case "Timestamp":
+                setMethodName = "getTimestamp";
+                break;
+              default:
+                setMethodName = "unknown";
+                break;
+            }
+          } else {
+            setMethodName = "unknown";
+          }
+          String _name_1 = struct.getStructproperty().getName();
+          String _plus = (_name_1 + ".");
+          String _name_2 = member.getName();
+          String _plus_1 = (_plus + _name_2);
+          String _plus_2 = (_plus_1 + " = _rs.");
+          String _plus_3 = (_plus_2 + setMethodName);
+          String _plus_4 = (_plus_3 + "(");
+          String _string = Integer.toString(index);
+          String _plus_5 = (_plus_4 + _string);
+          String _plus_6 = (_plus_5 + ");\n");
+          buffer.append(_plus_6);
+          index++;
+        }
+      }
+    }
+    return buffer.toString();
+  }
+  
+  public String generateSetMethodsForCreateStatement(final YCreateStatement createStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    EList<YMember> _members = createStatement.getStruct().getStructproperty().getType().getMembers();
+    for (final YMember member : _members) {
+      {
+        String _generaterSetMethodName = this.generaterSetMethodName(member);
+        String _plus = ("_statement." + _generaterSetMethodName);
+        buffer.append(_plus);
+        buffer.append("(");
+        buffer.append(index);
+        buffer.append(", ");
+        String _name = createStatement.getStruct().getStructproperty().getName();
+        String _plus_1 = (_name + ".");
+        String _name_1 = member.getName();
+        String _plus_2 = (_plus_1 + _name_1);
+        buffer.append(_plus_2);
+        buffer.append(");\n");
+        index++;
+      }
+    }
+    return buffer.toString();
+  }
+  
+  public String generateSetMethodsForUpdateStatement(final YUpdateStatement updateStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    EList<YMember> _members = updateStatement.getStruct().getStructproperty().getType().getMembers();
+    for (final YMember member : _members) {
+      {
+        String _generaterUpdateMethodName = this.generaterUpdateMethodName(member);
+        String _plus = ("_rs." + _generaterUpdateMethodName);
+        buffer.append(_plus);
+        buffer.append("(");
+        buffer.append(index);
+        buffer.append(", ");
+        String _name = updateStatement.getStruct().getStructproperty().getName();
+        String _plus_1 = (_name + ".");
+        String _name_1 = member.getName();
+        String _plus_2 = (_plus_1 + _name_1);
+        buffer.append(_plus_2);
+        buffer.append(");\n");
+        index++;
+      }
+    }
+    return buffer.toString();
+  }
+  
+  public String generateSetMethodsForRead(final YReadStatement readStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
+    final ArrayList<String> proplist = CollectionLiterals.<String>newArrayList();
+    this.getListOfPropertiesForRead(readStatement, proplist);
+    proplist.add("viewF");
+    final ArrayList<String> newlist = this.createReadStatementSetMethodList(list, readStatement.getWhereclause().getExpression(), proplist);
+    for (final String setMethod : newlist) {
+      {
+        String _replace = setMethod.replace("&index&", Integer.toString(index));
+        String _plus = ("_statement." + _replace);
+        String _plus_1 = (_plus + "\n");
+        buffer.append(_plus_1);
+        index++;
+      }
+    }
+    return buffer.toString();
+  }
+  
+  public String generateSetMethodsForReadEach(final YReadEachStatement readEachStatement) {
+    final StringBuffer buffer = new StringBuffer();
+    int index = 1;
+    final ArrayList<String> list = CollectionLiterals.<String>newArrayList();
+    final ArrayList<String> proplist = CollectionLiterals.<String>newArrayList();
+    this.getListOfPropertiesForReadEach(readEachStatement, proplist);
+    proplist.add("viewF");
+    final ArrayList<String> newlist = this.createReadStatementSetMethodList(list, readEachStatement.getWhereclause().getExpression(), proplist);
+    for (final String setMethod : newlist) {
+      {
+        String _replace = setMethod.replace("&index&", Integer.toString(index));
+        String _plus = ("_statement." + _replace);
+        String _plus_1 = (_plus + "\n");
+        buffer.append(_plus_1);
+        index++;
+      }
+    }
+    return buffer.toString();
+  }
+  
+  private void getListOfPropertiesForRead(final YReadStatement readStatement, final ArrayList<String> readProperties) {
+    EList<YStructRefPair> _structs = readStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      readProperties.add(struct.getStructproperty().getName());
+    }
+  }
+  
+  private void getListOfPropertiesForReadEach(final YReadEachStatement readEachStatement, final ArrayList<String> readProperties) {
+    EList<YStructRefPair> _structs = readEachStatement.getStructs();
+    for (final YStructRefPair struct : _structs) {
+      readProperties.add(struct.getStructproperty().getName());
+    }
+  }
+  
+  public String generateFunctionMove(final YMemberSelection memberSelection) {
+    final StringBuffer buffer = new StringBuffer();
+    buffer.append("\n// start of moveStruct()\n");
+    YExpression _get = memberSelection.getArgs().get(0);
+    final YMemberSelection fromProperty = ((YMemberSelection) _get);
+    YExpression _get_1 = memberSelection.getArgs().get(1);
+    final YMemberSelection toProperty = ((YMemberSelection) _get_1);
+    EList<YMember> _members = fromProperty.getMember().getType().getMembers();
+    for (final YMember from : _members) {
+      EList<YMember> _members_1 = toProperty.getMember().getType().getMembers();
+      for (final YMember to : _members_1) {
+        if ((Objects.equal(((YProperty) from).getName(), ((YProperty) to).getName()) && 
+          Objects.equal(((YProperty) from).getType().getName(), ((YProperty) to).getType().getName()))) {
+          String _name = toProperty.getMember().getName();
+          String _plus = ("this." + _name);
+          String _plus_1 = (_plus + ".");
+          String _name_1 = ((YProperty) to).getName();
+          String _plus_2 = (_plus_1 + _name_1);
+          String _plus_3 = (_plus_2 + " = ");
+          String _plus_4 = (_plus_3 + "this.");
+          String _name_2 = fromProperty.getMember().getName();
+          String _plus_5 = (_plus_4 + _name_2);
+          String _plus_6 = (_plus_5 + ".");
+          String _name_3 = ((YProperty) from).getName();
+          String _plus_7 = (_plus_6 + _name_3);
+          String _plus_8 = (_plus_7 + ";\n");
+          buffer.append(_plus_8);
+        }
+      }
+    }
+    buffer.append("// end of moveStruct()\n");
+    return buffer.toString();
   }
 }

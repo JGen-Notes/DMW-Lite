@@ -2,6 +2,7 @@ package eu.jgen.notes.dmw.lite.generator;
 
 import com.google.common.collect.Sets;
 import java.util.Set;
+import org.eclipse.xtext.generator.IFileSystemAccess;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.generator.OutputConfiguration;
 
@@ -16,7 +17,7 @@ public class LangOutputProvider implements IOutputConfigurationProvider {
   @Override
   public Set<OutputConfiguration> getOutputConfigurations() {
     final Set<OutputConfiguration> configurations = Sets.<OutputConfiguration>newHashSet();
-    OutputConfiguration defaultOutput = new OutputConfiguration(LangOutputProvider.DEFAULT);
+    OutputConfiguration defaultOutput = new OutputConfiguration(IFileSystemAccess.DEFAULT_OUTPUT);
     defaultOutput.setDescription("Default Folder");
     defaultOutput.setOutputDirectory("./src-gen");
     defaultOutput.setOverrideExistingResources(true);

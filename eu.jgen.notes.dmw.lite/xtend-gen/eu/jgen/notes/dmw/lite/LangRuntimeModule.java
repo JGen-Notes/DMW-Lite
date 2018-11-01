@@ -26,9 +26,11 @@ import com.google.inject.Binder;
 import com.google.inject.Singleton;
 import com.google.inject.name.Names;
 import eu.jgen.notes.dmw.lite.AbstractLangRuntimeModule;
+import eu.jgen.notes.dmw.lite.LangStratumBreakpointSupport;
 import eu.jgen.notes.dmw.lite.generator.LangOutputProvider;
 import eu.jgen.notes.dmw.lite.scoping.LangImportedNamespaceAwareLocalScopeProvider;
 import eu.jgen.notes.dmw.lite.scoping.LangResourceDescriptionsStrategy;
+import org.eclipse.xtext.debug.IStratumBreakpointSupport;
 import org.eclipse.xtext.generator.IOutputConfigurationProvider;
 import org.eclipse.xtext.resource.IDefaultResourceDescriptionStrategy;
 import org.eclipse.xtext.scoping.IScopeProvider;
@@ -54,5 +56,9 @@ public class LangRuntimeModule extends AbstractLangRuntimeModule {
   
   public Class<? extends IDefaultResourceDescriptionStrategy> bindIDefaultResourceDescriptionStrategy() {
     return LangResourceDescriptionsStrategy.class;
+  }
+  
+  public Class<? extends IStratumBreakpointSupport> bindIStratumBreakpointSupport() {
+    return LangStratumBreakpointSupport.class;
   }
 }

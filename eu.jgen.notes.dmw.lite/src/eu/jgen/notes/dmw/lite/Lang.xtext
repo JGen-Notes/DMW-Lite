@@ -44,7 +44,7 @@ ValidID:
 	ID;
 
 YParameter:
-	YTypedDeclaration;
+	YTypedDeclaration | YJoinDef;
 
 enum YAccessLevel:
 	PRIVATE='private' | PROTECTED='protected' | PUBLIC='public';
@@ -90,12 +90,13 @@ YStatement:
 	YCreateStatement |
 	YUpdateStatement |
 	YAssociateStatement |
+	YDisassociateStatement |
 	YDeleteStatement |
 	YReadEachStatement |
 	YWhileStatement |
 	YRepeatWhileStatement |
 	YForInStatement |
-	YExpression ';' |
+	YExpression ';'? |
 	YIfStatement |
 	YSwitchStatement;
 
@@ -196,31 +197,35 @@ YTerminalExpression returns YExpression:
 ;
 
 YReadStatement:
-	'read' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
+	'db-read' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
 	'success' success=YBlock
 	'not' 'found' notfound=YBlock;
 
 YReadEachStatement:
-	'read' 'each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
+	'db-read-each' structs+=YStructRefPair (',' structs+=YStructRefPair)* joinclause=YJoin? whereclause=YWhere?
 	'target' target=[YProperty]
 	success=YBlock;
 
 YCreateStatement:
-	'create' struct=YStructRefPair
+	'db-create' struct=YStructRefPair
 	setBlock=YBlock
 	'success' success=YBlock
 	'already' 'exist' alreadyExist=YBlock;
 
 YUpdateStatement:
-	'update' struct=YStructRefPair
+	'db-update' struct=YStructRefPair
 	setBlock=YBlock
 	'success' success=YBlock;
 
 YDeleteStatement:
-	'delete' struct=YStructRefPair ';';
+	'db-delete' struct=YStructRefPair ';';
 
 YAssociateStatement:
-	'associate' joinref=YJoinDef ';';
+	'db-associate' struct=YStructRefPair 'with' joinref=YJoinDef ';';
+	
+
+YDisassociateStatement:
+	'db-disassociate' struct=YStructRefPair 'from' joinref=YJoinDef ';';
 
 YStructRefPair:
 	structproperty=[YProperty] '->' structclass=[YAnnotEntity];

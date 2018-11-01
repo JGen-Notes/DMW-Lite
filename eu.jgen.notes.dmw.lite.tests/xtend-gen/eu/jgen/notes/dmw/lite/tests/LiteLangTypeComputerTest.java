@@ -142,10 +142,10 @@ public class LiteLangTypeComputerTest {
       _builder.append("f ; // unresolved symbol");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("this.n(); // unresolved method ");
+      _builder.append("self.n(); // unresolved method ");
       _builder.newLine();
       _builder.append("\t\t");
-      _builder.append("this.f; // unresolved field");
+      _builder.append("self.f; // unresolved field");
       _builder.newLine();
       _builder.append("\t\t");
       _builder.append("return null;");

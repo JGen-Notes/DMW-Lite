@@ -41,14 +41,20 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 import static extension org.junit.Assert.*
+import org.eclipse.xtext.testing.validation.ValidationTestHelper
+import org.eclipse.emf.ecore.resource.ResourceSet
+import com.google.inject.Provider
+import eu.jgen.notes.dmw.lite.utility.LangLib
 
 @RunWith(XtextRunner)
 @InjectWith(LangInjectorProvider)
 class LiteLangScopeProviderTest1 {
 	@Inject extension ParseHelper<YWidget>
+	@Inject extension ValidationTestHelper
 	@Inject extension IScopeProvider
 	@Inject extension LangUtil
-
+		@Inject extension LangLib
+	@Inject Provider<ResourceSet> rsp
 	@Test def void testScopeProvider() {
 		'''
 			class C {
@@ -278,6 +284,71 @@ class LiteLangScopeProviderTest1 {
 			assertSame(properties.head.type)
 		]
 	}
+	
+	@Test def void testPackagesAndClassQualifiedNames() {
+		val first = '''
+			package my.first.pack;
+			
+			class B : my.second.pack.A {}
+
+		'''.parse
+		val second = '''
+			package my.second.pack;
+			
+			class A  {
+			  var b : my.first.pack.B ;
+			}
+		'''.parse(first.eResource.resourceSet)
+		
+		first.assertNoErrors
+        second.assertNoErrors
+        second.classes.head.assertSame(first.classes.head.superclass)
+    }
+    
+    	
+	@Test def void testImports() {
+		val first = '''
+			package my.first.pack;
+			
+			class C1 {}
+			class C2 {}
+
+		'''.parse
+		
+		val second = '''
+			package my.second.pack;
+			
+			class D1 {}
+			class D2 {}
+		'''.parse(first.eResource.resourceSet)
+		
+		val third = '''
+		package my.third.pack;
+		import my.first.pack.C1;
+		import my.second.pack.*;
+		
+		class E : C1 {
+			// C1 is imported
+			
+			var c : my.first.pack.C2;
+			// C2 not imported
+			
+			var d1 : D1;
+			// D1 imported by wildcard
+			
+			var d2 : D2;
+			// D2 imported by wildcard
+			
+			
+		}
+		
+		'''.parse(first.eResource.resourceSet)
+		
+		first.assertNoErrors
+        second.assertNoErrors
+        third.assertNoErrors
+ 
+    }
 
 	def private returnExpSel(YFunction function) {
 		function.returnStatement.expression as YMemberSelection
@@ -286,4 +357,11 @@ class LiteLangScopeProviderTest1 {
 	def private assertScope(EObject context, EReference reference, CharSequence expected) {
 		expected.toString.assertEquals(context.getScope(reference).allElements.map[name].join(", "))
 	}
+	
+	def private loadLibAndParse(CharSequence p) {
+		val resourceSet = rsp.get
+		loadLib(resourceSet)
+		p.parse(resourceSet)
+	}
+	
 }

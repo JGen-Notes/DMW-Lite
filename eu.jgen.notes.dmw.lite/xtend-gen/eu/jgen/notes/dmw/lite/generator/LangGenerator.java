@@ -25,9 +25,9 @@ package eu.jgen.notes.dmw.lite.generator;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.generator.LangGlobalCommandsGenerator;
 import eu.jgen.notes.dmw.lite.generator.LangGlobalExitStatesGenerator;
-import eu.jgen.notes.dmw.lite.generator.LangJavaWidgetGenerator;
-import eu.jgen.notes.dmw.lite.generator.LangSwiftWidgetGenerator;
 import eu.jgen.notes.dmw.lite.generator.LangTechicalDesignGenerator;
+import eu.jgen.notes.dmw.lite.generator.LangWidgetGeneratorForJava;
+import eu.jgen.notes.dmw.lite.generator.LangWidgetGeneratorForSwift;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.generator.AbstractGenerator;
 import org.eclipse.xtext.generator.IFileSystemAccess2;
@@ -44,7 +44,7 @@ public class LangGenerator extends AbstractGenerator {
   private LangTechicalDesignGenerator g1;
   
   @Inject
-  private LangJavaWidgetGenerator g2;
+  private LangWidgetGeneratorForJava g2;
   
   @Inject
   private LangGlobalExitStatesGenerator g3;
@@ -53,12 +53,12 @@ public class LangGenerator extends AbstractGenerator {
   private LangGlobalCommandsGenerator g4;
   
   @Inject
-  private LangSwiftWidgetGenerator g5;
+  private LangWidgetGeneratorForSwift g5;
   
   @Override
   public void doGenerate(final Resource resource, final IFileSystemAccess2 fsa, final IGeneratorContext context) {
     this.g1.doGenerate(resource, fsa);
-    this.g2.doGenerate(resource, fsa);
+    this.g2.doGenerate(resource, fsa, context);
     this.g3.doGenerate(resource, fsa);
     this.g4.doGenerate(resource, fsa);
     this.g5.doGenerate(resource, fsa);

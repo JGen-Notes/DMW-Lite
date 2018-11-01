@@ -297,10 +297,21 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
   }
   
   public Object _text(final YAnnotForeignKey element) {
-    String _name = element.getRelationship().getName();
-    String _plus = (_name + " -> ");
-    String _name_1 = element.getRelationship().getTarget().getName();
-    return (_plus + _name_1);
+    YAnnotRel _relationship = element.getRelationship();
+    boolean _tripleNotEquals = (_relationship != null);
+    if (_tripleNotEquals) {
+      YAnnotEntity _target = element.getRelationship().getTarget();
+      boolean _tripleNotEquals_1 = (_target != null);
+      if (_tripleNotEquals_1) {
+        String _name = element.getRelationship().getName();
+        String _plus = (_name + " -> ");
+        String _name_1 = element.getRelationship().getTarget().getName();
+        return (_plus + _name_1);
+      } else {
+        return element.getRelationship().getName();
+      }
+    }
+    return null;
   }
   
   public Object _image(final YAnnotForeignKey element) {
@@ -336,20 +347,36 @@ public class LangOutlineTreeProvider extends DefaultOutlineTreeProvider {
     String desc = "";
     boolean _isMany = element.isMany();
     if (_isMany) {
-      String _name = element.getName();
-      String _plus = (_name + opt);
-      String _plus_1 = (_plus + " -> ");
-      String _name_1 = element.getTarget().getName();
-      String _plus_2 = (_plus_1 + _name_1);
-      String _plus_3 = (_plus_2 + "*");
-      desc = _plus_3;
+      YAnnotEntity _target = element.getTarget();
+      boolean _tripleNotEquals = (_target != null);
+      if (_tripleNotEquals) {
+        String _name = element.getName();
+        String _plus = (_name + opt);
+        String _plus_1 = (_plus + " -> ");
+        String _name_1 = element.getTarget().getName();
+        String _plus_2 = (_plus_1 + _name_1);
+        String _plus_3 = (_plus_2 + "*");
+        desc = _plus_3;
+      } else {
+        String _name_2 = element.getName();
+        String _plus_4 = (_name_2 + opt);
+        desc = _plus_4;
+      }
     } else {
-      String _name_2 = element.getName();
-      String _plus_4 = (_name_2 + opt);
-      String _plus_5 = (_plus_4 + " -> ");
-      String _name_3 = element.getTarget().getName();
-      String _plus_6 = (_plus_5 + _name_3);
-      desc = _plus_6;
+      YAnnotEntity _target_1 = element.getTarget();
+      boolean _tripleNotEquals_1 = (_target_1 != null);
+      if (_tripleNotEquals_1) {
+        String _name_3 = element.getName();
+        String _plus_5 = (_name_3 + opt);
+        String _plus_6 = (_plus_5 + " -> ");
+        String _name_4 = element.getTarget().getName();
+        String _plus_7 = (_plus_6 + _name_4);
+        desc = _plus_7;
+      } else {
+        String _name_5 = element.getName();
+        String _plus_8 = (_name_5 + opt);
+        desc = _plus_8;
+      }
     }
     return this.prepareText(element, desc);
   }

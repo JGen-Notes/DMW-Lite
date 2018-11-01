@@ -23,8 +23,10 @@
 package eu.jgen.notes.dmw.lite.ui;
 
 import eu.jgen.notes.dmw.lite.ui.AbstractLangUiModule;
+import eu.jgen.notes.dmw.lite.ui.LangEditor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
+import org.eclipse.xtext.ui.editor.XtextEditor;
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
@@ -32,6 +34,10 @@ import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor;
 @FinalFieldsConstructor
 @SuppressWarnings("all")
 public class LangUiModule extends AbstractLangUiModule {
+  public Class<? extends XtextEditor> bindXtextEditor() {
+    return LangEditor.class;
+  }
+  
   public LangUiModule(final AbstractUIPlugin plugin) {
     super(plugin);
   }

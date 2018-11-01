@@ -24,10 +24,16 @@
 package eu.jgen.notes.dmw.lite.ui
 
 import org.eclipse.xtend.lib.annotations.FinalFieldsConstructor
+import org.eclipse.xtext.ui.editor.XtextEditor
 
 /**
  * Use this class to register components to be used within the Eclipse IDE.
  */
 @FinalFieldsConstructor
 class LangUiModule extends AbstractLangUiModule {
+	
+	 def Class<? extends XtextEditor> bindXtextEditor() {
+        LangEditor
+    }
+    
 }

@@ -22,7 +22,6 @@
  */
 package eu.jgen.notes.dmw.lite.ui.quickfix;
 
-import com.google.common.base.Objects;
 import com.google.inject.Inject;
 import eu.jgen.notes.dmw.lite.lang.LangPackage;
 import eu.jgen.notes.dmw.lite.lang.YAnnotAbstractColumn;
@@ -92,6 +91,7 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
         final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer));
         final YAnnotAbstractColumn abstractColumn = this._langDBUtil.converAttributeIntoAbstractColumn(attribute);
         table.getColumns().add(abstractColumn);
+        table.eResource().save(null);
       }
     };
     acceptor.accept(issue, "Create missing column", "Creates column implementing attribute type.", "column.gif", _function);
@@ -106,6 +106,7 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
         final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer));
         final YAnnotForeignKey foreignKey = this._langDBUtil.converRelationshipIntoForeignKeys(relationship);
         table.getForeignkeys().add(foreignKey);
+        table.eResource().save(null);
       }
     };
     acceptor.accept(issue, "Create missing foreign key", "Adds foreign key column implementing relationship.", 
@@ -121,26 +122,11 @@ public class LangQuickfixProvider extends DefaultQuickfixProvider {
         final YAnnotTable table = this._langUtil.getImplementingTable(((YAnnotEntity) _eContainer));
         final YAnnotPrimaryKey primaryKey = this._langDBUtil.converIdentifierIntoPrimaryKey(identifier);
         table.setPrimarykey(primaryKey);
+        table.eResource().save(null);
       }
     };
     acceptor.accept(issue, "Create missing primary key", "Creates primary key implementing identifier.", 
       "identifier.gif", _function);
-  }
-  
-  @Fix(LangValidator.CLASS_NEED_TO_BE_EXTENDED)
-  public void createSuperClass(final Issue issue, final IssueResolutionAcceptor acceptor) {
-    final ISemanticModification _function = (EObject element, IModificationContext context) -> {
-      final BiConsumer<QualifiedName, IEObjectDescription> _function_1 = (QualifiedName p1, IEObjectDescription p2) -> {
-        String _lastSegment = p1.getLastSegment();
-        boolean _equals = Objects.equal(_lastSegment, "Object");
-        if (_equals) {
-          EObject _eObjectOrProxy = p2.getEObjectOrProxy();
-          ((YClass) element).setSuperclass(((YClass) _eObjectOrProxy));
-        }
-      };
-      this._langIndex.getVisibleExternalClassesDescriptions(element).forEach(_function_1);
-    };
-    acceptor.accept(issue, "Insert missing Object class", "Insert missing Object class.", "class.gif", _function);
   }
   
   @Fix(LangValidator.CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL)

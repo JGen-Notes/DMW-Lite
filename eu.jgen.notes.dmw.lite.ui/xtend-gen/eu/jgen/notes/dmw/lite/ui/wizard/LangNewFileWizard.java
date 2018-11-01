@@ -137,7 +137,6 @@ public class LangNewFileWizard extends Wizard implements INewWizard {
         this.getContainer().run(true, false, op);
       } catch (final Throwable _t) {
         if (_t instanceof InterruptedException) {
-          final InterruptedException e = (InterruptedException)_t;
           return false;
         } else if (_t instanceof InvocationTargetException) {
           final InvocationTargetException e_1 = (InvocationTargetException)_t;
@@ -218,7 +217,6 @@ public class LangNewFileWizard extends Wizard implements INewWizard {
       stream.close();
     } catch (final Throwable _t) {
       if (_t instanceof IOException) {
-        final IOException e = (IOException)_t;
       } else {
         throw Exceptions.sneakyThrow(_t);
       }
@@ -231,7 +229,6 @@ public class LangNewFileWizard extends Wizard implements INewWizard {
         IDE.openEditor(page, file, true);
       } catch (final Throwable _t_1) {
         if (_t_1 instanceof PartInitException) {
-          final PartInitException e_1 = (PartInitException)_t_1;
         } else {
           throw Exceptions.sneakyThrow(_t_1);
         }

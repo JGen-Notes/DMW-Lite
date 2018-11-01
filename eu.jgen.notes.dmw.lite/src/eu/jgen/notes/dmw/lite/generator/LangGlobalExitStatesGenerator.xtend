@@ -8,14 +8,14 @@ import com.google.inject.Inject
 import eu.jgen.notes.dmw.lite.utility.LangUtil
 import eu.jgen.notes.dmw.lite.lang.YClass
 import eu.jgen.notes.dmw.lite.lang.YProperty
-import eu.jgen.notes.dmw.lite.utility.LangJavaGeneratorHelper
 import java.util.List
+import eu.jgen.notes.dmw.lite.utility.LangGeneratorHelperForJava
 
 class LangGlobalExitStatesGenerator implements IGenerator {
 	
 	@Inject extension LangUtil
 	
-		@Inject extension LangJavaGeneratorHelper
+		@Inject extension LangGeneratorHelperForJava
 	
 		private List<String> imports = newArrayList()
 	

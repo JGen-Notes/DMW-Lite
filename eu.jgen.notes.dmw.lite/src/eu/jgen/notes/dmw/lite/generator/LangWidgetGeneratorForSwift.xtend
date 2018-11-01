@@ -11,15 +11,15 @@ import eu.jgen.notes.dmw.lite.lang.YAnnotColumn
 import eu.jgen.notes.dmw.lite.lang.YAnnotColumnLike
 import eu.jgen.notes.dmw.lite.lang.YAnnotSwift
 import com.google.inject.Inject
-import eu.jgen.notes.dmw.lite.utility.LangJavaGeneratorHelper
 import eu.jgen.notes.dmw.lite.lang.YWidget
 import eu.jgen.notes.dmw.lite.utility.LangUtil
 import eu.jgen.notes.dmw.lite.utility.LangSwiftGeneratorHelper
 import eu.jgen.notes.dmw.lite.lang.YClass
 import eu.jgen.notes.dmw.lite.lang.YProperty
 import eu.jgen.notes.dmw.lite.lang.YAnnotEntity
+import eu.jgen.notes.dmw.lite.utility.LangGeneratorHelperForJava
 
-class LangSwiftWidgetGenerator implements IGenerator {
+class LangWidgetGeneratorForSwift implements IGenerator {
 
 	@Inject extension LangUtil
 	@Inject extension LangSwiftGeneratorHelper

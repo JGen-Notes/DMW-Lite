@@ -4,12 +4,13 @@ import org.eclipse.xtext.generator.IFileSystemAccess
 import org.eclipse.xtext.generator.IFileSystemAccessExtension
 import org.eclipse.xtext.generator.IFileSystemAccessExtension2
 import org.eclipse.emf.common.util.URI
+import org.eclipse.xtext.generator.IFileSystemAccess2
 
 class OutputConfigurationFileSystemAccess implements IFileSystemAccess, IFileSystemAccessExtension, IFileSystemAccessExtension2 {
-	protected IFileSystemAccess fsa
+	protected IFileSystemAccess2 fsa
 	protected String outputConfigurationName
 
-	protected new(IFileSystemAccess fsa, String outputConfigurationName) {
+	protected new(IFileSystemAccess2 fsa, String outputConfigurationName) {
 		 
 		this.fsa = fsa
 		this.outputConfigurationName = outputConfigurationName

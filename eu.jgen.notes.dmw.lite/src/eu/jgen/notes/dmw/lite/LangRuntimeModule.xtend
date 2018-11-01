@@ -33,6 +33,7 @@ import eu.jgen.notes.dmw.lite.scoping.LangResourceDescriptionsStrategy
 import org.eclipse.xtext.generator.IOutputConfigurationProvider
 import com.google.inject.Singleton
 import eu.jgen.notes.dmw.lite.generator.LangOutputProvider
+import org.eclipse.xtext.debug.IStratumBreakpointSupport
 
 /**
  * Use this class to register components to be used at runtime / without the Equinox extension registry.
@@ -56,6 +57,8 @@ class LangRuntimeModule extends AbstractLangRuntimeModule {
 		return LangResourceDescriptionsStrategy;
 	}
 	
- 
+   def Class<? extends IStratumBreakpointSupport> bindIStratumBreakpointSupport() {
+        return LangStratumBreakpointSupport;
+    }
 	
 }

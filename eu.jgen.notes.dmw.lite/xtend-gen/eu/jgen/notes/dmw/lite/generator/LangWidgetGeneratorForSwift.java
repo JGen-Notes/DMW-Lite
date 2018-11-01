@@ -27,7 +27,7 @@ import org.eclipse.xtext.xbase.lib.IteratorExtensions;
 import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 
 @SuppressWarnings("all")
-public class LangSwiftWidgetGenerator implements IGenerator {
+public class LangWidgetGeneratorForSwift implements IGenerator {
   @Inject
   @Extension
   private LangUtil _langUtil;

@@ -101,8 +101,8 @@ class LiteLangTypeComputerTest {
 			class C {
 				U m() {
 					f ; // unresolved symbol
-					this.n(); // unresolved method 
-					this.f; // unresolved field
+					self.n(); // unresolved method 
+					self.f; // unresolved field
 					return null;
 				}
 			}

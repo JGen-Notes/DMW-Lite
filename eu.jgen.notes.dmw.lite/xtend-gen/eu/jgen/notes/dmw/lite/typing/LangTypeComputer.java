@@ -276,7 +276,6 @@ public class LangTypeComputer {
               _xtrycatchfinallyexpression = ((YFunction) _member).getParams().get(((YMemberSelection)container).getArgs().indexOf(expression)).getType();
             } catch (final Throwable _t) {
               if (_t instanceof Throwable) {
-                final Throwable t = (Throwable)_t;
                 _xtrycatchfinallyexpression = null;
               } else {
                 throw Exceptions.sneakyThrow(_t);

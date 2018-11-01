@@ -65,6 +65,7 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 				val table = getImplementingTable(attribute.eContainer as YAnnotEntity)
 				val abstractColumn = attribute.converAttributeIntoAbstractColumn
 				table.columns.add(abstractColumn)
+				table.eResource.save(null)
 			}
 		]
 	}
@@ -78,6 +79,7 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 				val table = getImplementingTable(relationship.eContainer as YAnnotEntity)
 				val foreignKey = relationship.converRelationshipIntoForeignKeys
 				table.foreignkeys.add(foreignKey)
+				table.eResource.save(null)
 			}
 		]
 	}
@@ -91,20 +93,21 @@ class LangQuickfixProvider extends DefaultQuickfixProvider {
 				val table = getImplementingTable(identifier.eContainer as YAnnotEntity)
 				val primaryKey = identifier.converIdentifierIntoPrimaryKey
 				table.primarykey = primaryKey
+				table.eResource.save(null)
 			}
 		]
 	}
 
-	@Fix(LangValidator.CLASS_NEED_TO_BE_EXTENDED)
-	def createSuperClass(Issue issue, IssueResolutionAcceptor acceptor) {
-		acceptor.accept(issue, 'Insert missing Object class', 'Insert missing Object class.', 'class.gif') [ element, context |
-			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
-				if (p1.lastSegment == "Object") {
-					(element as YClass).superclass = p2.EObjectOrProxy as YClass
-				}
-			]
-		]
-	}
+//	@Fix(LangValidator.CLASS_NEED_TO_BE_EXTENDED)
+//	def createSuperClass(Issue issue, IssueResolutionAcceptor acceptor) {
+//		acceptor.accept(issue, 'Insert missing Object class', 'Insert missing Object class.', 'class.gif') [ element, context |
+//			element.getVisibleExternalClassesDescriptions.forEach [ p1, p2 |
+//				if (p1.lastSegment == "Object") {
+//					(element as YClass).superclass = p2.EObjectOrProxy as YClass
+//				}
+//			]
+//		]
+//	}
 
 	@Fix(LangValidator.CLASS_NAME_FIRST_CHARACTER_NOT_CAPITAL)
 	def capitalizeClassNameFirstLetter(Issue issue, IssueResolutionAcceptor acceptor) {
